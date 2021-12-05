@@ -8,9 +8,8 @@ from django.http import JsonResponse,HttpResponse
 import ply
 import types
 import json
-        
-def serialise_profile_collection_items(request,owner):
-    _items = GalleryItemsByCollectionPermission.objects.filter(gcp_profile=request.session['profile'],gcp_owner=owner).order_by("gc_uuid")
+
+def _item_serialiser(_items,profile):
     items = []
     total = len(_items)
     counter = 0
@@ -32,7 +31,9 @@ def serialise_profile_collection_items(request,owner):
         if (counter+1 < total):
             if (i.item_id != _items[counter+1].item_id):
                 #print("Item change here.")
-                curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files})
+                # PUT thumbnail first.... 
+                curr_files.reverse()
+                curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':profile,'id':i.gci_uuid})
                 curr_files = []
             if (i.collection_id != _items[counter+1].collection_id):
                 #print("Collection change here.")
@@ -52,7 +53,9 @@ def serialise_profile_collection_items(request,owner):
             #print(_items[counter+1].item_id)    
         else:
             #print("final Item and Collection flush")
-            curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'vies':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files})
+            # PUT thumbnail first.... 
+            curr_files.reverse()
+            curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'vies':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':profile,'id':i.gci_uuid})
             curr_files = []
             items.append({
                     "label":i.gc_label,
@@ -71,3 +74,16 @@ def serialise_profile_collection_items(request,owner):
         counter += 1
     #print(f"Total: {total}, Counter: {counter}")
     return items
+
+
+# Get ALL The items for the active request session profile:
+# Where the session is also the owner of the item:
+def serialise_profile_collection_items(request):
+    _items = GalleryItemsByCollectionPermission.objects.filter(gcp_profile=request.session['profile'],gcp_owner=True).order_by("gc_uuid")
+    return (_item_serialiser(_items,request.session['profile']))
+   
+# Get ALL The items for the specified Collection (where the specified profile is the owner)
+def serialise_own_collection_items(request,collection):
+    _items = GalleryItemsByCollectionPermission.objects.filter(gcp_profile=request.session['profile'],gcp_owner=True,gc_uuid=collection).order_by("gc_uuid")
+    return (_item_serialiser(_items,request.session['profile']))
+   

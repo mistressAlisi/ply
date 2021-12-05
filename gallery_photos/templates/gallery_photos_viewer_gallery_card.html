@@ -1,0 +1,30 @@
+<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-item="{{i.id}}" data-plugin="gallery_photos" id="card-{{i.id}}" data-collection="{{col.uuid}}">
+
+   {% if i.files.0.thumbnail %}
+   {% with i.files.0 as file %}
+    <img src="{{base_url}}/{{i.profile|slice:"0:1"}}/{{i.profile|slice:"1:2"}}/{{i.profile|slice:"2:3"}}/{{i.profile}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    {% endwith %}
+   {% elif i.files.1.thumbnail %}
+   {% with i.files.1 as file %}
+    <img src="{{base_url}}/{{i.profile|slice:"0:1"}}/{{i.profile|slice:"1:2"}}/{{i.profile|slice:"2:3"}}/{{i.profile}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    {% endwith %}
+   {% elif i.files.1.thumbnail %}
+   {% with i.files.2 as file %}
+    <img src="{{base_url}}/{{i.profile|slice:"0:1"}}/{{i.profile|slice:"1:2"}}/{{i.profile|slice:"2:3"}}/{{i.profile}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    {% endwith %}
+   {% endif %}
+
+  <section id="overlay" class="publish_overlay card-img-overlay text-center align-middle" >
+    
+  </section>
+  <section class="card-body gallery-photos-body">
+    <section class="photo-title-block">
+        <h5 class="card-title photo-title text-truncate" id="file-name">{{i.title}}</h5>
+    </section>
+  <section class="photo-data-block">
+  <p class="description">
+<!--   {{i.descr}} (<i>Photography</i>)</p> -->
+<!--   Likes: {{i.likes}} Views: {{i.views}} Shares: {{i.shares}} Comments: {{i.comments}} Downloads: {{i.downloads}} -->
+  </section>
+
+</div>

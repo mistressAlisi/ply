@@ -33,9 +33,9 @@ def upload_lighttable(request):
 
 @login_required
 def gallery_collections(request):
-    colls = serialisers.serialise_profile_collection_items(request,True)
+    colls = serialisers.serialise_profile_collection_items(request)
     profile = Profile.objects.get(uuid=request.session["profile"])
-    context = {"colls":colls,"base_url":ply.settings.PLY_TEMP_FILE_URL_BASE_URL,'profile':profile}
+    context = {"colls":colls,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL,'profile':profile}
     return render(request,"gallery-dashboard_all_collections.html",context)
     #return JsonResponse(colls,safe=False)   
 

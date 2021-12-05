@@ -117,9 +117,17 @@ def publish_after_review(request,file_id):
     publish_to_gallery.delay(request.POST,profile.uuid,temp_file.id,request.user.id,comm.uuid)
     return JsonResponse("ok",safe=False)
 
+# Get ALL The items for the active request session profile:
+# Where the session is also the owner of the item:
 @login_required
 def gallery_collections_raw(request):
     colls = serialisers.serialise_profile_collection_items(request,True)
     profile = Profile.objects.get(uuid=request.session["profile"])
     return JsonResponse(colls,safe=False)   
 
+# Get ALL The items for the specified Collection (where the specified profile is the owner)
+@login_required
+def gallery_collection_items_raw(request,collection):
+    colls = serialisers.serialise_own_collection_items(request,collection)
+    profile = Profile.objects.get(uuid=request.session["profile"])
+    return JsonResponse(colls,safe=False)   

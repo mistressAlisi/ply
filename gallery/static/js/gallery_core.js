@@ -119,6 +119,16 @@ window.gallery_core = Object({
         });
         
     },
+    /** These functions enable Gallery operations: **/
+    _setup_gallery: function(e) {
+        console.log("Setting up Galleries...");
+    },
+    launch_gallery: function() {
+        console.log("Launching Gallery...");
+    },
+    
+    /********************/
+    /** These functions enable you to PUBLISH/edit items: **/
     launch_publisher: function(e) {
         $(gallery_core.settings.sidebar_panel).offcanvas('hide');
         target = gallery_core._parent_walker($(e.target)[0],"DIV");
