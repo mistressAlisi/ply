@@ -1,0 +1,11 @@
+{
+    "id":"gallery_photos",
+    "name":"gallery_photos",
+    "label":"Photography Gallery Plugin",
+    "author":"Rasheek",
+    "type":"gallery-plugin",
+    "depends":["ply","gallery"],
+    "provides":["gallery_photos"],
+    "js":["gallery_photos.js"],
+    "css":["gallery_photos.css"]
+}

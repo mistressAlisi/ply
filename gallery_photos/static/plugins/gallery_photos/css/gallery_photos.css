@@ -1,0 +1,17 @@
+.card-img-overlay {
+  display: none; 
+  color: white;
+  padding-top: 25%;
+  text-shadow: 1px 1px black;
+    
+}
+.published .card-img-overlay {
+  display: block;
+}
+
+.published .card-img-top {
+    filter: grayscale(75%) blur(5px);
+}
+.gallery-card.published {
+    cursor: not-allowed;
+}
