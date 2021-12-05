@@ -2,11 +2,11 @@
 <h3>Collection: {{col.label}}</h3>
 <p class="text-muted">Created:  {{col.created}} Updated: {{col.updated}} Items: 0 Views: {{col.views}} Shares:  {{col.shares}} Downloads:  {{col.downloads}} Comments:  {{col.comments}}</p>
 
-
+<section id="collection-{{col.uuid}}">
 {% for i in col.items %}
-  <h6 class="title">{{i.title}}</h6>
-  <p class="description">{{i.descr}}</p>
-  Likes: {{i.likes}} Views: {{i.views}} Shares: {{i.shares}} Comments: {{i.comments}} Downloads: {{i.downloads}}
-   
+    {% with  i.plugin|add:"_viewer_gallery_card.html" as render_template %}
+    {% include render_template %}
+    {% endwith %}  
 {% endfor %}
+</section>
 <hr/>
