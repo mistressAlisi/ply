@@ -1,0 +1,36 @@
+{% extends 'dashboard_main_panel-95.html' %}
+{%block dashboard_name %}<i class="fas fa-th"></i></i>&#160;Submission Light Table{%endblock%}
+{%block dashboard_content %}
+<h6 class="text-muted">Submissions you've uploaded but haven't published yet are shown here: This Light Table is a preview of how items will appear in your collections - as you make changes to your submissions the light table will reflect them.</h6>
+<p>All items not published within 24 hours of upload are deleted (but you can always upload them again!) Keep in mind these are in preview quality until published.
+<br/>
+Changes are previewed automagically as you make them. 'Publish' saves the changes and includes the submission in your visible collections.
+</p>
+<br/><hr/>
+<div class="container-fluid">
+{%for file in files %}
+    {%include "gallery-dashboard_upload_reviewtbl_card.html" %}
+   
+{% endfor %}
+</div>
+<div class="modal" tabindex="-1" id="confirmModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Please Confirm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you ready to publish your submission? You can always edit it after it's been published.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="gallery_core._save_publish(event);">Publish!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%include "gallery-dashboard_upload_reviewtbl_controls.html" %}
+<script src="/static/js/gallery_review.js"></script>
+{%endblock %}

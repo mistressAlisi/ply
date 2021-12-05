@@ -1,0 +1,10 @@
+from django.urls import path,include
+from gallery import dashboard_views
+
+urlpatterns = [
+    path('list',dashboard_views.gallery_list),
+    path('collections',dashboard_views.gallery_collections),
+    path('upload',dashboard_views.upload_content),
+    path('api/',include('gallery.api_urls')),
+    path('upload/lighttable/',dashboard_views.upload_lighttable)
+]

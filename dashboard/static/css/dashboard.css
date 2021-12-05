@@ -1,0 +1,54 @@
+body, .main-container,#sidebarMenu {
+    min-height: 100vh;
+}
+.sidebar-toggle-ul {
+    padding-left: 20px;
+}
+
+#dashboard_mainPanel {
+    padding-top: 10px;
+}
+.account-dash-widget {
+    width: 100%;
+    padding: 5px;
+}
+.profile-sel-link-li {
+    
+}
+
+.sidebar-menu li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.ply-brand_font {
+    font-family: 'Lily Script One', cursive;
+}
+
+.floating-dashboard-card-item {
+    display: inline-block;
+    
+}
+.floating-dashboard-card-item .card-body {
+
+    
+}
+.floating-dashboard-card-item:hover .card-body {
+
+    
+}
+
+.gallery-photos-body {
+}
+.floating-dashboard-card-item {
+}
+.gallery-card {
+    cursor: pointer;
+}
+.review_ctrls {
+    overflow-y: scroll;
+    overflox-x: hidden;
+}
+#gallery_review_form {
+    overflow-y: scroll;
+}
+

@@ -1,0 +1,12 @@
+
+<h3>Collection: {{col.label}}</h3>
+<p class="text-muted">Created:  {{col.created}} Updated: {{col.updated}} Items: 0 Views: {{col.views}} Shares:  {{col.shares}} Downloads:  {{col.downloads}} Comments:  {{col.comments}}</p>
+
+
+{% for i in col.items %}
+  <h6 class="title">{{i.title}}</h6>
+  <p class="description">{{i.descr}}</p>
+  Likes: {{i.likes}} Views: {{i.views}} Shares: {{i.shares}} Comments: {{i.comments}} Downloads: {{i.downloads}}
+   
+{% endfor %}
+<hr/>

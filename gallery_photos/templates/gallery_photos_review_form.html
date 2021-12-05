@@ -1,0 +1,53 @@
+{%extends "gallery-dashboard_bottom_controls.html" %}
+{% load django_bootstrap5 %} 
+{% block "controls_title" %}Review and Publish: <span_id="submission_title">{{temp_file.name}}</span>{% endblock %}
+
+{% block "controls_body" %}
+{% if temp_file.meta.dpi <= low_dpi_thrs %}
+<div class="alert alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>&#160;This file has a DPI of {{temp_file.meta.dpi}}.
+</div>
+{% endif %}
+    <div class="row">
+          <div class="col">
+            <h6>Title and Description:</h6>
+             {% bootstrap_field review_form.title required=True  %}
+             {% bootstrap_field review_form.descr required=True %}
+          </div>
+          <div class="col">
+           <h6>File Settings:</h6>
+            <table class="table table-responsive">
+                <tr>
+                    <td>{% bootstrap_field review_form.resolution  required=True %}</td>
+                    <td>{% bootstrap_field review_form.raiting  required=True %}</td>
+                    <td>{% bootstrap_field review_form.nsfw  required=True %}</td>
+                </tr>
+                <tr>
+                    <td>{% bootstrap_field review_form.display_style required=True %}</td>
+                    <td>{% bootstrap_field review_form.display_sizing  required=True %}</td>
+                    <td>{% bootstrap_field review_form.display_details  required=True %}</td>
+                </tr>
+            </table>
+            </div>
+            <div class="col">
+            <h6>Category, Keywords and Collections:</h6>
+             <table class="table table-responsive">
+                <tr>
+                    <td>{% bootstrap_field review_form.publish_category  multiple="" required=True %}</td>
+                    <td>{% bootstrap_field review_form.publish_keywords  multiple="" required=True %}</td>
+                    <td>{% bootstrap_field review_form.publish_notify field_class="" required=True %}</td>
+                </tr>
+                <tr >
+                    <td colspan="2">{% bootstrap_field review_form.publish_collections multiple="" required=True %}</td>
+                
+                    <td>
+                    <br/>
+                    {% bootstrap_button "Publish Now!" button_type="submit" button_class="btn-success" %}
+                    </td>
+                </tr>
+            </table>           
+            </div>
+
+
+{% endblock %}
+

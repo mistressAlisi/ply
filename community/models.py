@@ -1,0 +1,61 @@
+from django.db import models
+from django.contrib import admin
+from profiles.models import Profile
+from group.models import Group
+import uuid
+# Create your models here.
+class Community(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    hash = models.TextField(max_length=200,verbose_name='Community Hash')
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
+    updated = models.DateTimeField(verbose_name='Profile Updated',auto_now_add=True)
+    name = models.TextField(verbose_name='Name')
+    tagline = models.TextField(verbose_name='Tagline',null=True)
+    avatar = models.TextField(verbose_name='Avatar',null=True)
+    posts = models.IntegerField(verbose_name='Post Count',default=0)
+    profile = models.IntegerField(verbose_name='Profile Count',default=0)
+    group = models.IntegerField(verbose_name='Group Count',default=0)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    def __str__(self):
+        return f"Community: {self.name}, hash: {self.hash}"
+    
+@admin.register(Community)
+class CommunityAdmin(admin.ModelAdmin):
+    pass  
+
+class VHost(models.Model):
+    community = models.ForeignKey(Community,verbose_name="Community to Apply to VHOST",on_delete=models.CASCADE,default=uuid.uuid4)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='VHost Created')
+    updated = models.DateTimeField(verbose_name='VHost Updated',auto_now_add=True)
+    hostname = models.TextField(max_length=200,null=True,verbose_name='VHost Hostname')
+    ipaddr = models.GenericIPAddressField(null=True,verbose_name='VHost IP address')
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    def __str__(self):
+        return f"VHost - Hostname: {self.hostname} IPAddr: {self.ipaddr}: Community: {self.community.name}"
+    
+@admin.register(VHost)
+class VHostAdmin(admin.ModelAdmin):
+    pass  
+
+
+class CommunityProfile(models.Model):
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
+    joined = models.DateTimeField(verbose_name='Joined')
+@admin.register(CommunityProfile)
+class CommunityProfileAdmin(admin.ModelAdmin):
+    pass  
+
+class CommunityGroup(models.Model):
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    group = models.ForeignKey(Group,verbose_name = "Group",on_delete=models.RESTRICT,null=True)
+    joined = models.DateTimeField(verbose_name='Joined')
+@admin.register(CommunityGroup)
+class CommunityGroupAdmin(admin.ModelAdmin):
+    pass  
