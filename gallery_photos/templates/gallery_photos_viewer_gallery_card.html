@@ -1,4 +1,4 @@
-<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-item="{{i.id}}" data-plugin="gallery_photos" id="card-{{i.id}}" data-collection="{{col.uuid}}">
+<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-item="{{i.id}}" data-plugin="gallery_photos" id="card-{{col.uuid}}-{{i.id}}" data-collection="{{col.uuid}}">
 
    {% if i.files.0.thumbnail %}
    {% with i.files.0 as file %}
