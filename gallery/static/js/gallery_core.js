@@ -6,6 +6,7 @@ window.gallery_core = Object({
         upload_lt_url: "gallery/upload/lighttable/",
         review_panel_url: "gallery/api/upload/review_panel/",
         publish_url: "gallery/api/upload/publish/",
+        get_collection_url: "gallery/api/get/items/",
         desc_div: "#content_submission_type_desc",
         create_start_btn: "#create_start_btn",
         all_buttons: ".gallery-content-button",
@@ -17,6 +18,8 @@ window.gallery_core = Object({
         review_panel: "#review_controls",
         sidebar_panel: "#nav",
         confirm_pub_modal: "#confirmModal",
+        collection_cat: ".dashboard-category",
+        gallery_card_cls: ".gallery-card",
         max_upload_size: 25600,
     },
     editor: {
@@ -28,6 +31,16 @@ window.gallery_core = Object({
     /** Plugin Control: _pLoaded keeps track of loaded plugins by name to prevent reinitialisation. Plugins that need to extend dashboard can register themselves into the plugins object below: **/
     _pLoaded: [],
     plugins: [],
+    
+    /** COLLECTION objects: Each collection holds the set of FILE objects and CARDS that represent a view. This is used for the vieweing functions. **/
+    /** COLLections In View (cols_iv): **/
+    _cols_iv: [],
+    /** keys: **/
+    _cols_iv_k: [],
+    /** Counters: item count and open at: **/
+    _cols_iv_ic: [],
+    _cols_iv_oa: [],
+    
 /** Callback function for loadPlugin: **/
     _loadPlugin: function(d) {
         if (d == false) { return false; };
@@ -110,6 +123,84 @@ window.gallery_core = Object({
          $(gallery_core.settings.main_panel).load(gallery_core.settings.upload_lt_url);
         });
     },
+  
+    /** These functions enable Collection operations: **/
+    _setup_col: function(data) {
+        coldata =   data[0];
+        /** only init if it hasn't happened before: **/
+        if (gallery_core._cols_iv_k.includes(coldata.uuid) == false) {
+            console.info("Setting up Collection: "+coldata.uuid);
+            // Initialise data structs: **/
+            gallery_core._cols_iv_k.push(coldata.uuid);
+            gallery_core._cols_iv[coldata.uuid] = [];
+            gallery_core._cols_iv_ic[coldata.uuid] = 0;
+            gallery_core._cols_iv_oa[coldata.uuid] = 0;
+            /** Now begin setting up the collections: **/
+            ilen = coldata.items.length;
+            count = 0;
+            while (count < ilen) {
+                itm = data[0].items[count];
+                // Find the card and pass it to the plugin:
+                the_card = $("#card-"+coldata.uuid+"-"+itm.id);
+                if (the_card.length == 1) {
+                    console.info("Item: "+itm.id+" Found Card: setting up plugin viewer: "+itm.plugin);
+                    card_contents = gallery_core.plugins[itm.plugin].setup_card_view(the_card[0],itm);
+                    if (card_contents != false) {
+                        // Add item to collection for full view:
+                        gallery_core._cols_iv[coldata.uuid].push(card_contents);
+                        gallery_core._cols_iv_ic[coldata.uuid] = gallery_core._cols_iv_ic[coldata.uuid] + 1;
+                     
+                        // Initialise collection FULL SCREEN view here:
+                    
+                        //$(gallery_core.settings.review_panel).offcanvas('show');
+                    };
+                
+                }
+                count = count+1;
+            };
+        };
+    },
+    /** Launch galleries AFTER plugins are loaded : **/
+    _launch_gallery: function() {
+         $(gallery_core).off('plugin_ready');
+        items = $(window.gallery_core.settings.collection_cat);
+        ilen = items.length;
+        count = 0;
+        while (count < ilen) {
+            colid = ($(items[count]).data('col'));
+            if (colid != undefined) {
+                if (gallery_core._cols_iv_k.includes(colid) == false) {
+                    $.get(gallery_core.settings.get_collection_url+colid,window.gallery_core._setup_col);            
+                } else {
+                    console.log("Launch NAO");
+                };
+            }
+        count = count +1;
+        };
+        
+    },
+     /** Launch plugins then galleries: **/
+     launch_gallery: function() { 
+         cards = $(gallery_core.settings.gallery_card_cls);
+         clen = cards.length;
+         count = 0;
+         plugs = []
+         while (count < clen) {
+             plugin = ($(cards[count]).data('plugin'));
+             if (plugs.includes(plugin) == false) {
+                if (plugin != undefined) {
+                    gallery_core.loadPlugin(plugin);
+                }; 
+                plugs.push(plugin);
+             };
+         
+         count = count + 1;
+        };
+        $(gallery_core).on('plugin_ready',gallery_core._launch_gallery);            
+     },
+    
+    /********************/
+    /** These functions enable you to PUBLISH/edit items: **/
     _launch_publisher: function() {
         $(gallery_core.settings.review_panel).load(gallery_core.editor.url,function(e){
                 review_setup_ok = gallery_core.plugins[gallery_core.editor.plugin].prepare_review();
@@ -119,16 +210,6 @@ window.gallery_core = Object({
         });
         
     },
-    /** These functions enable Gallery operations: **/
-    _setup_gallery: function(e) {
-        console.log("Setting up Galleries...");
-    },
-    launch_gallery: function() {
-        console.log("Launching Gallery...");
-    },
-    
-    /********************/
-    /** These functions enable you to PUBLISH/edit items: **/
     launch_publisher: function(e) {
         $(gallery_core.settings.sidebar_panel).offcanvas('hide');
         target = gallery_core._parent_walker($(e.target)[0],"DIV");

@@ -2,7 +2,7 @@
 <h3>Collection: {{col.label}}</h3>
 <p class="text-muted">Created:  {{col.created}} Updated: {{col.updated}} Items: 0 Views: {{col.views}} Shares:  {{col.shares}} Downloads:  {{col.downloads}} Comments:  {{col.comments}}</p>
 
-<section id="collection-{{col.uuid}}">
+<section id="col-{{col.uuid}}" class="dashboard-category" data-col="{{col.uuid}}">
 {% for i in col.items %}
     {% with  i.plugin|add:"_viewer_gallery_card.html" as render_template %}
     {% include render_template %}

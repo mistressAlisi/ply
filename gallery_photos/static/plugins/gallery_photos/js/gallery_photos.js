@@ -90,6 +90,7 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         
     
     },
+
     prepare_review: function() {
         /** Setup Widgets: **/
         window.gallery_core.plugins["gallery_photos"].metadata = JSON.parse($("#form-"+gallery_core.editor.file+" #meta")[0].value);
@@ -238,7 +239,25 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         $("#review-publish_keywords").on('change',window.gallery_core.plugins["gallery_photos"]._updateCard); 
         
         return true;
-    }
+    },
+    
+     /** Viewer functions: **/
+     /** Setup the cards after the gallery plugin pulls them from the server for full view: **/
+    setup_card_view: function(card_div,data) {
+        /** For set up, we just need to specify the actual file people will view in full view for now: **/
+        /** Select the largest item in the heap that isn't a thumbnail, and return it. ***/
+        fn = false;
+        for (f in data.files) {
+            if (data.files[f].thumbnail == false) {
+                if (fn == false) {
+                    fn = data.files[f];
+                } else if (data.files[f].size > fn.size) {
+                    fn = data.files[f].size;
+                }
+            };
+        };
+        return fn;
+    },
 });
 
 
