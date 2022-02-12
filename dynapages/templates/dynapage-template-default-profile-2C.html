@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="/static/css/profile.css"/>
+<main>
+<section class="dynapage_banner" id="page_banner">
+<div class="container-fluid">
+{% for widget in widgets %}
+    {%if widget.banner == True%}
+            {% with  widget.widget.template.filename as banner_widget_template %}
+                {% include banner_widget_template %}
+            {% endwith %}  
+    {%endif%}
+{% endfor %}
+</div>
+</section>
+<section class="dynapage_contents" id="page_contents">
+<div class="container-fluid">
+<div class="row">
+<div class="col dynapage_col1" id="page_colA">
+{% for widget in widgets %}
+    {%if widget.mainbody == True and widget.pos == 'A'%}
+            {% with  widget.widget.template.filename as banner_widget_template %}
+                {% include banner_widget_template %}
+            {% endwith %}  
+    {%endif%}
+{% endfor %}
+</div>
+<div class="col dynapage_col2" id="page_colB">
+{% for widget in widgets %}
+    {%if widget.mainbody == True and widget.pos == 'B'%}
+            {% with  widget.widget.template.filename as banner_widget_template %}
+                {% include banner_widget_template %}
+            {% endwith %}  
+    {%endif%}
+{% endfor %}
+</div>
+<div class="col-3 dynapage_sidecol" id="page_sidecol">
+{% for widget in widgets %}
+    {%if widget.sidecol == True%}
+            {% with  widget.widget.template.filename as banner_widget_template %}
+                {% include banner_widget_template %}
+            {% endwith %}  
+    {%endif%}
+{% endfor %}
+</div>
+</div>
+</div>
+</section>
+<section class="dynapage_footer" id="page_footer">
+<div class="container-fluid">
+{% for widget in widgets %}
+    {%if widget.footer == True%}
+            {% with  widget.widget.template.filename as banner_widget_template %}
+                {% include banner_widget_template %}
+            {% endwith %}  
+    {%endif%}
+{% endfor %}
+</div>
+</section>
+</main>

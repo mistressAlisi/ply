@@ -1,0 +1,20 @@
+.profile_avatar {
+    max-width: 310px;
+    max-height: 310px;
+}
+.profile_avatar img {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.profile_data {
+    padding: 5px;
+    padding-left: 20px;
+}
+
+.profile_data .name {
+    font-size: 30pt;
+}
+.profile_data .slug {
+    font-size: 16pt;
+}

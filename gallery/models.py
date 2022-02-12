@@ -351,9 +351,15 @@ class GalleryItemsByCollectionPermission(models.Model):
     gif_type = models.CharField(verbose_name="Gallery File Type",max_length=200)
     gif_original = models.BooleanField(verbose_name="Gallery File: Original?")
     gif_item = models.UUIDField(verbose_name="Gallery File Item UUID")
+    profile_name = models.CharField(verbose_name="Profile Name",max_length=200)
+    profile_pronouns = models.CharField(verbose_name="Profile Pronouns",max_length=200)
+    profile_avatar = models.CharField(verbose_name="Profile Avtar",max_length=200)
+    profile_slug = models.CharField(verbose_name="Profile Slug",max_length=200)
+    profile_uuid = models.CharField(verbose_name="Profile UUID",max_length=200)
     collection = models.ForeignKey(GalleryCollection,verbose_name='Collection',on_delete=models.RESTRICT)
     item = models.ForeignKey(GalleryItem,verbose_name='File',on_delete=models.RESTRICT)
     file = models.ForeignKey(GalleryItemFile,verbose_name='File',on_delete=models.RESTRICT)
+    profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.RESTRICT)
     def __str__(self):
         return f"Gallery Permissions Item: collection.item.file: {self.collection.label}.{self.item.item_hash}.{self.file.name}"
     class Meta:

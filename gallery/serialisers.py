@@ -16,9 +16,11 @@ def _item_serialiser(_items,profile):
     curr_items = []
     curr_files = []
     for i in _items:
+        uuidstr = str(i.profile.uuid);
         #print(i.item_id)
         curr_files.append({
             "id":i.gif_id,
+            'item':i.gci_uuid,
             "name":i.gif_name,
             "hash":i.gif_hash,
             "created":i.gif_created,
@@ -26,14 +28,16 @@ def _item_serialiser(_items,profile):
             "meta":i.gif_meta,
             "thumbnail":i.gif_thumbnail,
             "size":i.gif_size,
-            "original":i.gif_original
+            "original":i.gif_original,
+            'plugin':i.gci_plugin,
+            "path": f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{uuidstr[0:1]}/{uuidstr[1:2]}/{uuidstr[2:3]}/{uuidstr}/{i.gif_name}"
         })
         if (counter+1 < total):
             if (i.item_id != _items[counter+1].item_id):
                 #print("Item change here.")
                 # PUT thumbnail first.... 
                 curr_files.reverse()
-                curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':profile,'id':i.gci_uuid})
+                curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':{"uuid":profile,"name":i.profile_name,"pronouns":i.profile_pronouns,"avatar":i.profile_avatar,"slug":i.profile_slug},'id':i.gci_uuid})
                 curr_files = []
             if (i.collection_id != _items[counter+1].collection_id):
                 #print("Collection change here.")

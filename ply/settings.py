@@ -24,7 +24,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.100.102.5']
+ALLOWED_HOSTS = [config("ALLOWED_HOST_1")] 
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'dashboard',
+    'dynapages',
     'profiles',
     'comms',
     'gallery',
@@ -140,7 +141,9 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PLY_USER_DASHBOARD_MODULES = [
+    "profiles",
     "gallery"
+    
     ]
 
 PLY_GALLERY_PLUGINS = [

@@ -2,15 +2,15 @@
 
    {% if i.files.0.thumbnail %}
    {% with i.files.0 as file %}
-    <img src="{{base_url}}/{{i.profile|slice:"0:1"}}/{{i.profile|slice:"1:2"}}/{{i.profile|slice:"2:3"}}/{{i.profile}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    <img src="{{base_url}}/{{i.profile.uuid|slice:"0:1"}}/{{i.profile.uuid|slice:"1:2"}}/{{i.profile.uuid|slice:"2:3"}}/{{i.profile.uuid}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
     {% endwith %}
    {% elif i.files.1.thumbnail %}
    {% with i.files.1 as file %}
-    <img src="{{base_url}}/{{i.profile|slice:"0:1"}}/{{i.profile|slice:"1:2"}}/{{i.profile|slice:"2:3"}}/{{i.profile}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    <img src="{{base_url}}/{{i.profile.uuid|slice:"0:1"}}/{{i.profile.uuid|slice:"1:2"}}/{{i.profile.uuid|slice:"2:3"}}/{{i.profile.uuid}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
     {% endwith %}
    {% elif i.files.1.thumbnail %}
    {% with i.files.2 as file %}
-    <img src="{{base_url}}/{{i.profile|slice:"0:1"}}/{{i.profile|slice:"1:2"}}/{{i.profile|slice:"2:3"}}/{{i.profile}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    <img src="{{base_url}}/{{i.profile.uuid|slice:"0:1"}}/{{i.profile.uuid|slice:"1:2"}}/{{i.profile.uuid|slice:"2:3"}}/{{i.profile.uuid}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
     {% endwith %}
    {% endif %}
 

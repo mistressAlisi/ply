@@ -1,0 +1,2 @@
+SECRET_KEY = 'django-insecure-#5bz#a0cj#@%z$cdvkw41@8*w78#lluq*c0($cljulpu=+dku7'
+ALLOWED_HOSTS = ['10.100.102.5']
