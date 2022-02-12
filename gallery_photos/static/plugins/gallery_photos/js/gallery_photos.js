@@ -258,6 +258,32 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         };
         return fn;
     },
+    
+    /** Render a view for the Gallery Canvas: **/
+    render_view: function(data) {
+        _img = new Image()
+         window.gallery_core.canvas_element.append(_img);
+        _img.src = data.path;
+        _img.id = data.id;
+        _img = $(_img);
+        _img.addClass('img-fluid');
+        _img.addClass('gallery-item');
+
+       /** _img.onload = function(data){
+            canvas = window.gallery_core.canvas;
+            _ctx = canvas.getContext("2d");
+            _ctx.imageSmoothingQuality  = "high";
+            // get the scale
+            var scale = Math.min(canvas.width / _img.plyData.meta.width, canvas.height / _img.plyData.meta.height);
+            // get the top left position of the image
+            var x = (canvas.width / 2) - (_img.plyData.meta.width / 2) * scale;
+            var y = (canvas.height / 2) - (_img.plyData.meta.height / 2) * scale;
+            console.warn("Data",scale,x,y,canvas,_img);
+            _ctx.drawImage(_img, x, y, _img.plyData.meta.width * scale,_img.plyData.meta.height * scale);
+            //_ctx.drawImage(_img, x, y, _img.width * scale, _img.height * scale);
+        };**/
+        return true;
+    }
 });
 
 

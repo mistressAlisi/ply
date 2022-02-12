@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
+from dynapages.models import Page
 import uuid
 # Create your models here.
 class Profile(models.Model):
@@ -8,11 +9,26 @@ class Profile(models.Model):
     profile_id = models.TextField(max_length=200,verbose_name='Profile ID')
     creator = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
+    dynapage = models.ForeignKey(Page,on_delete=models.RESTRICT,blank=True,null=True)
     updated = models.DateTimeField(verbose_name='Profile Updated',auto_now_add=True)
+    last_seen = models.DateTimeField(verbose_name='Profile Last Seen Online',auto_now_add=True)
+    age = models.TextField(verbose_name='Current Age',default=1)
     name = models.TextField(verbose_name='Name')
+    status = models.TextField(verbose_name='status',default="CITIZEN")
+    species = models.TextField(verbose_name='Species',default='Sentient')
+    introduction = models.TextField(verbose_name='Profile Intro')
+    level = models.TextField(verbose_name='Current Level',default=1)
+    max_HP = models.TextField(verbose_name='Max HP',default=10)
+    HP = models.TextField(verbose_name='Current HP',default=10)
+    max_MP = models.TextField(verbose_name='Max MP',default=6)
+    MP = models.TextField(verbose_name='Current MP',default=6)
+    max_STA = models.TextField(verbose_name='Max STA',default=10)
+    STA = models.TextField(verbose_name='Current STA',default=10)
+    views = models.IntegerField(verbose_name='Post Count',default=0)
     slug = models.TextField(verbose_name='Slugified Name')
     pronouns = models.TextField(max_length=200,verbose_name='Pronouns')
-    avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True)
+    gender = models.TextField(max_length=200,verbose_name='Gender')
+    avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True) 
     posts = models.IntegerField(verbose_name='Post Count',default=0)
     views = models.IntegerField(verbose_name='Post Count',default=0)
     nodes = models.IntegerField(verbose_name='Node Count',default=0)

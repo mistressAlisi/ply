@@ -17,6 +17,8 @@ window.gallery_core = Object({
         main_panel: "#dashboard_mainPanel",
         review_panel: "#review_controls",
         sidebar_panel: "#nav",
+        viewer_modal: "#gallery_viewer",
+        viewer_canvas: "#gallery_canvas",
         confirm_pub_modal: "#confirmModal",
         collection_cat: ".dashboard-category",
         gallery_card_cls: ".gallery-card",
@@ -40,6 +42,9 @@ window.gallery_core = Object({
     /** Counters: item count and open at: **/
     _cols_iv_ic: [],
     _cols_iv_oa: [],
+    
+    /** Canvas object: **/
+    canvas_element: false,
     
 /** Callback function for loadPlugin: **/
     _loadPlugin: function(d) {
@@ -170,17 +175,18 @@ window.gallery_core = Object({
             colid = ($(items[count]).data('col'));
             if (colid != undefined) {
                 if (gallery_core._cols_iv_k.includes(colid) == false) {
+                    console.log("Loading col_iv_k: "+colid);
                     $.get(gallery_core.settings.get_collection_url+colid,window.gallery_core._setup_col);            
                 } else {
-                    console.log("Launch NAO");
+                    //console.log("Launch NAO");
                 };
             }
         count = count +1;
         };
         
     },
-     /** Launch plugins then galleries: **/
-     launch_gallery: function() { 
+     /** Init plugins then galleries (full init... ONLY CALL ONCE!): **/
+     launch_gallery_init: function() { 
          cards = $(gallery_core.settings.gallery_card_cls);
          clen = cards.length;
          count = 0;
@@ -199,6 +205,37 @@ window.gallery_core = Object({
         $(gallery_core).on('plugin_ready',gallery_core._launch_gallery);            
      },
     
+     /** This function launches a gallery from a card: **/
+     launch_gallery_card: function(e) {
+         target_card = gallery_core._parent_walker(e.target,"DIV");
+         col = target_card.data("collection");
+         item = target_card.data("item");
+        /** Find the Collection and Item, fetch the item: **/
+        if (gallery_core._cols_iv_k.includes(col) == true) {
+            itm_o = false;
+            for (i in gallery_core._cols_iv[col]) {
+                if (gallery_core._cols_iv[col][i].item == item) {
+                    itm_o = gallery_core._cols_iv[col][i];
+                };
+            };
+                if (itm_o != false) {
+                    /** Now, call the plugin for the card and request a first the rendering of the canvas.. **/
+                    if (window.gallery_core.canvas_element == false) {
+                        window.gallery_core.canvas_element = $(gallery_core.settings.viewer_canvas);
+                    };
+                    window.gallery_core.canvas_element.empty();
+                    render_card = gallery_core.plugins[itm_o.plugin].render_view(itm_o);
+                    if (render_card == true) {
+                        $(gallery_core.settings.viewer_modal).modal('show');
+                    };
+                };
+        
+        } else {
+            console.warn("Unable to Start Collection: "+col+" for item card: "+item);
+            return false;
+        }
+         
+     },
     /********************/
     /** These functions enable you to PUBLISH/edit items: **/
     _launch_publisher: function() {
@@ -220,7 +257,7 @@ window.gallery_core = Object({
         gallery_core.editor.url = gallery_core.settings.review_panel_url+target.data('file');
         if (gallery_core.editor.bound == false) {
             $(gallery_core).on('plugin_ready',gallery_core._launch_publisher);            
-            gallery_core.editor.bound =true;
+            gallery_core.editor.bound = true;
         };   
 
         gallery_core.loadPlugin(gallery_core.editor.plugin);

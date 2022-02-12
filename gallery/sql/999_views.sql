@@ -68,12 +68,19 @@ CREATE OR REPLACE VIEW "gallery_itemsbycollectionpermission" AS  SELECT DISTINCT
     gallery_gallerycollectionpermission.id AS id,
     gallery_gallerycollection.uuid AS collection_id,
     gallery_galleryitemfile.id as file_id,
-    gallery_galleryitem.uuid as item_id
+    gallery_galleryitem.uuid as item_id,
+    profiles_profile.name as profile_name,
+    profiles_profile.pronouns as profile_pronouns,
+    profiles_profile.avatar as profile_avatar,
+    profiles_profile.slug as profile_slug,
+    profiles_profile.uuid as profile_uuid,
+    profiles_profile.uuid as profile_id
    FROM gallery_gallerycollectionpermission
      JOIN gallery_gallerycollection ON gallery_gallerycollectionpermission.collection_id = gallery_gallerycollection.uuid
      JOIN gallery_gallerycollectionitems ON gallery_gallerycollection.uuid = gallery_gallerycollectionitems.collection_id
      JOIN gallery_galleryitem ON gallery_gallerycollectionitems.item_id = gallery_galleryitem.uuid
      JOIN gallery_galleryitemfile ON gallery_galleryitem.uuid = gallery_galleryitemfile.item_id
+     JOIN profiles_profile ON profiles_profile.uuid = gallery_gallerycollectionpermission.profile_id
    WHERE gallery_galleryitemfile.name != ''
    ORDER BY gif_created DESC;  
 

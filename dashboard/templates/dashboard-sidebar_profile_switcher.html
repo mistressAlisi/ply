@@ -5,6 +5,10 @@
     </button>
         <div class="collapse" id="dp_profiles-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
+            <li><h6 class="text-muted">Current Profile:</h6></li> 
+            <li><a href="#" class="link-dark rounded sidebar-submenu-link" data-trgt="profiles/current" onclick="dc_handleLink(event,true);"><i class="fas fa-user-circle"></i>&#160;&#160;View/Edit Profile</a></li>
+            <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('account');"><i class="fas fa-user-circle"></i>&#160;&#160;Statistics</a></li>
+            <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('profiles');"><i class="fas fa-users-cog"></i>&#160;Share!</a></li>
             <li><h6 class="text-muted">Switch Profile:</h6></li> 
             {% for pr in profiles %}
                 <li class="profile-sel-link-li"><a href="#" data-trgt="{{pr.uuid}}"   class="link-dark rounded sidebar-submenu-link profile-sel-link" onclick="dc_setProfile(event,true);" >

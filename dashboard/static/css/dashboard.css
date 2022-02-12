@@ -51,4 +51,14 @@ body, .main-container,#sidebarMenu {
 #gallery_review_form {
     overflow-y: scroll;
 }
+.gallery-modal-title {
+    font-size: 30px;
+}
+.gallery-modal-subtitle {
+    font-size: 13px;
+    font-style: italic;
+}
 
+#gallery_canvas {
+
+}
