@@ -24,7 +24,8 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [config("ALLOWED_HOST_1")] 
+#TODO: MAKE IT SO ALLOWED HOSTS ARE OPTIONAL!
+ALLOWED_HOSTS = [config("ALLOWED_HOST_1"),config("ALLOWED_HOST_2"),config("ALLOWED_HOST_3")] 
 
 
 # Application definition

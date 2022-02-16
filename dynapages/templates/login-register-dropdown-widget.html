@@ -1,0 +1,43 @@
+{%if profile %}
+        <a class="btn btn-black text-white dropdown-toggle" href="/dashboard/user/">
+        <img src="{{profile.avatar}}" alt="{{profile.name|slice:"0:2"}}" class="rounded-circle me-2" width="32" height="32">
+        <strong class="text-white">{{profile.name}} (@{{profile.slug}})</a></strong>
+        </a>
+        
+{% else %}
+       
+        
+<div class="dropdown">
+  <a class="btn btn-black text-white dropdown-toggle" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fa-solid fa-arrow-right-to-bracket"></i> Register/Login
+  </a>
+<div class="dropdown-menu" style="min-width: 250px;">
+  <form class="px-4 py-3" method="POST" action="#" id="plyloginform" onsubmit="loginAgent.start(event);">
+    {%csrf_token%}
+      <p>Login with a <span class="ply-brand_font">Ply</span> account:</p>
+    <div class="form-group">
+      <label for="plyuserid"><i class="fa-solid fa-user"></i>&#160;Username or Email:</label>
+      <input type="email" class="form-control" name="plyuserid" id="plyuserid" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
+      <label for="plypass"><i class="fa-solid fa-key"></i>&#160;Password:</label>
+      <input type="password" class="form-control" name="plypass" id="plypass" placeholder="Password">
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="plyremember" name="plyremember">
+      <label class="form-check-label" for="plyremember">
+        Remember me
+      </label>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="plyloginalert" style="display: none;">
+    Auth Error!
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="loginAgent.start();">Sign in</button>
+    <input type="hidden" id="plyhashpw" name="plyhashpw"/>
+  </form>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="#"><i class="fa-solid fa-user-plus"></i>&#160;Sign up!</a>
+  <a class="dropdown-item" href="#"><i class="fa-solid fa-lock"></i>&#160;Forgot password?</a>
+</div>
+</div>
+{% endif %}
