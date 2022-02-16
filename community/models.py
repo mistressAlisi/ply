@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib import admin
 from profiles.models import Profile
 from group.models import Group
+from dynapages.models import Page
 import uuid
 # Create your models here.
 class Community(models.Model):
@@ -9,7 +10,10 @@ class Community(models.Model):
     hash = models.TextField(max_length=200,verbose_name='Community Hash')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
     updated = models.DateTimeField(verbose_name='Profile Updated',auto_now_add=True)
+    dynapage = models.ForeignKey(Page,on_delete=models.RESTRICT,blank=True,null=True)
     name = models.TextField(verbose_name='Name')
+    action_call_cover = models.TextField(verbose_name='Action Call for Cover page')
+    introduction = models.TextField(verbose_name='Introduction')
     tagline = models.TextField(verbose_name='Tagline',null=True)
     avatar = models.TextField(verbose_name='Avatar',null=True)
     posts = models.IntegerField(verbose_name='Post Count',default=0)
@@ -37,7 +41,7 @@ class VHost(models.Model):
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     def __str__(self):
-        return f"VHost - Hostname: {self.hostname} IPAddr: {self.ipaddr}: Community: {self.community.name}"
+        return f"VHost - Hostname: {self.hostname}. IPAddr: {self.ipaddr}: Community: {self.community.name}"
     
 @admin.register(VHost)
 class VHostAdmin(admin.ModelAdmin):
@@ -48,6 +52,8 @@ class CommunityProfile(models.Model):
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
     joined = models.DateTimeField(verbose_name='Joined')
+    def __str__(self):
+        return f"Community: {self.community.name}. Profile: {self.profile.name}. Joined: {self.joined}"
 @admin.register(CommunityProfile)
 class CommunityProfileAdmin(admin.ModelAdmin):
     pass  
@@ -56,6 +62,8 @@ class CommunityGroup(models.Model):
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     group = models.ForeignKey(Group,verbose_name = "Group",on_delete=models.RESTRICT,null=True)
     joined = models.DateTimeField(verbose_name='Joined')
+    def __str__(self):
+        return f"Community: {self.community.name}. Group: {self.group.name}. Joined: {self.joined}"
 @admin.register(CommunityGroup)
 class CommunityGroupAdmin(admin.ModelAdmin):
     pass  

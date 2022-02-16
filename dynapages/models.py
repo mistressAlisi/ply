@@ -11,7 +11,8 @@ class Templates(models.Model):
     filename = models.TextField(max_length=200,verbose_name='Template Filename')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Template Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Template Updated')
-    creator = models.ForeignKey(User,verbose_name = "Creator",on_delete=models.CASCADE)
+    creator = models.TextField(max_length=200,verbose_name = "Creator",default='system')
+    description = models.TextField(max_length=2000,verbose_name = "Description",default='a template page')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     page_template = models.BooleanField(verbose_name="Template is used for Pages",default=True)
@@ -19,7 +20,7 @@ class Templates(models.Model):
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     def __str__(self):
-        return f"Dynapage [{self.template_id}] Template: '{self.label}' filename: '{self.filename}'"
+        return f"Dynapage Template [{self.template_id}] Label: '{self.label}' filename: '{self.filename}'"
 
 @admin.register(Templates)
 class TemplatesAdmin(admin.ModelAdmin):
