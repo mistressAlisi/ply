@@ -1,0 +1,79 @@
+      <div class="col-md-4 col-lg-7">
+        <h4 class="mb-3"><i class="fa-solid fa-id-card"></i>&#160;Character Details:</h4>
+        <form class="needs-validation" novalidate="">
+        {%csrf_token%}
+          <div class="row g-3">
+            <div class="col-sm-12">
+            
+              <label for="firstName" class="form-label">Name:</label>
+               <div class="input-group has-validation">
+                <span class="input-group-text"><i class="fa-solid fa-signature"></i></span>
+                <input type="text" class="form-control" id="name" placeholder="Character Name" required="">
+              <div class="invalid-feedback">
+                  A character name is required.
+                </div>
+              </div>
+            </div>
+             
+           
+
+            <div class="col-12">
+              <label for="username" class="form-label">Handle:</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text">@</span>
+                <input type="text" class="form-control" id="username" placeholder="handle" required="">
+              <div class="invalid-feedback">
+                A unique, valid handle is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="username" class="form-label">Species:</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text"><i class="fa-solid fa-dna"></i></span>
+                <input type="text" class="form-control" id="species" placeholder="Human" required="">
+              <div class="invalid-feedback">
+                  A character species is required.
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <label for="country" class="form-label"></i>Gender:</label>
+              
+              <div class="input-group has-validation">
+                <span class="input-group-text"><i class="fa-solid fa-transgender"></i></span>
+                <input type="text" class="form-control" id="gender" placeholder="female" required="">
+              <div class="invalid-feedback">
+                  A character gender is required.
+                </div>
+              </div>
+            </div>
+
+              <div class="col-md-6">
+              <label for="country" class="form-label"></i>Pronouns:</label>
+              
+              <div class="input-group has-validation">
+                <span class="input-group-text"><i class="fa-solid fa-record-vinyl"></i></span>
+                <input type="text" class="form-control" id="pronouns" placeholder="she/her" required="">
+              <div class="invalid-feedback">
+                  Valid character pronouns are required.
+                </div>
+              </div>
+            </div>
+          
+          </div>
+          <hr class="my-4">
+
+          <h4 class="mb-3"><i class="fa-solid fa-book-open"></i>&#160;Brief Introduction:</h4>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-feather-pointed"></i></span>
+            <textarea class="form-control" aria-label="With textarea"></textarea>
+         </div>
+
+          <hr class="my-4">
+
+          <button class="w-100 btn btn-primary btn-lg" type="submit"><i class="fa-solid fa-rocket"></i>Create and Join!</button>
+        </form>
+      </div>

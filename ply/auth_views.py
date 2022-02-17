@@ -20,7 +20,8 @@ def login(request):
     # User is found!!!
     if user is not None:
         django_login(request, user)
-        # Redirect to a success page.
+        # Setup the session:
+        
         return JsonResponse({"res":{"login":"ok","community":"ok"}})
     else:
         # User not found!!!
