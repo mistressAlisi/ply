@@ -49,6 +49,13 @@ INSTALLED_APPS = [
     'community',
     'gallery_photos',
     'metrics',
+    'stats',
+    'combat',
+    'skills',
+    'equipment',
+    'spells',
+    'items',
+    'forge',
     'testdata',
     'ply'
 ]
