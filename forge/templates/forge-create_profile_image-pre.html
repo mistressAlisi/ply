@@ -1,0 +1,22 @@
+
+      <div class="col-md-5 col-lg-4">
+        <div class="card">
+            <div class="card_header">
+                <h4 style="padding-left: 4px;">
+                    &#160;<span class="text-primary"><i class="fa-solid fa-camera-retro"></i>&#160;Picture:</span>
+                </h4>
+            </div>
+            <div class="card_body">
+            {%if profile.avatar %}
+            <img src="{{av_path}}/{{profile.avatar}}" class="img-fluid img-thumbnail mx-auto d-block" alt="Character Picture" id="charImage" style="max-height: 380px;">
+            {% else %}
+            <img src="/static/img/image-portrait-solid.svg" class="img-fluid img-thumbnail mx-auto d-block" alt="Character Picture" id="charImage" style="max-height: 380px;">
+            {% endif %}
+            </div>
+            <div class="card_footer" style="padding: 5px; padding-left: 8px;">
+
+           
+            </div>
+        </div>
+</div>      
+     

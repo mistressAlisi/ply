@@ -6,15 +6,16 @@ import uuid
 # Create your models here.
 class Profile(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
-    profile_id = models.TextField(max_length=200,verbose_name='Profile ID')
+    placeholder = models.BooleanField(verbose_name="Placeholder FLAG",default=False)
+    profile_id = models.TextField(max_length=200,verbose_name='Profile ID',unique=True)
     creator = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
     dynapage = models.ForeignKey(Page,on_delete=models.RESTRICT,blank=True,null=True)
     updated = models.DateTimeField(verbose_name='Profile Updated',auto_now_add=True)
     last_seen = models.DateTimeField(verbose_name='Profile Last Seen Online',auto_now_add=True)
-    age = models.TextField(verbose_name='Current Age',default=1)
+    age = models.TextField(verbose_name='Current Age',default=1,blank=True)
     name = models.TextField(verbose_name='Name')
-    status = models.TextField(verbose_name='status',default="CITIZEN")
+    status = models.TextField(verbose_name='status',default="CITIZEN",blank=True)
     species = models.TextField(verbose_name='Species',default='Sentient')
     introduction = models.TextField(verbose_name='Profile Intro')
     level = models.TextField(verbose_name='Current Level',default=1)
@@ -37,8 +38,10 @@ class Profile(models.Model):
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     def __str__(self):
-        
-        return f"Profile ID: {self.name} from user: {self.creator.username}"
+        if (self.placeholder):
+            return f"PLACEHOLDER Profile \"{self.name}\" from user: {self.creator.username}"
+        else:
+            return f"Profile: \"{self.name}\" @{self.profile_id} from user: {self.creator.username}"
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     pass

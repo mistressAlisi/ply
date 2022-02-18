@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col profile_avatar">
-                <img src="{{profile.avatar}}" class="img-thumbnail" alt="{{profile.name}} Icon">
+                <img src="{{av_path}}/{{profile.avatar}}" class="img-thumbnail" alt="{{profile.name}} Icon">
                 </div>
                 <div class="col profile_data">
                     <div class="profile_name_div">
@@ -24,8 +24,10 @@
                     </div>
                     
                     <div class="col stats_data_2">
+                    {% if primaryGroup %}
                     <strong><i class="fa-solid fa-chess-queen"></i> Title:</strong>&#160;{{primaryGroup.title.title}}</em>&#160; 
                     <strong><i class="fa-solid fa-user-group"></i> Clan:</strong>&#160;{{primaryGroup.group.name}}</em>&#160; 
+                    {% endif %}
                     <strong><i class="fa-solid fa-signal"></i> Current Status:</strong>&#160;{{profile.status}}</em> 
                     </div>
                     
