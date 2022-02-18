@@ -58,3 +58,25 @@ def save_original_file(file,profile,name=False):
             destination.write(chunk)
         destination.close()
     return path
+
+
+def save_avatar_file(file,profile,name=False):
+    if not name:
+        path = get_temp_path(file.name,profile)
+    else:
+        path = get_temp_path(name,profile)
+    destpath = ply.settings.PLY_AVATAR_FILE_BASE_PATH+path
+    if not os.path.exists(os.path.dirname(destpath)):
+        try:
+            os.makedirs(os.path.dirname(destpath))
+        except OSError as exc: # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+    with open(destpath, 'wb+') as destination:
+        try:
+            for chunk in file.chunks():
+                destination.write(chunk)
+            destination.close()
+        except:
+            file.save(destpath)
+    return path

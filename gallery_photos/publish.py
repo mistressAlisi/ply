@@ -34,7 +34,7 @@ def publish_submission(data_str,profile,original_path,item,user,community):
                 GalleryItemFile.objects.create(name=tsp,item=item,type=mdata["format"],hash=sha1.hexdigest(),file_size=tss,meta=mdata,thumbnail=True)
                 UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=tss,reference=tsp)
                 ftp =  mdata["format"]
-                log.warn(f"File Thumbnailed in Gallery Storage: {tsp}: Profile: {profile.uuid} [{round(tss/1024,2)} kB] saved.")
+                log.info(f"File Thumbnailed in Gallery Storage: {tsp}: Profile: {profile.uuid} [{round(tss/1024,2)} kB] saved.")
                 #thumb.save(tsp)
         # Step 3: Now scale and save the full gallery image:
         sha1 = hashlib.sha1()
@@ -44,7 +44,7 @@ def publish_submission(data_str,profile,original_path,item,user,community):
         iss = utilities.save_gallery_photo(im,profile,isp)
         GalleryItemFile.objects.create(name=isp,item=item,type=mdata["format"],hash=sha1.hexdigest(),file_size=iss,meta=mdata)
         UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=iss,reference=isp)
-        log.warn(f"File Stored in Gallery Storage: {isp}: Profile: {profile.uuid} [{round(iss/1024,2)} kB] saved.")
+        log.info(f"File Stored in Gallery Storage: {isp}: Profile: {profile.uuid} [{round(iss/1024,2)} kB] saved.")
             
         
 

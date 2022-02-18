@@ -1,14 +1,13 @@
       <div class="col-md-4 col-lg-7">
         <h4 class="mb-3"><i class="fa-solid fa-id-card"></i>&#160;Character Details:</h4>
-        <form class="needs-validation" method="POST" action="#" onsubmit="return create_profile.start();" id="profile_form">
-        {%csrf_token%}
+
           <div class="row g-3">
             <div class="col-sm-12">
             
               <label for="firstName" class="form-label">Name:</label>
                <div class="input-group has-validation">
                 <span class="input-group-text"><i class="fa-solid fa-signature"></i></span>
-                <input type="text" class="form-control" name="name" id="name" placeholder="Character Name" required="">
+                <input type="text" class="form-control" name="name" id="name" placeholder="{{profile.name}}" required="" disabled="">
               <div class="invalid-feedback">
                   A character name is required.
                 </div>
@@ -21,7 +20,7 @@
               <label for="profile_id" class="form-label">Profile ID / @handle :</label>
               <div class="input-group has-validation">
                 <span class="input-group-text">@</span>
-                <input type="text" class="form-control" name="profile_id" id="profile_id" placeholder="handle" required="">
+                <input type="text" class="form-control" name="profile_id" id="profile_id" placeholder="{{profile.profile_id}}" required="" disabled="">
               <div class="invalid-feedback">
                 A unique, valid handle is required.
                 </div>
@@ -32,7 +31,7 @@
               <label for="species" class="form-label">Species:</label>
               <div class="input-group has-validation">
                 <span class="input-group-text"><i class="fa-solid fa-dna"></i></span>
-                <input type="text" class="form-control" name="species" id="species" placeholder="Human" required="">
+                <input type="text" class="form-control" name="species" id="species" placeholder="{{profile.species}}" required="" disabled="">
               <div class="invalid-feedback">
                   A character species is required.
                 </div>
@@ -42,7 +41,7 @@
               <label for="age" class="form-label">Age:</label>
               <div class="input-group has-validation">
                 <span class="input-group-text"><i class="fa-solid fa-clock"></i></span>
-                <input type="text" class="form-control" name="age" id="age" placeholder="50" required="">
+                <input type="text" class="form-control" name="age" id="age" placeholder="{{profile.age}}" disabled="" required="">
               <div class="invalid-feedback">
                   A character age is required.
                 </div>
@@ -53,7 +52,7 @@
               
               <div class="input-group has-validation">
                 <span class="input-group-text"><i class="fa-solid fa-transgender"></i></span>
-                <input type="text" class="form-control" name="gender" id="gender" placeholder="female" required="">
+                <input type="text" class="form-control" name="gender" id="gender" placeholder="{{profile.gender}}" disabled="" required="">
               <div class="invalid-feedback">
                   A character gender is required.
                 </div>
@@ -65,7 +64,7 @@
               
               <div class="input-group has-validation">
                 <span class="input-group-text"><i class="fa-solid fa-record-vinyl"></i></span>
-                <input type="text" class="form-control" name="pronouns" id="pronouns" placeholder="she/her" required="">
+                <input type="text" class="form-control" name="pronouns" id="pronouns" placeholder="{{profile.pronouns}}" disabled="" required="">
               <div class="invalid-feedback">
                   Valid character pronouns are required.
                 </div>
@@ -78,11 +77,10 @@
           <h4 class="mb-3"><i class="fa-solid fa-book-open"></i>&#160;Brief Introduction:</h4>
           <div class="input-group">
             <span class="input-group-text"><i class="fa-solid fa-feather-pointed"></i></span>
-            <textarea class="form-control" id="introduction" name="introduction" aria-label="With textarea"></textarea>
+            <textarea class="form-control" id="introduction" name="introduction" aria-label="With textarea" disabled="">{{profile.introduction}}</textarea>
          </div>
 
           <hr class="my-4">
-
-          <button class="w-100 btn btn-primary btn-lg" type="submit"><i class="fa-solid fa-check"></i>Review Profile!</button>
-        </form>
+          <button class="w-60 btn btn-success btn-lg" type="button" onclick="window.history.back();"><i class="fa-solid fa-rotate-left"></i>Make Changes</button>
+          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick="create_profile.finish();"><i class="fa-solid fa-rocket"></i>Create Character!</button>
       </div>
