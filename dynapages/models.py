@@ -67,6 +67,7 @@ class Page(models.Model):
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Page Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Page Updated')
     creator = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE)
+    
     def __str__(self):
         return f"Dynapage Page: {self.slug}. Created by {self.creator}"
 
