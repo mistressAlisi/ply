@@ -52,6 +52,7 @@ def update_character_profile(request):
     if (not form.is_valid()):
         return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)  
     form.save()
+    profile.save()
     return JsonResponse({"res":"ok"},safe=False)   
 
 

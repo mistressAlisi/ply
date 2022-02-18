@@ -77,8 +77,8 @@ window.create_profile = Object ({
         
     },
     start: function(ev) {
-//         $(create_profile.settings.modal).modal('toggle');
-        create_profile.img_upload();
+        // $(create_profile.settings.modal).modal('toggle');
+        //create_profile.img_upload();
          $.ajax({
             type: "POST",
             url: create_profile.settings.update_url,
