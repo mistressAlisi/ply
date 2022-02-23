@@ -1,0 +1,17 @@
+{
+    "title":"Basic HP Meter",
+    "descr":"The Basic HP Meter for Profiles including Physical, Stun and Shields.",
+    "helptext":"The Basic HP Meter for Profiles including Physical, Stun and Shields.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"profiles",
+    "widget_name":"ply_basichp_meter",
+    "dynapage_template":"dynapage-widgets-HPDisplay-main",
+    "widget_data": {},
+    "modes":{
+        "banner":false,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":false
+    }
+}

@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+# Create your views here.
+
+import ply
 from ply.toolkit import vhosts,profiles
 from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
-# Create your views here.
-
 # Render the User Dashboard Home page:
 def community_home(request):
     # Ignore port:
@@ -20,6 +21,6 @@ def community_home(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile}
+        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
         return render(request,community.dynapage.template.filename,context)
 

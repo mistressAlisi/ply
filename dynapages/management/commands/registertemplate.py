@@ -23,9 +23,10 @@ class Command(BaseCommand):
             else:
                 tid = (template.split(".")[0])
                 template_obj = Templates.objects.get_or_create(template_id=tid)[0]
-                template_obj.filename = template
-                template_obj.creator = author_prop["content"] 
-                template_obj.label = name_prop["content"]
-                template_obj.description = descr_prop["content"] 
-                template_obj.save()
-                self.stdout.write(self.style.SUCCESS('Successfully registered template "%s"' % template))
+                if author_prop is not None:
+                    template_obj.filename = template
+                    template_obj.creator = author_prop["content"] 
+                    template_obj.label = name_prop["content"]
+                    template_obj.description = descr_prop["content"] 
+                    template_obj.save()
+                    self.stdout.write(self.style.SUCCESS('Successfully registered template "%s"' % template))

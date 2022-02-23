@@ -1,0 +1,46 @@
+{% load mathfilters %}
+<meta property="dynapage_template_name" content="Basic HP Meter Widget"/>
+<meta property="dynapage_template_version" content="v1.0"/>
+<meta property="dynapage_template_author" content="Alisi"/>
+<meta property="dynapage_template_description" content="The Basic HP Meter for Profiles including Physical, Stun and Shields."/>
+{%if widget.mainbody == True %}
+<div class="card">
+<div class="card_title h3">
+<i class="fa-solid fa-file-waveform"></i> Condition Monitor:
+<hr/>
+</div>
+<div class="card_body">
+    <div class="widget_statsDisplay-main" data-widget="statsDisplay">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col col_data">
+                        <strong><i class="fa-solid fa-heart-pulse"></i>&#160; HP/Physical -</strong>&#160;{{profile.HP}}/{{profile.max_HP}}:
+                        <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="30" aria-valuemin="0" aria- valuemax="100"></div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="20" aria-valuemin="0" aria-                                valuemax="100"></div>
+                        </div>
+                        <br/>
+                        <strong><i class="fa-solid fa-bolt-lightning"></i>&#160; STUN -</strong>&#160;{{profile.HP}}/{{profile.max_HP}}:
+                        <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar"  aria-valuenow="{{stat.value}}" aria-valuemin="0" aria-valuemax="{{stat.stat.maximum}}" style="width:{{profile.HP|div:profile.max_HP|mul:100}}%;"></div>
+                        </div>
+                        <br/>          
+                        <strong><i class="fa-solid fa-shield"></i>&#160; Shields -</strong>&#160;{{profile.HP}}/{{profile.max_HP}}:
+                        <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar"  aria-valuenow="{{stat.value}}" aria-valuemin="0" aria-valuemax="{{stat.stat.maximum}}" style="width:{{profile.HP|div:profile.max_HP|mul:100}}%;"></div>
+                        </div>
+                        <br/>
+
+                     
+
+                 
+                   
+                </div>
+                <br/>
+            </div>
+        </div>
+      
+    </div>
+</div></div>
+{% endif %}

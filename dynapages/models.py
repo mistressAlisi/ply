@@ -29,7 +29,7 @@ class TemplatesAdmin(admin.ModelAdmin):
 
 class Widget(models.Model):
     widget_uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
-    widget_id = models.TextField(max_length=200,verbose_name="Widget ID",default="")
+    widget_name = models.TextField(max_length=200,verbose_name="Widget Name",default="",unique=True)
     author= models.TextField(max_length=200,verbose_name="Widget Author",default="")
     version= models.TextField(max_length=200,verbose_name="Widget Version",default="")
     label = models.TextField(max_length=200,verbose_name='Widget Label')
@@ -37,7 +37,7 @@ class Widget(models.Model):
     helptext = models.TextField(max_length=200,verbose_name='Widget Helptext')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Widget Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Widget Updated')
-    version = models.IntegerField(verbose_name='Widget Vers')
+    version = models.TextField(verbose_name='Widget Vers',max_length="20")
     plugin = models.TextField(verbose_name="Widget Plugin",default='',null=True)
     widget_data = models.JSONField(verbose_name="Widget plugin-specific data",blank=True,null=True)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)

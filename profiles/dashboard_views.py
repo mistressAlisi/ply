@@ -9,13 +9,13 @@ from ply.toolkit import vhosts
 from gallery.uploader import upload_plugins_builder
 from profiles.models import Profile
 from group.models import Group,GroupMember,GroupTitle
-
+from stats.models import BaseStat,ProfileStat
 # Create your views here.
 
 # Render the User Dashboard Home page:
 @login_required
 def profile_view(request):
-    vhost = request.META["HTTP_HOST"];
+    vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     profile = Profile.objects.get(uuid=request.session["profile"])
     try:
@@ -26,5 +26,6 @@ def profile_view(request):
         primaryGroup = False
 
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profile.dynapage)
-    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    stats = ProfileStat.objects.filter(profile=profile)
+    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats}
     return render(request,profile.dynapage.template.filename,context)
