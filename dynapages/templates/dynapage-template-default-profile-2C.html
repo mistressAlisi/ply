@@ -15,11 +15,13 @@
 {% endfor %}
 </div>
 </section>
+<br/>
 <section class="dynapage_contents" id="page_contents">
 <div class="container-fluid">
 <div class="row">
 <div class="col dynapage_col1" id="page_colA">
 {% for widget in widgets %}
+
     {%if widget.mainbody == True and widget.pos == 'A'%}
             {% with  widget.widget.template.filename as banner_widget_template %}
                 {% include banner_widget_template %}

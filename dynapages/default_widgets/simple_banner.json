@@ -5,7 +5,7 @@
     "version":"1.0",
     "author":"Alisi",
     "plugin":"profiles",
-    "widget_id":"ply_simple_banner",
+    "widget_name":"ply_simple_banner",
     "dynapage_template":"widget_simpleBanner_main",
     "widget_data": {},
     "modes":{

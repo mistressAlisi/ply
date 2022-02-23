@@ -1,7 +1,7 @@
 {%if profile %}
         <a class="btn btn-black text-white dropdown-toggle" href="/dashboard/user/">
-        <img src="{{profile.avatar}}" alt="{{profile.name|slice:"0:2"}}" class="rounded-circle me-2" width="32" height="32">
-        <strong class="text-white">{{profile.name}} (@{{profile.slug}})</a></strong>
+        <img src="{{av_path}}/{{profile.avatar}}" alt="{{profile.name|slice:"0:2"}}" class="rounded-circle me-2" width="32" height="32">
+        <strong class="text-white">{{profile.name}} (@{{profile.profile_id}})</a></strong>
         </a>
         
 {% else %}

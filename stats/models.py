@@ -11,6 +11,7 @@ class BaseStat(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     name = models.TextField(verbose_name='Name')
+    icon = models.TextField(verbose_name='Icon',null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
     updated = models.DateTimeField(verbose_name='Updated',auto_now_add=True)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
@@ -39,7 +40,7 @@ class ProfileStat(models.Model):
     pmaximum = models.IntegerField(verbose_name='Maximum Value',default=10)
     value = models.IntegerField(verbose_name='Current Value',default=1)
     def __str__(self):
-        return f"Profile Stat: {self.name}, in community: {self.community.name} Applied to Profile {self.profile.name}: Min: {self.pminimum}, Max: {self.pmaximum}, Current Value: {self.value}"
+        return f"Profile Stat: {self.stat.name}, in community: {self.community.name} Applied to Profile {self.profile.name}: Min: {self.pminimum}, Max: {self.pmaximum}, Current Value: {self.value}"
 @admin.register(ProfileStat)
 class ProfileStatAdmin(admin.ModelAdmin):
     pass  

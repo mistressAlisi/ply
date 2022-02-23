@@ -1,0 +1,39 @@
+{% load mathfilters %}
+<meta property="dynapage_template_name" content="SimpleStats Widget"/>
+<meta property="dynapage_template_version" content="v1.0"/>
+<meta property="dynapage_template_author" content="Alisi"/>
+<meta property="dynapage_template_description" content="A simple stats widget for profiles."/>
+{%if widget.mainbody == True %}
+<div class="card">
+<div class="card_title h3">
+<i class="fa-solid fa-signal"></i> Basic Stats:
+<hr/>
+</div>
+<div class="card_body">
+    <div class="widget_statsDisplay-main" data-widget="statsDisplay">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col col_data">
+
+                    {% for stat in stats %}
+                        <strong><i class="{{stat.stat.icon}}"></i>&#160; {{stat.stat.name}} -</strong>&#160;{{stat.value}}/{{stat.pmaximum}}:
+                        <div class="progress">
+                        <div class="progress-bar" role="progressbar"  aria-valuenow="{{stat.value}}" aria-valuemin="0" aria-valuemax="{{stat.stat.maximum}}" style="width:{{stat.value|div:stat.stat.maximum|mul:100}}%;"></div>
+                        </div>
+                      
+
+                    {% endfor %}
+
+                 
+                   
+                </div>
+                <br/>
+            </div>
+        </div>
+        <div class="card_footer">
+        <hr/>
+        Points available to allocate: 0
+        </div>
+    </div>
+</div></div>
+{% endif %}

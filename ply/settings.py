@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'mathfilters',
     'dashboard',
     'dynapages',
     'profiles',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
     'spells',
     'items',
     'forge',
+    'almanac',
     'testdata',
     'ply'
 ]
