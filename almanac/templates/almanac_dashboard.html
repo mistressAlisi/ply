@@ -1,7 +1,7 @@
 {% extends 'django_bootstrap5/bootstrap5.html' %}
 {% load django_bootstrap5 %} 
 {% block bootstrap5_title %}
-{{community.name}}: Dashboard    
+{{community.name}}: World Almanac : About    
 {% endblock %}
 
 {% block bootstrap5_content %}
@@ -12,7 +12,7 @@
 <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
 <script src="/static/js/dashboard.js"></script>
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> -  Dashboard <i class="fas fa-caret-square-down"></i></a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> -  Almanac <i class="fas fa-caret-square-down"></i></a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="offcanvasWithBackdrop" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
 </header>
-    {%include "dashboard_sidebar.html" %}
+    {%include "almanac_dashboard_sidebar.html" %}
 <div class="container-fluid main-container" id="dashboard_mainPanel">
 
 
