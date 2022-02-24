@@ -40,6 +40,7 @@ class VHost(models.Model):
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
+    restricted = models.BooleanField(verbose_name="Restricted Joining FLAG",default=False)
     def __str__(self):
         return f"VHost - Hostname: {self.hostname}. IPAddr: {self.ipaddr}: Community: {self.community.name}"
     
@@ -66,4 +67,16 @@ class CommunityGroup(models.Model):
         return f"Community: {self.community.name}. Group: {self.group.name}. Joined: {self.joined}"
 @admin.register(CommunityGroup)
 class CommunityGroupAdmin(admin.ModelAdmin):
+    pass  
+
+
+class CommunityAdmins(models.Model):
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
+    joined = models.DateTimeField(verbose_name='Joined')
+    active = models.BooleanField(verbose_name="Active FLAG",default=True)
+    def __str__(self):
+        return f"Community ADMIN: {self.community.name}. Profile: {self.profile.name}."
+@admin.register(CommunityAdmins)
+class CommunityAdminsAdmin(admin.ModelAdmin):
     pass  

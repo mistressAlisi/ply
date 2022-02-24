@@ -14,13 +14,14 @@ def community_home(request):
     sideBar = SideBarBuilder()
     if request.user.is_authenticated:
         profile = profiles.get_active_profile(request)
+        all_profiles = profiles.get_all_profiles(request)
     else:
         profile = False
-    #all_profiles = profiles.get_all_profiles(request)
+        all_profiles = False
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
+        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path}
         return render(request,community.dynapage.template.filename,context)
 

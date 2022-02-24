@@ -10,6 +10,7 @@ from ply.toolkit import vhosts,profiles,logger,file_uploader
 from dynapages.models import Templates,Page,Widget,PageWidget
 from dashboard.navigation import SideBarBuilder
 from stats.models import BaseStat,ProfileStat
+from community.models import Community,CommunityProfile
 # Create your views here.
 
 # Upload an avatar and apply it to the currently specified profile in the session space:
@@ -65,6 +66,8 @@ def update_character_profile(request):
 def finish_character_profile(request):
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
+    if (community.restricted is True):
+        return JsonResponse({"res":"err","e":"Community is in restricted-join."},safe=False)          
     profile = Profile.objects.get(uuid=request.session['profile'])
     if (profile.placeholder is False):
         return JsonResponse({"res":"err","e":"Profile is not a placeholder."},safe=False)  
@@ -79,12 +82,16 @@ def finish_character_profile(request):
         widget.page_id = page.page_id
         widget.save()
     profile.dynapage = page
-    
+
     # Add  stats:
     stats = BaseStat.objects.filter(community=community,archived=False,blocked=False)
     for stat in stats:
         n_stat = ProfileStat.objects.get_or_create(community=community,profile=profile,stat=stat,value=stat.starting,pminimum=stat.minimum,pmaximum=stat.maximum)[0]
         n_stat.save()
+    # Join the community! 
+    join_comm  = CommunityProfile.objects.get_or_create(community=community,profile=profile)[0]
+    join_comm.save()
+    # Finish up:
     profile.placeholder = False    
     profile.save()
     return JsonResponse({"res":"ok"},safe=False)  

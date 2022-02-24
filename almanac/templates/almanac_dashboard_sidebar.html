@@ -1,0 +1,26 @@
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar offcanvas " aria-labelledby="sidebar" data-bs-scroll="false" data-bs-backdrop="true">
+    <div class="offcanvas-header">
+    <h4 class="offcanvas-title">Almanac: Main Menu</h4>
+    </div>
+      <div class="offcanvas-body">
+        <ul class="nav flex-column">
+
+         <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded" href="/almanac/#">
+          <i class="fas fa-home fa-2x"></i> Index / Home
+        </button>
+        {%if enable_admin %} 
+
+        {%include "almanac_dashboard_admin.html" %}
+        {% endif %}
+        
+         <li class="mb-1"><hr/></li>
+      </li>
+      
+      </ul>
+      </div>
+      <div class="offcanvas-footer position-absolute bottom-0 start-0 account-dash-widget">
+      <hr/>
+        <h6 class="text-muted"><span class="ply-brand_font">Ply</span> powered, (v) 2022.02.2000</h6>
+      </div>
+    </nav>
