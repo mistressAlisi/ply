@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
+from martor.models import MartorField
+
 import uuid
+
 # Create your models here.
 from profiles.models import Profile
 from dynapages import models as dynamodels
@@ -34,8 +37,8 @@ class AlmanacPageText(models.Model):
     page = models.ForeignKey(AlmanacPage,verbose_name = "AlmanacPage",on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Page Text Created')
     updated = models.DateTimeField(verbose_name='Page Updated',auto_now_add=True)
-    language = models.TextField(max_length=5,verbose_name='Page Language',unique=True)
-    page_contents = models.TextField(verbose_name='Page Contents',unique=True)
+    language = models.TextField(max_length=5,verbose_name='Page Language',default='en-US')
+    page_contents = MartorField(verbose_name='Page Contents')
     current = models.BooleanField(verbose_name="current FLAG",default=False)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     def __str__(self):
