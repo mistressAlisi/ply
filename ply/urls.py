@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import path,include
 from .auth_views import login
 urlpatterns = [
-    path('almanac/',include('almanac.user_urls')),    
+    path('profiles/',include('profiles.public_urls')),
+    path('almanac/',include('almanac.public_urls')),    
     path('dashboard/user/',include('dashboard.user_urls')),
     path('keywords/api/',include('keywords.api_urls')),
     path('forge/', include('forge.user_urls')),
     path('forge/api/', include('forge.api_urls')),
     path('admin/', admin.site.urls),
     path('api/auth/login/',login),
+    path('martor/', include('martor.urls')),
     path('', include('community.public_urls'))
 ]

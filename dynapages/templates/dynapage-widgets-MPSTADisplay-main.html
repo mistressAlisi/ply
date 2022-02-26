@@ -1,0 +1,40 @@
+{% load mathfilters %}
+<meta property="dynapage_template_name" content="Basic MP+STA Meter Widget"/>
+<meta property="dynapage_template_version" content="v1.0"/>
+<meta property="dynapage_template_author" content="Alisi"/>
+<meta property="dynapage_template_description" content="The Basic MP+STA Meter for Profiles including Physical, Stun and Shields."/>
+{%if widget.mainbody == True %}
+<div class="card">
+<div class="card_title h3">
+<i class="fa-solid fa-atom"></i> Energy Levels Monitor:
+<hr/>
+</div>
+<div class="card_body">
+    <div class="widget_statsDisplay-main" data-widget="statsDisplay">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col col_data">
+                        
+                        <strong><i class="fa-solid fa-wand-magic-sparkles"></i>&#160; MP -</strong>&#160;{{profile.MP}}/{{profile.max_MP}}:
+                        <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar"  aria-valuenow="{{stat.MP}}" aria-valuemin="0" aria-valuemax="{{profile.max_MP}}" style="width:{{profile.MP|div:profile.max_MP|mul:100}}%;"></div>
+                        </div>
+                        <br/>          
+                        <strong><i class="fa-solid fa-dumbbell"></i>&#160; STA -</strong>&#160;{{profile.STA}}/{{profile.max_STA}}:
+                        <div class="progress">
+                        <div class="progress-bar bg-secondary" role="progressbar"  aria-valuenow="{{profile.STA}}" aria-valuemin="0" aria-valuemax="{{profile.max_STA}}" style="width:{{profile.STA|div:profile.max_STA|mul:100}}%;"></div>
+                        </div>
+                        <br/>
+
+                     
+
+                 
+                   
+                </div>
+                <br/>
+            </div>
+        </div>
+      
+    </div>
+</div></div>
+{% endif %}

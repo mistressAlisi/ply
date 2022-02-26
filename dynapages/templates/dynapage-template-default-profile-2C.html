@@ -25,6 +25,7 @@
     {%if widget.mainbody == True and widget.pos == 'A'%}
             {% with  widget.widget.template.filename as banner_widget_template %}
                 {% include banner_widget_template %}
+                <br/>
             {% endwith %}  
     {%endif%}
 {% endfor %}
@@ -34,6 +35,7 @@
     {%if widget.mainbody == True and widget.pos == 'B'%}
             {% with  widget.widget.template.filename as banner_widget_template %}
                 {% include banner_widget_template %}
+                <br/>
             {% endwith %}  
     {%endif%}
 {% endfor %}
