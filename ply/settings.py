@@ -240,12 +240,12 @@ PLY_GALLERY_PLUGINS = [
     ]
 
 PLY_TEMP_FILE_BASE_PATH = "/var/www/html/ply_incoming/"
-PLY_TEMP_FILE_URL_BASE_URL="http://10.100.102.5/ply_incoming/"
+PLY_TEMP_FILE_URL_BASE_URL="http://10.100.102.5/static/ply_incoming/"
 PLY_GALLERY_ORIGINAL_FILE_BASE_PATH = "/opt/ply/originals/"
 PLY_GALLERY_FILE_BASE_PATH = "/var/www/html/ply_gallery/"
 PLY_AVATAR_FILE_BASE_PATH = "/var/www/html/ply_avatars/"
-PLY_AVATAR_FILE_URL_BASE_URL="http://10.100.102.5/ply_avatars/"
-PLY_GALLERY_FILE_URL_BASE_URL="http://10.100.102.5/ply_gallery/"
+PLY_AVATAR_FILE_URL_BASE_URL="http://10.100.102.5/static/ply_avatars/"
+PLY_GALLERY_FILE_URL_BASE_URL="http://10.100.102.5/static/ply_gallery/"
 PLY_GALLERY_HASH_BUF_SIZE  = 65536
 PLY_MSG_BROKER_URL="amqp://guest:guest@localhost:5672/%2F?connection_attempts=10&heartbeat=360"
 GALLERY_PHOTOS_THUMBNAIL_SIZE = 450
