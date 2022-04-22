@@ -19,6 +19,7 @@ from .auth_views import login
 urlpatterns = [
     path('profiles/',include('profiles.public_urls')),
     path('almanac/',include('almanac.public_urls')),    
+    path('almanac/user/',include('almanac.user_urls')),    
     path('dashboard/user/',include('dashboard.user_urls')),
     path('keywords/api/',include('keywords.api_urls')),
     path('forge/', include('forge.user_urls')),

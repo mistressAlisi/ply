@@ -22,6 +22,6 @@ def community_home(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path}
+        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path}
         return render(request,community.dynapage.template.filename,context)
 

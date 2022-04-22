@@ -107,7 +107,7 @@ class GalleryItem(models.Model):
     hidden = models.BooleanField(verbose_name="Item Hidden Flag",default=False)
     frozen = models.BooleanField(verbose_name="Item Frozen Flag",default=False)
     def __str__(self):
-        return f"Gallery Item: {self.uuid}"
+        return f"Gallery Item: {self.uuid}, \"{self.title}\", plugin: {self.plugin}"
     
 @admin.register(GalleryItem)
 class GalleryItemAdmin(admin.ModelAdmin):
@@ -162,7 +162,8 @@ class GalleryCollectionItems(models.Model):
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
-
+    def __str__(self):
+        return f"Gallery Item: {self.item.title} in Collection: {self.collection.label}"
 @admin.register(GalleryCollectionItems)
 class GalleryCollectionItemsAdmin(admin.ModelAdmin):
     pass
@@ -176,7 +177,9 @@ class GalleryItemCategory(models.Model):
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
-
+    def __str__(self):
+        return f"Gallery Item: {self.item.title} in Category: {self.category.label}"
+    
 @admin.register(GalleryItemCategory)
 class GalleryItemCategoryAdmin(admin.ModelAdmin):
     pass
@@ -230,7 +233,10 @@ class GalleryCollectionPermission(models.Model):
     nsfw = models.BooleanField(verbose_name="Enable NSFW Content Flag",default=False)
     explicit = models.BooleanField(verbose_name="Enable Explicit Content Flag",default=False)
     def __str__(self):
-        return f"Permissions for Collection: {self.collection.label}, profile: {self.profile.name}, group: {self.group}"
+        if (self.community is not None):
+            return f"Permissions for Collection: {self.collection.label}, profile: {self.profile.name}, group: {self.group}, in community: {self.community.name}"
+        else:
+            return f"Permissions for Collection: {self.collection.label}, profile: {self.profile.name}, group: {self.group}"
     
 @admin.register(GalleryCollectionPermission)
 class GalleryCollectionPermissionAdmin(admin.ModelAdmin):

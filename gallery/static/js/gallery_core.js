@@ -17,11 +17,20 @@ window.gallery_core = Object({
         main_panel: "#dashboard_mainPanel",
         review_panel: "#review_controls",
         sidebar_panel: "#nav",
-        viewer_modal: "#gallery_viewer",
-        viewer_canvas: "#gallery_canvas",
+        viewer_modal: "#gallery-viewer",
+        viewer_title: "#title-span",
+        viewer_info: "#gallery-span",
+        like_btn: "#btn-like",
+        share_btn: "#btn-share",
+        dl_btn: "#btn-download",
+        com_btn: "#btn-comments",
+        date_btn: "#btn-created",
+        back_btn: "#back-button",
+        forw_btn: "#forw-button",
         confirm_pub_modal: "#confirmModal",
         collection_cat: ".dashboard-category",
         gallery_card_cls: ".gallery-card",
+        in_col_str: " <i>in collection:</i> ", 
         max_upload_size: 25600,
     },
     editor: {
@@ -45,6 +54,8 @@ window.gallery_core = Object({
     
     /** Canvas object: **/
     canvas_element: false,
+    /** And control: **/
+    canvas_visible: false,
     
 /** Callback function for loadPlugin: **/
     _loadPlugin: function(d) {
@@ -86,7 +97,7 @@ window.gallery_core = Object({
             return  true; 
         };
         console.log("Loading Plugin: "+name);
-        $.get("/static/plugins/"+name+"/gallery_plugin.json",false,window.gallery_core._loadPlugin);
+        $.get("/static/plugins/"+name+"/gallery_plugin.json",false,this._loadPlugin);
     },
     _parent_walker: function(parent,target_node) {
        if (target_node == undefined) { target_node = "DIV"};
@@ -168,7 +179,7 @@ window.gallery_core = Object({
     /** Launch galleries AFTER plugins are loaded : **/
     _launch_gallery: function() {
          $(gallery_core).off('plugin_ready');
-        items = $(window.gallery_core.settings.collection_cat);
+        items = $(this.settings.collection_cat);
         ilen = items.length;
         count = 0;
         while (count < ilen) {
@@ -176,9 +187,9 @@ window.gallery_core = Object({
             if (colid != undefined) {
                 if (gallery_core._cols_iv_k.includes(colid) == false) {
                     console.log("Loading col_iv_k: "+colid);
-                    $.get(gallery_core.settings.get_collection_url+colid,window.gallery_core._setup_col);            
+                    $.get(gallery_core.settings.get_collection_url+colid,this._setup_col);            
                 } else {
-                    //console.log("Launch NAO");
+//                     console.log("Launch NAO");
                 };
             }
         count = count +1;
@@ -204,12 +215,21 @@ window.gallery_core = Object({
         };
         $(gallery_core).on('plugin_ready',gallery_core._launch_gallery);            
      },
-    
+    toggle_viewer: function(e) {
+            if (this.canvas_visible == false) {
+                this.canvas_visible = true;
+                this.canvas_element.css('display','block');
+            } else {
+                this.canvas_visible = false;
+                this.canvas_element.css('display','none');
+            }
+    },
      /** This function launches a gallery from a card: **/
      launch_gallery_card: function(e) {
          target_card = gallery_core._parent_walker(e.target,"DIV");
          col = target_card.data("collection");
          item = target_card.data("item");
+         //console.warn(target_card,col,item);
         /** Find the Collection and Item, fetch the item: **/
         if (gallery_core._cols_iv_k.includes(col) == true) {
             itm_o = false;
@@ -219,14 +239,47 @@ window.gallery_core = Object({
                 };
             };
                 if (itm_o != false) {
+                    console.info("Starting item: "+item+"in Collection: "+col+"...");
                     /** Now, call the plugin for the card and request a first the rendering of the canvas.. **/
-                    if (window.gallery_core.canvas_element == false) {
-                        window.gallery_core.canvas_element = $(gallery_core.settings.viewer_canvas);
+                    if (this.canvas_element == false) {
+                        this.canvas_element = $(gallery_core.settings.viewer_modal);
                     };
-                    window.gallery_core.canvas_element.empty();
+                    //console.warn(item);
+                    /** Update viewer data: **/
+                    /** Load Counts: **/
+                    $(this.settings.com_btn).find('.count').html(target_card.data("comments"));
+                    $(this.settings.like_btn).find('.count').html(target_card.data("likes"));
+                    $(this.settings.share_btn).find('.count').html(target_card.data("shares"));
+                    $(this.settings.dl_btn).find('.count').html(target_card.data("downloads"));
+                    /** Date: **/
+                    $(this.settings.date_btn).find('.date').html(target_card.data("created"));
+                    /** Now set title: **/
+                    $(this.settings.viewer_title).html(target_card.data("title"));
+                    /** And construct the info bar: **/
+                    author_str = "by "+target_card.data("author")
+                    collabel = target_card.data("collabel")
+                    if (collabel != "") {
+                        author_str = author_str +this.settings.in_col_str+collabel;
+                    };
+                    $(this.settings.viewer_info).html(author_str);
+                    
+                    /** Avatar: **/
+                    avstr = target_card.data("avatar");
+                    if (avstr !="") {
+                        $(this.settings.viewer_modal).find('.avatar')[0].src=avstr;
+                    };
+                    /** Navigation controls: **/
+                    if (this._cols_iv[col].length > 1) {
+                         $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','block');
+                         $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','block');
+                    } else {
+                         $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','none');
+                         $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','none');
+                    }
+                    /** Now render the contents: **/
                     render_card = gallery_core.plugins[itm_o.plugin].render_view(itm_o);
                     if (render_card == true) {
-                        $(gallery_core.settings.viewer_modal).modal('show');
+                        this.toggle_viewer();
                     };
                 };
         

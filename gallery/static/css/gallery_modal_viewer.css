@@ -1,0 +1,79 @@
+@keyframes fadein-keyframes {
+    0.0%{
+        opacity: 0.15;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes fadeout-keyframes {
+    0.0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0.15;
+    }
+}
+.gallery-modal-viewer {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    height: 100%;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    z-index: 10000;
+    color: white;
+    display: none;
+    animation: fadein-keyframes  500ms ease 0s 1 alternate both;
+    
+}
+@keyframes fadein-keyframes {
+    0.0%{
+        opacity: 0.15;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes fadeout-keyframes {
+    0.0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0.15;
+    }
+}
+
+.gallery-modal-header {
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 1px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    opacity: 1;
+    animation: fadeout-keyframes  1.5s ease 5s 1 alternate both;
+}
+.gallery-modal-header:hover {
+    animation: fadein-keyframes  1.5s ease 0s 1 alternate both;
+}
+
+.gallery-modal-controls { 
+    top: 50%;
+    position: absolute;
+    width: 100%;
+}
+.gallery-modal-buttons {
+}
+.gallery-modal-buttonsr:hover {
+
+}
