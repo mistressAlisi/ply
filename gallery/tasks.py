@@ -89,7 +89,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
                 except ValidationError:
                     col = GalleryCollection.objects.get_or_create(label=c)[0]
                 # Don't forget the permissions object!
-                colc = GalleryCollectionPermission.objects.get_or_create(collection=col,profile=profile,owner=True)[0]
+                colc = GalleryCollectionPermission.objects.get_or_create(collection=col,profile=profile,owner=True,community=community)[0]
             
                 # Now add the items...
                 gic = GalleryCollectionItems.objects.get_or_create(item=item,collection=col)[0]
@@ -134,7 +134,7 @@ def upload_ingest(_profile,plugin,file_name,filepath,_file_obj,content_type="",s
         file_obj.thumbnail = thumb
         file_obj.path = file_uploader.get_temp_path(file_obj.name,profile)
         file_obj.save()
-        log.warn(f"File Thumbnailed in Temporary Storage: {file_name}. Content type: {content_type}. {profile} [{round(size/1024,2)} kB] saved.")
+        log.info(f"File Thumbnailed in Temporary Storage: {file_name}. Content type: {content_type}. {profile} [{round(size/1024,2)} kB] saved.")
     except Exception as e:
             log.exception(e)
             log.error(f"File Uploader: Unable to generate Thumbnail for file {file_name}: {e}")

@@ -1,6 +1,7 @@
 {% extends 'dashboard_main_panel-95.html' %}
 {%block dashboard_name %}<i class="fas fa-th"></i></i>&#160;All my Collections{%endblock%}
 {%block dashboard_content %}
+{%include "gallery-modal-viewer.html" %}
 <h6 class="text-muted">Submissions you've uploaded but haven't published yet are shown here: This Light Table is a preview of how items will appear in your collections - as you make changes to your submissions the light table will reflect them.</h6>
 <p>All items not published within 24 hours of upload are deleted (but you can always upload them again!) Keep in mind these are in preview quality until published.
 <br/>
@@ -31,7 +32,7 @@ Changes are previewed automagically as you make them. 'Publish' saves the change
     </div>
   </div>
 </div>-->
-{%include "gallery-modal-viewer.html" %}
+
 {%include "gallery-dashboard_upload_reviewtbl_controls.html" %}
 <script src="/static/js/gallery_all.js"></script>
 {%endblock %}

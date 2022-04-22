@@ -1,7 +1,7 @@
 <li class="mb-1 sidebar-menu-container-li">
     <button class="btn btn-toggle align-items-center rounded collapsed sidebar-main-button" data-bs-toggle="collapse" data-bs-target="#dp_profiles-collapse" aria-expanded="false" data-mname="dp_profiles" onclick="dc_handleMainLink(event);"  >
-    <img src="{{av_path}}/{{profile.avatar}}" alt="{{profile.name|slice:"0:2"}}" class="rounded-circle me-2" width="32" height="32">
-    <strong>{{profile.name}} (@{{profile.profile_id}})</strong>
+    {%include "dashboard-generic-avatar.html" %}
+    <strong>{{current_profile.name}} (@{{current_profile.profile_id}})</strong>
     </button>
         <div class="collapse" id="dp_profiles-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
@@ -12,7 +12,7 @@
             <li><h6 class="text-muted">Switch Profile:</h6></li> 
             {% for pr in profiles %}
                 <li class="profile-sel-link-li"><a href="/dashboard/user/set_profile/{{pr.uuid}}" data-trgt="{{pr.uuid}}"   class="link-dark rounded sidebar-submenu-link profile-sel-link" >
-                 <img src="{{av_path}}/{{pr.avatar}}" alt="{{profile.pr|slice:"0:2"}}" class="rounded-circle me-2" width="16" height="16">{{pr.name}} (@{{pr.profile_id}})</a></li>
+                 <img src="{{av_path}}/{{pr.avatar}}" alt="{{current_profile.pr|slice:"0:2"}}" class="rounded-circle me-2" width="16" height="16">{{pr.name}} (@{{pr.profile_id}})</a></li>
             {% endfor %}
             <li><h6 class="text-muted">Profiles and Settings:</h6></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('account');"><i class="fas fa-user-circle"></i>&#160;&#160;My Account</a></li>

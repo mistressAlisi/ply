@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from martor.models import MartorField
-
+from community.models import Community
 import uuid
 
 # Create your models here.
@@ -13,9 +13,10 @@ class AlmanacPage(models.Model):
     page_id = models.TextField(max_length=200,verbose_name='Page ID',unique=True)
     title = models.TextField(max_length=200,verbose_name='Page Title')
     owner = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE)
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.CASCADE)
     creator = models.ForeignKey(Profile,verbose_name = "Creator Profile",on_delete=models.RESTRICT,related_name='+')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Page Created')
-    dynaPage = models.ForeignKey(dynamodels.Page,on_delete=models.RESTRICT,blank=True,null=True,related_name='+')
+    dynaPage = models.ForeignKey(dynamodels.Templates,on_delete=models.RESTRICT,blank=True,null=True,related_name='+',verbose_name="DynaPage Template")
     updated = models.DateTimeField(verbose_name='Page Updated',auto_now_add=True)
     introduction = models.TextField(verbose_name='Page Intro')
     avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True) 
@@ -27,7 +28,7 @@ class AlmanacPage(models.Model):
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     def __str__(self):
-        return f"Page: \"{self.name}\",  owner: {self.owner.name}, creator: {self.creator.name}"
+        return f"Page: \"{self.title}\",  owner: {self.owner}, creator: {self.creator}"
 @admin.register(AlmanacPage)
 class PageAdmin(admin.ModelAdmin):
     pass
