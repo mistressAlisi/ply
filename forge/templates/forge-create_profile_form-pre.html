@@ -82,5 +82,10 @@
 
           <hr class="my-4">
           <button class="w-60 btn btn-success btn-lg" type="button" onclick="window.history.back();"><i class="fa-solid fa-rotate-left"></i>Make Changes</button>
-          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick="create_profile.finish();"><i class="fa-solid fa-rocket"></i>Create Character!</button>
+          {% if not profile.placeholder  %}
+          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick="create_profile.finish();"><i class="fa-solid fa-star"></i>All set: Back to Dashboard!</button>
+          {% else %}
+          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick="create_profile.finish();"><i class="fa-solid fa-rocket"></i>Create
+          Character!</button>
+          {%endif %}
       </div>
