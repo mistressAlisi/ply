@@ -9,6 +9,8 @@
    <div class="col-10">
             <h3><span class="gallery-modal-title" id="title-span">Modal title</span>&#160;</h3>
             <h6><span id="gallery-span" class="gallery-modal-subtitle">by Profile.</span></h6>
+            <button id="btn-views" type="button" disabled="disabled" class="btn btn-outline-secondary btn-sm"><span class="count">...</span>&#160;<i class="fa-solid fa-eye"></i></button>
+            &#160;
             <button id="btn-like" type="button" class="btn btn-outline-secondary btn-sm"><span class="count">...</span>&#160;<i class="fa-solid fa-heart"></i></button>
             &#160;
             <button id="btn-share" type="button" class="btn btn-outline-secondary btn-sm"><span class="count">...</span>&#160;<i class="fa-solid fa-share"></i></button>
@@ -27,12 +29,12 @@
    
    
     <div class="gallery-modal-controls row container-fluid">
-   <div class="col-1 float-left gallery-modal-buttons" style="max-width: 20px; padding-top: 10px;" id="back-button">
-    <button class="btn btn-outline-secondary"><i class="fa-solid fa-2x fa-circle-chevron-left"></i></button>
+   <div class="col-1 float-left gallery-modal-buttons" style="max-width: 20px; padding-top: 10px; z-index:10000000;" id="back-button">
+    <button class="btn btn-outline-secondary" onclick="gallery_core.gallery_card_back();"><i class="fa-solid fa-2x fa-circle-chevron-left"></i></button>
    </div>
     <div class="col-lg-11 col-sm-10">&#160; </div>
-    <div class="col-1 float-right gallery-modal-buttons" style="max-width: 20px; padding-top: 10px; padding-left: 50px;" id="forw-button">
-    <button class="btn btn-outline-secondary"><i class="fa-solid fa-2x fa-circle-chevron-right"></i></button>
+    <div class="col-1 float-right gallery-modal-buttons" style="max-width: 20px; padding-top: 10px; padding-left: 50px; z-index:10000000;" id="forw-button">
+    <button class="btn btn-outline-secondary" onclick="gallery_core.gallery_card_forw();"><i class="fa-solid fa-2x fa-circle-chevron-right"></i></button>
    </div>
   </div>
 </div>

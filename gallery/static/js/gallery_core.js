@@ -7,6 +7,7 @@ window.gallery_core = Object({
         review_panel_url: "gallery/api/upload/review_panel/",
         publish_url: "gallery/api/upload/publish/",
         get_collection_url: "gallery/api/get/items/",
+        view_count_url: "gallery/api/view_counter/item",
         desc_div: "#content_submission_type_desc",
         create_start_btn: "#create_start_btn",
         all_buttons: ".gallery-content-button",
@@ -20,9 +21,11 @@ window.gallery_core = Object({
         viewer_modal: "#gallery-viewer",
         viewer_title: "#title-span",
         viewer_info: "#gallery-span",
+        viewer_hdr: ".gallery-modal-header",
         like_btn: "#btn-like",
         share_btn: "#btn-share",
         dl_btn: "#btn-download",
+        views_btn: "#btn-views",
         com_btn: "#btn-comments",
         date_btn: "#btn-created",
         back_btn: "#back-button",
@@ -39,6 +42,7 @@ window.gallery_core = Object({
         url:"",
         bound: false
     },
+    
     /** Plugin Control: _pLoaded keeps track of loaded plugins by name to prevent reinitialisation. Plugins that need to extend dashboard can register themselves into the plugins object below: **/
     _pLoaded: [],
     plugins: [],
@@ -56,7 +60,15 @@ window.gallery_core = Object({
     canvas_element: false,
     /** And control: **/
     canvas_visible: false,
-    
+    /** Navigation controls: **/
+    nav: {
+        count: 0,
+        first: "",
+        last: "",
+        cards: [],
+        current: false,
+        colid: false
+    },
 /** Callback function for loadPlugin: **/
     _loadPlugin: function(d) {
         if (d == false) { return false; };
@@ -139,7 +151,42 @@ window.gallery_core = Object({
          $(gallery_core.settings.main_panel).load(gallery_core.settings.upload_lt_url);
         });
     },
-  
+    /** These function enable fast, efficient collection navigation for the viewer: **/
+    _setup_nav: function(colid) {
+        col = $("#col-"+colid)
+        cards = col.find(".gallery-card");
+        count = 0;
+        this.nav.cards = [];
+        this.nav.colid = colid;
+        this.nav.first = ($(cards[0])[0].id);
+        while (count < cards.length) {
+            this.nav.cards.push($(cards[count])[0].id);
+            $(cards[count]).data('colpos',count);
+            count = count +1;
+        };
+        this.nav.last = ($(cards[count-1])[0].id);
+        this.nav.count = count -1;
+        this.nav.current = false;
+    },
+    _step_back: function(ev) {
+        ncst = this.nav.current-1;
+        if (ncst < 0) {
+            return false;
+        };
+        
+        return this.nav.cards[ncst];
+    },
+    
+    _step_forw: function(ev) {
+        ncst = this.nav.current+1;
+        if (ncst > this.nav.count) {
+            return false;
+        };
+        return this.nav.cards[ncst];        
+    },
+    
+    
+    
     /** These functions enable Collection operations: **/
     _setup_col: function(data) {
         coldata =   data[0];
@@ -219,38 +266,58 @@ window.gallery_core = Object({
             if (this.canvas_visible == false) {
                 this.canvas_visible = true;
                 this.canvas_element.css('display','block');
+                $(window).bind('keydown',window.gallery_core._kbk_evh);
             } else {
                 this.canvas_visible = false;
                 this.canvas_element.css('display','none');
+                $(window).unbind('keydown',window.gallery_core._kbk_evh);
             }
     },
-     /** This function launches a gallery from a card: **/
-     launch_gallery_card: function(e) {
-         target_card = gallery_core._parent_walker(e.target,"DIV");
-         col = target_card.data("collection");
-         item = target_card.data("item");
-         //console.warn(target_card,col,item);
-        /** Find the Collection and Item, fetch the item: **/
-        if (gallery_core._cols_iv_k.includes(col) == true) {
-            itm_o = false;
-            for (i in gallery_core._cols_iv[col]) {
-                if (gallery_core._cols_iv[col][i].item == item) {
-                    itm_o = gallery_core._cols_iv[col][i];
-                };
-            };
-                if (itm_o != false) {
-                    console.info("Starting item: "+item+"in Collection: "+col+"...");
-                    /** Now, call the plugin for the card and request a first the rendering of the canvas.. **/
-                    if (this.canvas_element == false) {
-                        this.canvas_element = $(gallery_core.settings.viewer_modal);
-                    };
-                    //console.warn(item);
-                    /** Update viewer data: **/
-                    /** Load Counts: **/
+    /** These function handles key bindings for the viewer: **/
+    _kbk_evh: function(e) {
+        if (e.key === "Escape") {
+            
+            window.gallery_core.toggle_viewer();
+            return;
+        };
+        switch(e.which) {
+        case 37: // left
+            if ($(window.gallery_core.settings.viewer_hdr).hasClass('hover') == false) {
+                $(window.gallery_core.settings.viewer_hdr).addClass('hover');
+            }
+            window.gallery_core.gallery_card_back();
+        break;
+
+        case 39: // right
+            if ($(window.gallery_core.settings.viewer_hdr).hasClass('hover') == false) {
+                $(window.gallery_core.settings.viewer_hdr).addClass('hover');
+            }
+            window.gallery_core.gallery_card_forw();
+        break;
+
+        case 40: // down
+        break;
+
+        default: 
+            
+            return; // exit this handler for other keys
+        }
+        if ($(window.gallery_core.settings.viewer_hdr).hasClass('hover') == true) {
+            window.setTimeout(function(){$(window.gallery_core.settings.viewer_hdr).removeClass('hover')},100);
+        }
+        e.preventDefault();
+    },
+     /** This function _renders_ a gallery card's metadata: **/
+     _gallery_card_meta: function(target_card,col,item) {
+         /** Send metadata and metrics to server: **/
+         $.get(this.settings.view_count_url+"/?itm="+item+"&col="+target_card.data("collection"));
+          /** Update viewer data: **/
+                /** Load Counts: **/
                     $(this.settings.com_btn).find('.count').html(target_card.data("comments"));
                     $(this.settings.like_btn).find('.count').html(target_card.data("likes"));
                     $(this.settings.share_btn).find('.count').html(target_card.data("shares"));
                     $(this.settings.dl_btn).find('.count').html(target_card.data("downloads"));
+                    $(this.settings.views_btn).find('.count').html(target_card.data("views"));
                     /** Date: **/
                     $(this.settings.date_btn).find('.date').html(target_card.data("created"));
                     /** Now set title: **/
@@ -269,17 +336,60 @@ window.gallery_core = Object({
                         $(this.settings.viewer_modal).find('.avatar')[0].src=avstr;
                     };
                     /** Navigation controls: **/
-                    if (this._cols_iv[col].length > 1) {
-                         $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','block');
-                         $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','block');
+
+                    this.nav.current = target_card.data('colpos');
+//                     console.warn(this.nav);
+                    if (this.nav.count >= 1) {
+                        if (target_card[0].id == this.nav.first) {
+                            $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','none');
+                        } else {
+                            $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','block');
+                        };
+                        if (target_card[0].id == this.nav.last) {
+                            $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','none');
+                        } else {
+                            $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','block');
+                        };
                     } else {
+                        
                          $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','none');
                          $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','none');
                     }
+     },
+
+     /** This function launches a gallery from a card: **/
+     launch_gallery_card: function(e) {
+         target_card = this._parent_walker(e.target,"DIV");
+         col = target_card.data("collection");
+         item = target_card.data("item");
+         //console.warn(target_card,col,item);
+        /** Find the Collection and Item, fetch the item: **/
+        if (this._cols_iv_k.includes(col) == true) {
+            itm_o = false;
+            for (i in this._cols_iv[col]) {
+                if (this._cols_iv[col][i].item == item) {
+                    itm_o = this._cols_iv[col][i];
+                    target_card.data("i",i);
+                    //console.warn("IV@LOAD",col,i,item,itm_o);
+                };
+            };
+                if (itm_o != false) {
+                    console.info("Starting item: "+item+"in Collection: "+col+"...");
+                    /** Now, call the plugin for the card and request a first the rendering of the canvas.. **/
+                    if (this.canvas_element == false) {
+                        this.canvas_element = $(this.settings.viewer_modal);
+                    };
+                    //console.warn(item);
+                    this._setup_nav(col);
+                    this._gallery_card_meta(target_card,col,item);
+
                     /** Now render the contents: **/
-                    render_card = gallery_core.plugins[itm_o.plugin].render_view(itm_o);
+                    render_card = this.plugins[itm_o.plugin].render_view(itm_o);
                     if (render_card == true) {
-                        this.toggle_viewer();
+                        /** UNLESS WE DISABLE THE VIEWER TOGGLE: **/
+//                         if (dv != true) {
+                            this.toggle_viewer();
+//                         };
                     };
                 };
         
@@ -289,6 +399,72 @@ window.gallery_core = Object({
         }
          
      },
+     /** This function steps a card backward: **/
+     gallery_card_back: function() {
+         bk_crd = this._step_back();
+//          console.log(bk_crd);
+         target_card = $("#"+bk_crd);
+         
+         col = this.nav.colid;
+         plugin = target_card.data("plugin");
+         item = target_card.data("item");
+         
+         /** Find the Collection and Item, fetch the item: **/
+         if (this._cols_iv_k.includes(col) == true) {
+            itm_o = false;
+            for (i in this._cols_iv[col]) {
+                if (this._cols_iv[col][i].item == item) {
+                    itm_o = this._cols_iv[col][i];
+                    target_card.data("i",i);
+                };
+            };
+        if (itm_o != false) {
+//          console.warn(itm_o);
+         this._gallery_card_meta(target_card,col,item);
+        /** Now render the contents: **/
+        render_card = this.plugins[itm_o.plugin].render_view(itm_o);
+        if (render_card == false) {
+            console.error("RenderCard went wrong!");
+            console.error(render_card);
+        }};
+        } else {
+            console.warn("Unable to Step Collection: "+col+" back into item card: "+item);
+         };
+     },
+    
+     /** This function steps a card forward: **/
+     gallery_card_forw: function() {
+         bk_crd = this._step_forw();
+//          console.log(bk_crd);
+         target_card = $("#"+bk_crd);
+         
+         col = this.nav.colid;
+         plugin = target_card.data("plugin");
+         item = target_card.data("item");
+         
+         /** Find the Collection and Item, fetch the item: **/
+         if (this._cols_iv_k.includes(col) == true) {
+            itm_o = false;
+            for (i in this._cols_iv[col]) {
+                if (this._cols_iv[col][i].item == item) {
+                    itm_o = this._cols_iv[col][i];
+                    target_card.data("i",i);
+                };
+            };
+        if (itm_o != false) {
+//          console.warn(itm_o);
+         this._gallery_card_meta(target_card,col,item);
+        /** Now render the contents: **/
+        render_card = this.plugins[itm_o.plugin].render_view(itm_o);
+        if (render_card == false) {
+            console.error("RenderCard went wrong!");
+            console.error(render_card);
+        }};
+        } else {
+            console.warn("Unable to Step Collection: "+col+" back into item card: "+item);
+         };
+     },
+     
     /********************/
     /** These functions enable you to PUBLISH/edit items: **/
     _launch_publisher: function() {
@@ -330,3 +506,4 @@ window.gallery_core = Object({
         $(gallery_core.settings.confirm_pub_modal).modal('show');
     },
 });
+

@@ -1,4 +1,4 @@
-<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-item="{{i.id}}" data-plugin="gallery_photos" id="card-{{col.uuid}}-{{i.id}}" data-collection="{{col.uuid}}" data-title="{{i.title}}" data-collabel="{{col.label}}" data-likes="{{i.likes}}" data-shares="{{i.shares}}" data-downloads="{{i.downloads}}" data-comments="{{i.comments}}" data-author="{{profile.name}}" data-avatar="{{av_path}}/{{profile.avatar}}" data-created="{{i.created}}">
+<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-item="{{i.id}}" data-plugin="gallery_photos" id="card-{{col.uuid}}-{{i.id}}" data-collection="{{col.uuid}}" data-title="{{i.title}}" data-collabel="{{col.label}}" data-likes="{{i.likes}}" data-shares="{{i.shares}}" data-downloads="{{i.downloads}}" data-comments="{{i.comments}}" data-author="{{profile.name}}" data-avatar="{{av_path}}/{{profile.avatar}}" data-created="{{i.created}}" data-counter="{{i.counter}}" data-views="{{i.views}}">
 
    {% if i.files.0.thumbnail %}
    {% with i.files.0 as file %}
@@ -8,7 +8,7 @@
    {% with i.files.1 as file %}
     <img src="{{base_url}}/{{i.profile.uuid|slice:"0:1"}}/{{i.profile.uuid|slice:"1:2"}}/{{i.profile.uuid|slice:"2:3"}}/{{i.profile.uuid}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
     {% endwith %}
-   {% elif i.files.1.thumbnail %}
+   {% elif i.files.2.thumbnail %}
    {% with i.files.2 as file %}
     <img src="{{base_url}}/{{i.profile.uuid|slice:"0:1"}}/{{i.profile.uuid|slice:"1:2"}}/{{i.profile.uuid|slice:"2:3"}}/{{i.profile.uuid}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
     {% endwith %}
@@ -24,7 +24,13 @@
   <section class="photo-data-block">
   <p class="description">
 <!--   {{i.descr}} (<i>Photography</i>)</p> -->
-<!--   Likes: {{i.likes}} Views: {{i.views}} Shares: {{i.shares}} Comments: {{i.comments}} Downloads: {{i.downloads}} -->
+  <span class="badge rounded-pill bg-primary"><i class="fa-solid fa-calendar-xmark"></i> {{i.created}}</span>
+  <br/>
+  <span class="badge rounded-pill bg-secondary"><i class="fa-solid fa-eye"></i> {{i.views}}</span>&#160;
+  <span class="badge rounded-pill bg-secondary"><i class="fa-solid fa-heart"></i> {{i.likes}}</span>&#160;
+  <span class="badge rounded-pill bg-secondary"><i class="fa-solid fa-share"></i> {{i.shares}}</span>&#160;
+  <span class="badge rounded-pill bg-secondary"><i class="fa-solid fa-download"></i> {{i.downloads}}</span>&#160;
+  
   </section>
 
 </div>
