@@ -6,7 +6,7 @@ from gallery.uploader import upload_plugins_builder
 from django.http import JsonResponse,HttpResponse
 from django.db import IntegrityError, transaction
 from django.db.models import Q
-from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission
+from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection
 from gallery import serialisers
 from gallery.tasks import publish_to_gallery,upload_ingest
 from profiles.models import Profile
@@ -131,3 +131,17 @@ def gallery_collection_items_raw(request,collection):
     colls = serialisers.serialise_own_collection_items(request,collection)
     profile = Profile.objects.get(uuid=request.session["profile"])
     return JsonResponse(colls,safe=False)   
+
+@transaction.atomic
+def gallery_viewer_counter_item(request):
+    if ('itm' in request.GET):
+        iid = request.GET['itm']
+        item = GalleryItem.objects.get(pk=iid)
+        item.views = item.views + 1;
+        item.save();
+    if ('col' in request.GET):
+        cid = request.GET['col']
+        col = GalleryCollection.objects.get(pk=cid)
+        col.views = item.views + 1;
+        col.save();
+    return JsonResponse("ok",safe=False)

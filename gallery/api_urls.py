@@ -10,5 +10,6 @@ urlpatterns = [
     path('upload/review_panel/<file_id>',api_views.get_review_panel),
     path('upload/publish/<file_id>',api_views.publish_after_review),
     path('get/all_collections/',api_views.gallery_collections_raw),
-    path('get/items/<collection>',api_views.gallery_collection_items_raw)
+    path('get/items/<collection>',api_views.gallery_collection_items_raw),
+    path('view_counter/item/',api_views.gallery_viewer_counter_item)
 ]
