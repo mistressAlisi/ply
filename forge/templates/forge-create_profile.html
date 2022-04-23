@@ -13,7 +13,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Page title -->
+    {% if profile.profile_id %}
+    <title>{{community.name}}: Editing Profile "{{profile.name}}"</title>
+    {% else %}
     <title>{{community.name}}: Create Profile and join!</title>
+    {% endif %}
 
     <!-- Bootstrap CSS -->
     {% bootstrap_css %}
@@ -36,8 +40,15 @@
   <main>
     <div class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-      <h2>New Character: Profile</h2>
-      <p class="lead">Welcome to {{community.name}}: fill out the form below to create a new character and start roleplaying!</p>
+        {% if profile.profile_id %}
+        <h2> Editing Profile "{{profile.name}}"</h2>
+        <p class="lead">Use the form below to make changes to this profile: When you're satisfied; click 'Review Profile' to continue.</p>
+        {% else %}
+        <h2>New Character: Profile</h2>
+        <p class="lead">Welcome to {{community.name}}: fill out the form below to create a new profile!</p>
+        {% endif %}
+      
+
     </div>
     <div class="container-fluid row g-5">
 
@@ -71,5 +82,11 @@
 <!-- Forge Javascript -->
 <script src="/static/js/util-get_cookie.js"></script>
 <script src="/static/js/forge_create-profile.js"></script>
+{% if profile.profile_id %}
+<script>
+    create_profile.settings.preview_url = "/forge/edit/profile/preview";
+    create_profile.settings.finish_url = "/forge/api/profile/finish_edit/";
+</script>
+{% endif %}
 </body>
 </html>

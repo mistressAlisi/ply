@@ -22,6 +22,7 @@ class Community(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    restricted = models.BooleanField(verbose_name="Restricted Join Mode FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     def __str__(self):
         return f"Community: {self.name}, hash: {self.hash}"

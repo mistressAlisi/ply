@@ -36,8 +36,14 @@
   <main>
     <div class="py-5 text-center">
       <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      {% if not profile.placeholder  %}
+      <h2>Updating Character: {{profile.name}}</h2>
+      <p class="lead">Does everything below look right to you; or do you need to make changes? (These are already live: Update if necessary!)</p>
+      {% else %}
       <h2>New Character: {{profile.name}}</h2>
-      <p class="lead">Does the profile below look right to you? Or do you need to make changes?</p>
+      <p class="lead">Does everything below look right to you? Or do you need to make changes?</p>
+      {% endif %}
+      
     </div>
     <div class="container-fluid row g-5">
 
@@ -71,5 +77,11 @@
 <!-- Forge Javascript -->
 <script src="/static/js/util-get_cookie.js"></script>
 <script src="/static/js/forge_create-profile.js"></script>
+{% if not profile.placeholder  %}
+<script>
+    create_profile.settings.preview_url = "/forge/edit/profile/preview";
+    create_profile.settings.finish_url = "/forge/api/profile/finish_edit/";
+</script>
+{% endif %}
 </body>
 </html>

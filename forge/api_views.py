@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,HttpResponse
 from PIL import Image
+import datetime
 # Ply:
 from profiles.models import Profile
 from profiles.forms import ProfileForm
@@ -93,5 +94,20 @@ def finish_character_profile(request):
     join_comm.save()
     # Finish up:
     profile.placeholder = False    
+    profile.save()
+    return JsonResponse({"res":"ok"},safe=False)  
+
+# FINISH editing the currently active profile:
+# ONLY works on existing, active profiles!
+@login_required
+def finish_edit_profile(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    if (community.restricted is True):
+        return JsonResponse({"res":"err","e":"Community is in restricted-join."},safe=False)          
+    profile = Profile.objects.get(uuid=request.session['profile'])
+    if (profile.placeholder is True):
+        return JsonResponse({"res":"err","e":"Profile is a placeholder."},safe=False)  
+    profile.updated = datetime.datetime.now()
     profile.save()
     return JsonResponse({"res":"ok"},safe=False)  
