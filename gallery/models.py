@@ -305,6 +305,7 @@ class GalleryItemsByCollectionPermission(models.Model):
     gcp_explicit = models.BooleanField(verbose_name="Collection Permission: Explicit?")
     gcp_comment = models.BooleanField(verbose_name="Collection Permission: Can Comment?")
     gcp_profile = models.UUIDField(verbose_name="Collection Permission: Source Profile")
+    gcp_community = models.UUIDField(verbose_name="Collection Permission: Source Community")
     gc_id = models.BooleanField(verbose_name="Gallery Collection ID")
     gc_label = models.BooleanField(verbose_name="Gallery Collection Label")
     gc_created = models.DateTimeField(verbose_name="Gallery Collection Created")
@@ -366,6 +367,7 @@ class GalleryItemsByCollectionPermission(models.Model):
     item = models.ForeignKey(GalleryItem,verbose_name='File',on_delete=models.RESTRICT)
     file = models.ForeignKey(GalleryItemFile,verbose_name='File',on_delete=models.RESTRICT)
     profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.RESTRICT)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.RESTRICT)
     def __str__(self):
         return f"Gallery Permissions Item: collection.item.file: {self.collection.label}.{self.item.item_hash}.{self.file.name}"
     class Meta:
