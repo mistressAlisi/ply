@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/login/',login),
     path('martor/', include('martor.urls')),
+    path('gallery/', include('gallery.public_urls')),
     path('', include('community.public_urls'))
 ]

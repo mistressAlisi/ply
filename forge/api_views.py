@@ -53,7 +53,7 @@ def update_character_profile(request):
     profile = Profile.objects.get(uuid=request.session['profile'])
     form = ProfileForm(request.POST,instance=profile)
     if (not form.is_valid()):
-        return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)  
+        return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
     form.save()
     profile.save()
     return JsonResponse({"res":"ok"},safe=False)   

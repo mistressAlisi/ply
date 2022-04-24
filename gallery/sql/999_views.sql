@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS "gallery_itemsbycollectionpermission";
 CREATE OR REPLACE VIEW "gallery_itemsbycollectionpermission" AS  SELECT DISTINCT
     gallery_gallerycollectionpermission.id AS gcp_id,
     gallery_gallerycollectionpermission.updated AS gcp_updated,
@@ -13,6 +14,7 @@ CREATE OR REPLACE VIEW "gallery_itemsbycollectionpermission" AS  SELECT DISTINCT
     gallery_gallerycollectionpermission.explicit AS gcp_explicit,
     gallery_gallerycollectionpermission.comment AS gcp_comment,
     gallery_gallerycollectionpermission.profile_id AS gcp_profile,
+    gallery_gallerycollectionpermission.community_id AS gcp_community,
     gallery_gallerycollection.collection_id AS gc_id,
     gallery_gallerycollection.label AS gc_label,
     gallery_gallerycollection.created AS gc_created,
@@ -67,6 +69,7 @@ CREATE OR REPLACE VIEW "gallery_itemsbycollectionpermission" AS  SELECT DISTINCT
     gallery_galleryitemfile.item_id AS gif_item,
     gallery_gallerycollectionpermission.id AS id,
     gallery_gallerycollection.uuid AS collection_id,
+    gallery_gallerycollectionpermission.community_id AS community_id,
     gallery_galleryitemfile.id as file_id,
     gallery_galleryitem.uuid as item_id,
     profiles_profile.name as profile_name,
