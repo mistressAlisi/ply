@@ -41,7 +41,7 @@ def upload_profile_picture(request):
                 #    return JsonResponse({"res":"err","err":"except","e":str(e)},safe=False)
                 profile.avatar = path 
                 profile.save()
-                return JsonResponse({"res":"ok","path":settings.PLY_AVATAR_FILE_URL_BASE_URL+path},safe=False)  
+                return JsonResponse({"res":"ok","path":settings.PLY_AVATAR_FILE_URL_BASE_URL+"/"+path},safe=False)  
             
     return JsonResponse({"res":"ok"},safe=False)   
 
