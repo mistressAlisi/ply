@@ -49,22 +49,24 @@ def publish_to_gallery(data,profile,temp_file,user,community):
         temp_path = ply.settings.PLY_TEMP_FILE_BASE_PATH+file_uploader.get_temp_path(temp_file.name,profile)
         original_path = ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH+file_uploader.get_temp_path(temp_file.name,profile)
         try:
-            shutil.copy(temp_path,original_path)
+            temp_file_handle = open(temp_path,'rb')
+            fsize = file_uploader.save_original_file(temp_file_handle,profile)
             item_hash = slugify(data["title"])
-            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"])
+            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],)
             # Step three: Register the original file (hash it first):
             sha1 = hashlib.sha1()
-            with open(original_path, 'rb') as f:
-                while True:
-                    fdata = f.read(ply.settings.PLY_GALLERY_HASH_BUF_SIZE)
-                    if not fdata:
-                        break
-                    sha1.update(fdata)
-                    fsize = f.tell()
+            while True:
+                fdata = temp_file_handle.read(ply.settings.PLY_GALLERY_HASH_BUF_SIZE)
+                if not fdata:
+                    break
+                sha1.update(fdata)
+                fsize = temp_file_handle.tell()
+            temp_file_handle.close()
+            
             GalleryItemFile.objects.create(item=item,type=temp_file.meta["metadata"]["format"],hash=sha1.hexdigest(),file_size=fsize,meta=temp_file.meta,original=True)
             UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=fsize,reference=temp_file.name)
             # Step three: Use the imported plugin module to process the file for the galleries and create files:
-            publish_mod.publish_submission(data,profile,original_path,item,user,community)
+            publish_mod.publish_submission(data,profile,temp_path,original_path,item,user,community)
             # Step Four: Add to collections:
             for c in data["cat"].split(","):
                 cat = GalleryArtworkCat.objects.get_or_create(label=c)[0]
@@ -106,9 +108,10 @@ def publish_to_gallery(data,profile,temp_file,user,community):
         finally:
             # WARNING: this is for debug, for production os.rename is preferred.
             #shutil.copy(temp_path,original_path)
-            os.remove(temp_path)
-            # Step Eight: Cleanup
-            temp_file.delete()
+            
+            #Step Eight: Cleanup
+            #os.remove(temp_path)
+            #temp_file.delete()
             return True
     except Exception as e:
             print(e)

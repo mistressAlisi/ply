@@ -1,20 +1,22 @@
 from PIL import Image
+import pathlib,json,os
+
+# PLY
 import ply
 from ply.toolkit import vhosts,file_uploader,logger as plylog
 from gallery_photos import utilities
 from ply import settings
-import json
-import os
+
 log = plylog.getLogger('gallery_photos.metadata',name='gallery_photos.metadata')
 
 def thumbnail(profile,file):
     #print(file.name)
     #fullpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+file_uploader.get_temp_path(file.name,profile)
-    fullpath = file.name.split("/")
+    fullpath = pathlib.Path(file.name)
     #print(fullpath)
-    _name = fullpath[-1:][0].split(".")
-    #rint(_name)
-    name = f"{_name[0]}_thumb.{_name[1]}";
+    name = f"{fullpath.stem}_thumb{fullpath.suffix}"
+
+        
     #print(name)
     #print("*****")
     #print("*****")

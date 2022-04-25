@@ -167,15 +167,30 @@ def save_gallery_photo(file,profile,name=False):
         path = file_uploader.get_temp_path(file.name,profile)
     else:
         path = file_uploader.get_temp_path(name,profile)
-    destpath = ply.settings.PLY_GALLERY_FILE_BASE_PATH+path
-    if not os.path.exists(os.path.dirname(destpath)):
-        try:
-            os.makedirs(os.path.dirname(destpath))
-        except OSError as exc: # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-    with open(destpath, 'wb+') as destination:
-        file.save(destination)
-        bw = destination.tell()
-        destination.close()
-        return bw
+    if (ply.settings.PLY_AVATAR_STORAGE_USE_S3 == 'TRUE'):
+        import boto3,io
+        client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)
+        try: 
+            keystr= f'{ply.settings.PLY_GALLERY_FILE_BASE_PATH}/{path}'
+            cache = io.BytesIO()
+            file.save(cache,file.format)
+            cache.seek(0)
+            client.put_object(Body=cache,ACL='public-read', Bucket=ply.settings.AWS_STORAGE_BUCKET_NAME, Key=keystr)
+            bw = cache.tell()
+            cache.close()
+            return bw
+        except:
+            raise Exception('Unable to store Photo in S3 Storage')
+    else:
+        destpath = ply.settings.PLY_GALLERY_FILE_BASE_PATH+path
+        if not os.path.exists(os.path.dirname(destpath)):
+            try:
+                os.makedirs(os.path.dirname(destpath))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+        with open(destpath, 'wb+') as destination:
+            file.save(destination)
+            bw = destination.tell()
+            destination.close()
+            return bw

@@ -1,9 +1,9 @@
 <div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-file="{{file.id}}" data-plugin="gallery_photos" id="card-{{file.id}}">
   {%if file.thumbnail %}
 
-    <img src="{{base_url}}/{{file.thumbnail}}" class="card-img-top" alt="{{file.name}}">
+    <img src="{{base_url}}/{{file.thumbnail}}" class="card-img-top thumbnail" alt="{{file.name}}">
   {% else %}
-    <img src="{{base_url}}/{{file.path}}" class="card-img-top" alt="{{file.name}}">
+    <img src="{{base_url}}/{{file.path}}" class="card-img-top mainimg" alt="{{file.name}}">
   {% endif %}
   <section id="publish_overlay" class="publish_overlay card-img-overlay text-center align-middle" >
     <h5><i class="fas fa-check-circle"></i>Published!</h5>

@@ -4,7 +4,7 @@ window.gallery_core = Object({
         upload_url: "gallery/api/upload/post_upload/",
         upload_thumb_url: "gallery/api/upload/post_upload_thumbs/",
         upload_lt_url: "gallery/upload/lighttable/",
-        review_panel_url: "/gallery/api/upload/review_panel/",
+        review_panel_url: "/dashboard/user/gallery/api/upload/review_panel/",
         publish_url: "gallery/api/upload/publish/",
         get_collection_url: "/dashboard/user/gallery/api/get/items/",
         view_count_url: "/dashboard/user/gallery/api/view_counter/item",

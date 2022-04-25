@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'martor',
+    'storages',
     'mathfilters',
     'dashboard',
     'dynapages',
@@ -100,12 +101,12 @@ WSGI_APPLICATION = 'ply.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pixel',
-        'USER': 'pixel',
-        'PASSWORD': 'OhT4jaem',
-        'HOST': '10.100.102.5',
-        'PORT': ''
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PW'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
@@ -133,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config('PLY_TIME_ZONE')
 
 USE_I18N = True
 
@@ -142,10 +143,24 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+USE_S3 = config('USE_S3') == 'TRUE'
 
-STATIC_URL = '/static/'
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = config('AWS_LOCATION')
+    STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = config('STATIC_ROOT')
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -238,21 +253,23 @@ PLY_USER_DASHBOARD_MODULES = [
 PLY_GALLERY_PLUGINS = [
     "gallery_photos"
     ]
-
-PLY_TEMP_FILE_BASE_PATH = "/var/www/html/ply_incoming/"
-PLY_TEMP_FILE_URL_BASE_URL="http://10.100.102.5/static/ply_incoming/"
-PLY_GALLERY_ORIGINAL_FILE_BASE_PATH = "/opt/ply/originals/"
-PLY_GALLERY_FILE_BASE_PATH = "/var/www/html/ply_gallery/"
-PLY_AVATAR_FILE_BASE_PATH = "/var/www/html/ply_avatars/"
-PLY_AVATAR_FILE_URL_BASE_URL="http://10.100.102.5/static/ply_avatars/"
-PLY_GALLERY_FILE_URL_BASE_URL="http://10.100.102.5/static/ply_gallery/"
-PLY_GALLERY_HASH_BUF_SIZE  = 65536
-PLY_MSG_BROKER_URL="amqp://guest:guest@localhost:5672/%2F?connection_attempts=10&heartbeat=360"
-GALLERY_PHOTOS_THUMBNAIL_SIZE = 450
-PLY_GALLERY_MIN_DPI = 100
-CELERY_BROKER_URL=PLY_MSG_BROKER_URL
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]
-PLY_AVATAR_MAX_KB = 1024
-PLY_DYNAPAGES_PROFILE_TEMPLATE='dynapage-template-default-profile-2C'
-PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET = "ply_simple_banner"
+
+PLY_GALLERY_STORAGE_USE_S3 = config('PLY_GALLERY_STORAGE_USE_S3')
+PLY_TEMP_FILE_BASE_PATH =  config("PLY_TEMP_FILE_BASE_PATH")
+PLY_TEMP_FILE_URL_BASE_URL = config("PLY_TEMP_FILE_URL_BASE_URL")
+PLY_GALLERY_ORIGINAL_FILE_BASE_PATH = config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH")
+PLY_GALLERY_FILE_BASE_PATH = config("PLY_GALLERY_FILE_BASE_PATH")
+PLY_AVATAR_FILE_BASE_PATH = config("PLY_AVATAR_FILE_BASE_PATH")
+PLY_AVATAR_FILE_URL_BASE_URL=config("PLY_AVATAR_FILE_URL_BASE_URL")
+PLY_GALLERY_FILE_URL_BASE_URL=config("PLY_GALLERY_FILE_URL_BASE_URL")
+PLY_GALLERY_HASH_BUF_SIZE  = int(config("PLY_GALLERY_HASH_BUF_SIZE"))
+PLY_MSG_BROKER_URL=config("PLY_MSG_BROKER_URL")
+GALLERY_PHOTOS_THUMBNAIL_SIZE = int(config("GALLERY_PHOTOS_THUMBNAIL_SIZE"))
+PLY_GALLERY_MIN_DPI = int(config("PLY_GALLERY_MIN_DPI"))
+CELERY_BROKER_URL=config("CELERY_BROKER_URL")
+PLY_AVATAR_MAX_KB = int(config("PLY_AVATAR_MAX_KB"))
+PLY_AVATAR_STORAGE_USE_S3 = config('PLY_AVATAR_STORAGE_USE_S3')
+PLY_DYNAPAGES_PROFILE_TEMPLATE=config("PLY_DYNAPAGES_PROFILE_TEMPLATE")
+PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET")
