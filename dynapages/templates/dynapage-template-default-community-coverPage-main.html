@@ -37,7 +37,7 @@
 
 
 <body class="d-flex h-100 text-center text-white bg-dark">
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column" style="background-image: url('{{bkg_path}}');">
   <header class="mb-auto">
     <div>
       <h3 class="float-md-start mb-0">{{community.name}}</h3>
@@ -50,14 +50,14 @@
     <p class="lead">{{community.introduction}}</p>
     
     <p class="lead">
-      <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-danger text-white">{{community.action_call_cover}}</a>
+      <a href="/almanac" class="btn btn-lg btn-secondary fw-bold border-white bg-danger text-white">{{community.action_call_cover}}</a>
       
     </p>
     
   </main>
 
   <footer class="mt-auto text-white-50">
-    <p><span class="ply-brand_font">Ply</span> powered, (v) 2022.021801 </p>
+    <p><span class="ply-brand_font">Ply</span> powered, (v) {{ply_version}} </p>
   </footer>
 </div>
 </html>

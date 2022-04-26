@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import os
+import os,socket
 from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +30,6 @@ ALLOWED_HOSTS = [config("ALLOWED_HOST_1"),config("ALLOWED_HOST_2"),config("ALLOW
 STATIC_ROOT = config("STATIC_ROOT")
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -255,7 +254,11 @@ PLY_GALLERY_PLUGINS = [
     ]
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]
-
+PLY_VERSION = "2022.04.2200"
+try:
+    PLY_HOSTNAME = socket.gethostname()
+except:
+    PLY_HOSTNAME = "localhost"
 PLY_GALLERY_STORAGE_USE_S3 = config('PLY_GALLERY_STORAGE_USE_S3')
 PLY_TEMP_FILE_BASE_PATH =  config("PLY_TEMP_FILE_BASE_PATH")
 PLY_TEMP_FILE_URL_BASE_URL = config("PLY_TEMP_FILE_URL_BASE_URL")

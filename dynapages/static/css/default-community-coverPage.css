@@ -1,3 +1,10 @@
 .ply-brand_font {
     font-family: 'Lily Script One', cursive;
 }
+.cover-container {
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+}

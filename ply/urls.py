@@ -23,6 +23,7 @@ urlpatterns = [
     path('dashboard/user/',include('dashboard.user_urls')),
     path('keywords/api/',include('keywords.api_urls')),
     path('forge/', include('forge.user_urls')),
+    path('forge/', include('forge.admin_urls')),
     path('forge/api/', include('forge.api_urls')),
     path('admin/', admin.site.urls),
     path('api/auth/login/',login),
