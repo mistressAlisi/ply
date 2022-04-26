@@ -6,12 +6,13 @@ import datetime
 # Ply:
 from profiles.models import Profile
 from profiles.forms import ProfileForm
+from community.forms import CommunityForm
 from ply import settings,system_uuids
 from ply.toolkit import vhosts,profiles,logger,file_uploader
 from dynapages.models import Templates,Page,Widget,PageWidget
 from dashboard.navigation import SideBarBuilder
 from stats.models import BaseStat,ProfileStat
-from community.models import Community,CommunityProfile
+from community.models import Community,CommunityProfile,CommunityAdmins
 # Create your views here.
 
 # Upload an avatar and apply it to the currently specified profile in the session space:
@@ -108,6 +109,80 @@ def finish_edit_profile(request):
     profile = Profile.objects.get(uuid=request.session['profile'])
     if (profile.placeholder is True):
         return JsonResponse({"res":"err","e":"Profile is a placeholder."},safe=False)  
-    profile.updated = datetime.datetime.now()
+    profile.updated = datetime.datetime.utcnow()
     profile.save()
+    return JsonResponse({"res":"ok"},safe=False)  
+
+
+
+# Upload an icon to the Community as an Avatar/cover image:
+@login_required
+def upload_community_picture(request):
+    if 'charImage' not in request.FILES:
+        return JsonResponse({"res":"try-again"},safe=False)  
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    if request.method == 'POST':
+        file = request.FILES['charImage']
+        # Check the file size:
+        if (file.size >= settings.PLY_AVATAR_MAX_KB*1024):
+                return JsonResponse({"res":"err","e":"Maximum File Size Exceeded"},safe=False)  
+        # Check the file type:
+        type = file.name.split(".")
+        if (len(type) < 2):
+                return JsonResponse({"res":"err","e":"Invalid Filetype"},safe=False)  
+        if (type[1] not in settings.PLY_AVATAR_FORMATS):
+                return JsonResponse({"res":"err","e":"Invalid Filetype"},safe=False)  
+        # Now let's thumbnail it and store it in avatar storage:
+        with Image.open(file) as im:
+                #try:
+                im.thumbnail(settings.PLY_AVATAR_MAX_PX)
+                path = file_uploader.save_avatar_file(im,community,f"av_{community.uuid}."+type[1])  
+                #except Exception as e:
+                #    print(e)
+                #    return JsonResponse({"res":"err","err":"except","e":str(e)},safe=False)
+                community.avatar = path 
+                community.save()
+                return JsonResponse({"res":"ok","path":settings.PLY_AVATAR_FILE_URL_BASE_URL+"/"+path},safe=False)  
+            
+    return JsonResponse({"res":"ok"},safe=False)   
+
+# UPDATE the Community profile:
+@login_required
+def update_community_profile(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    form = CommunityForm(request.POST,instance=community)
+    if ('dynapage' in request.POST):
+        # Update the Dynapage Template
+        dynaPage_Template = request.POST['dynapage']
+        template = Templates.objects.get(template_id=dynaPage_Template)
+        community.dynapage.template = template
+        community.dynapage.save()
+    if (not form.is_valid()):
+        return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
+    form.save()
+    community.save()
+    return JsonResponse({"res":"ok"},safe=False)   
+
+
+# FINISH editing the community:
+@login_required
+def finish_community_profile(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    community.updated = datetime.datetime.utcnow()
+    community.save()
     return JsonResponse({"res":"ok"},safe=False)  

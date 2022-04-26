@@ -51,6 +51,7 @@ def _item_serialiser(_items):
                     "shares":i.gc_shares,
                     "comments":i.gc_comments,
                     "uuid":i.gc_uuid,
+                    "collection_id":i.gc_id,
                     "items":curr_items
                     })
                 curr_items = []
@@ -71,6 +72,7 @@ def _item_serialiser(_items):
                     "shares":i.gc_shares,
                     "comments":i.gc_comments,
                     "uuid":i.gc_uuid,
+                    "collection_id":i.gc_id,
                     "items":curr_items,
                     
                     })
@@ -95,4 +97,19 @@ def serialise_own_collection_items(request,collection):
 # Get ALL The items for the community (filters apply here):
 def serialise_community_items(request):
     _items = GalleryItemsByCollectionPermission.objects.filter(gcp_community=request.session['community']).order_by("gc_uuid").distinct()
+    return (_item_serialiser(_items))
+
+
+# Get ALL The items for the specified profile inside the specified community (filters apply here - if you specify collection it will also filter by collection):
+def serialise_community_per_profile_items(request,profile,collection=False):
+    if (collection is False):
+        _items = GalleryItemsByCollectionPermission.objects.filter(gcp_community=request.session['community'],gcp_profile=profile.uuid).order_by("gc_uuid").distinct()
+    else:
+        _items = GalleryItemsByCollectionPermission.objects.filter(gcp_community=request.session['community'],gcp_profile=profile.uuid,gc_uuid=collection.uuid).order_by("gc_uuid").distinct()
+    return (_item_serialiser(_items))
+
+
+# Get ALL The items for the specified profile inside the specified collection (filters apply here):
+def serialise_per_collection_items(request,collection_id):
+    _items = GalleryItemsByCollectionPermission.objects.filter(gcp_community=request.session['community'],gc_uuid=collection_id).order_by("gc_uuid").distinct()
     return (_item_serialiser(_items))

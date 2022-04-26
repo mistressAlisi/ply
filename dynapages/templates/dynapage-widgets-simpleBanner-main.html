@@ -11,8 +11,8 @@
                 <img src="{{av_path}}/{{profile.avatar}}" class="img-thumbnail" alt="{{profile.name}} Icon">
                 </div>
                 <div class="col profile_data">
-                    <div class="profile_name_div">
-                    <span class="name"><i class="fa-regular fa-address-card"></i>&#160;{{profile.name}}</span> <span class="slug">(@{{profile.profile_id}})</span>
+                   <div class="profile_name_div">
+                    {%include "dashboard-profileid-interactions-widget.html" %}
                     </div> 
                     <div class="col profile_tagline">
                     <i class="fa-solid fa-feather-pointed"></i>&#160; <em>{{profile.introduction}}</em>

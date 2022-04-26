@@ -1,0 +1,33 @@
+
+      <div class="col-md-5 col-lg-4">
+        <div class="card">
+            <div class="card_header">
+                <h4 style="padding-left: 4px;">
+                    &#160;<span class="text-primary"><i class="fa-solid fa-camera-retro"></i>&#160;Community Avatar:</span>
+                </h4>
+            </div>
+            <div class="card_body">
+            {% if community.avatar %}
+                <img src="{{av_path}}/{{community.avatar}}" class="img-fluid img-thumbnail mx-auto d-block" alt="Avatar Picture" id="charImage" style="max-height: 380px;">
+            {% else %}
+                <img src="/static/img/image-portrait-solid.svg" class="img-fluid img-thumbnail mx-auto d-block" alt="Avatar Picture" id="charImage" style="max-height: 380px;">
+            {% endif %}
+            </div>
+            <div class="card_footer" style="padding: 5px; padding-left: 8px;">
+            <hr/>
+            <form id="upload_image_form" onsubmit="return create_community.img_upload(event);">
+            {%csrf_token%}
+              <label for="charImage" class="form-label"><i class="fa-solid fa-image"></i>&#160;Select File:</label><br/>
+              <small class="text-muted">Select a picture to upload Max Size: 1MB, 1024x1024px (PNG/JPG/SVG/GIF/WEBP):</small>
+              <br/> 
+              <input type="file" class="form-control" name="charImage" id="charImage" placeholder="" value="" required="">
+              <br/>
+              <div class="invalid-feedback">
+                Invalid File was uploaded.
+              </div>
+                 <button type="submit" class="btn btn-secondary"><i class="fa-solid fa-file-arrow-up"></i>&#160;Upload File</button>
+            </form>
+            </div>
+        </div>
+</div>      
+     

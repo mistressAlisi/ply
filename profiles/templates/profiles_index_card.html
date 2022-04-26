@@ -6,9 +6,7 @@
                 </div>
                 <div class="col profile_data">
                     <div class="profile_name_div">
-                    <h2>
-                    <span class="name"><i class="fa-regular fa-address-card"></i>&#160;<a target="_blank" href="/profiles/@{{profile.profile_id}}">{{profile.name}}</span> <span class="slug">(@{{profile.profile_id}})</span></a>
-                    </h2>
+                    {%include "dashboard-profileid-interactions-widget.html" %}
                     </div> 
                     <div class="col profile_tagline">
                     <i class="fa-solid fa-feather-pointed"></i>&#160; <em>{{profile.introduction}}</em>

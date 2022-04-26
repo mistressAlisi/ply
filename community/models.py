@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib import admin
+import uuid
+
+
+# PLY
 from profiles.models import Profile
 from group.models import Group
 from dynapages.models import Page
-import uuid
 # Create your models here.
 class Community(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
@@ -24,6 +27,7 @@ class Community(models.Model):
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     restricted = models.BooleanField(verbose_name="Restricted Join Mode FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
+    backgroundItem = models.ForeignKey('gallery.GalleryItem',blank=True,null=True,on_delete=models.RESTRICT)
     def __str__(self):
         return f"Community: {self.name}, hash: {self.hash}"
     

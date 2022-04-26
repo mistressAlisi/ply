@@ -1,8 +1,8 @@
 <li class="mb-1 sidebar-menu-container-li">
-        <button class="btn btn-toggle align-items-center rounded collapsed sidebar-main-button" data-bs-toggle="collapse" data-bs-target="#-collapse" aria-expanded="false" data-mname="" onclick="dc_handleMainLink(event);" data-js="/static/js/gallery_core.js">
+        <button class="btn btn-toggle align-items-center rounded collapsed sidebar-main-button" data-bs-toggle="collapse" data-bs-target="#admin-collapse" aria-expanded="false" data-mname="" onclick="dc_handleMainLink(event);">
           <i class="fa-solid fa-screwdriver-wrench fa-2x" aria-hidden="true"></i> Almanac Administrator
         </button>
-        <div class="collapse" id="-collapse" style="">
+        <div class="collapse" id="admin-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
             
             <li><a href="/almanac/user/page/create" data-wt="Create Page" class="link-dark rounded sidebar-submenu-link" data-onclick="">
@@ -40,5 +40,28 @@
             </a></li>
             
         </ul>
+        
+        
+    </div>
+</li>
+
+
+<li class="mb-1 sidebar-menu-container-li">
+        <button class="btn btn-toggle align-items-center rounded collapsed sidebar-main-button" data-bs-toggle="collapse" data-bs-target="#community-collapse" aria-expanded="false" data-mname="" onclick="dc_handleMainLink(event);">
+          <i class="fa-solid fa-globe fa-2x" aria-hidden="true"></i> Community Administrator
+        </button>
+        <div class="collapse" id="community-collapse" style="">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
+            
+            <li><a href="/forge/edit/community/cover" data-wt="Create Page" class="link-dark rounded sidebar-submenu-link" data-onclick="">
+            <i class="fa-solid fa-house-circle-check"></i>
+            Edit Community Details
+            </a></li>
+            
+        
+            
+        </ul>
+        
+        
     </div>
 </li>

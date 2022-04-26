@@ -89,14 +89,16 @@ def publish_to_gallery(data,profile,temp_file,user,community):
                 try:
                     col = GalleryCollection.objects.get_or_create(uuid=c)[0]
                 except ValidationError:
-                    col = GalleryCollection.objects.get_or_create(label=c)[0]
+                    col = GalleryCollection.objects.get_or_create(label=c,collection_id=slugify(c))[0]
                 # Don't forget the permissions object!
                 colc = GalleryCollectionPermission.objects.get_or_create(collection=col,profile=profile,owner=True,community=community)[0]
             
                 # Now add the items...
                 gic = GalleryCollectionItems.objects.get_or_create(item=item,collection=col)[0]
+                col.items = col.items + 1 
             
                 # And save all:
+                col.save()
                 gic.save()
                 colc.save()
                 cat.save()

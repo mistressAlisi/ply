@@ -27,7 +27,7 @@ def save_temp_file(file,profile,name=False):
 
 def save_gallery_file(file,profile,name=False):
     if not name:
-        print(os.path.realpath(file.name))
+        #print(os.path.realpath(file.name))
         pl = pathlib.Path(os.path.realpath(file.name))
         name = pl.stem
         path = get_temp_path(file.name,profile)
@@ -35,7 +35,7 @@ def save_gallery_file(file,profile,name=False):
         client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)
         try: 
             keystr= f'{ply.settings.PLY_GALLERY_FILE_BASE_PATH}/{path}'
-            print(keystr)
+            #print(keystr)
             cache = io.BytesIO()
             file.save(cache,file.format)
             cache.seek(0)
@@ -62,7 +62,7 @@ def save_gallery_file(file,profile,name=False):
 
 def save_original_file(file,profile,name=False):
     if not name:
-        print(os.path.realpath(file.name))
+        #print(os.path.realpath(file.name))
         pl = pathlib.Path(os.path.realpath(file.name))
         name = pl.name
         path = get_temp_path(name,profile)
