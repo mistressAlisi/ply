@@ -24,7 +24,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR(f'Widget "{widget}" Needs Template: "{wdata["dynapage_template"]}"'))
                     print(e)
                     return False
-                widget_obj = Widget(widget_name=wdata["widget_name"],author=wdata["author"],version=wdata["version"],label=wdata["title"],descr=wdata["descr"],helptext=wdata["helptext"],template=template,banner=wdata["modes"]["banner"],mainbody=wdata["modes"]["mainbody"],sidecol=wdata["modes"]["sidecol"],footer=wdata["modes"]["footer"])
+                widget_obj = Widget(widget_id=wdata["widget_name"],widget_name=wdata["widget_name"],author=wdata["author"],version=wdata["version"],label=wdata["title"],descr=wdata["descr"],helptext=wdata["helptext"],template=template,banner=wdata["modes"]["banner"],mainbody=wdata["modes"]["mainbody"],sidecol=wdata["modes"]["sidecol"],footer=wdata["modes"]["footer"])
                 widget_obj.save()
                 self.stdout.write(self.style.SUCCESS('Successfully registered Widget "%s"' % widget))
                 
