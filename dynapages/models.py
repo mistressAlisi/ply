@@ -29,6 +29,7 @@ class TemplatesAdmin(admin.ModelAdmin):
 
 class Widget(models.Model):
     widget_uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    widget_id = models.TextField(max_length=200,verbose_name="Widget ID",default="",unique=True)
     widget_name = models.TextField(max_length=200,verbose_name="Widget Name",default="",unique=True)
     author= models.TextField(max_length=200,verbose_name="Widget Author",default="")
     version= models.TextField(max_length=200,verbose_name="Widget Version",default="")

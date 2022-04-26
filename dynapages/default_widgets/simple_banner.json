@@ -6,7 +6,7 @@
     "author":"Alisi",
     "plugin":"profiles",
     "widget_name":"ply_simple_banner",
-    "dynapage_template":"widget_simpleBanner_main",
+    "dynapage_template":"dynapage-widgets-simpleBanner-main",
     "widget_data": {},
     "modes":{
         "banner":true,
