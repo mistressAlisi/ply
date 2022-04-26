@@ -23,9 +23,13 @@ def community_home(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         if (community.backgroundItem is not False):
-            bkg_item = GalleryItemsByCollectionPermission.objects.get(item=community.backgroundItem,gif_thumbnail=False)
-            path = ply.toolkit.file_uploader.get_temp_path(bkg_item.file.name,bkg_item.profile)
-            bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
+            try:
+                bkg_item = GalleryItemsByCollectionPermission.objects.get(item=community.backgroundItem,gif_thumbnail=False)
+                path = ply.toolkit.file_uploader.get_temp_path(bkg_item.file.name,bkg_item.profile)
+                bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
+            except GalleryItemsByCollectionPermission.DoesNotExist:
+                bkg_path= ""
+
         else:
             bkg_path = False
         context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path}
