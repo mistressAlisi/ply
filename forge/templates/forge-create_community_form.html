@@ -75,7 +75,7 @@
               <label for="backgroundItem" class="form-label">Gallery Item for Cover Page Background:</label>
               <div class="input-group has-validation">
                 <span class="input-group-text"><i class="fa-solid fa-image"></i></span>
-               <select id="backgroundItem" class="form-select" name="backgroundItem" placeholder="Select Background Item" required="">
+               <select id="backgroundItem" class="form-select" name="backgroundItem" placeholder="Select Background Item" >
                 <option value="">[select background item]</option>
                 {% for item in backgroundItems %}
                      <option value="{{item.uuid}}"

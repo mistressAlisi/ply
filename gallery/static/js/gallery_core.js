@@ -74,7 +74,7 @@ window.gallery_core = Object({
         if (d == false) { return false; };
         if (d.type != "gallery-plugin") { 
             console.error("Wrong Datatype for Plugin!!"); 
-            alert("Gallery Core can't load: "+plugin+". plugin.json has wrong type.");
+            alert("Gallery Core can't load: "+d.name+". plugin.json has wrong type.");
             return false;
         };
         /** load javascript: **/
@@ -97,7 +97,9 @@ window.gallery_core = Object({
               $('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', csp));
               count++;
         }};
+        
         gallery_core._pLoaded.push(d.name);
+        console.log("Gallery Core Plugin '"+d.name+"': ready.");
         $(gallery_core).trigger('plugin_ready',d.name);
     },
     
