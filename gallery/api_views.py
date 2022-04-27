@@ -12,6 +12,7 @@ from gallery.tasks import publish_to_gallery,upload_ingest
 from profiles.models import Profile
 from community.models import Community
 from metrics.models import GalleryItemHit
+from metrics.toolkit import request_data_capture
 import metrics
 import json
 import ply
@@ -141,7 +142,7 @@ def gallery_viewer_counter_item(request):
         iid = request.GET['itm']
         item = GalleryItem.objects.get(pk=iid)
         itemHit = GalleryItemHit.objects.create(item=item,community=comm,type="VIEW")
-        metrics.toolkit.request_data_capture(request,itemHit)
+        request_data_capture(request,itemHit)
         item.views = item.views + 1;
         item.save();
     if ('col' in request.GET):
