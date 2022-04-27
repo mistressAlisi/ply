@@ -171,7 +171,7 @@ class GalleryCollectionPageHit(models.Model):
     def __str__(self):
         return f"Gallery Collection Page Hit: for {self.collection.uuid} at: {self.created} (IP: {self.remote_addr}) (X-UA: {self.user_agent})"
 @admin.register(GalleryCollectionPageHit)
-class GalleryCollectionPageHit(admin.ModelAdmin):
+class GalleryCollectionPageHitAdmin(admin.ModelAdmin):
     pass
     
 class GalleryCollectionPageHitTotals(models.Model):
