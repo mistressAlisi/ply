@@ -8,7 +8,7 @@ from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
 from gallery.models import GalleryItemsByCollectionPermission
 from metrics.models import CommunityPageHit
-import metrics
+from metrics.toolkit import request_data_capture
 # Render the User Dashboard Home page:
 def community_home(request):
     # Ignore port:
@@ -26,7 +26,7 @@ def community_home(request):
     else:
         # Create the community metrics:
         gal_hit = CommunityPageHit.objects.create(community=community,type="COMPAGE")
-        metrics.toolkit.request_data_capture(request,gal_hit)
+        request_data_capture(request,gal_hit)
         # now render the page:
         if (community.backgroundItem is not False):
             try:
