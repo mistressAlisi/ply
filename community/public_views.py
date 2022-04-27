@@ -7,6 +7,8 @@ from ply.toolkit import vhosts,profiles
 from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
 from gallery.models import GalleryItemsByCollectionPermission
+from metrics.models import CommunityPageHit
+from metrics import toolkit as metrics_toolkit
 # Render the User Dashboard Home page:
 def community_home(request):
     # Ignore port:
@@ -22,6 +24,10 @@ def community_home(request):
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
+        # Create the community metrics:
+        gal_hit = CommunityPageHit.objects.create(community=community,type="COMPAGE")
+        metrics_toolkit.utils.request_data_capture(request,gal_hit)
+        # now render the page:
         if (community.backgroundItem is not False):
             try:
                 bkg_item = GalleryItemsByCollectionPermission.objects.get(item=community.backgroundItem,gif_thumbnail=False)
