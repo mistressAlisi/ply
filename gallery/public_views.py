@@ -52,7 +52,7 @@ def profile_gallery(request,profile_id):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         # Create the gallery metrics:
-        gal_hit = GalleryProfilePageHit.objects.create(profile=profile,type="GALPAGE",community=community)
+        gal_hit = GalleryProfilePageHit.objects.create(profile=gallery_profile,type="GALPAGE",community=community)
         request_data_capture(request,gal_hit)
         # Now render the page: 
         colls = serialisers.serialise_community_per_profile_items(request,gallery_profile)    
