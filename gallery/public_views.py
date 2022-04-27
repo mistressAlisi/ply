@@ -9,7 +9,7 @@ from profiles.models import Profile
 from gallery import serialisers
 from gallery.models import GalleryCollection
 from metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit
-from metrics import toolkit as metrics_toolkit
+import metrics
 # Render the Gallery Home page:
 def gallery_home(request):
     # Ignore port:

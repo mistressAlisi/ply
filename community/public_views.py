@@ -8,7 +8,7 @@ from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
 from gallery.models import GalleryItemsByCollectionPermission
 from metrics.models import CommunityPageHit
-from metrics import toolkit as metrics_toolkit
+import metrics
 # Render the User Dashboard Home page:
 def community_home(request):
     # Ignore port:

@@ -12,7 +12,7 @@ from gallery.tasks import publish_to_gallery,upload_ingest
 from profiles.models import Profile
 from community.models import Community
 from metrics.models import GalleryItemHit
-from metrics import toolkit as metrics_toolkit
+import metrics
 import json
 import ply
 import importlib
