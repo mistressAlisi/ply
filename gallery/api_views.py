@@ -141,7 +141,7 @@ def gallery_viewer_counter_item(request):
         item = GalleryItem.objects.get(pk=iid)
         itemHit = GalleryItemHit.objects.create(item=item,community=comm,type="VIEW")
         if request.user.is_authenticated:
-            itemHit.profile = Profile.objects.filter(pk=request.session['profile'])
+            itemHit.profile = Profile.objects.get(pk=request.session['profile'])
         if 'User-Agent' in request.headers:
             itemHit.user_agent = request.headers["User-Agent"]
         if 'REMOTE_ADDR' in request.headers:
