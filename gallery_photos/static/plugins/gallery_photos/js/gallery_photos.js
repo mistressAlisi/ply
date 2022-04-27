@@ -267,5 +267,6 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         return true;
     }
 });
-
+console.log("Gallery Photos Plugin ready.");
+$(gallery_core).trigger('plugin_ready','gallery_photos');
 
