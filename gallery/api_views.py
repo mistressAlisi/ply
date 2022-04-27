@@ -144,6 +144,8 @@ def gallery_viewer_counter_item(request):
             itemHit.profile = Profile.objects.filter(pk=request.session['profile'])
         if 'User-Agent' in request.headers:
             itemHit.user_agent = request.headers["User-Agent"]
+        if 'REMOTE_ADDR' in request.headers:
+            itemHit.user_agent = request.headers["REMOTE_ADDR"]
         itemHit.save()
         item.views = item.views + 1;
         item.save();
