@@ -51,6 +51,7 @@ def profile_gallery(request,profile_id):
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
+        request.session["community"] = str(community.uuid)
         # Create the gallery metrics:
         gal_hit = GalleryProfilePageHit.objects.create(profile=gallery_profile,type="GALPAGE",community=community)
         request_data_capture(request,gal_hit)
@@ -76,6 +77,7 @@ def profile_gallery_collection(request,profile_id,collection_id):
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
+        request.session["community"] = str(community.uuid)
         collection = GalleryCollection.objects.get_or_create(collection_id=collection_id)[0]
         # Create the gallery metrics:
         gal_hit = GalleryCollectionPageHit.objects.create(collection=collection,type="GALCOLPAGE",community=community)
