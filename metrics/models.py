@@ -3,7 +3,7 @@ from django.contrib import admin
 from profiles.models import Profile
 from django.contrib.auth.models import User
 from group.models import Group
-from gallery.models import GalleryItem
+from gallery.models import GalleryItem,GalleryCollection
 from community.models import Community
 import uuid
 # Create your models here.
@@ -93,12 +93,14 @@ class GalleryItemHitTotalsAdmin(admin.ModelAdmin):
 class ProfilePageHit(models.Model):
     profile = models.ForeignKey(Profile,verbose_name='Parent',on_delete=models.CASCADE,related_name="+")
     type = models.TextField(verbose_name='Hit Type',db_index=True)
-    updated = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
-    visitor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,related_name="+")
-    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE)
-    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    visitor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,related_name="+",blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT,blank=True,null=True)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
     def __str__(self):
-        return f"Profile Page Hit: {self.visitor.uuid} for: {self.profile.uuid}'s profile"
+        return f"Profile Page Hit: for {self.profile.uuid} at: {self.created} (IP: {self.remote_addr}) (X-UA: {self.user_agent})"
 @admin.register(ProfilePageHit)
 class ProfilePageHitAdmin(admin.ModelAdmin):
     pass
@@ -121,12 +123,13 @@ class GroupPageHit(models.Model):
     visistor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE)
     group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE)
     community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
     def __str__(self):
         return f"Group Page Hit: {self.visitor.uuid} group: {self.group.uuid}"
 @admin.register(GroupPageHit)
 class GroupPageHitAdmin(admin.ModelAdmin):
     pass
-
 
 class GroupPageHitTotals(models.Model):
     group = models.ForeignKey(Group,verbose_name='Parent',on_delete=models.CASCADE)
@@ -134,7 +137,127 @@ class GroupPageHitTotals(models.Model):
     community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)    
     totals = models.IntegerField(verbose_name='Total views',default=0)
     def __str__(self):
-        return f"Group Page Hit Totals: {self.group.uuid} for: {self.community.uuid}"
+        return f"Group Page Hit Totals: {self.profile.uuid} for: {self.community.uuid}"
 @admin.register(GroupPageHitTotals)
 class GroupPageHitTotalsAdmin(admin.ModelAdmin):
+    pass
+
+
+class GalleryProfilePageHit(models.Model):
+    profile = models.ForeignKey(Profile,verbose_name='Parent',on_delete=models.CASCADE,related_name="+")
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    visitor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,related_name="+",blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT,blank=True,null=True)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
+    def __str__(self):
+        return f"Gallery Profile Page Hit: for {self.profile.uuid} at: {self.created} (IP: {self.remote_addr}) (X-UA: {self.user_agent})"
+@admin.register(GalleryProfilePageHit)
+class GalleryProfilePageHitAdmin(admin.ModelAdmin):
+    pass
+  
+  
+class GalleryCollectionPageHit(models.Model):
+    collection = models.ForeignKey(GalleryCollection,verbose_name='Collection',on_delete=models.CASCADE)
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    visitor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,related_name="+",blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT,blank=True,null=True)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
+    def __str__(self):
+        return f"Gallery Collection Page Hit: for {self.collection.uuid} at: {self.created} (IP: {self.remote_addr}) (X-UA: {self.user_agent})"
+@admin.register(GalleryCollectionPageHit)
+class GalleryCollectionPageHit(admin.ModelAdmin):
+    pass
+    
+class GalleryCollectionPageHitTotals(models.Model):
+    collection = models.ForeignKey(GalleryCollection,verbose_name='Parent',on_delete=models.CASCADE)
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)    
+    totals = models.IntegerField(verbose_name='Total views',default=0)
+    def __str__(self):
+        return f"Gallery Collection Hit Totals: {self.collection.uuid} for: {self.community.uuid}"
+@admin.register(GalleryCollectionPageHitTotals)
+class GalleryCollectionPageHitTotalsAdmin(admin.ModelAdmin):
+    pass
+    
+
+
+class CommunityPageHit(models.Model):
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    updated = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    visistor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
+    def __str__(self):
+        return f"Community Page Hit: {self.updated}"
+@admin.register(CommunityPageHit)
+class CommunityPageHitAdmin(admin.ModelAdmin):
+    pass
+
+class CommunityPageHitTotals(models.Model):
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)    
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    totals = models.IntegerField(verbose_name='Total views',default=0)
+    def __str__(self):
+        return f"Community Page Hit Totals: {self.profile.uuid} for: {self.community.uuid}"
+@admin.register(CommunityPageHitTotals)
+class CommunityPageHitTotalsAdmin(admin.ModelAdmin):
+    pass
+
+
+
+class GalleryHomePageHit(models.Model):
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    updated = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    visistor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
+    def __str__(self):
+        return f"Gallery Page Hit: {self.updated}"
+@admin.register(GalleryHomePageHit)
+class GalleryHomePageHitAdmin(admin.ModelAdmin):
+    pass
+
+class GalleryHomePageHitTotals(models.Model):
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)    
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    totals = models.IntegerField(verbose_name='Total views',default=0)
+    def __str__(self):
+        return f"Group Page Hit Totals: {self.profile.uuid} for: {self.community.uuid}"
+@admin.register(GalleryHomePageHitTotals)
+class GalleryHomePageHitTotalsAdmin(admin.ModelAdmin):
+    pass
+
+
+class ProfileIndexPageHit(models.Model):
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    updated = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    visistor = models.ForeignKey(Profile,verbose_name='Viewed by Profile',on_delete=models.CASCADE,blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
+    remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
+    user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
+    def __str__(self):
+        return f"Profile Index Hit: {self.updated}"
+@admin.register(ProfileIndexPageHit)
+class ProfileIndexPageHitAdmin(admin.ModelAdmin):
+    pass
+
+class ProfileIndexPageHitTotals(models.Model):
+    community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)    
+    type = models.TextField(verbose_name='Hit Type',db_index=True)
+    totals = models.IntegerField(verbose_name='Total views',default=0)
+    def __str__(self):
+        return f"Profile Index Hit Totals: {self.profile.uuid} for: {self.community.uuid}"
+@admin.register(ProfileIndexPageHitTotals)
+class ProfileIndexPageHitTotalsAdmin(admin.ModelAdmin):
     pass

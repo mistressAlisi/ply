@@ -12,6 +12,7 @@ from gallery.tasks import publish_to_gallery,upload_ingest
 from profiles.models import Profile
 from community.models import Community
 from metrics.models import GalleryItemHit
+from metrics import toolkit as metrics_toolkit
 import json
 import ply
 import importlib
@@ -140,13 +141,7 @@ def gallery_viewer_counter_item(request):
         iid = request.GET['itm']
         item = GalleryItem.objects.get(pk=iid)
         itemHit = GalleryItemHit.objects.create(item=item,community=comm,type="VIEW")
-        if request.user.is_authenticated:
-            itemHit.profile = Profile.objects.get(pk=request.session['profile'])
-        if 'User-Agent' in request.headers:
-            itemHit.user_agent = request.headers["User-Agent"]
-        if 'REMOTE_ADDR' in request.META:
-            itemHit.remote_addr = request.META["REMOTE_ADDR"]
-        itemHit.save()
+        metrics_toolkit.utils.request_data_capture(request,itemHit)
         item.views = item.views + 1;
         item.save();
     if ('col' in request.GET):
