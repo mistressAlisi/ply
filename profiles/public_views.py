@@ -12,7 +12,7 @@ from group.models import Group,GroupMember,GroupTitle
 from stats.models import BaseStat,ProfileStat
 from community.models import CommunityProfile
 from metrics.models import ProfilePageHit
-from metrics import toolkit as metrics_toolkit
+import metrics
 # Create your views here.
 
 # Render the User Dashboard Home page:
