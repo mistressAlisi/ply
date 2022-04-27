@@ -11,6 +11,7 @@ from gallery import serialisers
 from gallery.tasks import publish_to_gallery,upload_ingest
 from profiles.models import Profile
 from community.models import Community
+from metrics.models import GalleryItemHit
 import json
 import ply
 import importlib
@@ -134,9 +135,16 @@ def gallery_collection_items_raw(request,collection):
 
 @transaction.atomic
 def gallery_viewer_counter_item(request):
+    comm = Community.objects.get(uuid=request.session["community"])
     if ('itm' in request.GET):
         iid = request.GET['itm']
         item = GalleryItem.objects.get(pk=iid)
+        itemHit = GalleryItemHit.objects.create(item=item,community=comm,type="VIEW")
+        if request.user.is_authenticated:
+            itemHit.profile = Profile.objects.filter(pk=request.session['profile'])
+        if 'User-Agent' in request.headers:
+            itemHit.user_agent = request.headers["User-Agent"]
+        itemHit.save()
         item.views = item.views + 1;
         item.save();
     if ('col' in request.GET):
