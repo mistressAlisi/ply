@@ -145,7 +145,7 @@ def gallery_viewer_counter_item(request):
         if 'User-Agent' in request.headers:
             itemHit.user_agent = request.headers["User-Agent"]
         if 'REMOTE_ADDR' in request.META:
-            itemHit.user_agent = request.META["REMOTE_ADDR"]
+            itemHit.remote_addr = request.META["REMOTE_ADDR"]
         itemHit.save()
         item.views = item.views + 1;
         item.save();
