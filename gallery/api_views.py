@@ -141,7 +141,7 @@ def gallery_viewer_counter_item(request):
         iid = request.GET['itm']
         item = GalleryItem.objects.get(pk=iid)
         itemHit = GalleryItemHit.objects.create(item=item,community=comm,type="VIEW")
-        metrics_toolkit.utils.request_data_capture(request,itemHit)
+        metrics.toolkit.request_data_capture(request,itemHit)
         item.views = item.views + 1;
         item.save();
     if ('col' in request.GET):

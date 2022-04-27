@@ -31,7 +31,7 @@ def profile_view(request,profile_id):
         primaryGroup = False
     # Create the Profile metrics:
     gal_hit = ProfilePageHit.objects.create(profile=profile,type="PROFILE",community=community)
-    metrics_toolkit.utils.request_data_capture(request,gal_hit)
+    metrics.toolkit.request_data_capture(request,gal_hit)
     # now render the page:
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profile.dynapage)
     stats = ProfileStat.objects.filter(profile=profile)
@@ -48,6 +48,6 @@ def profile_index(request):
         all_profiles = profiles.get_all_profiles(request)
     # Create the Profile metrics:
     gal_hit = ProfileIndexPageHit.objects.create(type="PROFILEINX",community=community)
-    metrics_toolkit.utils.request_data_capture(request,gal_hit)
+    metrics.toolkit.request_data_capture(request,gal_hit)
     context = {'community':community,'vhost':vhost,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'current_profile':current_profile,'all_profiles':all_profiles}
     return render(request,'profiles_index_view.html',context)

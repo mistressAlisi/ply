@@ -26,7 +26,7 @@ def community_home(request):
     else:
         # Create the community metrics:
         gal_hit = CommunityPageHit.objects.create(community=community,type="COMPAGE")
-        metrics_toolkit.utils.request_data_capture(request,gal_hit)
+        metrics.toolkit.request_data_capture(request,gal_hit)
         # now render the page:
         if (community.backgroundItem is not False):
             try:

@@ -1,4 +1,4 @@
-from profile.models import Profile
+from profiles.models import Profile
 def request_data_capture(request,metricsObject):
     if request.user.is_authenticated:
         metricsObject.visitor = Profile.objects.get(pk=request.session['profile'])
