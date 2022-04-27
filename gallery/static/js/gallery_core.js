@@ -99,8 +99,7 @@ window.gallery_core = Object({
         }};
         
         gallery_core._pLoaded.push(d.name);
-        console.log("Gallery Core Plugin '"+d.name+"': ready.");
-        $(gallery_core).trigger('plugin_ready',d.name);
+
     },
     
 /** loadPlugin: Loads a plugin from the assets/plugins/ directory from the gallery plugin the file specified: The plugin must include a gallery_plugin.json that describes the css and js files to be loaded. **/

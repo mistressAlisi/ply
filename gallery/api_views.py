@@ -126,10 +126,10 @@ def gallery_collections_raw(request):
     return JsonResponse(colls,safe=False)   
 
 # Get ALL The items for the specified Collection (where the specified profile is the owner)
-@login_required
+#@login_required
 def gallery_collection_items_raw(request,collection):
     colls = serialisers.serialise_per_collection_items(request,collection)
-    profile = Profile.objects.get(uuid=request.session["profile"])
+    #profile = Profile.objects.get(uuid=request.session["profile"])
     return JsonResponse(colls,safe=False)   
 
 @transaction.atomic
