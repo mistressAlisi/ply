@@ -70,8 +70,8 @@ class GalleryItemHit(models.Model):
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
     remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
     user_agent = models.TextField(verbose_name='Hit User Agent',db_index=True,blank=True)
-    profile = models.ForeignKey(Profile,verbose_name='Item Viewed by Profile',on_delete=models.CASCADE,blank=True)
-    group = models.ForeignKey(Group,verbose_name = "Item viewed by member of group",on_delete=models.CASCADE,blank=True)
+    profile = models.ForeignKey(Profile,verbose_name='Item Viewed by Profile',on_delete=models.CASCADE,blank=True,null=True)
+    group = models.ForeignKey(Group,verbose_name = "Item viewed by member of group",on_delete=models.CASCADE,blank=True,null=True)
     community = models.ForeignKey(Community,verbose_name = "Community",on_delete=models.RESTRICT)
     def __str__(self):
         return f"Gallery Item Hit: {self.item.uuid} at: {self.created} (IP: {self.remote_addr}) (X-UA: {self.user_agent})"
