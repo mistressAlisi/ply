@@ -8,7 +8,7 @@ from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
 from gallery import serialisers
 from gallery.models import GalleryCollection
-from metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit
+from metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit,GalleryHomePageHit
 from metrics.toolkit import request_data_capture
 # Render the Gallery Home page:
 def gallery_home(request):
@@ -25,6 +25,9 @@ def gallery_home(request):
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
+        # Create the gallery metrics:
+        gal_hit = GalleryHomePageHit.objects.create(profile=profile,type="GALPAGE",community=community)
+        request_data_capture(request,gal_hit)        
         request.session['community'] = str(community.uuid)
         colls = serialisers.serialise_community_items(request)    
         context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,"colls":colls,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}
