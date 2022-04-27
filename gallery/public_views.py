@@ -26,7 +26,7 @@ def gallery_home(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         # Create the gallery metrics:
-        gal_hit = GalleryHomePageHit.objects.create(profile=profile,type="GALPAGE",community=community)
+        gal_hit = GalleryHomePageHit.objects.create(type="GALPAGE",community=community)
         request_data_capture(request,gal_hit)        
         
         request.session['community'] = str(community.uuid)
