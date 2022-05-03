@@ -87,8 +87,8 @@ def save_original_file(file,profile,name=False):
                 if exc.errno != errno.EEXIST:
                     raise
         with open(destpath, 'wb+') as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
+            #for chunk in file.chunks():
+            destination.write(file.read())
             bw = destination.tell()
             destination.close()
         return bw
