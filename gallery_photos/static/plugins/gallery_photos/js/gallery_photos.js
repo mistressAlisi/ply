@@ -24,9 +24,11 @@ window.gallery_core.plugins["gallery_photos"] = Object({
             return false;
         }
     },
+
     _updateCard: function(e) {
         //console.log("Update Card",e,gallery_core.editor);
         title = $("#review-title")[0].value;
+        $(".rounded-pill.fade").removeClass('show');
         if (title == "") {
           title = $("#form-"+gallery_core.editor.file+" #title")[0].value;  
         };
@@ -36,6 +38,9 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         if (descr != "") { 
             $("#card-"+gallery_core.editor.file).children('section').children('section')[1].children[0].innerHTML =  descr;
             $("#form-"+gallery_core.editor.file+" #descr")[0].value = descr;
+            $("#descr_alert").removeClass('show');
+        } else {
+            $("#descr_alert").addClass('show');
         };
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-resolution");
         if (res != "") {
@@ -45,11 +50,15 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-nsfw");
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #nsfw")[0].value = res;
-        };
+        } else {
+               $("#nsfw_alert").addClass('show');
+        }
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-raiting");
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #raiting")[0].value = res;
-        };
+        } else {
+            $("#rating_alert").addClass('show');
+        }
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-display_details");
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #det")[0].value = res;
@@ -74,9 +83,13 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-publish_keywords");
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #kw")[0].value = res;
-        };
+        } else {
+            $("#kw_alert").addClass('show');
+        }
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-publish_collections");
-        if (res != "") {
+        if (res == "") {
+            $("#collection_alert").addClass('show');
+        } else {
             $("#form-"+gallery_core.editor.file+" #col")[0].value = res;
         };
         res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-publish_notify");
@@ -90,7 +103,25 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         
     
     },
-
+    prepare_publish: function(e) {
+        /** Validate certain entries before we publish! **/
+        res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-publish_collections");
+        if (res == "") {
+            
+            return false;
+        };
+        
+        if ($("#review-descr")[0].value == "") {
+            return false;
+        };
+        res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-raiting");
+        if (res == "") {
+            
+            return false;
+        };
+        /** only true allows publishing: **/
+        return true;
+    },
     prepare_review: function() {
         /** Setup Widgets: **/
         window.gallery_core.plugins["gallery_photos"].metadata = JSON.parse($("#form-"+gallery_core.editor.file+" #meta")[0].value);

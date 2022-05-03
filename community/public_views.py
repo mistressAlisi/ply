@@ -14,6 +14,7 @@ def community_home(request):
     # Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
+    request.session["community"] = str(community.uuid)
     sideBar = SideBarBuilder()
     if request.user.is_authenticated:
         profile = profiles.get_active_profile(request)

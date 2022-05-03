@@ -493,18 +493,30 @@ window.gallery_core = Object({
         gallery_core.loadPlugin(gallery_core.editor.plugin);
         
     },
+    _trig_save_publish: function(e) {
+        review_pub_ok = gallery_core.plugins[gallery_core.editor.plugin].prepare_publish();
+                if (review_pub_ok == true) {
+                    gallery_core._save_publish();
+                } else {
+                    $(gallery_core.settings.confirm_pub_modal).modal('hide');
+                }
+    },
     _save_publish: function(e) {
         data = $("#form-"+gallery_core.editor.file).serialize();
+        if (data != false) {
         $.post(gallery_core.settings.publish_url+gallery_core.editor.file,data,function(){
             $(gallery_core.settings.confirm_pub_modal).modal('hide');
             $(gallery_core.settings.review_panel).offcanvas('hide');
             $("#card-"+gallery_core.editor.file).addClass('published');
             $("#card-"+gallery_core.editor.file).off('click');
         });
-         
+        }
     },
     save_publisher_changes: function(e) {
-        $(gallery_core.settings.confirm_pub_modal).modal('show');
-    },
+        review_pub_ok = gallery_core.plugins[gallery_core.editor.plugin].prepare_publish();
+        if (review_pub_ok == true) {
+            $(gallery_core.settings.confirm_pub_modal).modal('show');
+        }
+    }
 });
 
