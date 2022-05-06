@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from .auth_views import login
+
 urlpatterns = [
     path('profiles/',include('profiles.public_urls')),
     path('almanac/',include('almanac.public_urls')),    
@@ -25,6 +26,8 @@ urlpatterns = [
     path('forge/', include('forge.user_urls')),
     path('forge/', include('forge.admin_urls')),
     path('forge/api/', include('forge.api_urls')),
+    path('accounts/', include('django_registration.backends.activation.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('api/auth/login/',login),
     path('martor/', include('martor.urls')),
