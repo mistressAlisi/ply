@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'django_registration',
     'martor',
     'storages',
     'mathfilters',
+    'phonenumber_field',
     'dashboard',
     'dynapages',
     'profiles',
@@ -60,7 +62,6 @@ INSTALLED_APPS = [
     'items',
     'forge',
     'almanac',
-    'testdata',
     'ply'
 ]
 
@@ -242,6 +243,20 @@ ALLOWED_URL_SCHEMES = [
 ]
 CSRF_COOKIE_HTTPONLY = False
 
+# EMAIL CONFIG:
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = config("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+EMAIL_USE_TLS = config('EMAIL_USE_TLS') == 'TRUE'
+EMAIL_USE_SSL = config('EMAIL_USE_SSL') == 'TRUE'
+
+# AUTH
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
+REGISTRATION_SALT = 'ae3Phoge'
+
 # PLY:
 PLY_USER_DASHBOARD_MODULES = [
     "profiles",
@@ -259,6 +274,8 @@ try:
     PLY_HOSTNAME = socket.gethostname()
 except:
     PLY_HOSTNAME = "localhost"
+    
+PHONENUMBER_DEFAULT_REGION = "US"
 PLY_GALLERY_STORAGE_USE_S3 = config('PLY_GALLERY_STORAGE_USE_S3')
 PLY_TEMP_FILE_BASE_PATH =  config("PLY_TEMP_FILE_BASE_PATH")
 PLY_TEMP_FILE_URL_BASE_URL = config("PLY_TEMP_FILE_URL_BASE_URL")

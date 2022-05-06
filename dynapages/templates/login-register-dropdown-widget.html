@@ -15,8 +15,10 @@
  {% endfor %}
 </ul>
   <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="#"><i class="fa-solid fa-user-plus"></i>&#160;Sign out</a>
-  <a class="dropdown-item" href="#"><i class="fa-solid fa-lock"></i>&#160;Forgot password?</a>
+  <a class="dropdown-item" href="/forge/select/profile"><i class="fa-solid fa-users"></i>&#160;Profile Selector</a>
+  <a class="dropdown-item" href="/accounts/password_change"><i class="fa-solid fa-lock-open"></i>&#160;Change Password</a>
+  <a class="dropdown-item" href="/accounts/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>&#160;Sign out</a>
+
 </div>
 </div>
        
@@ -51,8 +53,8 @@
     <input type="hidden" id="plyhashpw" name="plyhashpw"/>
   </form>
   <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="#"><i class="fa-solid fa-user-plus"></i>&#160;Sign up!</a>
-  <a class="dropdown-item" href="#"><i class="fa-solid fa-lock"></i>&#160;Forgot password?</a>
+  <a class="dropdown-item" href="/accounts/register"><i class="fa-solid fa-user-plus"></i>&#160;Sign up!</a>
+  <a class="dropdown-item" href="/accounts/password_reset"><i class="fa-solid fa-lock"></i>&#160;Forgot password?</a>
 </div>
 </div>
 {% endif %}

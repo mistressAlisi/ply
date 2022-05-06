@@ -91,7 +91,7 @@ def finish_character_profile(request):
         n_stat = ProfileStat.objects.get_or_create(community=community,profile=profile,stat=stat,value=stat.starting,pminimum=stat.minimum,pmaximum=stat.maximum)[0]
         n_stat.save()
     # Join the community! 
-    join_comm  = CommunityProfile.objects.get_or_create(community=community,profile=profile)[0]
+    join_comm  = CommunityProfile.objects.get_or_create(community=community,profile=profile,joined=datetime.datetime.utcnow())[0]
     join_comm.save()
     # Finish up:
     profile.placeholder = False    
