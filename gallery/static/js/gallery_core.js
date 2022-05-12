@@ -370,7 +370,7 @@ window.gallery_core = Object({
                          $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','none');
                     }
                     /** Share link: **/
-                   share_str = location.origin+"/g/@"+target_card.data("profile_id")+"/"+target_card.data("collection")+"/"+target_card.data("item");
+                   share_str = location.origin+"/g/"+target_card.data("profile_id")+"/"+target_card.data("collection")+"/"+target_card.data("item");
                    $(this.settings.share_url_ctrl)[0].value = share_str;
                    $(this.settings.share_url_ctrl).data("i",target_card.data("item"));
                    $(this.settings.share_url_ctrl).data("c",target_card.data("collection"));
