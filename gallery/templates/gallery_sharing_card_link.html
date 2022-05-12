@@ -1,5 +1,5 @@
 {% extends 'ply-share-redirect.html' %}
-{% block meta-og-title %}{{item.item.title}} by {{item.profile.name}}{% endblock %}
+{% block meta-og-title %}{{item.item.title}} by {{item.profile_slug}}{% endblock %}
 {% block meta-og-type %}article{% endblock %}
 {% block meta-og-url %}https://{{vhost}}/g/@{{item.profile_slug}}/{{item.collection_id}}/{{item.item_id}}{% endblock %}
 {% block meta-og-image %}{{base_url}}{{item.gif_name}}{% endblock %}
