@@ -8,6 +8,12 @@
 <meta property="dynapage_template_version" content="v1.0"/>
 <meta property="dynapage_template_author" content="Alisi"/>
 <meta property="dynapage_template_description" content="The Basic Community Cover Page Main Page Template."/>
+<meta id="og-title" property="og:title" content="{% block meta-og-title %}{{community.name}}{% endblock %}" />
+<meta id="og-type" property="og:type" content="{% block meta-og-type %}https://{{vhost}}{% endblock %}" />
+<meta id="og-url" property="og:url" content="{% block meta-og-url %}https://{{vhost}}{% endblock %}" />
+<meta id="og-image" property="og:image" content="{% block meta-og-image %}{{bkg_path}}{% endblock %}" />
+<meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}{{community.name}}{% endblock %}" />    
+<meta id="og-description" property="og:description" content="{% block meta-og-description %}{{community.introduction}}{% endblock %}" />
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,7 +38,6 @@
     <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
     
     <!--   Login Functions -->
-    <script src="/static/js/crypto-js.js"></script>
     <script src="/static/js/dashboard_loginAgent.js"></script>
 </head>
 
@@ -41,7 +46,7 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column" style="background-image: url('{{bkg_path}}');">
   <header class="mb-auto">
     <div>
-      <h3 class="float-md-start mb-0">{{community.name}}</h3>
+
     {%include "dashboard-main-navmenu.html" %}
     </div>
   </header>

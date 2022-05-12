@@ -36,6 +36,7 @@ class Profile(models.Model):
     avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True) 
     posts = models.IntegerField(verbose_name='Post Count',default=0)
     views = models.IntegerField(verbose_name='Post Count',default=0)
+    notifications = models.IntegerField(verbose_name='Notification Count',default=0)
     nodes = models.IntegerField(verbose_name='Node Count',default=0)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
@@ -50,32 +51,7 @@ class Profile(models.Model):
 class ProfileAdmin(admin.ModelAdmin):
     pass
     
-# Followers Table:
-class Follower(models.Model):
-    source = models.ForeignKey('Profile',verbose_name = "Source Profile",on_delete=models.RESTRICT,related_name='+')
-    dest = models.ForeignKey('Profile',verbose_name = "Dest Profile",on_delete=models.RESTRICT,related_name='+')
-    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Relationship Created')
-    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
-    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
-    system = models.BooleanField(verbose_name="System FLAG",default=False)
-@admin.register(Follower)
-class FollowerAdmin(admin.ModelAdmin):
-    pass
 
-# Friends Table:
-class Friend(models.Model):
-    friend1 = models.ForeignKey('Profile',verbose_name = "Friend 1 Profile",on_delete=models.RESTRICT,related_name='+')
-    friend2 = models.ForeignKey('Profile',verbose_name = "Friend 2 Profile",on_delete=models.RESTRICT,related_name='+')
-    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Request Created')
-    approved = models.DateTimeField(verbose_name="Approved?",null=True)
-    approved_flag = models.BooleanField(verbose_name="Approved FLAG",default=False)
-    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
-    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
-    system = models.BooleanField(verbose_name="System FLAG",default=False)
-
-@admin.register(Friend)
-class FriendAdmin(admin.ModelAdmin):
-    pass
     
 # The ticket system is used to keep track of support / behaviour requests on behalf of bad profiles or actors. Or in case a user needs support:
 class TicketType(models.Model):
@@ -134,4 +110,6 @@ class ProfilePermission(models.Model):
 @admin.register(ProfilePermission)
 class ProfilePermissionAdmin(admin.ModelAdmin):
     pass
+
+
      

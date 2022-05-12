@@ -17,7 +17,11 @@ def get_active_profile(request):
        request.session['profile'] = str(profile.uuid)
        request.session.modified = True
    else:
-       profile = Profile.objects.filter(uuid=request.session['profile'])[0]
+       try:
+           profile = Profile.objects.filter(uuid=request.session['profile'])[0]
+       except profile.NotFound as e:
+            return None
+        
    request.session.placeholder = False
    return profile
     
