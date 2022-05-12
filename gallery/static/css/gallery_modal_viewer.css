@@ -37,6 +37,9 @@
     top: -10px;
     
 }
+.gallery-modal-viewer .share-menu {
+    left: 37px;
+}
 @keyframes fadein-keyframes {
     0.0%{
         opacity: 0.15;
