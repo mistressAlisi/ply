@@ -1,13 +1,3 @@
-{% extends 'ply-share-redirect.html' %}
-{% block meta-og-title %}{{item.item.title}} by {{item.profile.name}}{% endblock %}
-{% block meta-og-type %}article{% endblock %}
-{% block meta-og-url %}'https://{{vhost}}/g/@{{item.profile_slug}}/{{item.collection_id}}/{{item.item_id}}'{% endblock %}
-{% block meta-og-image %}{{base_url}}{{item.gif_name}}{% endblock %}
-{% block favicon %}{{base_url}}{{item.gif_name}}{% endblock %}
-{% block meta-og-site_name %}{{community.name}}{% endblock %}
-{% block meta-og-description %}{{item.item.descr}} {% endblock %}
-{% block meta-redirect-body-head %}/gallery/@{{item.profile_slug}}#card-{{item.collection_id}}-{{item.item_id}}{% endblock %}
-{% block meta-redirect-body-url %}/gallery/@{{item.profile_slug}}#card-{{item.collection_id}}-{{item.item_id}}{% endblock %}
-{% block share_title %}{{item.item.title}} by {{item.profile.name}}{% endblock %}
-{% block meta-og-published %}{{item.item.created|date:"c"}}{% endblock %}
-{% block meta-og-author %}{{item.profile.name}}{% endblock %}
+{% with title=item.item.title author=item.profile.name site_name=community.name profile_id=item.profile_slug collection=item.gc_label item=item.item_id collection_id=item.collection_id item_id=item.item_id created=item.gci_created|date:"c"  base_url=base_url gif_name=item.gif_name og_type="article" descr=item.gci_descr %}
+{% include 'ply-share-redirect.html' %}
+{% endwith %}
