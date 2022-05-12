@@ -151,3 +151,21 @@ def gallery_viewer_counter_item(request):
         col.views = item.views + 1;
         col.save();
     return JsonResponse("ok",safe=False)
+
+
+@transaction.atomic
+def gallery_share_counter_item(request):
+    comm = Community.objects.get(uuid=request.session["community"])
+    if ('itm' in request.GET):
+        iid = request.GET['itm']
+        item = GalleryItem.objects.get(pk=iid)
+        itemHit = GalleryItemHit.objects.create(item=item,community=comm,type="SHARE")
+        request_data_capture(request,itemHit)
+        item.shares = item.shares + 1;
+        item.save();
+    if ('col' in request.GET):
+        cid = request.GET['col']
+        col = GalleryCollection.objects.get(pk=cid)
+        col.shares = item.shares + 1;
+        col.save();
+    return JsonResponse("ok",safe=False)

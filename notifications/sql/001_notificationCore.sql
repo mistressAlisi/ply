@@ -33,5 +33,5 @@ BEGIN
 END;
 $notifications_sendToInbox$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER TRIGGER_sendNotifications_AfterINST AFTER INSERT ON "notifications_notification"
+CREATE OR REPLACE TRIGGER "after_Inst_NotInbox" AFTER INSERT ON "notifications_notification"
 FOR EACH ROW EXECUTE FUNCTION notifications_sendToInbox();

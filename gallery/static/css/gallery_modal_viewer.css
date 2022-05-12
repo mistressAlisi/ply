@@ -78,3 +78,13 @@
 .gallery-modal-buttonsr:hover {
 
 }
+
+.close-btn {
+    position: fixed;
+    float: right;
+    min-width: 110px;
+    right: 10px;
+    top: 10px;
+    z-index: 10000000;
+    opacity: 1;   
+}

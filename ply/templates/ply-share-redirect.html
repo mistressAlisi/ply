@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE|default:'en_us' }}">
+<head>
+
+    <!-- Metadata for Open Graph --> 
+    <meta id="og-title" property="og:title" content="{% block meta-og-title %}Ply{% endblock %}" />
+    <meta id="og-type" property="og:type" content="{% block meta-og-type %}website{% endblock %}" />
+    <meta id="og-url" property="og:url" content="{% block meta-og-url %}https://ply.ooo{% endblock %}" />
+    <meta id="og-image" property="og:image" content="{% block meta-og-image %}https://ply.ooo/static/favicon.png{% endblock %}" />
+    <meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}Ply{% endblock %}" />    
+    <meta id="og-description" property="og:description" content="{% block meta-og-description %}Ply Meta Description{% endblock %}" />
+    <meta http-equiv="refresh" content="0; url={% block meta-redirect-body-head  %}/{% endblock %}" />
+    <!-- Page title -->
+<title>{% block bootstrap5_title %}django-bootstrap5 template title{% endblock %}</title>
+
+</head>
+
+<body>
+<p><a href="{% block meta-redirect-body-url  %}/{% endblock %}">Redirect...</a></p>
+</body>
+
+</html>
