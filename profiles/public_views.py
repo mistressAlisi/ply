@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,HttpResponse
 
@@ -19,7 +19,9 @@ from metrics.toolkit import request_data_capture
 def profile_view(request,profile_id):
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
-    profile = Profile.objects.get(profile_id=profile_id)
+    if community is None:
+        return render(request,"error-no_vhost_configured.html",{})
+    profile = get_object_or_404(Profile,profile_id=profile_id)
     if request.user.is_authenticated:
         current_profile = profiles.get_active_profile(request)
         all_profiles = profiles.get_all_profiles(request)
@@ -42,7 +44,11 @@ def profile_view(request,profile_id):
 def profile_index(request):
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
+    if community is None:
+        return render(request,"error-no_vhost_configured.html",{})
     view_profiles = ProfilePerCoummunityView.objects.filter(community=community).order_by('profile_created')
+    if community is None:
+        return render(request,"error-no_vhost_configured.html",{})
     if request.user.is_authenticated:
         current_profile = profiles.get_active_profile(request)
         all_profiles = profiles.get_all_profiles(request)

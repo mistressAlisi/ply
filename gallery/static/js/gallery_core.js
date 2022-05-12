@@ -8,6 +8,7 @@ window.gallery_core = Object({
         publish_url: "gallery/api/upload/publish/",
         get_collection_url: "/dashboard/user/gallery/api/get/items/",
         view_count_url: "/dashboard/user/gallery/api/view_counter/item",
+        share_count_url: "/dashboard/user/gallery/api/share_counter/item",
         desc_div: "#content_submission_type_desc",
         create_start_btn: "#create_start_btn",
         all_buttons: ".gallery-content-button",
@@ -30,10 +31,13 @@ window.gallery_core = Object({
         date_btn: "#btn-created",
         back_btn: "#back-button",
         forw_btn: "#forw-button",
+        share_url_ctrl: "#id_share_url",
+        share_url_fb: "#share_url_fb",
         confirm_pub_modal: "#confirmModal",
         collection_cat: ".dashboard-category",
         gallery_card_cls: ".gallery-card",
         in_col_str: " <i>in collection:</i> ", 
+        share_fb_str: "Copied to clipboard!",
         max_upload_size: 25600,
     },
     editor: {
@@ -69,13 +73,7 @@ window.gallery_core = Object({
         current: false,
         colid: false
     },
-    /** Page Open Graph metadata: **/
-    meta: {
-        title: "",
-        url: "",
-        image: "",
-        descr: ""
-    },
+
 /** Callback function for loadPlugin: **/
     _loadPlugin: function(d) {
         if (d == false) { return false; };
@@ -255,53 +253,11 @@ window.gallery_core = Object({
         };
 
     },
-    /** Save Page Metadata: **/
-    _save_page_meta: function() {
-        og = $("#og-title");
-         if (og.length > 0) { 
-             this.meta.title = og[0].content;
-         };
-         og = $("#og-url");
-         if (og.length > 0) { 
-             this.meta.url = og[0].content;
-         };
-         og = $("#og-image");
-         if (og.length > 0) { 
-             this.meta.image = og[0].content;
-         };
-         og = $("#og-description");
-         if (og.length > 0) { 
-             this.meta.descr = og[0].content;
-         }
-    },
-    /** Set Page Metadata: **/
-    _set_page_meta: function (t,u,i,d) {
-        og = $("#og-title");
-         if (og-length > 0) { 
-             og[0].content = t;
-         };
-         og = $("#og-url");
-         if (og.length > 0) { 
-             og[0].content = u;
-         };
-         og = $("#og-image");
-         if (og.length > 0) { 
-             og[0].content = i;
-         };
-         og = $("#og-description");
-         if (og.length > 0) { 
-             og[0].content = d;
-         }
-    },
-    /** Reset page Metadata: **/
-    _reset_page_meta: function() {
-        this._set_page_meta(this.meta.title,this.meta.url,this.meta.image,this.meta.descr);
-    },
+   
     
      /** Init plugins then galleries (full init... ONLY CALL ONCE!): **/
      launch_gallery_init: function() { 
-         /** Save metadata for the page first: **/
-         this._save_page_meta();            
+        
          cards = $(gallery_core.settings.gallery_card_cls);
          clen = cards.length;
          count = 0;
@@ -329,7 +285,6 @@ window.gallery_core = Object({
                 this.canvas_element.css('display','none');
                 $(window).unbind('keydown',window.gallery_core._kbk_evh);
                 location.hash = "";
-                this._reset_page_meta();
             }
     },
     /** These function handles key bindings for the viewer: **/
@@ -414,11 +369,21 @@ window.gallery_core = Object({
                          $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','none');
                          $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','none');
                     }
-                    /** Open-Graph Metadata: **/
-                    
-                    this._set_page_meta(target_card.data("title"),location.toString(),target_card.find('.card-img-top')[0].src,target_card.data("title")+" "+author_str);
+                    /** Share link: **/
+                   share_str = location.origin+"/g/@"+target_card.data("profile_id")+"/"+target_card.data("collection")+"/"+target_card.data("item");
+                   $(this.settings.share_url_ctrl)[0].value = share_str;
+                   $(this.settings.share_url_ctrl).data("i",target_card.data("item"));
+                   $(this.settings.share_url_ctrl).data("c",target_card.data("collection"));
+                    //this._set_page_meta(target_card.data("title"),location.toString(),target_card.find('.card-img-top')[0].src,target_card.data("title")+" "+author_str);
      },
-
+    /** will copy the share url contents to clipboard; and create a 'shared' metric: **/
+    share: function(e) {
+        $(this.settings.share_url_ctrl).select();
+        document.execCommand('copy');
+        $(this.settings.share_url_fb).text(this.settings.share_fb_str);
+        $.get(this.settings.share_count_url+"/?itm="+$(this.settings.share_url_ctrl).data("i")+"&col="+$(this.settings.share_url_ctrl).data("c"));
+        
+    },
      /** This function launches a gallery from a card: **/
      launch_gallery_card: function(e) {
          target_card = this._parent_walker(e.target,"DIV");

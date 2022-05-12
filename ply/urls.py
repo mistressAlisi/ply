@@ -32,5 +32,6 @@ urlpatterns = [
     path('api/',include('ply.api_urls')),
     path('martor/', include('martor.urls')),
     path('gallery/', include('gallery.public_urls')),
+    path('g/', include('gallery.sharing_urls')),
     path('', include('community.public_urls'))
 ]
