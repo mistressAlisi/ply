@@ -9,18 +9,16 @@
     <meta id="og-type" property="og:type" content="{% block meta-og-type %}website{% endblock %}" />
     <meta id="og-url" property="og:url" content="{% block meta-og-url %}https://ply.ooo{% endblock %}" />
     <meta id="og-image" property="og:image" content="{% block meta-og-image %}https://ply.ooo/static/favicon.png{% endblock %}" />
+    <meta id="og-author" property="og:author" content="{% block meta-og-author %}The Bard{% endblock %}" />
+    <meta id="og-published_time" property="og:published_time" content="{% block meta-og-published %}2022-05-12T17:08:38+00:00{% endblock %}" />
     <meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}Ply{% endblock %}" />    
     <meta id="og-description" property="og:description" content="{% block meta-og-description %}Ply Meta Description{% endblock %}" />
-   <!-- Page title -->
-<title>{% block share_title %}Redirect URL...{% endblock %}</title>
-
+    <title>{% block share_title %}Redirect URL...{% endblock %}</title>
 </head>
-
 <body>
 <p><a href="{% block meta-redirect-body-url  %}/{% endblock %}">Redirect...</a></p>
 <script type="text/javascript">
 location.href="{% block meta-redirect-body-head  %}/{% endblock %}"
 </script>
 </body>
-
 </html>
