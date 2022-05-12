@@ -27,6 +27,6 @@ def gallery_item(request,profile_id,collection_id,item_id):
         # Create the gallery metrics:
         gal_hit = GalleryItemHit.objects.create(type="SHAREOPEN",community=community,item=item.item)
         request_data_capture(request,item.item)
-        base_url = ply.settings.PLY_GALLERY_FILE_URL_BASE_URL+"/"+file_uploader.get_temp_path("",item.profile)
+        base_url = ply.settings.PLY_GALLERY_SHARE_URL_BASE_URL+"/"+file_uploader.get_temp_path("",item.profile)
         context = {'community':community,'vhost':vhost,'url_path':request.path,'item':item,"base_url":base_url}
         return render(request,'gallery_sharing_card_link.html',context)
