@@ -1,8 +1,19 @@
-{% extends 'django_bootstrap5/bootstrap5.html' %}
+{% extends 'ply-bootstrap5.html' %}
 {% load django_bootstrap5 %} 
 {% block bootstrap5_title %}
 {{community.name}} - {{profile.name}}'s Gallery
 {% endblock %}
+
+
+{% block meta-og-title %}{{profile.name}}'s Gallery{% endblock %}
+{% block meta-og-type %}website{% endblock %}
+{% block meta-og-url %}https://{{vhost}}/gallery/{{profile.profile_id}}{% endblock %}
+{% block meta-og-image %}{{av_path}}/{{profile.avatar}}{% endblock %}
+{% block meta-og-site_name %}{{community.name}}{% endblock %}
+{% block meta-og-description %}{{profile.name}}'s Gallery @ {{community.name}} - at https://{{vhost}} {% endblock %}
+
+
+
 {% block bootstrap5_content %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

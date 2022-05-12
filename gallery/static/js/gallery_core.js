@@ -69,6 +69,13 @@ window.gallery_core = Object({
         current: false,
         colid: false
     },
+    /** Page Open Graph metadata: **/
+    meta: {
+        title: "",
+        url: "",
+        image: "",
+        descr: ""
+    },
 /** Callback function for loadPlugin: **/
     _loadPlugin: function(d) {
         if (d == false) { return false; };
@@ -222,6 +229,10 @@ window.gallery_core = Object({
                 }
                 count = count+1;
             };
+            /** Launch the item from the hash provided; if it matches the collection: **/
+            if (location.hash.substr(6,36) == coldata.uuid) {
+                gallery_core.launch_card_from_location();
+            };
         };
     },
     /** Launch galleries AFTER plugins are loaded : **/
@@ -242,10 +253,55 @@ window.gallery_core = Object({
             }
         count = count +1;
         };
-        
+
     },
+    /** Save Page Metadata: **/
+    _save_page_meta: function() {
+        og = $("#og-title");
+         if (og.length > 0) { 
+             this.meta.title = og[0].content;
+         };
+         og = $("#og-url");
+         if (og.length > 0) { 
+             this.meta.url = og[0].content;
+         };
+         og = $("#og-image");
+         if (og.length > 0) { 
+             this.meta.image = og[0].content;
+         };
+         og = $("#og-description");
+         if (og.length > 0) { 
+             this.meta.descr = og[0].content;
+         }
+    },
+    /** Set Page Metadata: **/
+    _set_page_meta: function (t,u,i,d) {
+        og = $("#og-title");
+         if (og-length > 0) { 
+             og[0].content = t;
+         };
+         og = $("#og-url");
+         if (og.length > 0) { 
+             og[0].content = u;
+         };
+         og = $("#og-image");
+         if (og.length > 0) { 
+             og[0].content = i;
+         };
+         og = $("#og-description");
+         if (og.length > 0) { 
+             og[0].content = d;
+         }
+    },
+    /** Reset page Metadata: **/
+    _reset_page_meta: function() {
+        this._set_page_meta(this.meta.title,this.meta.url,this.meta.image,this.meta.descr);
+    },
+    
      /** Init plugins then galleries (full init... ONLY CALL ONCE!): **/
      launch_gallery_init: function() { 
+         /** Save metadata for the page first: **/
+         this._save_page_meta();            
          cards = $(gallery_core.settings.gallery_card_cls);
          clen = cards.length;
          count = 0;
@@ -272,6 +328,8 @@ window.gallery_core = Object({
                 this.canvas_visible = false;
                 this.canvas_element.css('display','none');
                 $(window).unbind('keydown',window.gallery_core._kbk_evh);
+                location.hash = "";
+                this._reset_page_meta();
             }
     },
     /** These function handles key bindings for the viewer: **/
@@ -356,6 +414,9 @@ window.gallery_core = Object({
                          $(this.settings.viewer_modal).find(this.settings.back_btn).css('display','none');
                          $(this.settings.viewer_modal).find(this.settings.forw_btn).css('display','none');
                     }
+                    /** Open-Graph Metadata: **/
+                    
+                    this._set_page_meta(target_card.data("title"),location.toString(),target_card.find('.card-img-top')[0].src,target_card.data("title")+" "+author_str);
      },
 
      /** This function launches a gallery from a card: **/
@@ -376,6 +437,7 @@ window.gallery_core = Object({
             };
                 if (itm_o != false) {
                     console.info("Starting item: "+item+"in Collection: "+col+"...");
+                    location.hash = "#card-"+col+"-"+item;
                     /** Now, call the plugin for the card and request a first the rendering of the canvas.. **/
                     if (this.canvas_element == false) {
                         this.canvas_element = $(this.settings.viewer_modal);
@@ -423,7 +485,8 @@ window.gallery_core = Object({
 //          console.warn(itm_o);
          this._gallery_card_meta(target_card,col,item);
         /** Now render the contents: **/
-        render_card = this.plugins[itm_o.plugin].render_view(itm_o);
+        location.hash = "#card-"+col+"-"+item;
+        render_card = this.plugins[itm_o.plugin].render_view(itm_o);0
         if (render_card == false) {
             console.error("RenderCard went wrong!");
             console.error(render_card);
@@ -455,6 +518,7 @@ window.gallery_core = Object({
         if (itm_o != false) {
 //          console.warn(itm_o);
          this._gallery_card_meta(target_card,col,item);
+         location.hash = "#card-"+col+"-"+item;
         /** Now render the contents: **/
         render_card = this.plugins[itm_o.plugin].render_view(itm_o);
         if (render_card == false) {
@@ -465,7 +529,14 @@ window.gallery_core = Object({
             console.warn("Unable to Step Collection: "+col+" back into item card: "+item);
          };
      },
-     
+     /** Convenience function to handle #hash locations and open the viewer: **/
+     launch_card_from_location: function() {
+         lhash = location.hash;
+         lhash_crd = $(lhash);
+         if (lhash_crd['length'] > 0) {
+             lhash_crd[0].click();
+         }
+     },
     /********************/
     /** These functions enable you to PUBLISH/edit items: **/
     _launch_publisher: function() {

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="en" class="h-100">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--     JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- HTML5 Draggable !-->
+    <script src="/static/js/html5sortable.min.js" crossorigin="anonymous"></script>    
+    <!-- Page title -->
+
+    <title>Ply: Almanac Menu Editor</title>
+
+
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+    <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+    <!-- Bootstrap JavaScript: !-->
+     {% bootstrap_javascript %}
+
+    {% block bootstrap5_extra_head %}{% endblock %}
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body class="bg-light">
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+
+        <h2>Almanac Menu Editor</h2>
+        <p class="lead">This tool enables you to create and edit the menus for the Almanac.</p>
+
+
+    </div>
+    <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
+    <div class="card col-6"  style="margin-left: auto; margin-right: auto; padding: 20px;">
+    <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-layer-group"></i> Current Almanac Menu:</h5>
+    <div class="modal-body">
+    <!-- Actual Drag and drop Menu area here !-->
+        <div class="sortable list flex flex-column list-reset list-group" id="menu_editor">
+           
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCatModal"><i class="fa-solid fa-list-ul"></i> Create Category </button>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#newPageModal"><i class="fa-solid fa-file-circle-plus"></i>Add Page</button>
+        {% bootstrap_button "Back to Almanac" button_type="link" href="/almanac" button_class="btn-success" %}
+    <div>
+    </div>
+    </div>
+    
+<div id="newCatModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus"></i>Create New Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="create_category_form" method="POST" target="#" onsubmit="menu_editor.create_category(); return false;"/>
+        {% bootstrap_form new_cat_form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Create Category"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="newPageModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-file-circle-plus"></i>Add Page</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form id="add_page_form" method="POST" target="#" onsubmit="menu_editor.add_page(); return false;"/>
+      <div class="modal-body">
+
+        {% bootstrap_form add_page_form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Create Category"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="/static/js/menu_editor.js" crossorigin="anonymous"></script>   
+</body>
+</html>

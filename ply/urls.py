@@ -29,7 +29,7 @@ urlpatterns = [
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('api/auth/login/',login),
+    path('api/',include('ply.api_urls')),
     path('martor/', include('martor.urls')),
     path('gallery/', include('gallery.public_urls')),
     path('', include('community.public_urls'))

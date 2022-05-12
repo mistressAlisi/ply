@@ -32,10 +32,15 @@ def almanac_home(request):
         profile = False
         all_profiles = False
         enable_admin = False
-
     request.session['community'] = str(community.uuid)
+    try:
+        almanac_page = AlmanacPage.objects.get(page_id='community_index_page')
+        almanac_page_text = AlmanacPageText.objects.get(page=almanac_page,current=True)
+    except AlmanacPage.DoesNotExist as e:
+        almanac_page = False
+        almanac_page_text = False
     all_pages = AlmanacPage.objects.filter(community=community).order_by('page_id')
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'enable_admin':enable_admin,'url_path':request.path,"profiles":all_profiles,'all_pages':all_pages}
+    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'enable_admin':enable_admin,'url_path':request.path,"profiles":all_profiles,'all_pages':all_pages,'content':almanac_page_text,'almanac_page':almanac_page}
     return render(request,"almanac_dashboard.html",context)
 
 

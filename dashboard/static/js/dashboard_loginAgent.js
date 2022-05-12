@@ -1,6 +1,6 @@
 window.loginAgent = Object({
     settings: {
-        loginurl:"api/auth/login/",
+        loginurl:"/api/auth/login/",
         loginform:"#plyloginform",
         userfield:"#plyuserid",
         pwfield:"#plypass",
@@ -23,7 +23,7 @@ window.loginAgent = Object({
         }
     },
     _showError: function(err) {
-        aldiv = $(window.loginAgent.settings.alertid);
+        aldiv = $(this.settings.alertid);
         aldiv.html(err);
         aldiv.css('display','block');
     },
@@ -32,24 +32,36 @@ window.loginAgent = Object({
         if (e != undefined) {
             e.preventDefault();
         };
-        $(window.loginAgent.settings.alertid).empty();
-         $(window.loginAgent.settings.alertid).css('display',' none');
-        if ($(window.loginAgent.settings.userfield)[0].value.length < 1) {
-            window.loginAgent._showError(window.loginAgent.errors.user);
-            console.error("LoginAgent: ",window.loginAgent.errors.user);
+        $(this.settings.alertid).empty();
+         $(this.settings.alertid).css('display',' none');
+        if ($(this.settings.userfield)[0].value.length < 1) {
+            this._showError(this.errors.user);
+            console.error("LoginAgent: ",this.errors.user);
         
             
         };
         
-        if ($(window.loginAgent.settings.pwfield)[0].value.length < 1) {
-            window.loginAgent._showError(window.loginAgent.errors.pw);
-            console.error("LoginAgent: ",window.loginAgent.errors.pw);
+        if ($(this.settings.pwfield)[0].value.length < 1) {
+            this._showError(this.errors.pw);
+            console.error("LoginAgent: ",this.errors.pw);
         
         };
         
         console.log("Login Transaction in progress...");
-        $.post(window.loginAgent.settings.loginurl,$(window.loginAgent.settings.loginform).serialize(),window.loginAgent._handleReply);
+        
+        $.post(this.settings.loginurl,$(this.settings.loginform).serialize(),this._handleReply);
     }
 });
-
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            
+            xhr.setRequestHeader("X-CSRFToken",Cookies.get('csrftoken'));
+        }
+    }
+});
 console.log("Window LoginAgent Ready");

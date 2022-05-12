@@ -18,7 +18,7 @@ class Keyword(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     def __str__(self):
-        return f"{self.keyword} ({self.hash})"
+        return f"Keyword: {self.keyword} ({self.hash})"
     
 @admin.register(Keyword)
 class KeywordAdmin(admin.ModelAdmin):

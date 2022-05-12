@@ -10,8 +10,8 @@ from gallery.uploader import upload_plugins_builder
 from profiles.models import Profile
 from group.models import Group,GroupMember,GroupTitle
 from stats.models import BaseStat,ProfileStat
-from community.models import CommunityProfile
-from metrics.models import ProfilePageHit
+from community.models import CommunityProfile,ProfilePerCoummunityView
+from metrics.models import ProfilePageHit,ProfileIndexPageHit
 from metrics.toolkit import request_data_capture
 # Create your views here.
 
@@ -42,12 +42,15 @@ def profile_view(request,profile_id):
 def profile_index(request):
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
-    all_profiles = CommunityProfile.objects.filter(community=community).order_by('profile_id')
+    view_profiles = ProfilePerCoummunityView.objects.filter(community=community).order_by('profile_created')
     if request.user.is_authenticated:
         current_profile = profiles.get_active_profile(request)
         all_profiles = profiles.get_all_profiles(request)
+    else:
+        current_profile = False
+        all_profiles = []
     # Create the Profile metrics:
     gal_hit = ProfileIndexPageHit.objects.create(type="PROFILEINX",community=community)
     request_data_capture(request,gal_hit)
-    context = {'community':community,'vhost':vhost,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'current_profile':current_profile,'all_profiles':all_profiles}
+    context = {'community':community,'vhost':vhost,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'current_profile':current_profile,'profiles':all_profiles,'all_profiles':view_profiles}
     return render(request,'profiles_index_view.html',context)

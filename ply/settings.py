@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'storages',
     'mathfilters',
     'phonenumber_field',
+    'notifications',
     'dashboard',
     'dynapages',
     'profiles',

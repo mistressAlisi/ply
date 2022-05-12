@@ -4,6 +4,7 @@ import uuid
 
 
 # PLY
+
 from profiles.models import Profile
 from group.models import Group
 from dynapages.models import Page
@@ -85,3 +86,79 @@ class CommunityAdmins(models.Model):
 @admin.register(CommunityAdmins)
 class CommunityAdminsAdmin(admin.ModelAdmin):
     pass  
+
+class ProfilePerCoummunityView(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    joined = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Joined')
+    community_name = models.TextField(verbose_name='Community Name')
+    profile_created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
+    dynapage = models.ForeignKey(Page,on_delete=models.RESTRICT,blank=True,null=True)
+    profile_updated = models.DateTimeField(verbose_name='Profile Updated',auto_now_add=True)
+    last_seen = models.DateTimeField(verbose_name='Profile Last Seen Online',auto_now_add=True)
+    age = models.TextField(verbose_name='Current Age',default=1,blank=True)
+    name = models.TextField(verbose_name='Name')
+    status = models.TextField(verbose_name='status',default="CITIZEN",blank=True)
+    species = models.TextField(verbose_name='Species',default='Sentient')
+    introduction = models.TextField(verbose_name='Profile Intro')
+    level = models.TextField(verbose_name='Current Level',default=1)
+    max_HP = models.TextField(verbose_name='Max HP',default=10)
+    HP = models.TextField(verbose_name='Current HP',default=10)
+    max_MP = models.TextField(verbose_name='Max MP',default=6)
+    STUN = models.TextField(verbose_name='Current STUN',default=10)
+    max_STUN = models.TextField(verbose_name='Max STUN',default=6)
+    SHIELD = models.TextField(verbose_name='Current SHIELD',default=10)
+    max_SHIELD = models.TextField(verbose_name='Max SHIELD',default=6)
+    MP = models.TextField(verbose_name='Current MP',default=6)
+    max_STA = models.TextField(verbose_name='Max STA',default=10)
+    STA = models.TextField(verbose_name='Current STA',default=10)
+    views = models.IntegerField(verbose_name='Post Count',default=0)
+    slug = models.TextField(verbose_name='Slugified Name')
+    pronouns = models.TextField(max_length=200,verbose_name='Pronouns')
+    gender = models.TextField(max_length=200,verbose_name='Gender')
+    avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True) 
+    posts = models.IntegerField(verbose_name='Post Count',default=0)
+    views = models.IntegerField(verbose_name='Post Count',default=0)
+    nodes = models.IntegerField(verbose_name='Node Count',default=0)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.CASCADE)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Profile {self.profile_id} as member of Community {self.name}"
+    class Meta:
+        managed = False
+        db_table = 'community_profilepercommunityview'
+
+# Followers Table:
+class Follower(models.Model):
+    source = models.ForeignKey(Profile,verbose_name = "Source Profile",on_delete=models.RESTRICT,related_name='+')
+    dest = models.ForeignKey(Profile,verbose_name = "Dest Profile",on_delete=models.RESTRICT,related_name='+')
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Relationship Created')
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    def __str__(self):
+        return f"Follower: {self.source.uuid} -follows-> {self.dest.uuid} in community: {self.community.uuid}"
+@admin.register(Follower)
+class FollowerAdmin(admin.ModelAdmin):
+    pass
+
+# Friends Table:
+class Friend(models.Model):
+    friend1 = models.ForeignKey(Profile,verbose_name = "Friend 1 Profile",on_delete=models.RESTRICT,related_name='+')
+    friend2 = models.ForeignKey(Profile,verbose_name = "Friend 2 Profile",on_delete=models.RESTRICT,related_name='+')
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Request Created')
+    approved = models.DateTimeField(verbose_name="Approved?",null=True)
+    approved_flag = models.BooleanField(verbose_name="Approved FLAG",default=False)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    def __str__(self):
+        return f"Friends: {self.friend1.uuid} <-> {self.friend2.uuid}  in community: {self.community.uuid}"
+@admin.register(Friend)
+class FriendAdmin(admin.ModelAdmin):
+    pass
