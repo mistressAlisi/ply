@@ -31,9 +31,12 @@ def community_home(request):
         # now render the page:
         if (community.backgroundItem is not False):
             try:
-                bkg_item = GalleryItemsByCollectionPermission.objects.get(item=community.backgroundItem,gif_thumbnail=False)
-                path = ply.toolkit.file_uploader.get_temp_path(bkg_item.file.name,bkg_item.profile)
-                bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
+                bkg_item = GalleryItemsByCollectionPermission.objects.filter(item=community.backgroundItem,gif_thumbnail=False)
+                if 'file' in bkg_item:
+                    path = ply.toolkit.file_uploader.get_temp_path(bkg_item.file.name,bkg_item.profile)[0]
+                    bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
+                else:
+                    bkg_path = ""
             except GalleryItemsByCollectionPermission.DoesNotExist:
                 bkg_path= ""
 
