@@ -21,7 +21,7 @@ def gallery_item(request,profile_id,collection_id,item_id):
     else:
         request.session["community"] = str(community.uuid)
         try:
-            item = GalleryItemsByCollectionPermission.objects.filter(collection_id=collection_id,item_id=item_id,profile_slug=profile_id,gif_thumbnail=True).order_by('-gif_size')[0]
+            item = GalleryItemsByCollectionPermission.objects.filter(collection_id=collection_id,item_id=item_id,profile_slug=profile_id,gif_thumbnail=True).order_by('gif_size')[0]
         except GalleryItemsByCollectionPermission.DoesNotExist:
             return render(request,"error-404-not-found.html",{})
         # Create the gallery metrics:
