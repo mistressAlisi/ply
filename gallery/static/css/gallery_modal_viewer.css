@@ -29,11 +29,12 @@
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
-    top: 0;
+    
     z-index: 10000;
     color: white;
     display: none;
     animation: fadein-keyframes  500ms ease 0s 1 alternate both;
+    top: -10px;
     
 }
 @keyframes fadein-keyframes {
