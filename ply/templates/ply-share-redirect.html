@@ -11,14 +11,16 @@
     <meta id="og-image" property="og:image" content="{% block meta-og-image %}https://ply.ooo/static/favicon.png{% endblock %}" />
     <meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}Ply{% endblock %}" />    
     <meta id="og-description" property="og:description" content="{% block meta-og-description %}Ply Meta Description{% endblock %}" />
-    <meta http-equiv="refresh" content="0; url={% block meta-redirect-body-head  %}/{% endblock %}" />
-    <!-- Page title -->
+   <!-- Page title -->
 <title>{% block share_title %}Redirect URL...{% endblock %}</title>
 
 </head>
 
 <body>
 <p><a href="{% block meta-redirect-body-url  %}/{% endblock %}">Redirect...</a></p>
+<script type="text/javascript">
+location.href="{% block meta-redirect-body-head  %}/{% endblock %}"
+</script>
 </body>
 
 </html>
