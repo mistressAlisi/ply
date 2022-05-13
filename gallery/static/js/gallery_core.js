@@ -33,6 +33,15 @@ window.gallery_core = Object({
         forw_btn: "#forw-button",
         share_url_ctrl: "#id_share_url",
         share_url_fb: "#share_url_fb",
+        sh_twitter: "#sh_twitter",
+        sh_twitter_url: "https://twitter.com/intent/tweet?text=",
+        sh_disc: "#sh_disc",
+        sh_fb: "#sh_fb",
+        sh_fb_url:"https://www.facebook.com/sharer/sharer.php?u=",
+        sh_li: "#sh_li",
+        sh_li_url: "https://www.linkedin.com/sharing/share-offsite/?url=",
+        sh_tele: "#sh_tele",
+        sh_tele_url:"https://t.me/share/url?url=",
         confirm_pub_modal: "#confirmModal",
         collection_cat: ".dashboard-category",
         gallery_card_cls: ".gallery-card",
@@ -372,6 +381,10 @@ window.gallery_core = Object({
                     /** Share link: **/
                    share_str = location.origin+"/g/"+target_card.data("profile_id")+"/"+target_card.data("collection")+"/"+target_card.data("item");
                    $(this.settings.share_url_ctrl)[0].value = share_str;
+                   $(this.settings.sh_twitter)[0].href = this.settings.sh_twitter_url+encodeURIComponent(share_str);
+                   $(this.settings.sh_li)[0].href = this.settings.sh_li_url+encodeURIComponent(share_str);
+                   $(this.settings.sh_fb)[0].href = this.settings.sh_fb_url+encodeURIComponent(share_str);
+                   $(this.settings.sh_tele)[0].href = this.settings.sh_tele_url+encodeURIComponent(share_str);
                    $(this.settings.share_url_ctrl).data("i",target_card.data("item"));
                    $(this.settings.share_url_ctrl).data("c",target_card.data("collection"));
                     //this._set_page_meta(target_card.data("title"),location.toString(),target_card.find('.card-img-top')[0].src,target_card.data("title")+" "+author_str);
