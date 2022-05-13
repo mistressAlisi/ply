@@ -6,6 +6,8 @@
     {%include "ply-share-bot-Bot_redirect.html" %}
 {% elif 'bot' in ua %}
     {%include "ply-share-bot-Bot_redirect.html" %}
+{% elif 'Hydrus' in ua %}
+    {%include "ply-share-bot-Bot_redirect.html" %}
 {% else %}
     {%include "ply-share-bot-html_redirect.html" %}
 {% endif %}
