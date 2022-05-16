@@ -1,0 +1,88 @@
+
+<script src="/static/js/stream_profile_settings.js"></script>
+<button type="button" class="btn btn-link stream_settings_btn" data-bs-toggle="modal" data-bs-target="#streamSettingsModal" data-bs-whatever="@getbootstrap"><i class="fa-solid fa-wrench"></i> &#160;Stream Settings</button>
+<div id="streamSettingsModal" class="modal modal-centered modal-dialog-scrollable" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa-solid fa-wrench"></i>&#160; Stream Settings:</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="stream_settings_form" method="POST" target="#" onsubmit="stream_settings.save(); return false;"/>
+      {% csrf_token %}
+      <input type="hidden" id="opened" name="opened" value="true"/>
+      <ul class="list-inline">
+      <li><h5><i class="fa-solid fa-brush"></i> &#160;Stream Background:</h5>
+<!--        <p class="form-text">These are the background settings for your stream page!</p> -->
+       </li>
+        <li>
+            <label for="bkg1" class="form-label">Background Colours:</label>
+            <div class="container">
+                <div class="col" style="display: inline-block;">
+                    <input type="color" class="form-control form-control-color" id="bkg1" name="bkg1" value="{{stream.bkg1}}" onchange="stream_settings.preview_bkg();"/>
+                </div>
+              <div class="col" style="display: inline-block;">
+                    <input type="color" class="form-control form-control-color" id="bkg2" name="bkg2" value="{{stream.bkg2}}" onchange="stream_settings.preview_bkg();"/>
+                </div>
+            </div>
+        </li>
+        <li><br/></li>
+         <li>
+            <label for="bkg-type" class="form-label">Background Style:</label>
+            <select class="form-select" aria-label="Background style for your stream page" id="bkgt" name="bkgt" onchange="stream_settings.preview_bkg();">
+                <option id="s1" value="s1">Solid Colour #1</option>
+                <option id="s2" value="s2">Solid Colour #2</option>
+                <option id="gl" value="gl">Lineal Gradient</option>
+                <option id="gr" value="gr">Radial Gradient</option>
+            </select> 
+<!--             <p class="form-text">Background type</p> -->
+        </li>
+        <li>
+            <label for="midpoint" class="form-label">Gradient Midpoint: </label>
+            <input type="range" class="form-range" min="0" max="100" step="1" name="midpoint" id="midpoint" onchange="stream_settings.preview_bkg();" value="{{stream.midpoint}}"/>
+        </li>
+        <li>
+            <label for="midpoint" class="form-label">Graient Linear Angle: </label>
+            <input type="range" class="form-range" min="0" max="359" step="1" name="angle" id="angle" onchange="stream_settings.preview_bkg();" value="{{stream.angle}}"/>
+        </li>
+        <li>
+            <label for="opacity1" class="form-label">Gradient Opacity Colour 1: </label>
+            <input type="range" class="form-range" min="0" max="1" step="0.05" name="opacity1" id="opacity1" onchange="stream_settings.preview_bkg();" value="{{stream.opacity1}}"/>
+        </li>
+        <li>
+            <label for="opacity2" class="form-label">Gradient Opacity Colour 2: </label>
+            <input type="range" class="form-range" min="0" max="1" step="0.05" id="opacity2" name="opacity2" onchange="stream_settings.preview_bkg();" value="{{stream.opacity2}}"/>        
+        </li>
+        <li><hr/></li>
+        <li><h5><i class="fa-solid fa-lock"></i>&#160;Security Permissions:</h5>
+<!--        <p class="form-text">These are the security settings for your stream page!</p> -->
+       </li>
+         <li>
+            <label for="default_perm" class="form-label">Stream Permissions:</label>
+            <select class="form-select" aria-label="Who can view your stream?" id="default_perm" name="default_perm">
+                <option id="e" value="e">Public: Users and Visitors</option>
+                <option id="u" value="u">Public: Users Only</option>
+                <option id="f" value="f">Private: Only Friends</option>
+                <option id="0" value="0">No one - only me!</option>
+                
+            </select>
+<!--             <p class="form-text">Who can view your stream?</p> -->
+        </li>
+      </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Save"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{%if stream.opened == false %} 
+<script type="text/javascript">
+$(document).ready(function(){
+    stream_settings.show();
+});
+</script>
+{% endif %}

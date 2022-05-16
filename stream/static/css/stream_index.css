@@ -1,0 +1,6 @@
+.stream_settings_btn {
+    position: fixed;
+    right: 1px;
+    top: 95px;
+    z-index: 1000000;
+}
