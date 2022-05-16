@@ -19,6 +19,7 @@ Django==4.0.2
 django-bootstrap==0.2.4
 django-bootstrap5==21.1
 django-captcha==1.0.0
+django-colorful==1.3
 django-mathfilters==1.0.0
 django-phonenumber-field==6.1.0
 django-postgresql==0.0.3

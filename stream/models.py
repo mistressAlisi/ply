@@ -19,6 +19,7 @@ class Stream(models.Model):
     profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT,null=True)
     group = models.ForeignKey(Group,verbose_name = "Group",on_delete=models.RESTRICT,null=True)
     type = models.TextField(verbose_name='Stream Type')
+    default_perm = models.TextField(verbose_name='Stream Default Permission',default="e")
     icon = models.TextField(verbose_name='Stream Icon',blank=True,null=True)
     shares = models.IntegerField(verbose_name='Share Count',default=0)
     views = models.IntegerField(verbose_name='Views Count',default=0)
@@ -26,11 +27,26 @@ class Stream(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
+    opened = models.BooleanField(verbose_name="Stream FLAG: has been Opened",default=False)
     root_stream = models.BooleanField(verbose_name="Root Stream FLAG",default=False)
+    bkg1 = models.TextField(verbose_name='Stream Bkg Colour #1',default="#ffffff")
+    bkg2 = models.TextField(verbose_name='Stream Bkg Colour #2',default="#ffffff")
+    bkgt = models.TextField(verbose_name='Stream Bkg Type',default="s1")
+    opacity1 = models.DecimalField(verbose_name='Stream Bkg Opacity #1',default=0,decimal_places=3,max_digits=5)
+    opacity2 = models.DecimalField(verbose_name='Stream Bkg Opacity #2',default=0,decimal_places=3,max_digits=5)
+    midpoint = models.IntegerField(verbose_name='Stream Bkg Midpoint ',default=50)
+    midpoint = models.IntegerField(verbose_name='Stream Bkg Midpoint ',default=50)
+    angle = models.IntegerField(verbose_name='Stream Bkg Midpoint ',default=90)
     
+    def rgba1(self):
+        
+        return f"rgba({int(self.bkg1[1:3],16)},{int(self.bkg1[3:5],16)},{int(self.bkg1[5:7],16)},{self.opacity1})"
+    
+    def rgba2(self):
+        return f"rgba({int(self.bkg2[1:3],16)},{int(self.bkg2[3:5],16)},{int(self.bkg2[5:7],16)},{self.opacity1})"
     
     def __str__(self):
-        return f"Stream: {self.uuid} in community: {self.community.uuid}"
+        return f"Stream for Profile: {self.profile} in community: {self.community} attached to group: {self.group} root stream: {self.root_stream}"
     
 @admin.register(Stream)
 class StreamAdmin(admin.ModelAdmin):
