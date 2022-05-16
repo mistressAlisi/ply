@@ -1,15 +1,13 @@
 
-Out[4]: UUID('76a21f77-3af5-4957-bcbc-5e65ec008246')
-
 
 
 # MAGIC UUIDS are special profiles and items that have special functions in the system.
 # They exist in all Ply setups, and they are needed to initialise new profiles and groups. 
 # They hold the configuration and templates that are applied to a newly created profile.
 # This means that any changes profiles listed underneath will affect profiles created afterwards.
-# NAMESPACE: All magic UUIDS use the "special" prefix 0011aa22-bb33.
 # PROFILES use the prefix 0011aa22-bb33-0001
 # DYNAPAGE PAGE/NODES use the prefix 0044dd55-ee66-0001
+# GROUP PAGE/NODES use the prefix 76a21f77-ee66-0001
 76a21f77
 0011ddaa
 
@@ -19,3 +17,5 @@ Out[4]: UUID('76a21f77-3af5-4957-bcbc-5e65ec008246')
 # New Character Profile Template Dynapage Node:
 0044dd55-ee66-0001-0001-000000000001
 
+# Empty Group Placeholder
+76a21f77-aa11-0001-0001-000000000001

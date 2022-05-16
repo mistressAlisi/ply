@@ -33,5 +33,8 @@ urlpatterns = [
     path('martor/', include('martor.urls')),
     path('gallery/', include('gallery.public_urls')),
     path('g/', include('gallery.sharing_urls')),
+    path('stream/', include('stream.public_urls')),
+    path('stream/api/', include('stream.api_urls')),
+    #path('s/', include('gallery.sharing_urls')),
     path('', include('community.public_urls'))
 ]
