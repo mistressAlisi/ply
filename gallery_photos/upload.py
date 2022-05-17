@@ -1,3 +1,4 @@
+import ply
 class gallery_upload_plugin():
     content_type_info = {
         "label":"Photos",
@@ -16,4 +17,4 @@ class gallery_upload_plugin():
         ],
     content_accept_filetypes_str = ",".join(map(str, content_accept_filetypes)) 
 
-    content_max_file_size_kb = 32768
+    content_max_file_size_kb = ply.settings.PLY_GALLERY_MAX_ORIGINAL_SIZE
