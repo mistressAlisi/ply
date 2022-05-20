@@ -4,3 +4,11 @@
     top: 95px;
     z-index: 1000000;
 }
+.stream_postbox {
+    height: 10vh;
+}
+#emojikb-maindiv.resizable { 
+    z-index: 1000000;
+    bottom: 85px;
+    right: 3px;
+}

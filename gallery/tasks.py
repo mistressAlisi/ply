@@ -15,7 +15,7 @@ import json,uuid,importlib,ply
 from celery import shared_task,Celery
 from ply.toolkit import file_uploader
 from django.db import IntegrityError, transaction
-from gallery.models import GalleryItem,GalleryItemFile,GalleryArtworkCat,GalleryItemCategory,GalleryItemKeyword,GalleryCollectionItems,GalleryCollection,GalleryCollectionPermission
+from gallery.models import GalleryItem,GalleryItemFile,GalleryArtworkCat,GalleryItemCategory,GalleryItemKeyword,GalleryCollectionItems,GalleryCollection,GalleryCollectionPermission,GalleryTempFileThumb
 from metrics.models import UserDataEntry
 from django.utils.text import slugify
 import os
@@ -66,7 +66,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
             GalleryItemFile.objects.create(item=item,type=temp_file.meta["metadata"]["format"],hash=sha1.hexdigest(),file_size=fsize,meta=temp_file.meta,original=True)
             UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=fsize,reference=temp_file.name)
             # Step three: Use the imported plugin module to process the file for the galleries and create files:
-            publish_mod.publish_submission(data,profile,temp_path,original_path,item,user,community)
+            publish_mod.publish_submission(data,profile,temp_path,original_path,item,user,community,temp_file.id)
             # Step Four: Add to collections:
             for c in data["cat"].split(","):
                 cat = GalleryArtworkCat.objects.get_or_create(label=c)[0]
@@ -139,8 +139,33 @@ def upload_ingest(_profile,plugin,file_name,filepath,_file_obj,content_type="",s
         file_obj.thumbnail = thumb
         file_obj.path = file_uploader.get_temp_path(file_obj.name,profile)
         file_obj.save()
+        tempFileObj = GalleryTempFileThumb(file=file_obj,path=file_obj.path,file_size=size)
+        tempFileObj.save()
         log.info(f"File Thumbnailed in Temporary Storage: {file_name}. Content type: {content_type}. {profile} [{round(size/1024,2)} kB] saved.")
     except Exception as e:
             log.exception(e)
             log.error(f"File Uploader: Unable to generate Thumbnail for file {file_name}: {e}")
             #transaction.rollback()
+
+
+@app.task
+@transaction.atomic
+def upload_cleaner(_profile,_file_obj):
+    try:
+        profile = Profile.objects.get(uuid=_profile)
+        file_obj = GalleryTempFile.objects.get(id=_file_obj)
+        # Delete the original temp file:
+        os.unlink(ply.settings.PLY_TEMP_FILE_BASE_PATH+file_obj.path)
+        # and the Temp files:
+        tempFileObj = GalleryTempFileThumb.objects.filter(file=file_obj)
+        for tF in tempFileObj:
+            os.unlink(ply.settings.PLY_TEMP_FILE_BASE_PATH+tF.path)
+            tF.delete()
+        # finally, DB cleanup:
+        file_obj.delete()
+        log.info(f"File in Temporary Storage: {file_obj.path} hasa been removed.")
+    except Exception as e:
+            log.exception(e)
+            log.error(f"File Uploader: Unable to remove temp file: {file_obj.path}: {e}")
+            #transaction.rollback()
+

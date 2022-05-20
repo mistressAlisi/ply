@@ -6,6 +6,7 @@ import ply
 from ply.toolkit import vhosts,file_uploader,logger as plylog
 from gallery_photos import utilities
 from ply import settings
+from gallery.models import GalleryTempFileThumb
 
 log = plylog.getLogger('gallery_photos.metadata',name='gallery_photos.metadata')
 
@@ -32,6 +33,8 @@ def thumbnail(profile,file):
                 im.close()
                 #file.thumbnail = tpath
                 #file.save()
+                tempFileObj = GalleryTempFileThumb(file=file,path=tpath,file_size=im.size)
+                tempFileObj.save()
             except Exception as e:
                  log.exception(e)
                  log.error(f"Unable to generate Thumbnail for {file.path}: Exception: {e}")

@@ -1,15 +1,21 @@
+import json
 from PIL import Image
 import ply
 import os
 import hashlib,pathlib
+
+
+
+
 from ply.toolkit import vhosts,file_uploader,logger as plylog
 from gallery_photos.toolkit import settings as gsettings
 from gallery_photos import utilities
 from gallery.models import GalleryItemFile
-import json
 from metrics.models import UserDataEntry
+from gallery.tasks import upload_cleaner
+
 log = plylog.getLogger('gallery_photos.publish',name='gallery_photos.publish')
-def publish_submission(data_str,profile,temp_file,original_path,item,user,community):
+def publish_submission(data_str,profile,temp_file,original_path,item,user,community,temp_file_id):
     # Step one: Caclculate the maximum size based on user input:
     mdata = json.loads(data_str["meta"])["metadata"]
     sizing = float(data_str["sizing"])
@@ -46,6 +52,7 @@ def publish_submission(data_str,profile,temp_file,original_path,item,user,commun
         GalleryItemFile.objects.create(name=isp,item=item,type=mdata["format"],hash=sha1.hexdigest(),file_size=iss,meta=mdata)
         UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=iss,reference=isp)
         log.info(f"File Stored in Gallery Storage: {isp}: Profile: {profile.uuid} [{round(iss/1024,2)} kB] saved.")
-            
+        # Step 4: Now clean up stale files that are no longer needed:
+        upload_cleaner(profile.uuid,temp_file_id)
         
 
