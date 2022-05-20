@@ -47,7 +47,7 @@ def set_profile_settings(request):
 def publish_to_profile(request,profile):
     community = reqtools.vhost_community_or_404(request)
     profile = get_object_or_404(Profile,profile_id=profile)
-    stream_profile = profiles.get_active_profile()
+    stream_profile = profiles.get_active_profile(request)
     stream = Stream.objects.get(community=community,profile=stream_profile,root_stream=True,type="PROFILE")
     
     form.save()

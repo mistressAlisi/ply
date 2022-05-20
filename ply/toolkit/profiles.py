@@ -11,24 +11,23 @@ logging = getLogger('toolkit.vhosts',name='toolkit.vhosts')
 
 def get_active_profile(request):
     """
-    @brief Return the active profile object from the session attached to the request.
+    Return the active profile object from the session attached to the request.
     :param request: p_request:Django Request Object
     :type request: t_request:str
     :returns: r:Profile object
     """
-
-   if 'profile' not in request.session:
+    if 'profile' not in request.session:
        profile = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)[0]
        request.session['profile'] = str(profile.uuid)
        request.session.modified = True
-   else:
+    else:
        try:
            profile = Profile.objects.filter(uuid=request.session['profile'])[0]
        except profile.NotFound as e:
             return None
         
-   request.session.placeholder = False
-   return profile
+    request.session.placeholder = False
+    return profile
     
 # Returns all the profiles associated with the User:       
 def get_all_profiles(request):
