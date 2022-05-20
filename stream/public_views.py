@@ -15,7 +15,7 @@ from stream.forms import StreamSettingsForm
 from stream.models import Stream
 from group.models import Group
 # Render the Gallery Home page:
-def gallery_home(request):
+def stream_Home(request):
     # Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))

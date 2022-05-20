@@ -8,10 +8,15 @@ from profiles.models import Profile
 logging = getLogger('toolkit.vhosts',name='toolkit.vhosts')
 #print(vhost_logger)
 
-# get_active_profile will match the 'uuid' stored in request.session to the active profile from the database and return it. 
-# if there is no profile set it will select the first available profile that is active, unblocked and unarchived that matches the user in request.user.
 
 def get_active_profile(request):
+    """
+    @brief Return the active profile object from the session attached to the request.
+    :param request: p_request:Django Request Object
+    :type request: t_request:str
+    :returns: r:Profile object
+    """
+
    if 'profile' not in request.session:
        profile = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)[0]
        request.session['profile'] = str(profile.uuid)
@@ -25,8 +30,17 @@ def get_active_profile(request):
    request.session.placeholder = False
    return profile
     
-# Returns all the profiles associated with the User:        
+# Returns all the profiles associated with the User:       
 def get_all_profiles(request):
+    """
+    Return all the profiles in the community for the user in the request
+
+    :param kind: request obj Django Request Object
+    :type kind: list[str] or None
+    :return: a Profiles QueryDict
+    :rtype: Profiles object
+
+   """
     profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)
     return profiles
     

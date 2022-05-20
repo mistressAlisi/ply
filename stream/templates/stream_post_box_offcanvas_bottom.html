@@ -1,0 +1,42 @@
+<link href="/static/css/emoji_keyboard.css" rel="stylesheet">
+<script src="/static/js/emoji_keyboard.js"></script>
+<div class="offcanvas offcanvas-bottom stream_postbox" tabindex="-1" id="streamPostBox" data-bs-scroll="true" data-bs-backdrop="false"  >
+  <!--<div class="offcanvas-header">
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>-->
+  <div class="offcanvas-body small">
+  <form id="stream_Form" method="POST" action="#" onsubmit="return publisher.onsubmit();">
+  <input type="hidden" id="type" name="type" value="text/plain"/>
+    <div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1">
+            <button type="button" class="btn btn-secondary">
+                <i class="fa-solid fa-circle-plus"></i>
+            </button>
+    </span>
+     <textarea class="form-control" id="contents_text" name="contents_text" aria-label="With textarea" placeholder="Hey @{{request.user}}; What's new?"></textarea>
+    
+     <span class="input-group-text" id="basic-addon1">
+
+
+            <button type="button" class="btn btn-secondary" id="gif">
+                <span class="badge bg-secondary">GIF</span>
+            </button>
+            &#160;
+             <button type="button" class="btn btn-secondary" id="emoji-btn" >
+                <i class="fa-solid fa-face-laugh"></i>
+            </button>
+            &#160;
+            <button type="submit" class="btn btn-success" id="submit" >
+                <i class="fa-solid fa-paper-plane"></i><span class="badge">send</i>
+            </button>
+            &#160;
+            <span class="badge bg-dark" id="st-countdown">0</span>
+    </span>
+    
+    </div>
+
+    
+  </div>
+  </form>
+</div>
+

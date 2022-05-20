@@ -80,7 +80,7 @@ class StreamMessage(models.Model):
     icon = models.TextField(verbose_name='Message Icon',blank=True,null=True)
     shares = models.IntegerField(verbose_name='Share Count',default=0)
     views = models.IntegerField(verbose_name='Views Count',default=0)
-    contents_text = models.TextField(verbose_name='Stream Content: Text Type',blank=True,null=True)
+    contents_text = models.TextField(verbose_name='Stream Content: Text Type',blank=True,null=True,max_length=500)
     contents_json = models.JSONField(verbose_name='Stream Content: JSON Type',blank=True,null=True)
     contents_bin = models.BinaryField(verbose_name='Stream Content: Binary Type',blank=True,null=True)
     def __str__(self):

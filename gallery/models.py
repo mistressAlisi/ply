@@ -269,7 +269,23 @@ class GalleryTempFile(models.Model):
 @admin.register(GalleryTempFile)
 class GalleryTempFileAdmin(admin.ModelAdmin):
     pass
-     
+
+class GalleryTempFileThumb(models.Model):
+    file = models.ForeignKey(GalleryTempFile,verbose_name='Item',on_delete=models.CASCADE)
+    path = models.TextField(verbose_name='File Path',blank=True,null=True)
+    file_size = models.FloatField(verbose_name='File Size',default=0)
+    order = models.IntegerField(verbose_name='Order Column',default=0)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    def __str__(self):
+        return f"Gallery Item Temporary File Thumbnail: {self.name} @ {self.path}"
+    def get_meta_json(self):
+        return str(json.dumps(self.meta))  
+@admin.register(GalleryTempFileThumb)
+class GalleryTempFileThumbAdmin(admin.ModelAdmin):
+    pass
      
 class GalleryTempFileCollections(models.Model):
     collection = models.ForeignKey(GalleryCollection,verbose_name='Collection',on_delete=models.CASCADE)

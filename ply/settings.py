@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'phonenumber_field',
     'colorful',
+    'emoji',
     'notifications',
     'dashboard',
     'dynapages',

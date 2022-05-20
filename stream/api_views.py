@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,HttpResponse
 from PIL import Image
@@ -8,7 +8,7 @@ from profiles.models import Profile
 from profiles.forms import ProfileForm
 from community.forms import CommunityForm
 from ply import settings,system_uuids
-from ply.toolkit import vhosts,profiles,logger,file_uploader,groups
+from ply.toolkit import vhosts,profiles,logger,file_uploader,groups,reqtools
 from dynapages.models import Templates,Page,Widget,PageWidget
 from dashboard.navigation import SideBarBuilder
 from stats.models import BaseStat,ProfileStat
@@ -42,13 +42,14 @@ def set_profile_settings(request):
 
 
 
-# UPDATE the currently enabled profile in session space with the provided data from the form:
+# Publish to a specific profile's primary stream:
 @login_required
-def update_character_profile(request):
-    profile = Profile.objects.get(uuid=request.session['profile'])
-    form = ProfileForm(request.POST,instance=profile)
-    if (not form.is_valid()):
-        return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
+def publish_to_profile(request,profile):
+    community = reqtools.vhost_community_or_404(request)
+    profile = get_object_or_404(Profile,profile_id=profile)
+    stream_profile = profiles.get_active_profile()
+    stream = Stream.objects.get(community=community,profile=stream_profile,root_stream=True,type="PROFILE")
+    
     form.save()
     profile.save()
     return JsonResponse({"res":"ok"},safe=False)   
