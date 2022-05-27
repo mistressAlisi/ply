@@ -12,17 +12,18 @@ Not all the features will make sense for all the applications.
 .. note::
 
    The project is under heavy development and many things may break as the APIs are developed and rolled out!
-   
 
-.. toctree::
-   :maxdepth: 3
-   :caption: Contents:
-   
 .. automodule:: ply
     :members: 
     :undoc-members:
    
-.. include:: modules.rst
+.. toctree::
+   :maxdepth: 3
+   :caption: Contents:
+
+
+
+
 
 Indices and tables
 ==================

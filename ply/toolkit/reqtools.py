@@ -9,6 +9,8 @@ from ply.toolkit import vhosts
 def vhost_community_or_404(request):
     try:
         vhost = request.META["HTTP_HOST"].split(":")[0];
-        community = (vhosts.get_vhost_community(hostname=vhost))
-    except:
+        community = vhosts.get_vhost_community(hostname=vhost)
+        return community
+    except Exception as e:
+        print(e)
         raise Http404("Community not Found!")

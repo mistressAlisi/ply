@@ -55,3 +55,24 @@ class NotificationInbox(models.Model):
 @admin.register(NotificationInbox)
 class NotificationInboxAdmin(admin.ModelAdmin):
     pass
+
+
+# Profile Mentions Table:
+class Mentions(models.Model):
+    recipient = models.ForeignKey(Profile,verbose_name = "Recipient Profile",on_delete=models.RESTRICT,related_name='+')
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Mention Inbox Created')
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    opened = models.DateTimeField(null=True,blank=True,verbose_name='Mention has been opened')
+    replied = models.DateTimeField(null=True,blank=True,editable=False,verbose_name='Mention has been replied to')
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    deleted = models.BooleanField(verbose_name="Deleted FLAG",default=False,null=True,blank=True,editable=True)
+    deleted_on = models.DateTimeField(editable=False,verbose_name='Mention Inbox Deleted on',null=True,blank=True)
+    type = models.TextField(verbose_name='Mention Type')
+    contents_text = models.TextField(verbose_name='Mention Content: Text Type',blank=True,null=True)
+    def __str__(self):
+        return f"Mention Inbox Index: Mention for -> {self.recipient.uuid} in community: {self.community.uuid}: {self.type}"
+@admin.register(Mentions)
+class MentionInboxAdmin(admin.ModelAdmin):
+    pass

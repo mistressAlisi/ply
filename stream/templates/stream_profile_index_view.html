@@ -52,15 +52,32 @@
 {%include "gallery-profile-header.html" %} 
 </div>
 </div>
-{%if profile.id == current_profile.id %}
+{%if profile == current_profile %}
 {%include "stream-settings-container.html" %}
 {% endif %}
 {%include "gallery-modal-viewer.html" %}
 <div class="container-fluid main-container" id="dashboard_mainPanel">
-<div class="container-fluid">
+<br/>
 
+<div class="container-fluid">
+{% for m in messages %}
+    {% if m.type == "text/plain" %}
+    {% include "stream_message_card.html" %}
+    {% else %}
+            {% if m.type == "application/ply.stream.refmsg" %}
+               {% include "stream_reference_card.html" %}
+            {% endif %}
+    {% endif %}
+    {% endfor %}
 </div>
 </div>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+
 {% include "stream_post_box_offcanvas_bottom.html" %}
 <script src="/static/stream_publisher/js/stream_publisher_core.js"></script>
 {% endblock %}

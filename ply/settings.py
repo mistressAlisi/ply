@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     'items',
     'forge',
     'almanac',
+    'SLHUD',
+    'plydice',
     'ply'
 ]
 

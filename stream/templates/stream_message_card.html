@@ -1,0 +1,13 @@
+<div class="card" id="msg-{{m.uuid}}" name="msg-{{m.uuid}}">
+   {%include "stream_card_header.html" %}
+
+    <div class="card-body">
+      {% if m.contents_text_parsed == None %}
+        {{m.contents_text }}
+      {% else %}
+        {{m.contents_text_parsed|safe }}
+      {% endif %}
+    </div>
+      {%include "stream_card_footer.html" %}
+</div>
+<br/><br/>

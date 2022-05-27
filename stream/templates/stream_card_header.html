@@ -1,0 +1,14 @@
+<div class="card-header">
+    <img src="{{av_path}}/{{m.author.avatar}}" alt="{{m.author.name|slice:"0:2"}}" class="rounded-circle me-2 avatar" width="45" height="45"/>
+    <div style="display: inline-block;">
+        <p class="h4">{{m.author.name}}</p>
+        <p class="h6">{{m.created}}</p>
+    </div>
+   <!--  <span class="h6 text-muted">-->
+    {% with m.author as profile %}
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+    <strong>@{{profile.profile_id}}</strong>
+    </a>
+    {%include "dashboard-profileid-interactions-dropdown.html" %}
+    {% endwith %}
+</div>

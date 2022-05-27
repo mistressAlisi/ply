@@ -74,17 +74,24 @@ class StreamSubscriberAdmin(admin.ModelAdmin):
 class StreamMessage(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Stream Created')
-    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    stream = models.ForeignKey(Stream,verbose_name="Stream",on_delete=models.CASCADE)
     author = models.ForeignKey(Profile,verbose_name = "Author",on_delete=models.RESTRICT)
     type = models.TextField(verbose_name='Message Type')
     icon = models.TextField(verbose_name='Message Icon',blank=True,null=True)
+    reposts = models.IntegerField(verbose_name='Reposts Count',default=0)
+    replies = models.IntegerField(verbose_name='Replies Count',default=0)
     shares = models.IntegerField(verbose_name='Share Count',default=0)
+    likes = models.IntegerField(verbose_name='Like Count',default=0)
+    threads = models.IntegerField(verbose_name='Thread Count',default=0)
     views = models.IntegerField(verbose_name='Views Count',default=0)
     contents_text = models.TextField(verbose_name='Stream Content: Text Type',blank=True,null=True,max_length=500)
+    contents_text_parsed = models.TextField(verbose_name='Stream Content: Text Type (Parsed)',blank=True,null=True)
     contents_json = models.JSONField(verbose_name='Stream Content: JSON Type',blank=True,null=True)
     contents_bin = models.BinaryField(verbose_name='Stream Content: Binary Type',blank=True,null=True)
+    references = models.ForeignKey('StreamMessage',verbose_name = "References",on_delete=models.CASCADE,null=True,blank=True)
+    posted_in = models.ForeignKey('Stream',verbose_name = "Posted in Stream",on_delete=models.CASCADE,null=True,blank=True,related_name="+")
     def __str__(self):
-        return f"Stream Message: {self.uuid} -in stream-> {self.stream.uuid} in community: {self.community.uuid}"
+        return f"Stream Message: {self.uuid} -in stream-> {self.stream.uuid} in community: {self.stream.community.uuid} TYPE: {self.type}"
     
 @admin.register(StreamMessage)
 class StreamMessageAdmin(admin.ModelAdmin):
