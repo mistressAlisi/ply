@@ -1,0 +1,19 @@
+<div class="card" id="msg-{{m.uuid}}" name="msg-{{m.uuid}}">
+   {%include "stream_card_header.html" %}
+
+    <div class="card-body">
+
+    {% if m.references.stream.type == "PROFILE" %}
+        <h6 class="text-muted"><i class="fa-solid fa-diagram-project"></i>&#160;Posted in  
+        <a href="/stream/@{{m.references.stream.profile.profile_id}}" target="_blank"><img src="{{av_path}}/{{m.references.stream.profile.avatar}}" alt="{{m.references.stream.profile.name|slice:"0:2"}}" class="rounded-circle me-2 avatar" width="25" height="25"/>@{{m.references.stream.profile.profile_id}}'s stream:</a></h6>
+    {% endif %}
+    {% if m.references.contents_text_parsed == None %}
+        {{m.references.contents_text }}
+      {% else %}
+        {{m.references.contents_text_parsed|safe }}
+      {% endif %}
+    </div>
+    {%include "stream_card_footer.html" %}
+   
+</div>
+<br/><br/>

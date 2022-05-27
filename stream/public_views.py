@@ -12,7 +12,7 @@ from gallery.models import GalleryCollection
 from metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit,GalleryHomePageHit
 from metrics.toolkit import request_data_capture
 from stream.forms import StreamSettingsForm
-from stream.models import Stream
+from stream.models import Stream,StreamMessage
 from group.models import Group
 # Render the Gallery Home page:
 def stream_Home(request):
@@ -30,9 +30,9 @@ def stream_Home(request):
         all_profiles = False
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
-    # Create the gallery metrics:
-    gal_hit = GalleryHomePageHit.objects.create(type="GALPAGE",community=community)
-    request_data_capture(request,gal_hit)        
+    # Create the stream metrics:
+    #gal_hit = GalleryHomePageHit.objects.create(type="GALPAGE",community=community)
+    #request_data_capture(request,gal_hit)        
         
     request.session['community'] = str(community.uuid)
     colls = serialisers.serialise_community_items(request)    
@@ -62,12 +62,16 @@ def profile_steam(request,profile_id):
         settingsForm = False
     request.session["community"] = str(community.uuid)
     stream = Stream.objects.get_or_create(community=community,profile=stream_profile,root_stream=True,type="PROFILE")[0]
+    stream.views = stream.views+1
+    stream.save()
+    messages = StreamMessage.objects.filter(stream=stream).order_by('created')
+    
     # Create the gallery metrics:
     #gal_hit = GalleryProfilePageHit.objects.create(profile=stream_profile,type="GALPAGE",community=community)
     #request_data_capture(request,gal_hit)
     # Now render the page: 
-    #colls = serialisers.serialise_community_per_profile_items(request,stream_profile)    
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':stream_profile,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'settings_form':settingsForm,"stream":stream}
+    #colls = serialisers.serialise_community_per_profile_items(request,stream_profile)
+    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':stream_profile,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'settings_form':settingsForm,"stream":stream,"messages":messages}
     return render(request,'stream_profile_index_view.html',context)
 
 

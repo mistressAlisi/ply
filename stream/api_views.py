@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,HttpResponse
 from PIL import Image
 import datetime
+from django.db import IntegrityError, transaction
 # Ply:
 from profiles.models import Profile
 from profiles.forms import ProfileForm
@@ -14,7 +15,7 @@ from dashboard.navigation import SideBarBuilder
 from stats.models import BaseStat,ProfileStat
 from community.models import Community,CommunityProfile,CommunityAdmins
 from stream.forms import StreamSettingsForm
-from stream.models import Stream
+from stream.models import Stream,StreamMessage
 # Create your views here.
 
 # Upload an avatar and apply it to the currently specified profile in the session space:
@@ -44,14 +45,34 @@ def set_profile_settings(request):
 
 # Publish to a specific profile's primary stream:
 @login_required
+@transaction.atomic
 def publish_to_profile(request,profile):
+    """
+    @brief Publish A POST to a specific profile's primary stream:..
+    :param request: p_request:Django Request
+    :type request: t_request:str
+    :param profile: p_profile:Profile Slug ID
+    :type profile: undefined
+    :returns: r JSON error object or rendered Stream card
+    """
     community = reqtools.vhost_community_or_404(request)
     profile = get_object_or_404(Profile,profile_id=profile)
-    stream_profile = profiles.get_active_profile(request)
-    stream = Stream.objects.get(community=community,profile=stream_profile,root_stream=True,type="PROFILE")
+    author = profiles.get_active_profile(request)
+
+    stream = Stream.objects.get(community=community,profile=profile,root_stream=True,type="PROFILE")
+    stream.nodes += 1
+    stream.save()
+    msg_text = request.POST["contents_text"]
+    msg_type = request.POST["type"]
+    message = StreamMessage(stream=stream,author=author,type=msg_type,contents_text=msg_text)
+    message.save()
+    #For the author's stream - if we're posting in streams other than the ones we own...:
+    if (author != profile):
+        author_stream = Stream.objects.get(community=community,profile=author,root_stream=True,type="PROFILE")
+        author_stream.nodes += 1
+        referenceMessage = StreamMessage(stream=author_stream,author=author,type='application/ply.stream.refmsg',references=message,posted_in=stream)
+        referenceMessage.save() 
     
-    form.save()
-    profile.save()
     return JsonResponse({"res":"ok"},safe=False)   
 
 

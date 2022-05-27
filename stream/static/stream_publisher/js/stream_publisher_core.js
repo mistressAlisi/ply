@@ -8,9 +8,11 @@ window.publisher = Object({
         len_dclass: "bg-dark",
         postEl: "#streamPostBox",
         inputEl: "#contents_text",
+        profileEl: "#profile",
         countEl: "#st-countdown",
         emoBtn: "#emoji-btn",
-        form: "#stream_Form"
+        form: "#stream_Form",
+        post_url: "/stream/api/publish"
     },
     count: 0,
     els: {
@@ -21,9 +23,21 @@ window.publisher = Object({
         emoBtn: false,
         form: false
     },
+    handleSubmit: function(d,e) {
+        console.warn("HandleSubmit",d,e);
+    },
     onsubmit: function(e) {
         post_data = this.els.form.serialize();
         this.els.inputEl[0].value = "";
+        $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken",Cookies.get('csrftoken'));
+            }
+        }
+        });
+        target = $(this.settings.profileEl)[0].value;
+        $.post(this.settings.post_url+"/@"+target,post_data,window.publisher.handleSubmit);
         return false;
     },
     emoji: false,
@@ -58,25 +72,17 @@ window.publisher = Object({
         this.els.emoBtn = $(this.settings.emoBtn);
         this.els.form = $(this.settings.form);
         this.emoji = new EmojiKeyboard;
-        this.emoji.instantiate(this.els.inputEl);
+        this.emoji.instantiate(this.els.inputEl[0]);
         
         this.emoji.callback = this._emCallback;
         this.els.emoBtn.click(this.emoji.toggle_window);
         this._countChars();
         this.els.ofc.show();
-        
+        setTimeout(publisher.emoji.toggle_window,500);
     }
 })
 
 
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            
-            xhr.setRequestHeader("X-CSRFToken",Cookies.get('csrftoken'));
-        }
-    }
-});
 
 $(document).ready(function(){
     publisher.init();

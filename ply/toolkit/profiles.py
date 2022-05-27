@@ -1,3 +1,10 @@
+"""
+toolkit/profiles.py
+====================================
+Toolkit utilities for interacting with Ply Profiles
+"""
+
+
 from community.models import Community,VHost
 from ply.toolkit.logger import getLogger
 from profiles.models import Profile
@@ -11,7 +18,8 @@ logging = getLogger('toolkit.vhosts',name='toolkit.vhosts')
 
 def get_active_profile(request):
     """
-    Return the active profile object from the session attached to the request.
+    @brief Return the active profile object from the session attached to the request.
+    ===============================
     :param request: p_request:Django Request Object
     :type request: t_request:str
     :returns: r:Profile object
