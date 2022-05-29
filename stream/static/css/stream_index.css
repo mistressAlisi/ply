@@ -11,4 +11,35 @@
     z-index: 1000000;
     bottom: 85px;
     right: 3px;
+    position: fixed;
+}
+div.message-ctr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.message-rollin {
+  animation-name: shutter-in-bottom;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  /* shorthand
+  animation: shutter-in-bottom 1s ease 0s 1 normal none;
+  */
+}
+@keyframes shutter-in-bottom {
+  0%{
+    transform: rotateX(100deg);
+    transform-origin: bottom;
+    opacity: 0;
+  }
+  100%{
+    transform: rotateX(0);
+    transform-origin: bottom;
+    opacity: 1;
+  }
 }

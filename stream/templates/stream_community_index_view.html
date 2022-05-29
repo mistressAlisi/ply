@@ -42,33 +42,32 @@
 <script src="/static/js/gallery_core.js"></script>
 <div class="sticky-top">
 <header class="navbar navbar-dark  bg-dark flex-md-nowrap p-0 shadow"> 
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> - {{profile.name}}'s Stream</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> - Stream</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="offcanvasWithBackdrop" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 {%include "dashboard-main-navmenu.html" %}
 </header>
 <div class="card"> 
-{%include "gallery-profile-header.html" %} 
+{%include "community-header.html" %}
 </div>
 </div>
-{%if profile == current_profile %}
-{%include "stream-settings-container.html" %}
-{% endif %}
 {%include "gallery-modal-viewer.html" %}
 <div class="container-fluid main-container" id="dashboard_mainPanel">
 <br/>
 
 <div class="container-fluid" id="stream_container">
 {% for m in messages %}
-    {% if m.type == "text/plain" %}
+    {% if m.message_type == "text/plain" %}
       {% include "stream_message_card.html" %}
-    {% elif m.type == "application/ply.stream.gallery" %}
-      {% include "stream_message_gallery_card.html" %}
-    {% elif m.type == "application/ply.stream.refmsg" %}
-      {% include "stream_reference_card.html" %}
+    {% elif m.message_type == "application/ply.stream.refmsg" %}
+              {% include "stream_reference_card.html" %}
+          {% endif %}
+
+    {% if m.message_type == "application/ply.stream.gallery" %}
+       {% include "stream_message_gallery_card.html" %}
     {% endif %}
-    {% endfor %}
+{% endfor %}
 </div>
 </div>
 <br/><br/>

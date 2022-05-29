@@ -19,6 +19,7 @@ from .auth_views import login
 
 urlpatterns = [
     path('profiles/',include('profiles.public_urls')),
+    path('p/', include('profiles.sharing_urls')),
     path('almanac/',include('almanac.public_urls')),    
     path('almanac/user/',include('almanac.user_urls')),    
     path('dashboard/user/',include('dashboard.user_urls')),

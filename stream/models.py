@@ -132,3 +132,57 @@ class StreamThread(models.Model):
 @admin.register(StreamThread)
 class StreamThreadAdmin(admin.ModelAdmin):
     pass   
+
+
+class MessagesPerStreamView(models.Model):
+    stream_created = models.DateTimeField(verbose_name="Stream Created")
+    stream_type = models.TextField(verbose_name='Stream Type')
+    stream_icon = models.TextField(verbose_name='Stream Icon',blank=True,null=True)
+    stream_shares = models.IntegerField(verbose_name='Share Count',default=0)
+    stream_views = models.IntegerField(verbose_name='Views Count',default=0)
+    stream_nodes = models.IntegerField(verbose_name='Node Count',default=0)
+    stream_archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    stream_hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    stream_system = models.BooleanField(verbose_name="System FLAG",default=False)
+    stream_group_id = models.UUIDField(verbose_name="Stream Group UUID")
+    profile_uuid = models.UUIDField(default = uuid.uuid4,editable = False)
+    profile_created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
+    profile_last_seen = models.DateTimeField(verbose_name='Profile Last Seen Online',auto_now_add=True)
+    profile_age = models.TextField(verbose_name='Current Age',default=1,blank=True)
+    profile_name = models.TextField(verbose_name='Name')
+    profile_status = models.TextField(verbose_name='status',default="CITIZEN",blank=True)
+    profile_species = models.TextField(verbose_name='Species',default='Sentient')
+    profile_introduction = models.TextField(verbose_name='Profile Intro')
+    profile_views = models.IntegerField(verbose_name='Post Count',default=0)
+    profile_pronouns = models.TextField(max_length=200,verbose_name='Pronouns')
+    profile_gender = models.TextField(max_length=200,verbose_name='Gender')
+    profile_avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True)
+    profile_posts = models.IntegerField(verbose_name='Post Count',default=0)
+    profile_views = models.IntegerField(verbose_name='Post Count',default=0)
+    profile_nodes = models.IntegerField(verbose_name='Node Count',default=0)
+    profile_blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    profile_frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    profile_system = models.BooleanField(verbose_name="System FLAG",default=False)
+    message_uuid = models.UUIDField(default = uuid.uuid4,editable = False)
+    message_created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Stream Created')
+    message_type = models.TextField(verbose_name='Message Type')
+    message_icon = models.TextField(verbose_name='Message Icon',blank=True,null=True)
+    reposts = models.IntegerField(verbose_name='Reposts Count',default=0)
+    replies = models.IntegerField(verbose_name='Replies Count',default=0)
+    shares = models.IntegerField(verbose_name='Share Count',default=0)
+    likes = models.IntegerField(verbose_name='Like Count',default=0)
+    threads = models.IntegerField(verbose_name='Thread Count',default=0)
+    views = models.IntegerField(verbose_name='Views Count',default=0)
+    contents_text = models.TextField(verbose_name='Stream Content: Text Type',blank=True,null=True,max_length=500)
+    contents_text_parsed = models.TextField(verbose_name='Stream Content: Text Type (Parsed)',blank=True,null=True)
+    contents_json = models.JSONField(verbose_name='Stream Content: JSON Type',blank=True,null=True)
+    contents_bin = models.BinaryField(verbose_name='Stream Content: Binary Type',blank=True,null=True)
+    references = models.ForeignKey('StreamMessage',verbose_name = "References",on_delete=models.CASCADE,null=True,blank=True)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    stream = models.ForeignKey(Stream,verbose_name="Stream",on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile,verbose_name = "Author",on_delete=models.RESTRICT)
+    def __str__(self):
+        return f"Message in Stream View: {self.message_uuid} in stream {self.stream.uuid} in community {self.community.uuid}"
+    class Meta:
+        managed = False
+        db_table = 'stream_messageview'

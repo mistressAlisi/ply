@@ -12,5 +12,6 @@ urlpatterns = [
     path('get/all_collections/',api_views.gallery_collections_raw),
     path('get/items/<collection>',api_views.gallery_collection_items_raw),
     path('view_counter/item/',api_views.gallery_viewer_counter_item),
-    path('share_counter/item/',api_views.gallery_share_counter_item)
+    path('share_counter/item/',api_views.gallery_share_counter_item),
+    path('recast/<uuid:col>/<uuid:item>',api_views.gallery_recast_item)
 ]
