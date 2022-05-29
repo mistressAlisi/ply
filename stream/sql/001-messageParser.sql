@@ -7,7 +7,7 @@ BEGIN
     SELECT * INTO STREAM from stream_stream WHERE uuid = NEW.stream_id;
     ---RAISE NOTICE 'UUID: %',NEW.stream_id;---
     --- PARSE the message: ---
-    IF ((NEW.type = 'text/plain') AND (NEW.contents_text IS NOT NULL)) THEN
+    IF (NEW.contents_text IS NOT NULL) THEN
     MSG  := keywords_parsestr(NEW.contents_text);
     MSG  := profiles_parsestr_and_mention(MSG,'stream.message',CAST(NEW.uuid as text),STREAM.community_id);
     ---RAISE NOTICE 'Message is %',MSG;---

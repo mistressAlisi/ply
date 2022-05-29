@@ -42,6 +42,7 @@ window.gallery_core = Object({
         sh_li_url: "https://www.linkedin.com/sharing/share-offsite/?url=",
         sh_tele: "#sh_tele",
         sh_tele_url:"https://t.me/share/url?url=",
+        sh_recast_url: "/dashboard/user/gallery/api/recast",
         confirm_pub_modal: "#confirmModal",
         collection_cat: ".dashboard-category",
         gallery_card_cls: ".gallery-card",
@@ -397,6 +398,10 @@ window.gallery_core = Object({
         $.get(this.settings.share_count_url+"/?itm="+$(this.settings.share_url_ctrl).data("i")+"&col="+$(this.settings.share_url_ctrl).data("c"));
         
     },
+    /** Recasting: will publish to the stream, "share to ply", and create a 'recast' metric: **/
+     recast: function() {
+         $.get(this.settings.sh_recast_url+"/"+$(this.settings.share_url_ctrl).data("c")+"/"+$(this.settings.share_url_ctrl).data("i"));
+     },
      /** This function launches a gallery from a card: **/
      launch_gallery_card: function(e) {
          target_card = this._parent_walker(e.target,"DIV");
@@ -515,6 +520,8 @@ window.gallery_core = Object({
              lhash_crd[0].click();
          }
      },
+
+
     /********************/
     /** These functions enable you to PUBLISH/edit items: **/
     _launch_publisher: function() {

@@ -12,7 +12,9 @@ window.publisher = Object({
         countEl: "#st-countdown",
         emoBtn: "#emoji-btn",
         form: "#stream_Form",
-        post_url: "/stream/api/publish"
+        post_url: "/stream/api/publish",
+        msg_url: "/stream/_m/",
+        container_el: "#stream_container",
     },
     count: 0,
     els: {
@@ -24,7 +26,11 @@ window.publisher = Object({
         form: false
     },
     handleSubmit: function(d,e) {
-        console.warn("HandleSubmit",d,e);
+        if (d.res == "ok") {
+            html = $("<div class='message-ctr'/>");
+            html.load(publisher.settings.msg_url+d.uuid);
+            $(publisher.settings.container_el).append(html);
+        };
     },
     onsubmit: function(e) {
         post_data = this.els.form.serialize();

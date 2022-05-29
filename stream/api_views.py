@@ -16,6 +16,7 @@ from stats.models import BaseStat,ProfileStat
 from community.models import Community,CommunityProfile,CommunityAdmins
 from stream.forms import StreamSettingsForm
 from stream.models import Stream,StreamMessage
+import ply
 # Create your views here.
 
 # Upload an avatar and apply it to the currently specified profile in the session space:
@@ -72,8 +73,7 @@ def publish_to_profile(request,profile):
         author_stream.nodes += 1
         referenceMessage = StreamMessage(stream=author_stream,author=author,type='application/ply.stream.refmsg',references=message,posted_in=stream)
         referenceMessage.save() 
-    
-    return JsonResponse({"res":"ok"},safe=False)   
+    return JsonResponse({"res":"ok","uuid":message.uuid},safe=False)
 
 
 # FINISH the currently enabled profile in session space:

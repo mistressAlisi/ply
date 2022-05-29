@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf.urls import include
 from django.contrib.auth.decorators import login_required
-from ply.toolkit import vhosts,file_uploader,logger as plylog
+from ply.toolkit import vhosts,file_uploader,logger as plylog,reqtools
 from gallery.uploader import upload_plugins_builder
 from django.http import JsonResponse,HttpResponse
 from django.db import IntegrityError, transaction
@@ -14,6 +14,8 @@ from community.models import Community
 from metrics.models import GalleryItemHit
 from metrics.toolkit import request_data_capture
 import metrics
+from ply.toolkit.reqtools import vhost_community_or_404
+from ply.toolkit import streams as stream_toolkit
 import json
 import ply
 import importlib
@@ -168,4 +170,30 @@ def gallery_share_counter_item(request):
         col = GalleryCollection.objects.get(pk=cid)
         col.shares = item.shares + 1;
         col.save();
+    return JsonResponse("ok",safe=False)
+
+
+@login_required
+@transaction.atomic
+def gallery_recast_item(request,col,item):
+    """
+    @brief Recast a given Item in a given collection into the logged in profile's stream
+    :param request: p_request:Django Request
+    :type request: t_request:str
+    :param col: p_col:Collection
+    :type col: t_col:UUID
+    :param item: p_item:ITEM
+    :type item: t_item:UUID
+    :returns: r:JsonResponse: OK or error and error data.
+    """
+    community = vhost_community_or_404(request)
+    item = GalleryItem.objects.get(pk=item)
+    itemHit = GalleryItemHit.objects.create(item=item,community=community,type="RECAST")
+    request_data_capture(request,itemHit)
+    item.shares = item.shares + 1;
+    item.save();
+    col = GalleryCollection.objects.get(pk=col)
+    col.shares = item.shares + 1;
+    col.save();
+    message = stream_toolkit.post_to_active_profile(request,"application/ply.stream.gallery",'<i class="fa-solid fa-retweet"></i> Recasted from Gallery!',{"col":str(col.uuid),"item":str(item.uuid)})
     return JsonResponse("ok",safe=False)

@@ -1,3 +1,4 @@
+{% load thumbnail_card %}
 {% if animation == none %}
 <div class="card" id="msg-{{m.uuid}}" name="msg-{{m.uuid}}">
 {% else %}
@@ -11,7 +12,11 @@
       {% else %}
         {{m.contents_text_parsed|safe }}
       {% endif %}
-
+      {% if m.message_type == "application/ply.stream.gallery" %}
+      {{m|thumbnail_card|safe}}
+      {% elif m.type == "application/ply.stream.gallery" %}
+      {{m|thumbnail_card|safe}}
+      {% endif %}
 
     </div>
       {%include "stream_card_footer.html" %}

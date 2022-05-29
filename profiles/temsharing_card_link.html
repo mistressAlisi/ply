@@ -1,0 +1,3 @@
+{% with title=item.item.title author=item.profile.name site_name=community.name profile_id=item.profile_slug collection=item.gc_label item=item.item_id collection_id=item.collection_id item_id=item.item_id created=item.gci_created|date:"c"  base_url=base_url gif_name=item.gif_name og_type="website" descr=item.gci_descr %}
+{% include 'ply-share-redirect.html' %}
+{% endwith %}

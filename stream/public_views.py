@@ -8,41 +8,45 @@ from ply.toolkit import vhosts,profiles
 from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
 from gallery import serialisers
-from gallery.models import GalleryCollection
+from gallery.models import GalleryCollection,GalleryItemsByCollectionPermission
 from metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit,GalleryHomePageHit
 from metrics.toolkit import request_data_capture
 from stream.forms import StreamSettingsForm
-from stream.models import Stream,StreamMessage
+from stream.models import Stream,StreamMessage,MessagesPerStreamView
 from group.models import Group
-# Render the Gallery Home page:
-def stream_Home(request):
-    # Ignore port:
-    vhost = request.META["HTTP_HOST"].split(":")[0];
-    community = (vhosts.get_vhost_community(hostname=vhost))
-    if community is None:
-        return render(request,"error-no_vhost_configured.html",{})
-    sideBar = SideBarBuilder()
-    if request.user.is_authenticated:
-        profile = profiles.get_active_profile(request)
-        all_profiles = profiles.get_all_profiles(request)
+
+
+def view_message(request,muuid):
+    """
+    @brief Render the specified message with a specific uuid
+    :param request: p_request:Django request
+    :param muuid: p_muuid:The UUID of the message to retrieve.
+    :type muuid: t_muuid:UUID
+    :returns: r:Rendered Stream Message as Django View
+    """
+    message = get_object_or_404(StreamMessage,uuid=muuid)
+    if (message.type == "application/ply.stream.gallery"):
+        """
+        Get collection / Item data (get a thumbnail), this is a gallery card:
+        """
+        item = GalleryItemsByCollectionPermission.objects.filter(gc_uuid=message.contents_json["col"],gci_uuid=message.contents_json["item"],gif_thumbnail=True).order_by('-gif_size')[0]
     else:
-        profile = False
-        all_profiles = False
-    if community is None:
-        return render(request,"error-no_vhost_configured.html",{})
-    # Create the stream metrics:
-    #gal_hit = GalleryHomePageHit.objects.create(type="GALPAGE",community=community)
-    #request_data_capture(request,gal_hit)        
-        
-    request.session['community'] = str(community.uuid)
-    colls = serialisers.serialise_community_items(request)    
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,"colls":colls,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}
-    return render(request,'gallery_index_view.html',context)
+        item = ""
+    context = {"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'m':message,'i':item}
+    return render (request,'stream_message_card.html',context)
 
 
 # Render the Gallery page for a given profile:
 def profile_steam(request,profile_id):
-    # Ignore port:
+    """
+    @brief ...
+    :param request: p_request:...
+    :type request: t_request:str
+    :param profile_id: p_profile_id:...
+    :type profile_id: t_profile_id:<callable>
+    :returns: ${r:...}
+    """
+
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     if community is None:
@@ -71,32 +75,38 @@ def profile_steam(request,profile_id):
     #request_data_capture(request,gal_hit)
     # Now render the page: 
     #colls = serialisers.serialise_community_per_profile_items(request,stream_profile)
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':stream_profile,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'settings_form':settingsForm,"stream":stream,"messages":messages}
+    context = {'community':community,'vhost':vhost,'profile':stream_profile,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'settings_form':settingsForm,"stream":stream,"messages":messages}
     return render(request,'stream_profile_index_view.html',context)
 
 
-# Render the Gallery page for a given profile and collection:
-def profile_gallery_collection(request,profile_id,collection_id):
-    # Ignore port:
+# Render the Gallery page for a given profile:
+def community_stream(request):
+    """
+    @brief Render page for the community stream view (all the posts in the streams belognging to the community)
+    :param request: p_request:Django Request
+    :type request: t_request:mixed
+    :returns: rDjango Render View
+    """
+
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
-    sideBar = SideBarBuilder()
-    stream_profile = get_object_or_404(Profile,profile_id=profile_id)
     if request.user.is_authenticated:
         profile = profiles.get_active_profile(request)
         all_profiles = profiles.get_all_profiles(request)
     else:
         profile = False
         all_profiles = False
+        settingsForm = False
     request.session["community"] = str(community.uuid)
-    #collection = GalleryCollection.objects.get(collection_id=collection_id)
-    collection = get_object_or_404(GalleryCollection,collection_id=collection_id)
+    messages = MessagesPerStreamView.objects.filter(community=community,stream_type="PROFILE").order_by('message_created')
+
     # Create the gallery metrics:
-    gal_hit = GalleryCollectionPageHit.objects.create(collection=collection,type="GALCOLPAGE",community=community)
-    request_data_capture(request,gal_hit)
-    # Now render the page: 
-    colls = serialisers.serialise_community_per_profile_items(request,stream_profile,collection)    
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':stream_profile,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,"colls":colls,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL,'interaction_banner_name':'Gallery: '+collection.label,'collection_nav_links':True}
-    return render(request,'stream_profile_index_view.html',context)
+    #gal_hit = GalleryProfilePageHit.objects.create(profile=stream_profile,type="GALPAGE",community=community)
+    #request_data_capture(request,gal_hit)
+    # Now render the page:
+    #colls = serialisers.serialise_community_per_profile_items(request,stream_profile)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"messages":messages}
+    return render(request,'stream_community_index_view.html',context)
+
