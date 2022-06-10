@@ -1,0 +1,27 @@
+{
+    "title":"Latest Casts",
+    "descr":"The Latest casts Widget shows a (customisable) number of the latest posts in your stream.",
+    "helptext":"The Latest casts Widget shows a (customisable) number of the latest posts in your stream.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"stream",
+    "widget_name":"ply_stream_latest_casts",
+    "dynapage_template":"dynapage-widgets-ply_stream_latest_casts",
+    "widget_data": {},
+    "icon":"fa-solid fa-tower-broadcast",
+    "setup_required":true,
+    "setup_form":"stream.dynapages.forms.latest_casts",
+    "modes":{
+        "banner":false,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":true
+    },
+    "used_in": {
+        "profile":true,
+        "group":true,
+        "dashboard":true,
+        "SLHUD":false,
+        "blog":true
+    }
+}

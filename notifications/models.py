@@ -76,3 +76,6 @@ class Mentions(models.Model):
 @admin.register(Mentions)
 class MentionInboxAdmin(admin.ModelAdmin):
     pass
+
+
+

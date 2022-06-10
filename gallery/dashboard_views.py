@@ -41,3 +41,9 @@ def gallery_collections(request):
     #return JsonResponse(colls,safe=False)   
 
 
+@login_required
+def gallery_manage(request):
+    colls = serialisers.serialise_profile_collection_items(request)
+    profile = Profile.objects.get(uuid=request.session["profile"])
+    context = {"colls":colls,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    return render(request,"gallery-dashboard_manage_collections.html",context)

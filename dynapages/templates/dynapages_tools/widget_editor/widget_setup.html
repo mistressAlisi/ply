@@ -1,0 +1,8 @@
+{% load django_bootstrap5 %}
+<h6>Configure Widget Instance</h6>
+<p>Please configure your Widget below - you can always make changes below</p>
+{% csrf_token %}
+<input type="hidden" id="widget_id" name="widget_id" value="{{widget.widget_id}}"/>
+<input type="hidden" id="widget_mode" name="widget_mode" value="{{mode}}"/>
+<input type="hidden" id="widget_col" name="widget_col" value="{{widget_col}}"/>
+{% bootstrap_form setup_form %}

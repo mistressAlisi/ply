@@ -6,20 +6,24 @@ from gallery.uploader import upload_plugins_builder
 from django.http import JsonResponse,HttpResponse
 from django.db import IntegrityError, transaction
 from django.db.models import Q
-from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection
-from gallery import serialisers
-from gallery.tasks import publish_to_gallery,upload_ingest
+from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection,GalleryTempFileThumb,GalleryCollectionItems,GalleryItemFile
+from gallery import serialisers,forms
+from gallery.tasks import publish_to_gallery,upload_ingest,remove_item
 from profiles.models import Profile
 from community.models import Community
 from metrics.models import GalleryItemHit
 from metrics.toolkit import request_data_capture
 import metrics
 from ply.toolkit.reqtools import vhost_community_or_404
-from ply.toolkit import streams as stream_toolkit
+from ply.toolkit import streams as stream_toolkit,file_uploader,profiles as toolkit_profiles
 import json
 import ply
 import importlib
+import os
+from django.utils.text import slugify
 
+
+from django.contrib.auth.hashers import check_password
 log = plylog.getLogger('gallery.api_views',name='gallery.api_views')
 #queue = GalleryPublisher(ply.settings.PLY_MSG_BROKER_URL,log)
 #queue.start()
@@ -197,3 +201,196 @@ def gallery_recast_item(request,col,item):
     col.save();
     message = stream_toolkit.post_to_active_profile(request,"application/ply.stream.gallery",'<i class="fa-solid fa-retweet"></i> Recasted from Gallery!',{"col":str(col.uuid),"item":str(item.uuid)})
     return JsonResponse("ok",safe=False)
+
+
+
+
+@login_required
+@transaction.atomic
+def gallery_toggle_invisible(request,item):
+    item = GalleryItem.objects.get(pk=item)
+    if (str(item.profile.uuid) != request.session['profile']):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    if (item.archived == True):
+        item.archived = False;
+        item.save();
+        return JsonResponse("vis",safe=False)
+    elif (item.archived == False):
+        item.archived = True;
+        item.save();
+        return JsonResponse("invis",safe=False)
+
+
+@login_required
+@transaction.atomic
+def gallery_remove_temp(request,item):
+    item = GalleryTempFile.objects.get(pk=item)
+    if (str(item.profile.uuid) != request.session['profile']):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    thumbs = GalleryTempFileThumb.objects.filter(file=item)
+    for thumb in thumbs:
+        path = file_uploader.get_temp_path(thumb.path,item.profile)
+        destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+path
+        try:
+            os.unlink(destpath)
+        except FileNotFoundError:
+            log.warn(f"Deleting Temp item {thumb.path} - the file was not found in the Filesystem. Deleting SQL node anyway.")
+        thumb.delete()
+    path = file_uploader.get_temp_path(item.path,item.profile)
+    destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+path
+    try:
+        os.unlink(destpath+"/"+item.path)
+    except FileNotFoundError:
+        log.warn(f"Deleting Temp item {item.path} - the file was not found in the Filesystem. Deleting SQL node anyway.")
+    item.delete();
+
+
+    return JsonResponse("ok",safe=False)
+
+
+
+
+@login_required
+def gallery_copymove_form(request,item,col):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    if (str(item.profile.uuid) != request.session['profile']):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    profile = toolkit_profiles.get_active_profile(request)
+    moveForm = forms.copy_move_form(profile=profile,community=community,item=item.uuid,icol=col)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'move_form':moveForm}
+    return render(request,"gallery/card_api/copy_move_form.html",context)
+
+
+@login_required
+@transaction.atomic
+def gallery_copymove_exec(request):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    col = request.POST["collection"]
+
+    ncol = request.POST["new_collection"]
+    if (col == "-1" and ncol == "") :
+        return JsonResponse({"res":"err","err":"Must specify new collection name!"},safe=False)
+    i = request.POST["item"]
+    op = request.POST["operation"]
+    icol = request.POST["icol"]
+    if (icol == ncol):
+        return JsonResponse({"res":"err","err":"Must specify a different collection!"},safe=False)
+    profile = toolkit_profiles.get_active_profile(request)
+    item = GalleryItem.objects.get(pk=i)
+    if (str(item.profile.uuid) != request.session['profile']):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    if (col == "-1"):
+        """ Create Collection: """
+        col = GalleryCollection.objects.get_or_create(label=ncol,collection_id=slugify(ncol))[0]
+        colc = GalleryCollectionPermission.objects.get_or_create(collection=col,profile=profile,owner=True,community=community)[0]
+        col.save()
+        colc.save()
+    else:
+        col = GalleryCollection.objects.get(uuid=col)
+    if (op == "c"):
+        """ COPY to a new collection: """
+        gic = GalleryCollectionItems.objects.get_or_create(item=item,collection=col)[0]
+        gic.save()
+    elif (op == "m"):
+        """ MOVE to a new collection: """
+        gic = GalleryCollectionItems.objects.get_or_create(item=item,collection=col)[0]
+        gic.save()
+
+        icol = GalleryCollection.objects.get(uuid=icol)
+        oldcols = GalleryCollectionItems.objects.get(item=item,collection=icol)
+        oldcols.delete()
+
+    if "cast_to_stream" in request.POST:
+        if (request.POST["cast_to_stream"] == "on"):
+            message = stream_toolkit.post_to_active_profile(request,"application/ply.stream.gallery",'<i class="fa-solid fa-retweet"></i> Casted from Gallery!',{"col":str(col.uuid),"item":str(item.uuid)})
+    return JsonResponse("ok",safe=False)
+
+
+@login_required
+def gallery_remitem_form(request,item,col):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    if (str(item.profile.uuid) != request.session['profile']):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    profile = toolkit_profiles.get_active_profile(request)
+    colitems = GalleryCollectionItems.objects.filter(item=item)
+    ccol = GalleryCollection.objects.get(uuid=col)
+    removeForm = forms.remove_form(profile=profile,community=community,item=item.uuid,icol=ccol)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'remove_form':removeForm,'item':item,'colitems':colitems}
+    return render(request,"gallery/card_api/remove_form.html",context)
+
+@login_required
+@transaction.atomic
+def gallery_remove_exec(request):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    icol = request.POST["icol"]
+    item = request.POST["item"]
+    op = request.POST["operation"]
+    item_name = request.POST["item_name"]
+    confirm = request.POST["confirm"]
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    if (item_name != str(item.uuid)[:4]):
+        return JsonResponse({"res":"err","err":"Please enter the first 4 chars of the item ID."},safe=False)
+    if check_password(request.POST["pw"],request.user.password) is False:
+        return JsonResponse({"res":"err","err":"Bad Password."},safe=False)
+    if (str(item.profile.uuid) != request.session['profile']):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    if (confirm != "on"):
+        return JsonResponse({"res":"err","err":"Confirm it."},safe=False)
+    if (op == "r"):
+        """ if op is R, it means ALL collection instances are to be nuked - and then the item item itself: """
+        colitems = GalleryCollectionItems.objects.filter(item=item)
+        colitems.delete()
+        remove_item(str(profile.uuid),str(item.uuid))
+
+
+    elif (op == "i"):
+        """ Only the initial collection item will be deleted; if there are no more collection items, THEN we will nuke the item itself:"""
+        icol = GalleryCollection.objects.get(uuid=icol)
+        colitems = GalleryCollectionItems.objects.filter(item=item,collection=icol)
+        colitems.delete()
+        colitems = GalleryCollectionItems.objects.filter(item=item)
+        if (len(colitems) == 0):
+            remove_item(str(profile.uuid),str(item.uuid))
+
+
+    return JsonResponse("ok",safe=False)
+
+
+
+@login_required
+def gallery_settings_form(request,item,col):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    if (str(item.profile.uuid) != str(profile.uuid)):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    colitems = GalleryCollectionItems.objects.filter(item=item)
+    ccol = GalleryCollection.objects.get(uuid=col)
+    removeForm = forms.remove_form(profile=profile,community=community,item=item.uuid,icol=ccol)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'remove_form':removeForm,'item':item,'colitems':colitems}
+    return render(request,"gallery/card_api/settings_form.html",context)
+
+
+
+
+@login_required
+def gallery_item_metadata(request,item,col):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    if (str(item.profile.uuid) != str(profile.uuid)):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+
+    colitems = GalleryCollectionItems.objects.filter(item=item)
+    colfiles = GalleryItemFile.objects.filter(item=item)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'item':item,'colitems':colitems,'colfiles':colfiles}
+    return render(request,"gallery/card_api/metadata.html",context)

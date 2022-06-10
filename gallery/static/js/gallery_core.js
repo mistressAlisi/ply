@@ -49,6 +49,8 @@ window.gallery_core = Object({
         in_col_str: " <i>in collection:</i> ", 
         share_fb_str: "Copied to clipboard!",
         max_upload_size: 25600,
+        confirm_rem_modal: "#deleteModal",
+        rem_url_temp: "/dashboard/user/gallery/api/remove/temp",
     },
     editor: {
         file:"",
@@ -56,7 +58,8 @@ window.gallery_core = Object({
         url:"",
         bound: false
     },
-    
+    /** For REMoval/delete operations: **/
+    rem_target: false,
     /** Plugin Control: _pLoaded keeps track of loaded plugins by name to prevent reinitialisation. Plugins that need to extend dashboard can register themselves into the plugins object below: **/
     _pLoaded: [],
     plugins: [],
@@ -264,7 +267,7 @@ window.gallery_core = Object({
 
     },
    
-    
+
      /** Init plugins then galleries (full init... ONLY CALL ONCE!): **/
      launch_gallery_init: function() { 
         
@@ -524,6 +527,9 @@ window.gallery_core = Object({
 
     /********************/
     /** These functions enable you to PUBLISH/edit items: **/
+
+
+    /** Start the publisher and it's handler: **/
     _launch_publisher: function() {
         $(gallery_core.settings.review_panel).load(gallery_core.editor.url,function(e){
                 review_setup_ok = gallery_core.plugins[gallery_core.editor.plugin].prepare_review();
@@ -573,6 +579,22 @@ window.gallery_core = Object({
         if (review_pub_ok == true) {
             $(gallery_core.settings.confirm_pub_modal).modal('show');
         }
-    }
+    },
+
+    /** Delete an uploaded temp file and its event handler: **/
+   _confirm_rem_h: function (r) {
+       if (r == "ok") {
+           $("#card-"+gallery_core.rem_target).remove();
+       }
+
+    },
+    _confirm_rem: function() {
+            $.get(window.gallery_core.settings.rem_url_temp+"/"+this.rem_target,this._confirm_rem_h);
+    },
+
+   remove_upload: function(id) {
+       gallery_core.rem_target = id;
+       $(gallery_core.settings.confirm_rem_modal).modal('show');
+   }
 });
 

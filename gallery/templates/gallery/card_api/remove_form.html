@@ -1,0 +1,13 @@
+<form id="remove_form" method="POST" action="#" onsubmit="return gallery_core_editor._exec_rm();">
+{%csrf_token%}
+{%load django_bootstrap5 %}
+<h5 class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i>&#160;Are you sure you wish to destroy '{{item.title}}'?&#160;<i class="fa-solid fa-triangle-exclamation"></i></h5>
+<p>The Submission appears in the following collections:</p>
+<ul>
+{% for col in colitems %}
+    <li>{{col.collection.label}}</li>
+{% endfor %}
+</ul>
+{% bootstrap_form remove_form %}
+{% bootstrap_button "DESTROY" button_type="submit" button_class="btn-danger" %}
+</form>

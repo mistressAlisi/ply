@@ -37,6 +37,8 @@ class Profile(models.Model):
     posts = models.IntegerField(verbose_name='Post Count',default=0)
     views = models.IntegerField(verbose_name='Post Count',default=0)
     notifications = models.IntegerField(verbose_name='Notification Count',default=0)
+    mentions = models.IntegerField(verbose_name='Mention Count',default=0)
+    messages = models.IntegerField(verbose_name='Message Count',default=0)
     nodes = models.IntegerField(verbose_name='Node Count',default=0)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)

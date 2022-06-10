@@ -170,7 +170,7 @@ class GalleryCollectionItemsAdmin(admin.ModelAdmin):
     
     
 class GalleryItemCategory(models.Model):
-    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.RESTRICT)
+    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
     category = models.ForeignKey(GalleryArtworkCat,verbose_name='category',on_delete=models.RESTRICT)
     order = models.IntegerField(verbose_name='Order Column',default=0)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')

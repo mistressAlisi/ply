@@ -44,7 +44,7 @@ def save_gallery_file(file,profile,name=False):
             cache.close()
             return bw
         except:
-            raise Exception('Unable to store Avatar in S3 Storage')
+            raise Exception('Unable to store Gallery File in S3 Storage')
     else:
         destpath = ply.settings.PLY_GALLERY_FILE_BASE_PATH+path
         if not os.path.exists(os.path.dirname(destpath)):
@@ -77,7 +77,7 @@ def save_original_file(file,profile,name=False):
             bw = file.tell()
             return bw
         except:
-            raise Exception('Unable to store Avatar in S3 Storage')
+            raise Exception('Unable to store Original File in S3 Storage')
     else:
         destpath = ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH+path
         if not os.path.exists(os.path.dirname(destpath)):

@@ -8,6 +8,8 @@ window.dashboard = Object({
         systemMenuOpen:false,
         systemMenuWidth:'250px',
     },
+    /** Current main panel: **/
+    cmp: false,
     /** Plugin Control: _pLoaded keeps track of loaded plugins by name to prevent reinitialisation. Plugins that need to extend dashboard can register themselves into the plugins object below: **/
     _pLoaded: [],
     plugins: Object (),
@@ -124,11 +126,14 @@ function dc_updateLinks() {
     $(".sm_slink").click(function(a,e){dc_handleLink(a,true)});
 };
 function dc_handleMainLink(a){ 
+
     dc_handleLink(a,false,".mm_");
     
 };
 
 function dc_handleLink(a,sublink=false,link_class=".sm_"){
+//   console.log("AA",a)
+//   window.aaa = a;
   //a.preventDefault();
   $(link_class+"li").removeClass("active");
   $(link_class+"link").removeClass("active");
@@ -158,10 +163,16 @@ function dc_handleLink(a,sublink=false,link_class=".sm_"){
   }
   if (link.data('trgt')) {
     console.info("Link Target data",link.data('trgt'));
+    dashboard.cmp  = link.data('trgt');
     $("#dashboard_mainPanel").load(link.data('trgt'));
   }
   
 };
+
+function dc_reloadPanel() {
+    $("#dashboard_mainPanel").load(dashboard.cmp);
+};
+
 $(document).ready(function(){
   $(document).data.modules = [];
   $(".nav-link").click(function(a,e){dc_handleMainLink(a);});
@@ -169,6 +180,8 @@ $(document).ready(function(){
   $("#dashboard-menu-toggle").click();
   
 });
+
+
 
 
 function csrfSafeMethod(method) {

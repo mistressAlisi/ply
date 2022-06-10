@@ -17,16 +17,15 @@
     <meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}Ply{% endblock %}" />    
     <meta id="og-description" property="og:description" content="{% block meta-og-description %}Ply Meta Description{% endblock %}" />
 
-    <!-- Page title -->
     <title>{% block bootstrap5_title %}django-bootstrap5 template title{% endblock %}</title>
+    <!--     JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Bootstrap CSS -->
     {% bootstrap_css %}
-
-    <!-- Bootstrap JavaScript if it is in head -->
-    {% if 'javascript_in_head'|bootstrap_setting %}
-        {% bootstrap_javascript %}
-    {% endif %}
+    <!-- Bootstrap JavaScript: !-->
+     {% bootstrap_javascript %}
 
     {% block bootstrap5_extra_head %}{% endblock %}
 
@@ -37,10 +36,7 @@
 
 {% block bootstrap5_after_content %}{% endblock %}
 
-<!-- Bootstrap JavaScript if it is in body -->
-{% if not 'javascript_in_head'|bootstrap_setting %}
-    {% bootstrap_javascript %}
-{% endif %}
+
 
 {% block bootstrap5_extra_script %}{% endblock %}
 

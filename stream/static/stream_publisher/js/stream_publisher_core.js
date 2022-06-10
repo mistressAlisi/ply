@@ -15,6 +15,7 @@ window.publisher = Object({
         post_url: "/stream/api/publish",
         msg_url: "/stream/_m/",
         container_el: "#stream_container",
+        new_class: 'message-rollin',
     },
     count: 0,
     els: {
@@ -28,8 +29,11 @@ window.publisher = Object({
     handleSubmit: function(d,e) {
         if (d.res == "ok") {
             html = $("<div class='message-ctr'/>");
+            html.addClass(publisher.settings.new_class);
             html.load(publisher.settings.msg_url+d.uuid);
             $(publisher.settings.container_el).append(html);
+            $(publisher.settings.container_el).append($('<br>'));
+            location.hash = "msg-"+d.uuid;
         };
     },
     onsubmit: function(e) {

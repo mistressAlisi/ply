@@ -1,0 +1,15 @@
+.editbtn {
+    float: right;
+    top: 1px;
+    position: absolute;
+    right: 1px;
+}
+
+.gallery-card.archived .card-img-top  {
+    opacity: 0.3;
+
+}
+
+.gallery-card.archived .card-img-top::after {
+  content: "Archived";
+}
