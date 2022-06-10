@@ -1,0 +1,25 @@
+{
+    "title":"Stats Display",
+    "descr":"The Stats display provides a means to show your character's stats in a profile.",
+    "helptext":"All stats (besides HP/MP/STA) will be displayed; several display options are available.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"profiles",
+    "widget_name":"ply_stats_display",
+    "dynapage_template":"dynapage-widgets-statsDisplay-main",
+    "widget_data": {},
+    "icon":"fa-solid fa-signal",
+    "modes":{
+        "banner":false,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":false
+    },
+     "used_in": {
+        "profile":true,
+        "group":false,
+        "dashboard":true,
+        "SLHUD":true,
+        "blog":false
+    }
+}

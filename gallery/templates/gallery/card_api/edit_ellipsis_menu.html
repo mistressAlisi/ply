@@ -1,0 +1,19 @@
+<div class="dropdown editbtn">
+  <button class="btn btn-success badge rounded-pill dropdown-toggle" type="button" id="ddCtrl-{{i.id}}" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fa-solid fa-ellipsis-vertical"></i>&#160;&#160;<i class="fa-solid fa-pen"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="#ddCtrl-{{i.id}}" id="dropdown-{{i.id}}">
+  {% if i.archived is False %}
+    <li><a class="dropdown-item active" href="#" onclick="gallery_core_editor.t_visible('{{col.uuid}}','{{i.id}}');"> <i class="fa-solid fa-eye"></i> Visible; Published. </a></li>
+  {% else %}
+    <li><a class="dropdown-item" href="#" onclick="gallery_core_editor.t_visible('{{col.uuid}}','{{i.id}}');"> <i class="fa-solid fa-eye-slash"></i> Invisible; Archived </a></li>
+  {%endif %}
+  <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#" onclick="gallery_core_editor.metadata('{{col.uuid}}','{{i.id}}');"><i class="fa-solid fa-chart-line" onclick="gallery_core_editor.metadata('{{col.uuid}}','{{i.id}}');"></i> Metadata and Stats ...</a></li>
+    <li><a class="dropdown-item" href="#" onclick="gallery_core_editor.details('{{col.uuid}}','{{i.id}}');"><i class="fa-solid fa-file-pen"></i> Edit Details ...</a></li>
+    <li><a class="dropdown-item" href="#" onclick="gallery_core_editor.itm_settings('{{col.uuid}}','{{i.id}}');"><i class="fa-solid fa-sliders"></i> Settings ...</a></li>
+    <li><a class="dropdown-item" href="#" onclick="gallery_core_editor.copy_move('{{col.uuid}}','{{i.id}}');"><i class="fa-solid fa-arrows-split-up-and-left"></i>&#160;<i class="fa-solid fa-clone"></i> Copy/Move to ...</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item bg-danger" href="#" onclick="gallery_core_editor.remove('{{col.uuid}}','{{i.id}}');"><i class="fa-solid fa-skull"></i> Destroy ...</a></li>
+  </ul>
+</div>

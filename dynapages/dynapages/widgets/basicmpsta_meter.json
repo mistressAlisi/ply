@@ -1,0 +1,25 @@
+{
+    "title":"Basic MP+STA Meter",
+    "descr":"The Basic MP+STA Meter for Profiles.",
+    "helptext":"The Basic MP+STA Meter for Profiles.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"profiles",
+    "widget_name":"ply_basicmpsta_meter",
+    "dynapage_template":"dynapage-widgets-MPSTADisplay-main",
+    "widget_data": {},
+    "icon":"fa-solid fa-wand-sparkles",
+    "modes":{
+        "banner":false,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":false
+    },
+     "used_in": {
+        "profile":true,
+        "group":false,
+        "dashboard":true,
+        "SLHUD":true,
+        "blog":false
+    }
+}

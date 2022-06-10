@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django_bootstrap5',
     'django_registration',
     'martor',
+    'preferences',
     'storages',
     'mathfilters',
     'phonenumber_field',
@@ -197,6 +199,8 @@ MARTOR_TOOLBAR_BUTTONS = [
     'direct-mention', 'toggle-maximize', 'help'
 ]
 
+
+BOOTSTRAP5= {"javascript_in_head": True }
 # To setup the martor editor with title label or not (default is False)
 MARTOR_ENABLE_LABEL = False
 
@@ -266,7 +270,9 @@ REGISTRATION_SALT = 'ae3Phoge'
 # PLY:
 PLY_USER_DASHBOARD_MODULES = [
     "profiles",
-    "gallery"
+    "gallery",
+    "notifications",
+    "preferences"
     
     ]
 

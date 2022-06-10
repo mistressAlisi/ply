@@ -11,12 +11,13 @@
          <li class="mb-1"><hr/></li>
       </li>
         {% include "dashboard-sidebar_profile_switcher.html" %}
+
       <li class="mb-1"><hr/></li>
       {% for module in sidebar %}
       {% include "dashboard-sidebar-module-menu.html" %}
       {% endfor %}
-        </ul>
-      </div>
+
+      </ul>
       <div class="offcanvas-footer position-absolute bottom-0 start-0 account-dash-widget">
       <hr/>
         <h6 class="text-muted"><span class="ply-brand_font">Ply</span> powered, (v) {{ply_version}}</h6>

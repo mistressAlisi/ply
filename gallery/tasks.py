@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.conf.urls import include
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from ply.toolkit import vhosts,file_uploader,logger as plylog
+from ply.toolkit import vhosts,file_uploader,logger as plylog,streams as streams_toolkit
 from gallery.uploader import upload_plugins_builder
 from django.http import JsonResponse,HttpResponse
 from django.db import IntegrityError, transaction
@@ -23,7 +23,7 @@ import hashlib,shutil,logging
 from keywords.models import Keyword
 from django.core.exceptions import ValidationError
 from community.models import Community
-import ply
+import ply,boto3,io
 log = plylog.getLogger('gallery.tasks',name='gallery.tasks')
 app = Celery('ply')
 
@@ -63,7 +63,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
                 fsize = temp_file_handle.tell()
             temp_file_handle.close()
             
-            GalleryItemFile.objects.create(item=item,type=temp_file.meta["metadata"]["format"],hash=sha1.hexdigest(),file_size=fsize,meta=temp_file.meta,original=True)
+            GalleryItemFile.objects.create(item=item,type=temp_file.meta["metadata"]["format"],hash=sha1.hexdigest(),file_size=fsize,meta=temp_file.meta,original=True,name=temp_file.name)
             UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=fsize,reference=temp_file.name)
             # Step three: Use the imported plugin module to process the file for the galleries and create files:
             publish_mod.publish_submission(data,profile,temp_path,original_path,item,user,community,temp_file.id)
@@ -95,7 +95,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
             
                 # Now add the items...
                 gic = GalleryCollectionItems.objects.get_or_create(item=item,collection=col)[0]
-                col.items = col.items + 1 
+
             
                 # And save all:
                 col.save()
@@ -103,12 +103,16 @@ def publish_to_gallery(data,profile,temp_file,user,community):
                 colc.save()
                 cat.save()
             # Step Seven: Notifications
-            # TODO: implement :D
+            # TODO: implement :
+            # Step Eight: Streams!
+            streams_toolkit.post_to_profile_stream(profile,community,"application/ply.stream.gallery",'<i class="fa-solid fa-retweet"></i> Recasted from Gallery!',{"col":str(col.uuid),"item":str(item.uuid)})
         except Exception as e:
             log.exception(e)
             return False
         finally:
             # WARNING: this is for debug, for production os.rename is preferred.
+            # WARNING: This path appears to be not necessary anymore, save_original_file above suffices.
+
             #shutil.copy(temp_path,original_path)
             
             #Step Eight: Cleanup
@@ -169,3 +173,31 @@ def upload_cleaner(_profile,_file_obj):
             log.error(f"File Uploader: Unable to remove temp file: {file_obj.path}: {e}")
             #transaction.rollback()
 
+
+
+@app.task
+@transaction.atomic
+def remove_item(_profile,_item):
+    try:
+        profile = Profile.objects.get(uuid=_profile)
+        item_obj = GalleryItem.objects.get(id=_file_obj)
+        if (item_obj.profile != profile):
+            return False
+        files = GalleryItemFile.objects.filter(item=item_obj)
+        log.info(f"Item in Main Storage: {item_obj.uuid} being deleted...")
+        if (ply.settings.PLY_AVATAR_STORAGE_USE_S3 == 'TRUE'):
+            s3client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)
+        for file in files:
+            # Delete the file:
+            keystr= f'{ply.settings.PLY_GALLERY_FILE_BASE_PATH}/{file.name}'
+            if (ply.settings.PLY_AVATAR_STORAGE_USE_S3 == 'TRUE'):
+                s3client.delete_object(Bucket=ply.settings.AWS_STORAGE_BUCKET_NAME, Key=keystr)
+            else:
+                os.unlink(keystr)
+            file.delete()
+        item_obj.delete()
+
+    except Exception as e:
+            log.exception(e)
+            log.error(f"Item Removal: Unable to remove item file: {item_obj.uuid}: {e}")
+            #transaction.rollback()

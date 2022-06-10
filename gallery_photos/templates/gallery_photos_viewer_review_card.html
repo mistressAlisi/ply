@@ -64,7 +64,9 @@
     <input type="hidden" name="col" id="col" value=""/>
     <input type="hidden" name="not" id="not" value=""/>
     </form>
-
+  <button class="btn btn-danger badge rounded-pill editbtn" type="button" id="delete-{{i.id}}"  data-bs-toggle="tooltip" data-bs-placement="right" title="Destroy" onclick="gallery_core.remove_upload('{{file.id}}');">
+  <i class="fa-solid fa-ellipsis-vertical"></i>&#160;&#160;<i class="fa-solid fa-skull"></i>
+  </button>
 
   </section>
 </div>

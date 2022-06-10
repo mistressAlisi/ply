@@ -1,0 +1,6 @@
+<form id="copy_move_form" method="POST" action="#" onsubmit="return gallery_core_editor._exec_cpmv();">
+{%csrf_token%}
+{%load django_bootstrap5 %}
+{%bootstrap_form move_form %}
+{% bootstrap_button "Copy/Move" button_type="submit" button_class="btn-success" %}
+</form>

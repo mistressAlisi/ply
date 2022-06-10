@@ -43,5 +43,5 @@ def community_home(request):
         else:
             bkg_path = False
         context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path}
-        return render(request,community.dynapage.template.filename,context)
+        return render(request,"dynapages/"+community.dynapage.template.filename,context)
 

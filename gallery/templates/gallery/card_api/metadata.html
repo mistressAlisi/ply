@@ -1,0 +1,70 @@
+<form id="remove_form" method="POST" action="#" onsubmit="return gallery_core_editor._exec_rm();">
+{%csrf_token%}
+{%load django_bootstrap5 %}
+{%load mathfilters %}
+<h5 class="text-primary"><i class="fa-solid fa-list-check"></i>&#160;Metadata &amp; Stats for '<em>{{item.title}}</em>':</h5>
+<span class="h6 text-success">Key Details:</span>
+<table class="table table-hover">
+  <thead>
+  <tr>
+  <td><strong>Key</strong></td>
+  <td><strong>Value</strong></td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><strong>ID:</strong></td>
+  <td>{{item.uuid}}</td>
+  </tr>
+  <tr>
+  <td><strong>Created:</strong></td>
+  <td>{{item.created}}</td>
+  </tr>
+  <tr>
+  <td><strong>Updated:</strong></td>
+  <td>{{item.updated}}</td>
+  </tr>
+  <tr>
+  <td><strong>Social:</strong></td>
+  <td>{{item.views}} Views | {{item.likes}} Likes | {{item.shares}} Shares | {{item.comments}} comments | {{item.downloads}} downloads</td>
+  </tr>
+  </tbody>
+</table>
+<span class="h6 text-success">Files Associated:</span>
+<table class="table table-hover">
+  <thead>
+  <tr>
+  <td><strong>File</strong></td>
+  <td><strong>Mime</strong></td>
+  <td><strong>Type</strong></td>
+  <td><strong>Size (KB)</strong></td>
+  </tr>
+  </thead>
+  <tbody>
+{% for file in colfiles %}
+    <tr>
+        <td class="text-wrap fs-6">{{file.name}}</td>
+        <td>{{file.type}}</td>
+         <td>
+         {% if file.thumbnail is True %}
+         Thumb
+         {% elif file.original is True %}
+         Original
+         {% else %}
+         Display
+         {% endif %}
+         </td>
+        <td>{{file.file_size|div:1024|floatformat:2}}</td>
+    </tr>
+{% endfor %}
+
+  </tbody>
+</table>
+<span class="h6 text-success">The Submission appears in the following collections:</span>
+<ul>
+{% for col in colitems %}
+    <li>{{col.collection.label}}</li>
+{% endfor %}
+</ul>
+
+</form>

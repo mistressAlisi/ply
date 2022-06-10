@@ -1,3 +1,4 @@
+{% load humanize %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
 
@@ -37,13 +38,17 @@
                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: 250px; padding: 5px;">
                  <li><strong class="dropdown-item-text"><i class="fa-solid fa-bell"></i>&#160;Notifications:</strong></li>
                  <li class="dropdown-item-text">
-                 <i class="fa-solid fa-comment"></i>1,500
+                 <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notifications">
+                 <i class="fa-solid fa-comment"></i>&#160;{{ current_profile.notifications|intcomma }}
+                 </span>
                  &#160;
-                 
-                 <i class="fa-solid fa-comment"></i>1,500
+                 <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Messages">
+                 <i class="fa-solid fa-envelope"></i>&#160;{{ current_profile.messages|intcomma }}
+                 </span>
                  &#160;
-                 
-                 <i class="fa-solid fa-comment"></i>1,500
+                 <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Mentions">
+                 <i class="fa-solid fa-quote-left"></i>&#160;{{ current_profile.mentions|intcomma }}
+                 </span>
                  &#160;
                  
                  </li>  

@@ -26,6 +26,7 @@ def profile_view(request):
         primaryGroup = False
 
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profile.dynapage)
+    available_widgets = dynapages.Widget.objects.filter(active=True,profile=True)
     stats = ProfileStat.objects.filter(profile=profile)
-    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats}
-    return render(request,profile.dynapage.template.filename,context)
+    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'dynapage_template':profile.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s profile",'available_widgets':available_widgets}
+    return render(request,'dynapages_tools/widget_editor.html',context)

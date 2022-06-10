@@ -1,0 +1,27 @@
+{
+    "title":"Simple Banner",
+    "descr":"The Simple Banner Widget provides a customisable block for Profiles to display the Profile name, stats, avatar and selected stats.",
+    "helptext":"The Simple Banner Widget provides a customisable block for Profiles to display the Profile name, stats, avatar and selected stats.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"profiles",
+    "widget_name":"ply_simple_banner",
+    "dynapage_template":"dynapage-widgets-simpleBanner-main",
+    "widget_data": {},
+    "icon":"fa-solid fa-address-card",
+    "setup_required":false,
+    "setup_form":"someclass.someform",
+    "modes":{
+        "banner":true,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":true
+    },
+    "used_in": {
+        "profile":true,
+        "group":true,
+        "dashboard":true,
+        "SLHUD":true,
+        "blog":true
+    }
+}

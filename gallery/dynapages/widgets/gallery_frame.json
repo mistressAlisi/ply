@@ -1,0 +1,27 @@
+{
+    "title":"Gallery Frame",
+    "descr":"The Gallery Frame lets you showcase one specific piece from your Gallery anywhere in the profile.",
+    "helptext":"The Gallery Frame lets you showcase one specific piece from your Gallery anywhere in the profile.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"gallery",
+    "widget_name":"ply_gallery_frame",
+    "dynapage_template":"dynapage-widgets-gallery-frame-main",
+    "widget_data": {},
+    "icon":"fa-solid fa-image",
+    "setup_required":true,
+    "setup_form":"gallery.dynapages.forms.gallery_frame",
+    "modes":{
+        "banner":true,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":true
+    },
+    "used_in": {
+        "profile":true,
+        "group":true,
+        "dashboard":true,
+        "SLHUD":false,
+        "blog":true
+    }
+}

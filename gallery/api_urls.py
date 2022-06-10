@@ -13,5 +13,14 @@ urlpatterns = [
     path('get/items/<collection>',api_views.gallery_collection_items_raw),
     path('view_counter/item/',api_views.gallery_viewer_counter_item),
     path('share_counter/item/',api_views.gallery_share_counter_item),
-    path('recast/<uuid:col>/<uuid:item>',api_views.gallery_recast_item)
+    path('recast/<uuid:col>/<uuid:item>',api_views.gallery_recast_item),
+    path('toggle/invis/<uuid:item>',api_views.gallery_toggle_invisible),
+    path('remove/temp/<int:item>',api_views.gallery_remove_temp),
+    path('remove/item/form/<uuid:item>/<uuid:col>',api_views.gallery_remitem_form),
+    path('remove/item/form/exec',api_views.gallery_remove_exec),
+    path('copymove/form/<uuid:item>/<uuid:col>',api_views.gallery_copymove_form),
+    path('copymove/form/exec',api_views.gallery_copymove_exec),
+    path('settings/item/form/<uuid:item>/<uuid:col>',api_views.gallery_settings_form),
+    path('settings/item/form/exec',api_views.gallery_copymove_exec),
+    path('metadata/item/<uuid:item>/<uuid:col>',api_views.gallery_item_metadata),
 ]

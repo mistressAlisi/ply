@@ -1,17 +1,13 @@
-{% extends 'django_bootstrap5/bootstrap5.html' %}
-{% load django_bootstrap5 %} 
+{% extends 'ply-bootstrap5.html' %}
+{% load django_bootstrap5 %}
 {% block bootstrap5_title %}
 {{community.name}}: Dashboard    
 {% endblock %}
 
 {% block bootstrap5_content %}
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="/static/js/crypto-js.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
-<script src="/static/js/dashboard.js"></script>
 <link href="/static/css/dashboard.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,8 +18,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 {%include "dashboard-main-navmenu.html" %}
-{% include "bootstrap-plugin-kartik-v-fileupload.html" %}
-{% include "bootstrap-plugin-selectize.html" %}
+
 
 </header>
     {%include "dashboard_sidebar.html" %}
@@ -38,6 +33,7 @@
  </div>
 </div>
 
+<script src="/static/js/dashboard.js"></script>
 
- 
+
 {% endblock %}

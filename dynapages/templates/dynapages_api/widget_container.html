@@ -1,0 +1,27 @@
+<div class="widget" data-uuid="{{widget.pagewidget_id}}">
+{%if mode == "banner" %}
+      {%if widget.banner == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as widget_template %}
+                {% include widget_template %}
+            {% endwith %}
+    {%endif%}
+{%elif mode == "mainbody" %}
+      {%if widget.mainbody == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as widget_template %}
+                {% include widget_template %}
+            {% endwith %}
+    {%endif%}
+{%elif mode == "sidecol" %}
+      {%if widget.sidecol == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as widget_template %}
+                {% include widget_template %}
+            {% endwith %}
+    {%endif%}
+{%elif mode == "footer" %}
+      {%if widget.footer == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as widget_template %}
+                {% include widget_template %}
+            {% endwith %}
+    {%endif%}
+{% endif %}
+</div>

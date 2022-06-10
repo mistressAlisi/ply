@@ -18,6 +18,11 @@ div.message-ctr {
   align-items: center;
   justify-content: center;
   height: 100%;
+
+}
+
+div.message-ctr .card {
+  width: 100%;
 }
 .message-rollin {
   animation-name: shutter-in-bottom;

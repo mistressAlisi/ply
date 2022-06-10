@@ -1,0 +1,27 @@
+.card-group .widget-card {
+    max-width: 18rem;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: grab;
+}
+
+
+
+.drop-accept .hint {
+    display: none;
+}
+
+.drop-accept.active {
+    min-height: 200px;
+    margin: 20px;
+    border: thin solid black;
+}
+
+.drop-accept.active .hint  {
+    display: block;
+}
+.widget.loading {
+    padding: 3px;
+    margin: 3px;
+    border: thin solid black;
+}

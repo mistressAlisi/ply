@@ -39,3 +39,6 @@ def dashboard_profile_switch(request,puuid):
             return redirect("/dashboard/user")
     else:
         return redirect("/dashboard/user/")
+
+
+

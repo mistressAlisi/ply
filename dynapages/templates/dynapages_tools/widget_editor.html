@@ -1,0 +1,12 @@
+{% include "dynapages_tools/widget_editor/toolbar.html" %}
+{% with  "dynapages/"|add:dynapage_template as render_template %}
+<section id="_dynapage-editor">
+
+{% include   render_template  %}
+{% endwith %}
+</section>
+{% include "dynapages_tools/widget_editor/widgets.html" %}
+
+
+{% include "dynapages_tools/widget_editor/widget_editor_form.html" %}
+

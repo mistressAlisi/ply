@@ -37,7 +37,7 @@ def _item_serialiser(_items):
                 #print("Item change here.")
                 # PUT thumbnail first.... 
                 curr_files.reverse()
-                curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':{"uuid":str(i.profile_uuid),"name":i.profile_name,"pronouns":i.profile_pronouns,"avatar":i.profile_avatar,"slug":i.profile_slug},'id':i.gci_uuid,'created':i.gci_created,'counter':counter})
+                curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':{"uuid":str(i.profile_uuid),"name":i.profile_name,"pronouns":i.profile_pronouns,"avatar":i.profile_avatar,"slug":i.profile_slug},'id':i.gci_uuid,'created':i.gci_created,'archived':i.gci_archived,'counter':counter})
                 curr_files = []
             if (i.collection_id != _items[counter+1].collection_id):
                 #print("Collection change here.")
@@ -60,7 +60,7 @@ def _item_serialiser(_items):
             #print("final Item and Collection flush")
             # PUT thumbnail first.... 
             curr_files.reverse()
-            curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':{"uuid":str(i.profile_uuid),"name":i.profile_name,"pronouns":i.profile_pronouns,"avatar":i.profile_avatar,"slug":i.profile_slug},'id':i.gci_uuid,'created':i.gci_created,'counter':counter})
+            curr_items.append({'plugin':i.gci_plugin,'plugin_data':i.gci_plugin_data,'title':i.gci_title,'descr':i.gci_descr,'likes':i.gci_likes,'views':i.gci_views,'shares':i.gci_shares,'comments':i.gci_comments,'downloads':i.gci_downloads,'details':i.gci_details,'sizing':i.gci_sizing,'style':i.gci_style,'rating':i.gci_rating,'nsfw':i.gci_nsfw,'files':curr_files,'profile':{"uuid":str(i.profile_uuid),"name":i.profile_name,"pronouns":i.profile_pronouns,"avatar":i.profile_avatar,"slug":i.profile_slug},'id':i.gci_uuid,'created':i.gci_created,'archived':i.gci_archived,'counter':counter})
             curr_files = []
             items.append({
                     "label":i.gc_label,
