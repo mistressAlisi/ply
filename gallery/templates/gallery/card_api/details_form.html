@@ -1,0 +1,11 @@
+<form id="remove_form" method="POST" action="#" onsubmit="return gallery_core_editor._exec_dt();">
+{%csrf_token%}
+{%load django_bootstrap5 %}
+<h5 class="text-primary">Edit Details for '{{item.title}}'</h5>
+
+{% bootstrap_form set_form %}
+{% bootstrap_button "Save" button_type="submit" button_class="btn-success" %}
+</form>
+<script type="text/javascript">
+$("#review-publish_category").selectize();
+</script>

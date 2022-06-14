@@ -13,7 +13,9 @@ window.gallery_core_editor = Object({
         set_exec_url:"/dashboard/user/gallery/api/settings/item/form/exec",
         set_form: "#settings_form",
         meta_url: "/dashboard/user/gallery/api/metadata/item",
-
+        det_url:"/dashboard/user/gallery/api/details/item/form",
+        det_exec_url:"/dashboard/user/gallery/api/details/item/form/exec",
+        det_form: "#settings_form",
     },
     /** The management Modal: **/
     mod: false,
@@ -142,6 +144,56 @@ window.gallery_core_editor = Object({
         this.mod.find('.modal-title').html('Item Metadata');
         mod_body = this.mod.find('.modal-body');
         mod_body.load(this.settings.meta_url+"/"+id+"/"+cid,false,this._metadata_h);
+
+    },
+
+
+    /** (The callback to; and) Show the details dialogue: **/
+    _det_h: function(d) {
+        /** Smart Select for Categories: */
+            sse = new smart_select('#gr_keywords',
+            {
+                f_option_load: function(query,callback) {
+                    if (!query.length) return callback();
+                        $.ajax({
+                            url: '/keywords/api/get/' + encodeURIComponent(query),
+                            type: 'GET',
+                            error: function() {
+                            callback();
+                            },
+                        success: function(res) {
+
+                            callback(res);
+                            }});
+                },
+
+
+            });
+            gallery_core_editor.mod_bs.show();
+    },
+
+    /** exec details save handle: **/
+    _dt_h: function(d) {
+        if (d=="ok") {
+            gallery_core_editor.mod_bs.hide();
+            dc_reloadPanel();
+        } else {
+             if (d.res == "err") {
+                alert(d.err);
+            }
+        };
+    },
+    /** exec details save: **/
+    _exec_dt: function(e) {
+        data = $(this.settings.remove_form).serialize();
+        $.post(this.settings.det_exec_url,data,this._dt_h);
+        return false;
+    },
+    details: function(cid,id) {
+        this.target_crd = $("#card-"+cid+"-"+id);
+        this.mod.find('.modal-title').html('Item Details');
+        mod_body = this.mod.find('.modal-body');
+        mod_body.load(this.settings.det_url+"/"+id+"/"+cid,false,this._det_h);
 
     },
 

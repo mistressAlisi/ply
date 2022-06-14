@@ -6,7 +6,8 @@ from gallery.uploader import upload_plugins_builder
 from django.http import JsonResponse,HttpResponse
 from django.db import IntegrityError, transaction
 from django.db.models import Q
-from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection,GalleryTempFileThumb,GalleryCollectionItems,GalleryItemFile
+from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection,GalleryTempFileThumb,GalleryCollectionItems,GalleryItemFile,GalleryItemKeyword
+from keywords.models import Keyword
 from gallery import serialisers,forms
 from gallery.tasks import publish_to_gallery,upload_ingest,remove_item
 from profiles.models import Profile
@@ -230,18 +231,18 @@ def gallery_remove_temp(request,item):
     thumbs = GalleryTempFileThumb.objects.filter(file=item)
     for thumb in thumbs:
         path = file_uploader.get_temp_path(thumb.path,item.profile)
-        destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+path
+        destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+thumb.path
         try:
             os.unlink(destpath)
         except FileNotFoundError:
-            log.warn(f"Deleting Temp item {thumb.path} - the file was not found in the Filesystem. Deleting SQL node anyway.")
+            log.warn(f"Deleting Temp item thumbnail {destpath} - the file was not found in the Filesystem. Deleting SQL node anyway.")
         thumb.delete()
     path = file_uploader.get_temp_path(item.path,item.profile)
-    destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+path
+    destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+item.path
     try:
-        os.unlink(destpath+"/"+item.path)
+        os.unlink(destpath)
     except FileNotFoundError:
-        log.warn(f"Deleting Temp item {item.path} - the file was not found in the Filesystem. Deleting SQL node anyway.")
+        log.warn(f"Deleting Temp item {destpath} - the file was not found in the Filesystem. Deleting SQL node anyway.")
     item.delete();
 
 
@@ -364,6 +365,25 @@ def gallery_remove_exec(request):
 
 
 
+
+@login_required
+def gallery_details_form(request,item,col):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    if (str(item.profile.uuid) != str(profile.uuid)):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    """ import the plugin for the item so we can get the settings form: """
+    form_mod = importlib.import_module(f"{item.plugin}.forms")
+    colitems = GalleryCollectionItems.objects.filter(item=item)
+    ccol = GalleryCollection.objects.get(uuid=col)
+    setform = form_mod.details_form(item=item)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'set_form':setform,'item':item,'colitems':colitems}
+    return render(request,"gallery/card_api/details_form.html",context)
+
+
+
 @login_required
 def gallery_settings_form(request,item,col):
     vhost = request.META["HTTP_HOST"];
@@ -372,12 +392,40 @@ def gallery_settings_form(request,item,col):
     profile = toolkit_profiles.get_active_profile(request)
     if (str(item.profile.uuid) != str(profile.uuid)):
         return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    """ import the plugin for the item so we can get the settings form: """
+    form_mod = importlib.import_module(f"{item.plugin}.forms")
     colitems = GalleryCollectionItems.objects.filter(item=item)
     ccol = GalleryCollection.objects.get(uuid=col)
-    removeForm = forms.remove_form(profile=profile,community=community,item=item.uuid,icol=ccol)
-    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'remove_form':removeForm,'item':item,'colitems':colitems}
+    setform = form_mod.settings_form()
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'set_form':setform,'item':item,'colitems':colitems}
     return render(request,"gallery/card_api/settings_form.html",context)
 
+
+@login_required
+def gallery_update_details(request):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    plugin = request.POST['plugin']
+    item = GalleryItem.objects.get(pk=request.POST['uuid'])
+    profile = toolkit_profiles.get_active_profile(request)
+    if (str(item.profile.uuid) != str(profile.uuid)):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    item.title = request.POST["title"]
+    item.descr = request.POST["descr"]
+    item.save()
+    cat = request.POST["gr_category"]
+    if (len(request.POST["gr_keywords"])>0):
+        gic_ori = GalleryItemKeyword.objects.filter(item=item)
+        gic_ori.delete()
+        kw = request.POST["gr_keywords"].split(",")
+        for k in kw:
+            ks = "#"+slugify(k)
+            kwo = Keyword.objects.get_or_create(hash=ks)
+            if (kwo[1] is True):
+                kwo.keyword = k;
+            gikw = GalleryItemKeyword.objects.get_or_create(item=item,keyword=kwo[0])[0]
+            gikw.save()
+    return JsonResponse("ok",safe=False)
 
 
 
@@ -394,3 +442,6 @@ def gallery_item_metadata(request,item,col):
     colfiles = GalleryItemFile.objects.filter(item=item)
     context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'item':item,'colitems':colitems,'colfiles':colfiles}
     return render(request,"gallery/card_api/metadata.html",context)
+
+
+

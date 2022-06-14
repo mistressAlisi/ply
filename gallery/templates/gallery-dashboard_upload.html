@@ -1,6 +1,7 @@
 {% extends 'dashboard_main_panel-card.html' %}
 {%block dashboard_name %}<i class="fa fas fa-upload" aria-hidden="true"></i>&#160;Create Submission(s){%endblock%}
 {%block dashboard_content %}
+{%include "bootstrap-plugin-kartik-v-fileupload.html" %}
 <form id="upload_submission_form" method="POST" action="#">
 {% csrf_token %}
 <h4 class="text-secondary">What kind of content would you like to publish?</h4>
