@@ -139,7 +139,7 @@ def upload_ingest(_profile,plugin,file_name,filepath,_file_obj,content_type="",s
         metadata_mod = importlib.import_module(f"{plugin}.metadata")
         # And get our metadata and image:
         fpoint = open(ply.settings.PLY_TEMP_FILE_BASE_PATH+filepath)
-        thumb = metadata_mod.thumbnail(profile,fpoint)
+        thumb = metadata_mod.thumbnail(profile,fpoint,file_obj)
         file_obj.thumbnail = thumb
         file_obj.path = file_uploader.get_temp_path(file_obj.name,profile)
         file_obj.save()

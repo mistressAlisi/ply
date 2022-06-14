@@ -192,7 +192,8 @@ class GalleryItemKeyword(models.Model):
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
-
+    def __str__(self):
+        return f"Gallery Keyword: {self.item.uuid} -> Keyword: {self.keyword.keyword}"
 @admin.register(GalleryItemKeyword)
 class GalleryItemKeywordAdmin(admin.ModelAdmin):
     pass
@@ -280,7 +281,7 @@ class GalleryTempFileThumb(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     def __str__(self):
-        return f"Gallery Item Temporary File Thumbnail: {self.name} @ {self.path}"
+        return f"Gallery Item Temporary File Thumbnail: {self.file.name} @ {self.path}"
     def get_meta_json(self):
         return str(json.dumps(self.meta))  
 @admin.register(GalleryTempFileThumb)

@@ -1,8 +1,10 @@
 {% extends 'dashboard_main_panel-95.html' %}
 {%block dashboard_name %}<i class="fa-solid fa-pen-to-square"></i>&#160;Manage Collections{%endblock%}
 {%block dashboard_content %}
+
 <link href="/static/css/gallery_user_editor.css" rel="stylesheet"/>
-{%include "gallery-modal-viewer.html" %}
+{%include "gallery-dashboard_collection_editor.html" %}
+{%include "bootstrap-plugin-selectize.html" %}
 <h6 class="text-muted">All submissions you've ever published are shown here: This Light table shows every single piece organised into your collections.</h6>
 <p>
 This is a 'review and preview' interface; you can use the tools attached to each submission to modify it; and you can also drag-and-drop items across collections, and to reorganise them!
@@ -34,6 +36,7 @@ All changes are saved automatically.
 </div>
 
 {%include "gallery-dashboard_upload_reviewtbl_controls.html" %}
+<script src="/static/plugins/smart_select/js/smart_select.js"></script>
 <script src="/static/js/gallery_core_editor.js"></script>
 <script src="/static/js/gallery_dashboard_manage.js"></script>
 {%endblock %}

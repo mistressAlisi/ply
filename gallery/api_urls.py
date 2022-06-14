@@ -23,4 +23,6 @@ urlpatterns = [
     path('settings/item/form/<uuid:item>/<uuid:col>',api_views.gallery_settings_form),
     path('settings/item/form/exec',api_views.gallery_copymove_exec),
     path('metadata/item/<uuid:item>/<uuid:col>',api_views.gallery_item_metadata),
+    path('details/item/form/<uuid:item>/<uuid:col>',api_views.gallery_details_form),
+    path('details/item/form/exec',api_views.gallery_update_details),
 ]
