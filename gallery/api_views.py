@@ -8,8 +8,9 @@ from django.db import IntegrityError, transaction
 from django.db.models import Q
 from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection,GalleryTempFileThumb,GalleryCollectionItems,GalleryItemFile,GalleryItemKeyword
 from keywords.models import Keyword
+from categories.models import Category
 from gallery import serialisers,forms
-from gallery.tasks import publish_to_gallery,upload_ingest,remove_item
+from gallery.tasks import publish_to_gallery,upload_ingest,remove_item,update_submission_files
 from profiles.models import Profile
 from community.models import Community
 from metrics.models import GalleryItemHit
@@ -384,36 +385,23 @@ def gallery_details_form(request,item,col):
 
 
 
-@login_required
-def gallery_settings_form(request,item,col):
-    vhost = request.META["HTTP_HOST"];
-    community = vhosts.get_vhost_community(hostname=vhost)
-    item = GalleryItem.objects.get(pk=item)
-    profile = toolkit_profiles.get_active_profile(request)
-    if (str(item.profile.uuid) != str(profile.uuid)):
-        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
-    """ import the plugin for the item so we can get the settings form: """
-    form_mod = importlib.import_module(f"{item.plugin}.forms")
-    colitems = GalleryCollectionItems.objects.filter(item=item)
-    ccol = GalleryCollection.objects.get(uuid=col)
-    setform = form_mod.settings_form()
-    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'set_form':setform,'item':item,'colitems':colitems}
-    return render(request,"gallery/card_api/settings_form.html",context)
-
 
 @login_required
 def gallery_update_details(request):
     vhost = request.META["HTTP_HOST"];
     community = vhosts.get_vhost_community(hostname=vhost)
     plugin = request.POST['plugin']
+    form_mod = importlib.import_module(f"{plugin}.forms")
+    setform = form_mod.settings_form(request.POST)
     item = GalleryItem.objects.get(pk=request.POST['uuid'])
     profile = toolkit_profiles.get_active_profile(request)
     if (str(item.profile.uuid) != str(profile.uuid)):
         return JsonResponse({"res":"err","err":"Access denied."},safe=False)
     item.title = request.POST["title"]
     item.descr = request.POST["descr"]
+    cat = Category.objects.get(pk=request.POST["gr_category"])
+    item.category = cat
     item.save()
-    cat = request.POST["gr_category"]
     if (len(request.POST["gr_keywords"])>0):
         gic_ori = GalleryItemKeyword.objects.filter(item=item)
         gic_ori.delete()
@@ -422,7 +410,8 @@ def gallery_update_details(request):
             ks = "#"+slugify(k)
             kwo = Keyword.objects.get_or_create(hash=ks)
             if (kwo[1] is True):
-                kwo.keyword = k;
+                kwo[0].keyword = k;
+            kwo[0].save()
             gikw = GalleryItemKeyword.objects.get_or_create(item=item,keyword=kwo[0])[0]
             gikw.save()
     return JsonResponse("ok",safe=False)
@@ -444,4 +433,54 @@ def gallery_item_metadata(request,item,col):
     return render(request,"gallery/card_api/metadata.html",context)
 
 
+
+@login_required
+def gallery_settings_form(request,item,col):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    if (str(item.profile.uuid) != str(profile.uuid)):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    """ import the plugin for the item so we can get the settings form: """
+    form_mod = importlib.import_module(f"{item.plugin}.forms")
+    colitems = GalleryCollectionItems.objects.filter(item=item)
+    ccol = GalleryCollection.objects.get(uuid=col)
+    setform = form_mod.settings_form(item=item)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'set_form':setform,'item':item,'colitems':colitems}
+    return render(request,"gallery/card_api/settings_form.html",context)
+
+@login_required
+def gallery_update_settings(request):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    plugin = request.POST['plugin']
+    metadata_mod = importlib.import_module(f"{plugin}.metadata")
+
+    item = GalleryItem.objects.get(pk=request.POST['uuid'])
+    profile = toolkit_profiles.get_active_profile(request)
+    if (str(item.profile.uuid) != str(profile.uuid)):
+        return JsonResponse({"res":"err","err":"Access denied."},safe=False)
+    if ("en_comments" in request.POST):
+        item.en_comments = True
+    else:
+        item.en_comments = False
+    if ("en_sharing" in request.POST):
+        item.en_sharing = True
+    else:
+        item.en_sharing = False
+    if ("en_download" in request.POST):
+        item.en_download = True
+    else:
+        item.en_download = False
+    item.detail_style = request.POST["detail_style"]
+    item.display_details = request.POST["display_details"]
+    item.sizing_hint = request.POST["sizing_hint"]
+    """ Now, load the module's metadata processor, using the POST data, update ther item: """
+    update_files = metadata_mod.update_item_metadata(request.POST,item)
+    item.save()
+    if (update_files is True):
+        """ The files need updating after the metadata has been processed and updated. """
+        update_submission_files.delay(str(item.uuid))
+    return JsonResponse("ok",safe=False)
 

@@ -150,7 +150,7 @@ window.gallery_core_editor = Object({
 
     /** (The callback to; and) Show the details dialogue: **/
     _det_h: function(d) {
-        /** Smart Select for Categories: */
+        /** Smart Select for Keywords: */
             sse = new smart_select('#gr_keywords',
             {
                 f_option_load: function(query,callback) {
@@ -169,6 +169,7 @@ window.gallery_core_editor = Object({
 
 
             });
+
             gallery_core_editor.mod_bs.show();
     },
 

@@ -4,7 +4,7 @@ from profiles.models import Profile
 from community.models import Community
 from group.models import Group
 from keywords.models import Keyword
-
+from categories.models import Category
 import uuid,json
 
 # Create your models here.
@@ -83,8 +83,12 @@ class GalleryItem(models.Model):
     item_hash = models.TextField(max_length=200,verbose_name='Item Hash')
     title = models.TextField(max_length=200,verbose_name='Item Title')
     profile = models.ForeignKey(Profile,verbose_name='Item Owner',on_delete=models.RESTRICT)
+    category = models.ForeignKey(Category,verbose_name='Item Category',on_delete=models.RESTRICT)
     sizing = models.IntegerField(verbose_name='Sizing Hint',default=0)
     nsfw = models.CharField(verbose_name="Item NSFW Flag",default=False,max_length=10)
+    en_comments = models.BooleanField(verbose_name="Item Comments Enabled Flag",default=True)
+    en_sharing = models.BooleanField(verbose_name="Item Sharing Enabled Flag",default=True)
+    en_download = models.BooleanField(verbose_name="Item Download Enabled Flag",default=True)
     details = models.CharField(verbose_name="Item Details Flags",default=False,max_length=10)
     style = models.CharField(verbose_name="Item Style Flag",default=False,max_length=10)
     rating = models.CharField(verbose_name="Item Rating",default=False,max_length=10)
@@ -93,6 +97,9 @@ class GalleryItem(models.Model):
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='tem Updated')
     files = models.IntegerField(verbose_name='File Count',default=0)
     plugin = models.TextField(verbose_name="Item Plugin",default='',null=True)
+    detail_style = models.TextField(verbose_name="Item Detail Style",default='b')
+    sizing_hint = models.TextField(verbose_name="Item Sizing Hint",default='1')
+    display_details = models.TextField(verbose_name="Item Display Details",default='t')
     thumbnail = models.TextField(verbose_name="Item Thumbnail",default='',null=True)
     plugin_data = models.JSONField(verbose_name="Item plugin-specific data",blank=True,null=True)
     views = models.IntegerField(verbose_name='Views Count',default=0)
@@ -127,10 +134,11 @@ class GalleryItemFile(models.Model):
     thumbnail = models.BooleanField(verbose_name="File is a thumbnail",default=False) 
     original = models.BooleanField(verbose_name="File is an Original",default=False) 
     file_size = models.FloatField(verbose_name='File Size',default=0)
-    
-    
     def __str__(self):
-        return f"Gallery Item File: {self.name}"
+        if self.original is True:
+            return f"Gallery Item Original File: {self.name}"
+        else:
+            return f"Gallery Item File: {self.name}"
     
 @admin.register(GalleryItemFile)
 class GalleryItemFileAdmin(admin.ModelAdmin):
