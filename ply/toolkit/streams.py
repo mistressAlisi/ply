@@ -45,8 +45,8 @@ def post_to_profile_stream(profile,community,content_type,contents_text,contents
     :type contents_json: t_contents_json:mixed
     :returns: r:Message UUID
     """
-    community = Community.objects.get(uuid=request.session['community'])
-    profile = Profile.objects.get(uuid=request.session['profile'])
+    #community = Community.objects.get(uuid=request.session['community'])
+    #profile = Profile.objects.get(uuid=request.session['profile'])
     stream = Stream.objects.get(community=community,profile=profile,root_stream=True,type="PROFILE")
     stream.nodes += 1
     stream.save()
