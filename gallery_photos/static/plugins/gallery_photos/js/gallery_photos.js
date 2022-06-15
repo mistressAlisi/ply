@@ -144,10 +144,10 @@ window.gallery_core.plugins["gallery_photos"] = Object({
                     }
                 }
             };
-            window.gallery_core.plugins["gallery_photos"]._selectize($("#review-publish_category"),{'maxItems':null});
-            if ($("#form-"+gallery_core.editor.file+" #cat")[0].value != "") {
-                $("#review-publish_category")[0].selectize.setValue($("#form-"+gallery_core.editor.file+" #cat")[0].value.split(","));
-            };
+//             window.gallery_core.plugins["gallery_photos"]._selectize($("#review-publish_category"),{'maxItems':null});
+//             if ($("#form-"+gallery_core.editor.file+" #cat")[0].value != "") {
+//                 $("#review-publish_category")[0].selectize.setValue($("#form-"+gallery_core.editor.file+" #cat")[0].value.split(","));
+//             };
         });
         /** Load Collections and setup widget asynchronously: **/
          $.get("gallery/api/upload/get_collections/w+",function(cols,e){    
