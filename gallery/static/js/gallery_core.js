@@ -565,7 +565,6 @@ window.gallery_core = Object({
     },
     _save_publish: function(e) {
         data = $("#form-"+gallery_core.editor.file).serialize();
-        console.error("Data in SP",data);
         if (data != false) {
         $.post(gallery_core.settings.publish_url+gallery_core.editor.file,data,function(){
             $(gallery_core.settings.confirm_pub_modal).modal('hide');

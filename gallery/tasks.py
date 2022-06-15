@@ -52,7 +52,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
             temp_file_handle = open(temp_path,'rb')
             fsize = file_uploader.save_original_file(temp_file_handle,profile)
             item_hash = slugify(data["title"])
-            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],category=data["publish_category"])
+            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],category=data["cat"])
             # Step three: Register the original file (hash it first):
             sha1 = hashlib.sha1()
             while True:
