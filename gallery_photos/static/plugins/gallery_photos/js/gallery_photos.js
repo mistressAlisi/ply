@@ -76,7 +76,7 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #det")[0].value = res;
         };        
-        res =  window.gallery_core.plugins["gallery_photos"]._serialise("#review-publish_category");
+        res =  $"#review-publish_category")[0].value;
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #cat")[0].value = res;
         };
