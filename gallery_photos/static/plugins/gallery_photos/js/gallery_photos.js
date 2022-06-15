@@ -76,7 +76,7 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #det")[0].value = res;
         };        
-        res =  $"#review-publish_category")[0].value;
+        res =  $("#review-publish_category")[0].value;
         if (res != "") {
             $("#form-"+gallery_core.editor.file+" #cat")[0].value = res;
         };
