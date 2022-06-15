@@ -6,7 +6,8 @@ BEGIN
 END;
 $gallery_gc_upcount$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER "after_Inst_ColCounter" AFTER INSERT ON "gallery_gallerycollectionitems"
+DROP TRIGGER  IF EXISTS  "after_Inst_ColCounter" ON "gallery_gallerycollectionitems";
+CREATE TRIGGER "after_Inst_ColCounter" AFTER INSERT ON "gallery_gallerycollectionitems"
 FOR EACH ROW EXECUTE FUNCTION gallery_gc_upcount();
 
 
@@ -19,5 +20,6 @@ BEGIN
 END;
 $gallery_gc_dccount$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER "after_Del_ColCounter" AFTER DELETE ON "gallery_gallerycollectionitems"
+DROP TRIGGER  IF EXISTS  "after_Del_ColCounter" ON "gallery_gallerycollectionitems";
+CREATE TRIGGER "after_Del_ColCounter" AFTER DELETE ON "gallery_gallerycollectionitems"
 FOR EACH ROW EXECUTE FUNCTION gallery_gc_dccount();
