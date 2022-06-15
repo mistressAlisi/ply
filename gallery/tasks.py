@@ -23,7 +23,7 @@ import hashlib,shutil,logging
 from keywords.models import Keyword
 from django.core.exceptions import ValidationError
 from community.models import Community
-from categories.model import Category
+from categories.models import Category
 import ply,boto3,io
 log = plylog.getLogger('gallery.tasks',name='gallery.tasks')
 app = Celery('ply')
