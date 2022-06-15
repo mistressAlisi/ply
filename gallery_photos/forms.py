@@ -24,7 +24,7 @@ class review_form(forms.Form):
     display_details = forms.ChoiceField(choices=settings.DETAILS_SUBMISSION_CHOICES,widget=Select(attrs={"id":"review-display_details"}),label="Details:")
     publish_notify = forms.ChoiceField(choices=settings.PUBLISH_NOTIFY_CHOICES,widget=Select(attrs={"id":"review-publish_notify"}),label="Notify:")
     publish_keywords = forms.ChoiceField(widget=Select(attrs={"id":"review-publish_keywords"}),label="Keywords:")
-    publish_category = forms.ChoiceField(widget=Select(attrs={"id":"review-publish_category"}),label="Category:")
+    publish_category = forms.ModelChoiceField(queryset=Category.objects.all().order_by('discipline'),widget=Select(attrs={"id":"publish_category"}),label="Category:")
     publish_collections = forms.ChoiceField(widget=Select(attrs={"id":"review-publish_collections"}),label="Initial Collection(s):")
     
 
