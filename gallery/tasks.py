@@ -23,6 +23,7 @@ import hashlib,shutil,logging
 from keywords.models import Keyword
 from django.core.exceptions import ValidationError
 from community.models import Community
+from categories.model import Category
 import ply,boto3,io
 log = plylog.getLogger('gallery.tasks',name='gallery.tasks')
 app = Celery('ply')
@@ -52,7 +53,8 @@ def publish_to_gallery(data,profile,temp_file,user,community):
             temp_file_handle = open(temp_path,'rb')
             fsize = file_uploader.save_original_file(temp_file_handle,profile)
             item_hash = slugify(data["title"])
-            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],category=data["cat"])
+            catitem = Category.objects.get(pk=data["cat"])
+            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],category=catitem)
             # Step three: Register the original file (hash it first):
             sha1 = hashlib.sha1()
             while True:
