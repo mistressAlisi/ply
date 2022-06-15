@@ -18,5 +18,6 @@ BEGIN
 END;
 $stream_parseMessage$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER "stream_parseMessage" BEFORE INSERT ON "stream_streammessage"
+DROP TRIGGER  IF EXISTS  "stream_parseMessage" ON "stream_streammessage";
+CREATE TRIGGER "stream_parseMessage" BEFORE INSERT ON "stream_streammessage"
 FOR EACH ROW EXECUTE FUNCTION stream_parseMessage();
