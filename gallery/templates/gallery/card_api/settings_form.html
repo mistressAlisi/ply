@@ -1,4 +1,4 @@
-<form id="remove_form" method="POST" action="#" onsubmit="return gallery_core_editor._exec_rm();">
+<form id="settings_form" method="POST" action="#" onsubmit="return gallery_core_editor._exec_set();">
 {%csrf_token%}
 {%load django_bootstrap5 %}
 <h5 class="text-primary">Settings for '{{item.title}}'</h5>

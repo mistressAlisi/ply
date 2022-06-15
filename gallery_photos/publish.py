@@ -56,3 +56,27 @@ def publish_submission(data_str,profile,temp_file,original_path,item,user,commun
         upload_cleaner(profile.uuid,temp_file_id)
         
 
+def update_submission(item):
+    if (type(item.plugin_data) == 'str'):
+        id = json.loads(item.plugin_data)
+    else:
+        id = item.plugin_data
+    sizing = float(id["sizing"])
+    original = GalleryItemFile.objects.get(original=True,item=item)
+
+    ori_path = file_uploader.get_temp_path(original.name,item.profile)
+    ifile = file_uploader.get_original_file(ori_path)
+    with Image.open(ifile) as im:
+        sha1 = hashlib.sha1()
+        if (sizing < 1.0):
+            im.thumbnail([sizing*im.width,sizing*im.height])
+        sha1.update(im.tobytes())
+        iss = utilities.save_gallery_photo(im,item.profile,original.name)
+        fileitm = GalleryItemFile.objects.get(original=False,item=item,thumbnail=False)
+        fileitm.hash=sha1.hexdigest()
+        fileitm.file_size=iss
+        fileitm.save()
+        log.info(f"File Updated in Gallery Storage: {original.name}: Profile: {item.profile.uuid} New size: [{round(iss/1024,2)} kB] Sizing factor: {sizing}.")
+
+
+

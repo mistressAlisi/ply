@@ -68,11 +68,11 @@ def save_original_file(file,profile,name=False):
         path = get_temp_path(name,profile)
     else:
         path = get_temp_path(name,profile)
-    if (ply.settings.PLY_AVATAR_STORAGE_USE_S3 == 'TRUE'):
+    if (ply.settings.PLY_GALLERY_STORAGE_USE_S3 == 'TRUE'):
         client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)
         try: 
             keystr= f'{ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH}/{path}'
-            print(keystr)
+
             client.put_object(Body=file,ACL='public-read', Bucket=ply.settings.AWS_STORAGE_BUCKET_NAME, Key=keystr)
             bw = file.tell()
             return bw
@@ -101,6 +101,7 @@ def save_avatar_file(file,profile,name=False):
         name = pl.stem
     else:
         path = get_temp_path(name,profile)
+
     if (ply.settings.PLY_AVATAR_STORAGE_USE_S3 == 'TRUE'):
         client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)
         try: 
@@ -130,3 +131,23 @@ def save_avatar_file(file,profile,name=False):
             except:
                 file.save(destpath)
         return path
+
+
+def get_original_file(name):
+    if not name:
+        return False
+    destpath = ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH+"/"+name
+    if (ply.settings.PLY_GALLERY_STORAGE_USE_S3 == 'TRUE'):
+        client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)
+        try:
+            f = io.BytesIO()
+            client.download_fileobj(ply.settings.AWS_STORAGE_BUCKET_NAME, destpath, f)
+            return f
+        except Exception as e:
+            raise Exception(f'Unable to store Read File from S3 Storage: {e}')
+    else:
+        if not os.path.exists(destpath):
+            raise Exception(f'Path Not found: {destpath}')
+        with open(destpath, 'rb+') as source:
+            #for chunk in file.chunks():
+            return source

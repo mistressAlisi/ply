@@ -201,3 +201,14 @@ def remove_item(_profile,_item):
             log.exception(e)
             log.error(f"Item Removal: Unable to remove item file: {item_obj.uuid}: {e}")
             #transaction.rollback()
+
+
+@app.task
+@transaction.atomic
+def update_submission_files(_item_obj):
+    item = GalleryItem.objects.get(uuid=_item_obj)
+    plugin_mod = importlib.import_module(f"{item.plugin}.publish")
+    plugin_mod.update_submission(item)
+    item.save()
+
+

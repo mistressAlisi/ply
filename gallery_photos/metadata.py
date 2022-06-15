@@ -82,4 +82,24 @@ def initial_import_gen(relpath,ret_image=False):
         log.error(f"Unable to generate Metadata for {path}: Exception: {e}")
         return None
     
-        
+def update_item_metadata(data,item):
+    if (type(item.plugin_data) == str):
+        id = json.loads(item.plugin_data)
+    else:
+        id = item.plugin_data
+    if 'down_size' in data:
+        id['down_size'] = data['down_size']
+    changed = False
+    if 'sizing' in data:
+        if 'sizing' in id:
+            if (id['sizing'] != data['sizing']):
+                id['sizing'] = data['sizing']
+                changed = True
+        else:
+            id['sizing'] = data['sizing']
+            changed = False
+    item.plugin_data = id
+    return changed
+
+
+
