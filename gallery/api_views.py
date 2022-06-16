@@ -349,7 +349,7 @@ def gallery_remove_exec(request):
         """ if op is R, it means ALL collection instances are to be nuked - and then the item item itself: """
         colitems = GalleryCollectionItems.objects.filter(item=item)
         colitems.delete()
-        remove_item(str(profile.uuid),str(item.uuid))
+        remove_item.delay(str(profile.uuid),str(item.uuid))
 
 
     elif (op == "i"):
