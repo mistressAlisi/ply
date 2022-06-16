@@ -79,7 +79,10 @@ def publish_to_gallery(data,profile,temp_file,user,community):
             for k in data["kw"].split(","):
                 if (len(k)>1):
                     if (k[0] == "#"):
-                        kw = Keyword.objects.get(hash=k)
+                        hs = f"#{slugify(k[1:])}"
+                        kw = Keyword.objects.get_or_create(hash=k)
+                        if (kw[1] is True):
+                            kw.keyword = k[1:]
                     else:
                         hs = "#"+slugify(k)
                         kw = Keyword.objects.get_or_create(keyword=k,hash=hs)[0]
