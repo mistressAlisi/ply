@@ -53,7 +53,7 @@ def publish_submission(data_str,profile,temp_file,original_path,item,user,commun
         UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=iss,reference=isp)
         log.info(f"File Stored in Gallery Storage: {isp}: Profile: {profile.uuid} [{round(iss/1024,2)} kB] saved.")
         # Step 4: Now clean up stale files that are no longer needed:
-        upload_cleaner(profile.uuid,temp_file_id)
+        #upload_cleaner(profile.uuid,temp_file_id)
         
 
 def update_submission(item):
