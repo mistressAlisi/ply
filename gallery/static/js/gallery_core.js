@@ -472,7 +472,7 @@ window.gallery_core = Object({
          this._gallery_card_meta(target_card,col,item);
         /** Now render the contents: **/
         location.hash = "#card-"+col+"-"+item;
-        render_card = this.plugins[itm_o.plugin].render_view(itm_o);0
+        render_card = this.plugins[itm_o.plugin].render_view(itm_o);
         if (render_card == false) {
             console.error("RenderCard went wrong!");
             console.error(render_card);
