@@ -186,7 +186,7 @@ def upload_cleaner(_profile,_file_obj):
 def remove_item(_profile,_item):
     try:
         profile = Profile.objects.get(uuid=_profile)
-        item_obj = GalleryItem.objects.get(id=_item)
+        item_obj = GalleryItem.objects.get(uuid=_item)
         if (item_obj.profile != profile):
             return False
         files = GalleryItemFile.objects.filter(item=item_obj)
