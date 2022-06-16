@@ -186,7 +186,7 @@ def upload_cleaner(_profile,_file_obj):
 def remove_item(_profile,_item):
     try:
         profile = Profile.objects.get(uuid=_profile)
-        item_obj = GalleryItem.objects.get(id=_file_obj)
+        item_obj = GalleryItem.objects.get(id=_item)
         if (item_obj.profile != profile):
             return False
         files = GalleryItemFile.objects.filter(item=item_obj)
@@ -205,7 +205,7 @@ def remove_item(_profile,_item):
 
     except Exception as e:
             log.exception(e)
-            log.error(f"Item Removal: Unable to remove item file: {item_obj.uuid}: {e}")
+            log.error(f"Item Removal: Unable to remove item file: {_item}: {e}")
             #transaction.rollback()
 
 
