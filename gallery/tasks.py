@@ -65,7 +65,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
                 fsize = temp_file_handle.tell()
             temp_file_handle.close()
             
-            GalleryItemFile.objects.create(item=item,type=temp_file.meta["metadata"]["format"],hash=sha1.hexdigest(),file_size=fsize,meta=temp_file.meta,original=True,name=temp_file.name)
+            GalleryItemFile.objects.create(item=item,type=temp_file.meta["metadata"]["format"],hash=sha1.hexdigest(),file_size=fsize,meta=temp_file.meta,original=True,name=f"{profile.id}-{temp_file.name}")
             UserDataEntry.objects.create(user=user,community=community,category="gallery_item",bytes=fsize,reference=temp_file.name)
             # Step three: Use the imported plugin module to process the file for the galleries and create files:
             publish_mod.publish_submission(data,profile,temp_path,original_path,item,user,community,temp_file.id)
