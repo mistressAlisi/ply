@@ -135,7 +135,9 @@ class GalleryItemFile(models.Model):
     original = models.BooleanField(verbose_name="File is an Original",default=False) 
     file_size = models.FloatField(verbose_name='File Size',default=0)
     def __str__(self):
-        if self.original is True:
+        if self.thumbnail is False and self.original is False:
+            return f"Gallery Item Display File: {self.name}"
+        else if self.original is True:
             return f"Gallery Item Original File: {self.name}"
         else:
             return f"Gallery Item File: {self.name}"
