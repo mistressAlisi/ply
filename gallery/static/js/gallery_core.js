@@ -84,7 +84,9 @@ window.gallery_core = Object({
         last: "",
         cards: [],
         current: false,
-        colid: false
+        colid: false,
+        pageX: 0,
+        pageY: 0
     },
 
 /** Callback function for loadPlugin: **/
@@ -292,13 +294,21 @@ window.gallery_core = Object({
             if (this.canvas_visible == false) {
                 this.canvas_visible = true;
                 this.canvas_element.css('display','block');
+                this.canvas_element.on('click',this._canvasClick);
                 $(window).bind('keydown',window.gallery_core._kbk_evh);
             } else {
                 this.canvas_visible = false;
                 this.canvas_element.css('display','none');
+                this.canvas_element.off('click');
                 $(window).unbind('keydown',window.gallery_core._kbk_evh);
                 location.hash = "";
             }
+    },
+    /** This function handles mouse clicks for the viewer: **/
+    _canvasClick: function(e) {
+        gallery_core.nav.pageX = e.pageX;
+        gallery_core.nav.pageY = e.pageY;
+        $(window.gallery_core).trigger('canvas-click');
     },
     /** These function handles key bindings for the viewer: **/
     _kbk_evh: function(e) {
