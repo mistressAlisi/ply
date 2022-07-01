@@ -309,7 +309,7 @@ window.gallery_core.plugins["gallery_photos"] = Object({
          window.gallery_core.canvas_element.data('meta',data);
          window.gallery_core.canvas_element.data("id",data.id);
         $(window.gallery_core).off("canvas-click");
-        $(window.gallery_core).on("canvas-click",window.gallery_core.plugins["gallery_photos"]._on_click);
+//         $(window.gallery_core).on("canvas-click",window.gallery_core.plugins["gallery_photos"]._on_click);
 
         return true;
     }
