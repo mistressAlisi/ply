@@ -279,6 +279,7 @@ window.gallery_core.plugins["gallery_photos"] = Object({
             size = window.gallery_core.canvas_element.data('meta').meta.width+"px, "+window.gallery_core.canvas_element.data('meta').meta.height+"px";
             window.gallery_core.canvas_element.css('background-size',size);
             bpos = ((gallery_core.nav.pageX*-(gallery_core.canvas_element.data('meta').meta.width) / window.innerWidth)/2)+"px "+(gallery_core.nav.pageY*-((gallery_core.canvas_element.data('meta').meta.height-(window.innerHeight/2)) / window.innerHeight)/2)+"px";
+            console.log("BPos",bpos);
             window.gallery_core.canvas_element.css('background-position',bpos);
         } else {
             window.gallery_core.canvas_element.css('background-position','center center');
