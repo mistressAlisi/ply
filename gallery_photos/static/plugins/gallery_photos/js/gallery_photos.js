@@ -273,6 +273,18 @@ window.gallery_core.plugins["gallery_photos"] = Object({
     },
     
      /** Viewer functions: **/
+     /** Handle the click function:**/
+     _on_click: function(ev,data) {
+        if (window.gallery_core.canvas_element.css('background-size') == 'contain') {
+            size = window.gallery_core.canvas_element.data('meta').meta.width+"px, "+window.gallery_core.canvas_element.data('meta').meta.height+"px";
+            window.gallery_core.canvas_element.css('background-size',size);
+            bpos = ((gallery_core.nav.pageX*-(gallery_core.canvas_element.data('meta').meta.width) / window.innerWidth)/2)+"px "+(gallery_core.nav.pageY*-((gallery_core.canvas_element.data('meta').meta.height-(window.innerHeight/2)) / window.innerHeight)/2)+"px";
+            window.gallery_core.canvas_element.css('background-position',bpos);
+        } else {
+            window.gallery_core.canvas_element.css('background-position','center center');
+            window.gallery_core.canvas_element.css('background-size','contain');
+        };
+     },
      /** Setup the cards after the gallery plugin pulls them from the server for full view: **/
     setup_card_view: function(card_div,data) {
         /** For set up, we just need to specify the actual file people will view in full view for now: **/
@@ -293,8 +305,11 @@ window.gallery_core.plugins["gallery_photos"] = Object({
     /** Render a view for the Gallery Canvas: **/
     render_view: function(data) {
          window.gallery_core.canvas_element.css('background-image',"url('"+data.path+"')");
+         window.gallery_core.canvas_element.data('meta',data);
          window.gallery_core.canvas_element.data("id",data.id);
-        
+        $(window.gallery_core).off("canvas-click");
+        $(window.gallery_core).on("canvas-click",window.gallery_core.plugins["gallery_photos"]._on_click);
+
         return true;
     }
 });
