@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core import serializers
 from django.conf.urls import include
 from django.contrib.auth.decorators import login_required
 from ply.toolkit import vhosts,file_uploader,logger as plylog,reqtools
@@ -6,7 +7,8 @@ from gallery.uploader import upload_plugins_builder
 from django.http import JsonResponse,HttpResponse
 from django.db import IntegrityError, transaction
 from django.db.models import Q
-from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection,GalleryTempFileThumb,GalleryCollectionItems,GalleryItemFile,GalleryItemKeyword
+from gallery.models import GalleryTempFile,GalleryCatGroupObject,GalleryArtworkCat,GalleryCatGroups,GalleryCatGroupObject,GalleryCollectionPermission,GalleryItem,GalleryCollection,GalleryTempFileThumb,GalleryCollectionItems,GalleryItemFile,GalleryItemKeyword,GalleryFavourite
+from notifications.models import Notification
 from keywords.models import Keyword
 from categories.models import Category
 from gallery import serialisers,forms
@@ -484,3 +486,56 @@ def gallery_update_settings(request):
         update_submission_files.delay(str(item.uuid))
     return JsonResponse("ok",safe=False)
 
+
+@login_required
+@transaction.atomic
+def gallery_toggle_fav(request,item):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    try:
+        fav = GalleryFavourite.objects.get(community=community,item=item,profile=profile)
+    except:
+        fav = GalleryFavourite.objects.get_or_create(community=community,item=item,profile=profile)
+        fav[0].save()
+        item.likes += 1
+        item.save()
+        # Create "I Faved something" Notification:
+        noti = Notification.objects.create(source=profile,community=community,type="ply.gallery.fav_created",contents_text=str(item.uuid))
+        noti.save()
+        # Create "Someone faved your art" notifcation:
+        noti = Notification.objects.create(source=item.profile,community=community,type="ply.gallery.item_favd",contents_text=str(item.uuid))
+        noti.save()
+        return JsonResponse("ok",safe=False)
+    item.likes -= 1
+    item.save()
+    fav.delete();
+    return JsonResponse("ok",safe=False)
+
+
+
+@login_required
+@transaction.atomic
+def gallery_is_fav(request,item):
+    vhost = request.META["HTTP_HOST"];
+    community = vhosts.get_vhost_community(hostname=vhost)
+    item = GalleryItem.objects.get(pk=item)
+    profile = toolkit_profiles.get_active_profile(request)
+    try:
+        fav = GalleryFavourite.objects.get(community=community,item=item,profile=profile)
+    except:
+        return JsonResponse(False,safe=False)
+    return JsonResponse(True,safe=False)
+
+
+@login_required
+def gallery_profile_favs(request):
+    vhost = request.META["HTTP_HOST"];
+    data = []
+    community = vhosts.get_vhost_community(hostname=vhost)
+    profile = toolkit_profiles.get_active_profile(request)
+    favs = GalleryFavourite.objects.filter(community=community,profile=profile)
+    for f in favs:
+        data.append(f.item.uuid)
+    return JsonResponse({'favs':data},safe=False)

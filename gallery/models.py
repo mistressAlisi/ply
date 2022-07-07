@@ -317,7 +317,23 @@ class GalleryTempFileKeywords(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     
-    
+
+class GalleryFavourite(models.Model):
+    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.RESTRICT,null=True,blank=True)
+    profile = models.ForeignKey(Profile,verbose_name='Item',on_delete=models.RESTRICT)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    flagged = models.BooleanField(verbose_name="FLAGGED",default=False)
+    def __str__(self):
+        return f"Gallery Favourite: {self.profile.profile_id} fav'd {self.item.title}"
+
+@admin.register(GalleryFavourite)
+class GalleryFavouriteAdmin(admin.ModelAdmin):
+    pass
+
 class GalleryItemsByCollectionPermission(models.Model):
     gcp_id = models.IntegerField(verbose_name="Collection Permission ID")
     gcp_updated = models.DateTimeField(verbose_name="Collection Permission Updated")

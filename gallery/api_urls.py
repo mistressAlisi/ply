@@ -25,4 +25,7 @@ urlpatterns = [
     path('metadata/item/<uuid:item>/<uuid:col>',api_views.gallery_item_metadata),
     path('details/item/form/<uuid:item>/<uuid:col>',api_views.gallery_details_form),
     path('details/item/form/exec',api_views.gallery_update_details),
+    path('fav/item/<uuid:item>',api_views.gallery_toggle_fav),
+    path('get/fav/item/<uuid:item>',api_views.gallery_is_fav),
+    path('get/fav/items',api_views.gallery_profile_favs)
 ]

@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib import admin
-
+from django.contrib.auth.models import User
 #PLY:
 from community.models import Community
 from profiles.models import Profile
@@ -11,7 +11,8 @@ from profiles.models import Profile
 class SLAgent(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = True)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile,verbose_name = "Subscriber Profile",on_delete=models.RESTRICT)
+    owner = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE,null=True)
+    profile = models.ForeignKey(Profile,verbose_name = "Character Profile",on_delete=models.RESTRICT)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Agent First seen')
     remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
     last_view = models.DateTimeField(verbose_name="Last Viewed",null=True,auto_now_add=True)

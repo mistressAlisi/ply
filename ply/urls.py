@@ -18,6 +18,7 @@ from django.urls import path,include
 from .auth_views import login
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('profiles/',include('profiles.public_urls')),
     path('p/', include('profiles.sharing_urls')),
     path('dynapages/api/',include('dynapages.api_urls')),
