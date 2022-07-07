@@ -24,6 +24,9 @@ window.gallery_core = Object({
         viewer_info: "#gallery-span",
         viewer_hdr: ".gallery-modal-header",
         like_btn: "#btn-like",
+        like_url: "/dashboard/user/gallery/api/fav/item/",
+        like_q_url: "/dashboard/user/gallery/api/get/fav/item/",
+        like_active_c: "bg-secondary text-white",
         share_btn: "#btn-share",
         dl_btn: "#btn-download",
         views_btn: "#btn-views",
@@ -344,14 +347,28 @@ window.gallery_core = Object({
         }
         e.preventDefault();
     },
+    /** Handle the apperance like button: **/
+    _like_btn_en: function(d){
+        if (d == true) {
+            $(gallery_core.settings.like_btn).addClass(gallery_core.settings.like_active_c);
+//             $(gallery_core.settings.like_btn).attr("disabled","disabled");
+        } else {
+//             $(gallery_core.settings.like_btn).attr("disabled","");
+            $(gallery_core.settings.like_btn).removeClass(gallery_core.settings.like_active_c);
+        };
+    },
      /** This function _renders_ a gallery card's metadata: **/
      _gallery_card_meta: function(target_card,col,item) {
+
          /** Send metadata and metrics to server: **/
+         $.get(this.settings.like_q_url+item,this._like_btn_en);
          $.get(this.settings.view_count_url+"/?itm="+item+"&col="+target_card.data("collection"));
           /** Update viewer data: **/
                 /** Load Counts: **/
                     $(this.settings.com_btn).find('.count').html(target_card.data("comments"));
                     $(this.settings.like_btn).find('.count').html(target_card.data("likes"));
+                    $(this.settings.like_btn).on('click',function(){                            $.get(gallery_core.settings.like_url+item,gallery_core._like_btn_en);
+                    });
                     $(this.settings.share_btn).find('.count').html(target_card.data("shares"));
                     $(this.settings.dl_btn).find('.count').html(target_card.data("downloads"));
                     $(this.settings.views_btn).find('.count').html(target_card.data("views"));

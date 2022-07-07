@@ -32,6 +32,7 @@ STATIC_ROOT = config("STATIC_ROOT")
 
 # Application definition
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -97,6 +98,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -316,3 +318,4 @@ PLY_AVATAR_MAX_KB = int(config("PLY_AVATAR_MAX_KB"))
 PLY_AVATAR_STORAGE_USE_S3 = config('PLY_AVATAR_STORAGE_USE_S3')
 PLY_DYNAPAGES_PROFILE_TEMPLATE=config("PLY_DYNAPAGES_PROFILE_TEMPLATE")
 PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET")
+GRAPPELLI_ADMIN_TITLE="PLY Admin @ "+PLY_HOSTNAME
