@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 import uuid
-
+from django.contrib.auth.models import User
 
 # PLY
 
@@ -89,6 +89,8 @@ class CommunityAdminsAdmin(admin.ModelAdmin):
 
 class ProfilePerCoummunityView(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    community_uuid = models.UUIDField(verbose_name="Community UUID")
+    profile_creator = models.IntegerField(verbose_name='Owner ID',default=0)
     joined = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Joined')
     community_name = models.TextField(verbose_name='Community Name')
     profile_created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
@@ -125,6 +127,7 @@ class ProfilePerCoummunityView(models.Model):
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.CASCADE)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    creator = models.ForeignKey(User,verbose_name="User",on_delete=models.CASCADE)
     def __str__(self):
         return f"Profile {self.profile_id} as member of Community {self.name}"
     class Meta:

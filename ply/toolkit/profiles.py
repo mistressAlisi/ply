@@ -8,6 +8,7 @@ Toolkit utilities for interacting with Ply Profiles
 from community.models import Community,VHost
 from ply.toolkit.logger import getLogger
 from profiles.models import Profile
+from community.models import ProfilePerCoummunityView
 # get_vhost_community: Find the right community node for the given Vhost.
 # To match VHosts, we must at least match the host name, and optionally, the iapddr.
 # 
@@ -67,3 +68,18 @@ def get_profile(request,puuid):
        profile = Profile.objects.get(pk=puuid,creator=request.user,archived=False,blocked=False,placeholder=False,system=False)
        request.session['profile'] = str(profile.uuid)
        return profile 
+
+# Get all available profiles that match a given user id, and a given community:
+def get_all_available_profiles(uid,community):
+    profiles = ProfilePerCoummunityView.objects.filter(community=community,profile_creator=uid)
+    return profiles
+
+
+# Get a profile for the specified user, you must specify PUUID as well:
+# If the passed user is not the owner of the passed profile uuid, False will be returned.
+def get_profile_for_user(user,puuid):
+    try:
+       profile = Profile.objects.get(pk=puuid,creator=user,archived=False,blocked=False,placeholder=False,system=False)
+       return profile
+    except profile.objects.NotFound:
+        return False

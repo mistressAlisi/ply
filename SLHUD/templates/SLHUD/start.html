@@ -7,10 +7,10 @@
 {% block bootstrap5_content %}
 <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<h1>Hello; SL Agent {{agent}}! </h1>
+<h1>Hello; SL Agent {{agent.uuid}}! </h1>
 <h2>Connected from parcel: {{parcel}}</h2>
-<h2>Your community is: "{{ply_parcel.community.name}}"</h2>
-<h2>Your character is: "{{ply_agent.profile.name}}"</h2>
+<h2>Your community is: "{{community.name}}"</h2>
+<h2>Your character is: "{{agent.profile.name}}"</h2>
 <br/>
 <h3>Quick Tests:</h3>
   <button type="submit" onclick="hud.d20(1);" class="btn btn-primary mb-3"><i class="fa-solid fa-dice-d20"></i> Roll 1D20!</button>
