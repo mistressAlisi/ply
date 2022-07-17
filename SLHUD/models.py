@@ -12,7 +12,7 @@ class SLAgent(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = True)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     owner = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE,null=True)
-    profile = models.ForeignKey(Profile,verbose_name = "Character Profile",on_delete=models.RESTRICT)
+    profile = models.ForeignKey(Profile,verbose_name = "Active Character Profile",on_delete=models.RESTRICT)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Agent First seen')
     remote_addr = models.GenericIPAddressField(blank=True, null=True, verbose_name=("remote address"))
     last_view = models.DateTimeField(verbose_name="Last Viewed",null=True,auto_now_add=True)
@@ -66,4 +66,23 @@ class SLParcelAgent(models.Model):
 class SLParcelAgentAdmin(admin.ModelAdmin):
     pass
 
+
+# Mapping SLHUD Settings per Community:
+class SLHUDSettings(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = True)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Settings Created/updated')
+    hud_title = models.TextField(max_length=200,verbose_name='HUD Title (World Name)',unique=True)
+    hud_intro = models.TextField(max_length=200,verbose_name='HUD Introduction (World Name)',unique=True)
+    max_profiles = models.IntegerField(verbose_name='Max Profiles Allowed',default=3)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    online = models.BooleanField(verbose_name="System FLAG",default=False)
+    def __str__(self):
+        return f"SL HUD Settings for Community-> {self.community.uuid}"
+
+@admin.register(SLHUDSettings)
+class SLHUDSettingsAdmin(admin.ModelAdmin):
+    pass
 

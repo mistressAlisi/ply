@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os,socket
 from pathlib import Path
-from decouple import config,Csv
+from decouple import Config,Csv,RepositoryEnv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# Enable loading configuration files from ./config: (which can be mounted as an overlay!)
+if (os.path.isdir(os.getcwd()+"/config")):
+    config = Config(RepositoryEnv(os.getcwd()+"/config/settings.ini"))
+else:
+    from decouple import config
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
