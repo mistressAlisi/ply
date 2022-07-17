@@ -1,0 +1,32 @@
+{% extends 'django_bootstrap5/bootstrap5.html' %}
+{% block bootstrap5_title %}
+{{settings.hud_title}}: Profile Selector
+{% endblock %}
+{% block bootstrap5_content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+<body class="d-flex h-100 text-center bg-dark">
+<main class="w-100 text-center" style="padding-top: 2px; margin-top: 2px;">
+    <div class="card" style="min-width: 28rem; margin-left: auto; margin-right: auto; max-width: 95%;">
+    <div class="card-body">
+        <h5 class="card-title"><i class="fa-solid fa-hat-wizard"></i>&#160;{{settings.hud_title}}: Profile Selector</h5>
+       <ul class="list-group list-group-horizontal">
+        {% for pr in profiles %}
+
+              <a href="/SLHUD/select/profile/{{pr.uuid}}" class="list-group-item list-group-item-action link-dark rounded">
+              <img style="position: relative; top: -10px;" src="{{av_path}}/{{pr.avatar}}" alt="{{pr.name|slice:"0:2"}}" class="rounded-circle me-2" width="50" height="50"/>
+              <div style="display: inline-block; margin: 0;">
+                <blockquote class="blockquote">{{pr.name}}</blockquote>
+                <figcaption class="blockquote-footer">
+                @{{pr.profile_id}}
+                </figcaption>
+              </div>
+              </a>
+        {% endfor %}
+    </ul>
+    <br/>
+    <button type="submit" class="btn btn-sucess btn-primary"><i class="fa-solid fa-user-plus"></i>&#160;Create New Character</button>
+</main>
+</body>
+{% endblock %}

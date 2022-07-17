@@ -1,0 +1,43 @@
+{% extends 'django_bootstrap5/bootstrap5.html' %}
+{% block bootstrap5_title %}
+Welccome to {{settings.hud_title}}!!
+{% endblock %}
+{% block bootstrap5_content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+<body class="d-flex h-100 text-center bg-dark">
+<main class="w-100 text-center" style="padding-top: 2px; margin-top: 2px;">
+    <div class="card" style="min-width: 28rem; margin-left: auto; margin-right: auto; max-width: 95%;">
+    <div class="card-body">
+        <h5 class="card-title"><i class="fa-solid fa-hat-wizard"></i>&#160;Log in to {{settings.hud_title}}...</h5>
+        {% if errstr %}
+        <div class="alert alert-warning" role="alert">
+            <i class="fa-solid fa-triangle-exclamation"></i>&#160;{{errstr}}
+        </div>
+        {% endif %}
+        <div class="card" style="max-width: 50%; margin-left:auto; margin-right:auto;">
+          <form class="px-4 py-3" method="POST">
+    {%csrf_token%}
+
+    <div class="form-group">
+      <label for="plyuserid"><i class="fa-solid fa-user"></i>&#160;Username or Email:</label>
+      <input type="text" class="form-control" name="plyuserid" id="plyuserid" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
+      <label for="plypass"><i class="fa-solid fa-key"></i>&#160;Password:</label>
+      <input type="password" class="form-control" name="plypass" id="plypass" placeholder="Password">
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="plyloginalert" style="display: none;">
+    Auth Error!
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+    <input type="hidden" id="plyhashpw" name="plyhashpw"/>
+  </form>
+  </div>
+    </div>
+    </div>
+</main>
+</body>
+{% endblock %}
