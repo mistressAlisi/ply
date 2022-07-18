@@ -116,12 +116,12 @@ WSGI_APPLICATION = 'ply.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE'),
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PW'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT')
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASS'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 

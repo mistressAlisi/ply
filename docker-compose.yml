@@ -1,0 +1,30 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: ply
+      POSTGRES_DB: ply
+      POSTGRES_PASS: passsword
+    volumes:
+      - pgdata:/var/lib/posgresql/data
+  ply:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+      - ./settings.ini:/app/config/settings.ini
+    command: python3 manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USER: ply
+      POSTGRES_DB: ply
+      POSTGRES_PASS: passsword
+
+volumes:
+  pgdata:
+
+  

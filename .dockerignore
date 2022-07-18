@@ -1,4 +1,7 @@
-# Byte-compiled / optimized / DLL files
+ply.kdev4
+.readthedocs.yaml
+setup/
+.git# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -131,4 +134,3 @@ dmypy.json
 
 config/
 
-settings.ini
