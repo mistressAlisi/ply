@@ -16,12 +16,10 @@ RUN ls
 #directory to store app source code
 RUN mkdir /app
 
-RUN touch "UWU"
 
 RUN ls 
 #switch to /app directory so that everything runs from here
 WORKDIR /app
-RUN touch "OwO"
 
 RUN ls
 #copy the app code to image working directory
