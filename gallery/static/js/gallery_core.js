@@ -298,11 +298,13 @@ window.gallery_core = Object({
                 this.canvas_visible = true;
                 this.canvas_element.css('display','block');
                 this.canvas_element.on('click',this._canvasClick);
+                this.canvas_element.on('wheel',this._whl_evh);
                 $(window).bind('keydown',window.gallery_core._kbk_evh);
             } else {
                 this.canvas_visible = false;
                 this.canvas_element.css('display','none');
                 this.canvas_element.off('click');
+                this.canvas_element.off('wheel');
                 $(window).unbind('keydown',window.gallery_core._kbk_evh);
                 location.hash = "";
             }
@@ -312,6 +314,19 @@ window.gallery_core = Object({
         gallery_core.nav.pageX = e.pageX;
         gallery_core.nav.pageY = e.pageY;
         $(window.gallery_core).trigger('canvas-click');
+    },
+    /** Handle the wheel event for the viewer: **/
+    _whl_evh: function(e) {
+        e.preventDefault();
+        if (e.originalEvent.deltaY < 0) {
+              if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+                window.gallery_core.plugins["gallery_photos"].panzoom.zoomIn();
+            }
+        } else {
+              if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+                window.gallery_core.plugins["gallery_photos"].panzoom.zoomOut();
+            }
+        };
     },
     /** These function handles key bindings for the viewer: **/
     _kbk_evh: function(e) {
@@ -338,6 +353,16 @@ window.gallery_core = Object({
         case 40: // down
         break;
 
+        case 107: // Plus:
+            if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+                window.gallery_core.plugins["gallery_photos"].panzoom.zoomIn();
+            }
+        break;
+        case 109: // Minus:
+            if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+                window.gallery_core.plugins["gallery_photos"].panzoom.zoomOut();
+            }
+        break;
         default: 
             
             return; // exit this handler for other keys
