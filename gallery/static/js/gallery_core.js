@@ -34,6 +34,9 @@ window.gallery_core = Object({
         date_btn: "#btn-created",
         back_btn: "#back-button",
         forw_btn: "#forw-button",
+        zin_btn: "#btn-zin",
+        zou_btn: "#btn-zou",
+        zls_rng: "#zoom-range",
         share_url_ctrl: "#id_share_url",
         share_url_fb: "#share_url_fb",
         sh_twitter: "#sh_twitter",
@@ -80,7 +83,7 @@ window.gallery_core = Object({
     canvas_element: false,
     /** And control: **/
     canvas_visible: false,
-    /** Navigation controls: **/
+    /** Navigation and Zoom controls: **/
     nav: {
         count: 0,
         first: "",
@@ -89,7 +92,7 @@ window.gallery_core = Object({
         current: false,
         colid: false,
         pageX: 0,
-        pageY: 0
+        pageY: 0,
     },
 
 /** Callback function for loadPlugin: **/
@@ -325,8 +328,10 @@ window.gallery_core = Object({
         } else {
               if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
                 window.gallery_core.plugins["gallery_photos"].panzoom.zoomOut();
+
             }
         };
+        $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
     },
     /** These function handles key bindings for the viewer: **/
     _kbk_evh: function(e) {
@@ -356,11 +361,13 @@ window.gallery_core = Object({
         case 107: // Plus:
             if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
                 window.gallery_core.plugins["gallery_photos"].panzoom.zoomIn();
+                $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
             }
         break;
         case 109: // Minus:
             if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
                 window.gallery_core.plugins["gallery_photos"].panzoom.zoomOut();
+                $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
             }
         break;
         default: 
@@ -371,6 +378,21 @@ window.gallery_core = Object({
             window.setTimeout(function(){$(window.gallery_core.settings.viewer_hdr).removeClass('hover')},100);
         }
         e.preventDefault();
+    },
+    /** Handle zoomin, zoomout buttons:**/
+    _zin_btn: function(e){
+           if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+                window.gallery_core.plugins["gallery_photos"].panzoom.zoomIn();
+                $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
+
+            }
+    },
+    _zou_btn: function(e){
+           if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+                window.gallery_core.plugins["gallery_photos"].panzoom.zoomOut();
+                $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
+            }
+
     },
     /** Handle the apperance like button: **/
     _like_btn_en: function(d){
