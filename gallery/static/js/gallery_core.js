@@ -318,6 +318,12 @@ window.gallery_core = Object({
         gallery_core.nav.pageY = e.pageY;
         $(window.gallery_core).trigger('canvas-click');
     },
+    /** Handle Zoom change event: **/
+    _zsc_evh: function(e) {
+        if (window.gallery_core.plugins["gallery_photos"].panzoom!= false) {
+            window.gallery_core.plugins["gallery_photos"].panzoom.zoom($(window.gallery_core.settings.zls_rng)[0].value);
+        };
+    },
     /** Handle the wheel event for the viewer: **/
     _whl_evh: function(e) {
         e.preventDefault();
@@ -414,6 +420,7 @@ window.gallery_core = Object({
                 /** Load Counts: **/
                     $(this.settings.com_btn).find('.count').html(target_card.data("comments"));
                     $(this.settings.like_btn).find('.count').html(target_card.data("likes"));
+                    $(this.settings.zls_rng).on('change',gallery_core._zsc_evh);
                     $(this.settings.like_btn).on('click',function(){                            $.get(gallery_core.settings.like_url+item,gallery_core._like_btn_en);
                     });
                     $(this.settings.share_btn).find('.count').html(target_card.data("shares"));
