@@ -311,6 +311,7 @@ window.gallery_core.plugins["gallery_photos"] = Object({
         window.gallery_core.canvas_element.on('contextmenu',function(e){e.preventDefault()});
         //window.gallery_core.canvas_element.on*/('wheel',function(e){window.gallery_core.plugins["gallery_photos"].panzoom.zoomWithWheel);
         $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
+
         return true;
     }
 });
