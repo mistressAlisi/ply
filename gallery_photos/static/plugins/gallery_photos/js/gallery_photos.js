@@ -307,9 +307,10 @@ window.gallery_core.plugins["gallery_photos"] = Object({
          if (hScale < iScale) { iscale = hScale };
          window.gallery_core.canvas_element.children('#viewer_div').append(imgv);
 //         $("#viewer_div")[0].html('<img src="'+data.path+'">;');
-        window.gallery_core.plugins["gallery_photos"].panzoom = Panzoom($("#viewer_div")[0],{'animate':true,'startScale':iScale*.9,'startX':-(data.meta.width/3),'startY':-(data.meta.height/3),'pinchAndPan':true});
+        window.gallery_core.plugins["gallery_photos"].panzoom = Panzoom($("#viewer_div")[0],{'animate':true,'startScale':iScale*.9,'startX':-(data.meta.width/3),'startY':-(data.meta.height/3),'pinchAndPan':true,'minScale':0.1,'maxScale':10});
         window.gallery_core.canvas_element.on('contextmenu',function(e){e.preventDefault()});
         //window.gallery_core.canvas_element.on*/('wheel',function(e){window.gallery_core.plugins["gallery_photos"].panzoom.zoomWithWheel);
+        $(window.gallery_core.settings.zls_rng)[0].value = window.gallery_core.plugins["gallery_photos"].panzoom.getScale();
         return true;
     }
 });

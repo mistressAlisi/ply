@@ -46,6 +46,13 @@
             &#160;
             <button id="btn-created" type="button" disabled="disabled" class="btn btn-outline-secondary btn-sm"><span class="date">...</span>&#160;<i class="fa-solid fa-calendar-xmark"></i></button>
             &#160;
+
+            <em>Zoom:</em>
+            <button id="btn-zou" type="button" class="btn btn-outline-secondary btn-sm" onclick="gallery_core._zou_btn();"><i class="fa-solid fa-magnifying-glass-minus"> </i></button>
+             &#160;
+            <input type="range" class="form-range" min="0.1" max="10" step=".1" id="zoom-range" style="max-width: 200px;">
+             &#160;
+            <button id="btn-zin" type="button" class="btn btn-outline-secondary btn-sm" onclick="gallery_core._zin_btn();"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
             </div>
         <br/>
     </div>   <button type="button" class="btn btn-dark close-btn" onclick="gallery_core.toggle_viewer();"><i class="fa-solid fa-xmark"></i> Close</button> 
