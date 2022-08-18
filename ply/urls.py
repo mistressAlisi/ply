@@ -41,5 +41,6 @@ urlpatterns = [
     path('SLHUD/', include('SLHUD.hud_urls')),
     path('SLHUD/api/', include('SLHUD.api_urls')),
     #path('s/', include('gallery.sharing_urls')),
+    path('dice/api/',include('plydice.api_urls')),
     path('', include('community.public_urls'))
 ]

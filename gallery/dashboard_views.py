@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ply.toolkit import vhosts,profiles
 from gallery.uploader import upload_plugins_builder
-from gallery.models import GalleryTempFile,GalleryCollectionItems,GalleryCollection,GalleryItem,GalleryItemFile,GalleryCollectionPermission,GalleryItemsByCollectionPermission
+from gallery.models import GalleryTempFile,GalleryCollectionItems,GalleryCollection,GalleryItem,GalleryItemFile,GalleryCollectionPermission,GalleryItemsByCollectionPermission,GalleryItemsByFavourites
 from profiles.models import Profile
 from django.http import JsonResponse,HttpResponse
 import ply
@@ -39,6 +39,14 @@ def gallery_collections(request):
     context = {"colls":colls,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
     return render(request,"gallery-dashboard_all_collections.html",context)
     #return JsonResponse(colls,safe=False)   
+
+@login_required
+def gallery_myfavs(request):
+    items = GalleryItemsByFavourites.objects.filter(gif_profile=request.session['profile'])
+    profile = Profile.objects.get(uuid=request.session["profile"])
+    context = {"favs":items,"base_url":ply.settings.PLY_GALLERY_FILE_URL_BASE_URL,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    return render(request,"gallery/dashboard/gallery_my_likes.html",context)
+    #return JsonResponse(colls,safe=False)
 
 
 @login_required

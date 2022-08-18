@@ -9,7 +9,7 @@ class PreferencesForm(ModelForm):
 
     class Meta:
         model = Preferences
-        fields = [ "shortdate", "longdate", "time", "timezone", "theme", "stream_top","messages_top","user"]
+        fields = [ "shortdate", "longdate", "time", "timezone", "theme","min_zoom","max_zoom", "stream_top","messages_top","user"]
 
         help_texts = {
             'shortdate': ('Example value: "03/05/2022" Default: "%x" (Accepts Python strftime formatting)'),
@@ -19,6 +19,8 @@ class PreferencesForm(ModelForm):
             'theme':('Select your System Theme/skin.'),
             'stream_top':('Scroll/add content to streams Top-down? (Twitter-like) - Check to Enable'),
             'messages_top':('Scroll/add content to Messages/conversations Top-down? (Twitter-like) - Check to Enable'),
+            'min_zoom':('Min zoom level for gallery photos, default is 0.1'),
+            'max_zoom':('Max zoom level for gallery photos, default is 10'),
         }
         error_messages = {
             'name': {

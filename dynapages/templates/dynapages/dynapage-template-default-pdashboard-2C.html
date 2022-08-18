@@ -1,0 +1,69 @@
+<meta property="dynapage_template_name" content="DEFAULT 2 Column Template for Dashboards"/>
+<meta property="dynapage_template_version" content="v1.0"/>
+<meta property="dynapage_template_author" content="Alisi"/>
+<meta property="dynapage_template_description" content="A simple template that implements a banner and a two column + side col layout for dashboards."/>
+<link rel="stylesheet" href="/static/css/profile.css"/>
+<main>
+<section class="dynapage_banner container-fluid drop-accept" id="page_banner" data-widget_type="banner">
+<span class="badge rounded-pill bg-primary hint">Header: Drop Widgets here!</span>
+{% for widget in widgets %}
+    {%if widget.banner == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as banner_widget_template %}
+                 {% include banner_widget_template %}
+            {% endwith %}
+    {%endif%}
+{% endfor %}
+</section>
+<br/>
+<section class="dynapage_contents container-fluid" id="page_contents">
+
+<div class="row">
+<div class="col dynapage_col1 drop-accept" id="page_colA" data-widget_type="mainbody" data-widget_col="A" >
+<span class="badge rounded-pill bg-primary hint">Column 1: Drop Widgets here!</span>
+{% for widget in widgets %}
+
+    {%if widget.mainbody == True and widget.pos == 'A'%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as banner_widget_template %}
+                 {% include banner_widget_template %}
+                <br/>
+            {% endwith %}
+    {%endif%}
+{% endfor %}
+</div>
+<div class="col dynapage_col2 drop-accept" id="page_colB" data-widget_type="mainbody" data-widget_col="B">
+<span class="badge rounded-pill bg-primary hint">Column 2: Drop Widgets here!</span>
+{% for widget in widgets %}
+    {%if widget.mainbody == True and widget.pos == 'B'%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as banner_widget_template %}
+                 {% include banner_widget_template %}
+                <br/>
+            {% endwith %}
+    {%endif%}
+{% endfor %}
+</div>
+<div class="col-3 dynapage_sidecol drop-accept" id="page_sidecol" data-widget_type="sidecol">
+<span class="badge rounded-pill bg-primary hint">Sidebar: Drop Widgets here!</span>
+{% for widget in widgets %}
+    {%if widget.sidecol == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as banner_widget_template %}
+                {% include banner_widget_template %}
+            {% endwith %}
+    {%endif%}
+{% endfor %}
+</div>
+</div>
+</section>
+
+<section class="dynapage_footer container-fluid drop-accept" id="page_footer" data-widget_type="footer">
+<span class="badge rounded-pill bg-primary hint">Footer: Drop Widgets here!</span>
+{% for widget in widgets %}
+    {%if widget.footer == True%}
+            {% with  "dynapages/"|add:widget.widget.template.filename as banner_widget_template %}
+                 {% include banner_widget_template %}
+            {% endwith %}
+    {%endif%}
+{% endfor %}
+
+</section>
+</main>
+

@@ -16,7 +16,7 @@ from preferences.forms import PreferencesForm
 @login_required
 @transaction.atomic
 def save_system_settings(request):
-    prefs = Preferences.objects.get_or_create(user=request.user)[0]
+    uprefs = Preferences.objects.get_or_create(user=request.user)[0]
     form_saver = PreferencesForm(request.POST,instance=prefs)
     if (not form_saver.is_valid()):
         return JsonResponse({"res":"err","e":str(form_saver.errors.as_data())},safe=False)

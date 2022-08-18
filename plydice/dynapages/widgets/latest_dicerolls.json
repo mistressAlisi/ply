@@ -1,0 +1,27 @@
+{
+    "title":"Latest Dicerolls",
+    "descr":"Display your latest rolls's history anywhere in the profile.",
+    "helptext":"Display your latest rolls's history anywhere in the profile.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"plydice",
+    "widget_name":"ply_plydice_latest-dicerolls",
+    "dynapage_template":"dynapage-widgets-plydice-latestrolls-main",
+    "widget_data": {},
+    "icon":"fa-solid fa-dice-d20",
+    "setup_required":true,
+    "setup_form":"plydice.dynapages.forms.latest_dicerolls",
+    "modes":{
+        "banner":true,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":true
+    },
+    "used_in": {
+        "profile":true,
+        "group":true,
+        "dashboard":true,
+        "SLHUD":false,
+        "blog":true
+    }
+}

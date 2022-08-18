@@ -107,10 +107,26 @@ class ProfilePermission(models.Model):
     nsfw = models.BooleanField(verbose_name="Enable NSFW Content Flag",default=False)
     explicit = models.BooleanField(verbose_name="Enable Explicit Content Flag",default=False)
     def __str__(self):
-        return f"Permissions for Profile: {profile.label}, Visitor: {visitor.name}, group: {group.name}"
+        return f"Permissions for Profile: {self.profile.label}, Visitor: {self.visitor.name}, group: {self.group.name}"
     
 @admin.register(ProfilePermission)
 class ProfilePermissionAdmin(admin.ModelAdmin):
+    pass
+
+
+class ProfilePageNode(models.Model):
+    profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT,null=True)
+    dynapage = models.ForeignKey(Page,on_delete=models.RESTRICT,blank=True,null=True,verbose_name="DynaPage Node/Page")
+    node_type = models.TextField(verbose_name='Dynapage Node Type',null=True)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['profile','node_type'], name='unique_dynapage_node')
+    ]
+    def __str__(self):
+        return f"Profile Page Node for Profile: {self.profile.profile_id}, Node Type: {self.node_type}"
+
+@admin.register(ProfilePageNode)
+class ProfilePageNodeAdmin(admin.ModelAdmin):
     pass
 
 

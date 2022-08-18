@@ -42,6 +42,9 @@ class Preferences(models.Model):
     theme = models.ForeignKey(Theme,verbose_name='System Theme',on_delete=models.RESTRICT,null=True,blank=True)
     stream_top = models.BooleanField(verbose_name="Scroll Streams Top-Down",default=False)
     messages_top = models.BooleanField(verbose_name="Scroll Messages Top-Down",default=False)
+    min_zoom = models.DecimalField(verbose_name="Gallery Min Zoom (Default value is 0.1)", max_digits=5, decimal_places=2,default=0.1)
+    max_zoom = models.DecimalField(verbose_name="Gallery Abs Max Zoom (Default value is 10)",default=10,max_digits=5,decimal_places=2)
+
     def __str__(self):
             return f"Settings/Preferences Node for user: {self.user.username}"
 

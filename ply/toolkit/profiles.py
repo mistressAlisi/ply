@@ -55,7 +55,8 @@ def get_all_profiles(request):
 
 
 # create_placeholder_profile create a new 'placeholder' profile that will be hopefully populated by the user. This is a "new" profile that would be used as the basis of a new character by the forge module, for example.
-# NOTE: It's up to the forge, or whatever module is creating this profile to UNPLACEHOLDER it, and to create the dynaPage structure needed for the profile to render correctly at all.
+# NOTE: It's up to the forge, or whatever module is creating this profile to UNPLACEHOLDER it, and to create the dynaPage structure(s) needed for the profile to render correctly at all.
+# WARNING: DON'T SCREW THE NOTE'd comment UP - it WILL break your installation!
 def get_placeholder_profile(request):
        profile = Profile.objects.get_or_create(creator=request.user,archived=False,blocked=False,placeholder=True)[0]
        request.session['profile'] = str(profile.uuid)

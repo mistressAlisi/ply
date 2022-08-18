@@ -1,6 +1,6 @@
 window.publisher = Object({
     settings: {
-        maxLen: 500,
+        maxLen: 2500,
         lwarn1: 10,
         lwarn1_class: "bg-danger",
         lwarn2: 50,

@@ -4,7 +4,7 @@ from django.http import JsonResponse,HttpResponse
 from PIL import Image
 import datetime
 # Ply:
-from profiles.models import Profile
+from profiles.models import Profile,ProfilePageNode
 from profiles.forms import ProfileForm
 from community.forms import CommunityForm
 from ply import settings,system_uuids
@@ -73,17 +73,27 @@ def finish_character_profile(request):
     profile = Profile.objects.get(uuid=request.session['profile'])
     if (profile.placeholder is False):
         return JsonResponse({"res":"err","e":"Profile is not a placeholder."},safe=False)  
+    # Create Dynapage nodes and apply them to the profile:
     page = Page.objects.get(page_id=system_uuids.profile_dynapage_uuid)
     page.pk = None
     page.slug = f"profile||{request.user}||{profile.profile_id}"
     page.label = f"Profile page for {profile.name}"
     page.save()
+    dpage = Page.objects.get(page_id=system_uuids.pdashboard_dynapage_uuid)
+    dpage.pk = None
+    dpage.slug = f"profile_dashboard||{request.user}||{profile.profile_id}"
+    dpage.label = f"Profile Dashboard page for {profile.name}"
+    dpage.save()
     widgets = PageWidget.objects.filter(page_id=system_uuids.profile_dynapage_uuid)
     for widget in widgets:
         widget.pk = None
         widget.page_id = page.page_id
         widget.save()
-    profile.dynapage = page
+    # Create Page Nodes in the Dynapage System:
+    profile_node = ProfilePageNode(profile=profile,dynapage=page,node_type="profile")
+    profile_node.save()
+    profile_node = ProfilePageNode(profile=profile,dynapage=dpage,node_type="dashboard")
+    profile_node.save()
 
     # Add  stats:
     stats = BaseStat.objects.filter(community=community,archived=False,blocked=False)

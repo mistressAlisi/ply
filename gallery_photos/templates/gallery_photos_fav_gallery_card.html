@@ -1,0 +1,20 @@
+<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-item="{{i.id}}" data-plugin="gallery_photos" id="card-{{col.uuid}}-{{i.id}}" data-collection="{{col.uuid}}" data-title="{{i.title}}" data-collabel="{{col.label}}" data-likes="{{i.likes}}" data-shares="{{i.shares}}" data-downloads="{{i.downloads}}" data-comments="{{i.comments}}" data-author="{{i.profile.name}}" data-avatar="{{av_path}}/{{i.profile.avatar}}" data-created="{{i.created}}" data-counter="{{i.counter}}" data-views="{{i.views}}" data-profile_id="{{i.profile.slug}}">
+<input type="text" style="display:none" class="sharelink" value="/g/{{i.profile_slug}}/{{i.collection_id}}/{{i.id}}"/>
+
+   {% with fav.file as file %}
+     <a href="/g/{{fav.profile_slug}}/{{fav.collection_id}}/{{fav.item_id}}" target="_blank">
+    <img src="{{base_url}}/{{fav.gal_path}}/{{fav.profile.uuid}}/{{file.name}}" class="card-img-top" alt="{{file.name}}">
+    </a>
+    {% endwith %}
+  <section class="card-body gallery-photos-body">
+    <section class="photo-title-block">
+        <h5 class="card-title photo-title text-truncate" id="file-name">    <a href="/g/{{fav.profile_slug}}/{{fav.collection_id}}/{{fav.item_id}}" target="_blank">{{i.title}}</a></h5><h6> by <a href="/profiles/@{{fav.profile_slug}}" target="blank">{{fav.profile_name}}</h6>
+    </section>
+  <section class="photo-data-block">
+  <p class="description">
+<!--   {{i.descr}} (<i>Photography</i>)</p> -->
+  <span class="badge rounded-pill bg-primary"><i class="fa-solid fa-calendar-xmark"></i> {{i.created}}</span>
+  <br/>
+  
+  </section>
+</div>

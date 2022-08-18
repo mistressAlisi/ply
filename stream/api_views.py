@@ -69,7 +69,7 @@ def publish_to_profile(request,profile):
     message.save()
     #For the author's stream - if we're posting in streams other than the ones we own...:
     if (author != profile):
-        author_stream = Stream.objects.get(community=community,profile=author,root_stream=True,type="PROFILE")
+        author_stream = Stream.objects.get_or_create(community=community,profile=author,root_stream=True,type="PROFILE")[0]
         author_stream.nodes += 1
         referenceMessage = StreamMessage(stream=author_stream,author=author,type='application/ply.stream.refmsg',references=message,posted_in=stream)
         referenceMessage.save() 

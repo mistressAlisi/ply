@@ -1,0 +1,8 @@
+<meta property="dynapage_template_name" content="Latest Rolls"/>
+<meta property="dynapage_template_version" content="v1.0"/>
+<meta property="dynapage_template_author" content="Alisi"/>
+<meta property="dynapage_template_description" content="A simple Dice roll stream for profiles."/>
+{% load plyrolls_latestrolls_widget %}
+{% plyrolls_latestrolls_widget item=widget profile=profile as output %}
+{{ output|safe }}
+

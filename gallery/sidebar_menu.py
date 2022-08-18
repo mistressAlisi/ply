@@ -7,6 +7,7 @@ sidebar = {
   "sidebar":"/console/devices/get/sidebar",
   "menu":[
     {"url":"gallery/list","label":"All Galleries",'icon':'fas fa-photo-video','onclick':'gallery_list_init'},
+    {"url":"gallery/likes","label":"My Liked Pieces",'icon':'fas fa-heart'},
     {"url":"gallery/collections","label":"All Collections",'icon':'fas fa-icons'},
     {"url":"gallery/manage","label":"Manage Galleries",'icon':'fa-solid fa-pen-to-square'},
     {"url":"gallery/upload","label":"Upload Submission(s)",'icon':'fas fa-upload'},

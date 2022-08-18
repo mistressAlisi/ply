@@ -183,7 +183,7 @@ def save_gallery_photo(file,profile,name=False):
             raise Exception('Unable to store Photo in S3 Storage')
     else:
         destpath = ply.settings.PLY_GALLERY_FILE_BASE_PATH+path
-        if not os.path.exists(os.path.dirname(destpath)):
+        if not os.path.exists(os.pahgth.dirname(destpath)):
             try:
                 os.makedirs(os.path.dirname(destpath))
             except OSError as exc: # Guard against race condition
