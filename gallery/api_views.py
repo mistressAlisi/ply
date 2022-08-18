@@ -494,11 +494,19 @@ def gallery_toggle_fav(request,item):
     community = vhosts.get_vhost_community(hostname=vhost)
     item = GalleryItem.objects.get(pk=item)
     profile = toolkit_profiles.get_active_profile(request)
-    try:
-        fav = GalleryFavourite.objects.get(community=community,item=item,profile=profile)
-    except:
-        fav = GalleryFavourite.objects.get_or_create(community=community,item=item,profile=profile)
-        fav[0].save()
+    fav = GalleryFavourite.objects.filter(community=community,item=item,profile=profile)
+    if (fav.exists()):
+        log.info(f"Deleting Fav on item: {item.uuid} on behalf of: {profile.profile_id}")
+        # Deleting an existing fav:
+        item.likes -= 1
+        item.save()
+        fav.delete();
+
+    else:
+        log.info(f"Creating Fav on item: {item.uuid} on behalf of: {profile.profile_id}")
+        # Creating a new Fav:
+        fav = GalleryFavourite(community=community,item=item,profile=profile)
+        fav.save()
         item.likes += 1
         item.save()
         # Create "I Faved something" Notification:
@@ -507,10 +515,7 @@ def gallery_toggle_fav(request,item):
         # Create "Someone faved your art" notifcation:
         noti = Notification.objects.create(source=item.profile,community=community,type="ply.gallery.item_favd",contents_text=str(item.uuid))
         noti.save()
-        return JsonResponse("ok",safe=False)
-    item.likes -= 1
-    item.save()
-    fav.delete();
+
     return JsonResponse("ok",safe=False)
 
 

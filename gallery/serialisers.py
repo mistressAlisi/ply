@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ply.toolkit import vhosts
 from gallery.uploader import upload_plugins_builder
-from gallery.models import GalleryTempFile,GalleryCollectionItems,GalleryCollection,GalleryItem,GalleryItemFile,GalleryCollectionPermission,GalleryItemsByCollectionPermission
+from gallery.models import GalleryTempFile,GalleryCollectionItems,GalleryCollection,GalleryItem,GalleryItemFile,GalleryCollectionPermission,GalleryItemsByCollectionPermission,GalleryItemsByFavourites
 from profiles.models import Profile
 from django.http import JsonResponse,HttpResponse
 import ply
@@ -113,3 +113,4 @@ def serialise_community_per_profile_items(request,profile,collection=False):
 def serialise_per_collection_items(request,collection_id):
     _items = GalleryItemsByCollectionPermission.objects.filter(gcp_community=request.session['community'],gc_uuid=collection_id).order_by("gc_uuid").distinct()
     return (_item_serialiser(_items))
+

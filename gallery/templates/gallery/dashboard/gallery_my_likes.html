@@ -1,0 +1,22 @@
+{% extends 'dashboard_main_panel-95.html' %}
+{%block dashboard_name %}<i class="fa-solid fa-heart-circle-check"></i>&#160;All my liked pieces{%endblock%}
+{%block dashboard_content %}
+{%include "gallery-modal-viewer.html" %}
+<h6 class="text-muted">All pieces you've ever liked are shown here: This Light table shows every single piece chronologically.</h6>
+<p>
+Click on any of the favourite previews to go to the gallery item!
+</p>
+<br/><hr/>
+<div class="container-fluid">
+
+{%for fav in favs %}
+    {% with fav.item as i %}
+    {% with  i.plugin|add:"_fav_gallery_card.html" as render_template %}
+    {% include render_template %}
+    {% endwith %}
+    {% endwith %}
+{% endfor %}
+</div>
+
+{%endblock %}
+

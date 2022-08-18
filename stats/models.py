@@ -32,7 +32,7 @@ class ProfileStat(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile  = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT)
-    stat = models.ForeignKey(BaseStat,verbose_name="Community",on_delete=models.CASCADE)
+    stat = models.ForeignKey(BaseStat,verbose_name="Stat",on_delete=models.CASCADE)
     updated = models.DateTimeField(verbose_name='Updated',auto_now_add=True)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)

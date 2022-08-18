@@ -327,6 +327,10 @@ class GalleryFavourite(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     flagged = models.BooleanField(verbose_name="FLAGGED",default=False)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['item', 'profile','community'], name='unique_favourite')
+        ]
     def __str__(self):
         return f"Gallery Favourite: {self.profile.profile_id} fav'd {self.item.title}"
 
@@ -417,3 +421,63 @@ class GalleryItemsByCollectionPermission(models.Model):
         managed = False
         db_table = 'gallery_itemsbycollectionpermission'
 
+
+
+class GalleryItemsByFavourites(models.Model):
+    gci_title = models.CharField(verbose_name="Gallery Item Title",max_length=200)
+    gci_descr = models.CharField(verbose_name="Gallery Item Description",max_length=200)
+    gci_details = models.CharField(verbose_name="Gallery Item Details Style",max_length=200)
+    gci_hash = models.CharField(verbose_name="Gallery Item Hash",max_length=200)
+    gci_created = models.DateTimeField(verbose_name="Gallery Item Created")
+    gci_updated = models.DateTimeField(verbose_name="Gallery Item Updated")
+    gci_files = models.IntegerField(verbose_name="Gallery Item Files")
+    gci_views = models.IntegerField(verbose_name="Gallery Item Views")
+    #gci_items = models.IntegerField(verbose_name="Gallery Item Items")
+    gci_likes = models.IntegerField(verbose_name="Gallery Item Likes")
+    gci_shares = models.IntegerField(verbose_name="Gallery Item Shares")
+    gci_comments = models.IntegerField(verbose_name="Gallery Item Comments")
+    gci_nsfw = models.BooleanField(verbose_name="Collection Item: NSFW?")
+    gci_plugin = models.JSONField(verbose_name="Gallery Item Plguin")
+    gci_plugin_data = models.JSONField(verbose_name="Gallery Item Plguin JSON Data")
+    gci_thumbnail = models.BooleanField(verbose_name="Collection Item: Thumbnail?")
+    gci_processed = models.BooleanField(verbose_name="Collection Item: Processed?")
+    gci_uuid = models.UUIDField(verbose_name="Gallery Item UUID")
+    gci_configured = models.BooleanField(verbose_name="Gallery Item Configured")
+    gci_active = models.BooleanField(verbose_name="Gallery Item Active")
+    gci_archived = models.BooleanField(verbose_name="Gallery Item Archived")
+    gci_frozen = models.BooleanField(verbose_name="Gallery Item Frozen")
+    gci_downloads = models.BooleanField(verbose_name="Gallery Item Downloads")
+    gif_profile = models.UUIDField(verbose_name="Gallery Item Profile")
+    gci_sizing = models.IntegerField(verbose_name="Gallery Item Sizing")
+    gci_style = models.CharField(verbose_name="Gallery Item Style",max_length=200)
+    gci_rating = models.CharField(verbose_name="Gallery Item Rating",max_length=200)
+    gif_name = models.CharField(verbose_name="Gallery File Name",max_length=200)
+    gif_id = models.IntegerField(verbose_name="Gallery File ID")
+    gif_data = models.CharField(verbose_name="Gallery File Data",max_length=200)
+    gif_created = models.DateTimeField(verbose_name="Gallery File Created")
+    gif_updated = models.DateTimeField(verbose_name="Gallery File Updated")
+    gif_meta = models.JSONField(verbose_name="Gallery File Metadata")
+    gif_bindata = models.BinaryField(verbose_name="Gallery File Binary Data")
+    gif_jsondata = models.JSONField(verbose_name="Gallery File Json data")
+    gif_thumbnail = models.BooleanField(verbose_name="Gallery File: is thumbnail?")
+    gif_size = models.IntegerField(verbose_name="Gallery File Size")
+    gif_type = models.CharField(verbose_name="Gallery File Type",max_length=200)
+    gif_original = models.BooleanField(verbose_name="Gallery File: Original?")
+    gif_item = models.UUIDField(verbose_name="Gallery File Item UUID")
+    gif_profile = models.UUIDField(verbose_name="Gallery Favorite Profile UUID")
+    gc_uuid = models.UUIDField(verbose_name="Gallery Collection UUID")
+    collection_id = models.UUIDField(verbose_name="Gallery Collection UUID")
+    gal_path = models.CharField(verbose_name="Gallery Path",max_length=200)
+    profile_name = models.CharField(verbose_name="Profile Name",max_length=200)
+    profile_pronouns = models.CharField(verbose_name="Profile Pronouns",max_length=200)
+    profile_avatar = models.CharField(verbose_name="Profile Avtar",max_length=200)
+    profile_slug = models.CharField(verbose_name="Profile Slug",max_length=200)
+    profile_uuid = models.CharField(verbose_name="Profile UUID",max_length=200)
+    item = models.ForeignKey(GalleryItem,verbose_name='File',on_delete=models.CASCADE)
+    file = models.ForeignKey(GalleryItemFile,verbose_name='File',on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Gallery Favourite Item: item.file in item.id: {self.item.item_hash}.{self.gci_uuid} for profile {self.profile_slug}"
+    class Meta:
+        managed = False
+        db_table = 'gallery_itemsbyfavouriteview'

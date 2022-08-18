@@ -22,7 +22,7 @@ def system_settings(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        upreference = Preferences.objects.get_or_create(user=request.user.id)[0]
+        upreference = Preferences.objects.get_or_create(user=request.user)[0]
         preferencesForm = PreferencesForm(instance=upreference)
         context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'preferencesForm':preferencesForm,'ply_version':settings.PLY_VERSION}
         return render(request,"preferences-system_settings.html",context)

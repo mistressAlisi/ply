@@ -23,7 +23,7 @@ class Command(BaseCommand):
         mprofile = Profile.objects.get_or_create(uuid=system_uuids.profile_uuid,system=True,name='Default Profile',profile_id=system_uuids.profile_uuid,creator=owner)[0]
         mprofile.save()
         
-        # Create it's dynapage node:
+        # Create it's dynapage node FOR PROFILE DISPLAY:
         template = Templates.objects.get(template_id=settings.PLY_DYNAPAGES_PROFILE_TEMPLATE)
         self.stdout.write(self.style.SUCCESS('Creating Magic Dynapage Profile Node...'))
         mpage = Page.objects.get_or_create(page_id=system_uuids.profile_dynapage_uuid,slug=system_uuids.profile_dynapage_uuid,label="Magic Profile Template Node",creator=owner,template=template)[0]
@@ -32,6 +32,19 @@ class Command(BaseCommand):
         # Add a basic Header Widget to the dynapage template:
         self.stdout.write(self.style.SUCCESS('Creating Magic Dynapage Profile Node Widgets...'))
         widget = Widget.objects.get(widget_id=settings.PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET)
+        widget.save()
+        pageWidget = PageWidget.objects.get_or_create(page_id=mpage.page_id,widget=widget,banner=True)[0]
+        pageWidget.save()
+
+        # Create it's dynapage node FOR DASHBOARD DISPLAY:
+        template = Templates.objects.get(template_id=settings.PLY_DYNAPAGES_DASHBOARD_TEMPLATE)
+        self.stdout.write(self.style.SUCCESS('Creating Magic Dynapage Profile Dashboard Node...'))
+        mpage = Page.objects.get_or_create(page_id=system_uuids.pdashboard_dynapage_uuid,slug=system_uuids.profile_dynapage_uuid,label="Magic Profile Template Node",creator=owner,template=template)[0]
+        mpage.save()
+
+        # Add a basic Header Widget to the dynapage template:
+        self.stdout.write(self.style.SUCCESS('Creating Magic Dynapage Profile Dashboard Node Widgets...'))
+        widget = Widget.objects.get(widget_id=settings.PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET)
         widget.save()
         pageWidget = PageWidget.objects.get_or_create(page_id=mpage.page_id,widget=widget,banner=True)[0]
         pageWidget.save()
