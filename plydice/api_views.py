@@ -58,6 +58,12 @@ def generic_roll(request,count,sides):
     diceEvent.save()
     diceEventR = DiceEventRoll(community=comm,event=diceEvent,roll=diceRoll)
     diceEventR.save()
+
+    # Now add to stream(s):
+    duuid = str(diceEvent.uuid);
+    rawdata['event'] = duuid
+    stream_toolkit.post_to_active_profile(request,"application/ply.stream.diceroll",duuid,rawdata)
+    stream_toolkit.post_to_active_profile(request,"application/ply.stream.diceroll",duuid,rawdata,"PLYDICE")
     if total >= th:
         res = 'SUCCESS'
     else:

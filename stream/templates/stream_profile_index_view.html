@@ -67,6 +67,8 @@
       {% include "stream_message_gallery_card.html" %}
     {% elif m.type == "application/ply.stream.refmsg" %}
       {% include "stream_reference_card.html" %}
+    {% elif m.type == "application/ply.stream.diceroll" %}
+      {% include "stream_diceroll_card.html" %}
     {% endif %}
     {% endfor %}
 </div>

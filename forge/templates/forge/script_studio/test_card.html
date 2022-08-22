@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="card-header">
+              <h4><i class="fa-solid fa-bolt-lightning"></i>&#160;Code Tester:</h4>
+    </div>
+      <div class="card-footer text-muted">
+              <button type="button" class="btn btn-success" id="runbtn" onclick="script_studio.eval(); return false;"><i class="fa-solid fa-bolt-lightning"></i> &#160;Run</button>
+              &#160;
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="script_studio.mksave();" data-bs-target="#save_ScriptModal" ><i class="fa-solid fa-file-arrow-up"></i>&#160; Save</button>
+              &#160;
+              <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#new_ScriptModal" ><i class="fa-solid fa-star"></i>&#160;New/open</button>
+              &#160;
+              <button type="button" class="btn btn-dark"><i class="fa-solid fa-circle-question"></i>&#160;Help</button>
+    </div>
+    <div class="card-body">
+       <fieldset class="mb-3">
+            <h6>Code Environment:</h6>
+            <div class="form-check">
+              <label class="form-check-label" for="profile">Profile/Community:</label>
+                <select name="profile" id="profile" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                 {% for pr in profiles %}
+                 <option value="{{pr.uuid}}">@{{pr.profile_id}} [{{pr.name}}] ({{pr.uuid}})</option>
+                 {% endfor %}
+                </select>
+                <br/>
+                <select name="community" id="community" class="form-select form-select-sm" aria-label=".form-select-sm example">
+
+                 <option value="{{community.uuid}}">{{community.name}} ({{community.uuid}})</option>
+                </select>
+            </div>
+          </fieldset>
+
+          <hr/>
+          <h6>Code Output:</h6>
+          <div class="card"><code id="run_output">ready to run...</code></div>
+    </div>
+
+</div>

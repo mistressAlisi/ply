@@ -40,7 +40,7 @@ def almanac_home(request):
         almanac_page = False
         almanac_page_text = False
     all_pages = AlmanacPage.objects.filter(community=community).order_by('page_id')
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'enable_admin':enable_admin,'url_path':request.path,"profiles":all_profiles,'all_pages':all_pages,'content':almanac_page_text,'almanac_page':almanac_page}
+    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'enable_admin':enable_admin,'url_path':request.path,"profiles":all_profiles,'all_pages':all_pages,'content':almanac_page_text,'almanac_page':almanac_page,'ply_version':settings.PLY_VERSION}
     return render(request,"almanac_dashboard.html",context)
 
 
@@ -70,5 +70,5 @@ def almanac_page(request,page_id):
     almanac_page = AlmanacPage.objects.get(page_id=page_id)
     almanac_page_text = AlmanacPageText.objects.get(page=almanac_page,current=True)
     all_pages = AlmanacPage.objects.filter(community=community).order_by('page_id')
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'enable_admin':enable_admin,'url_path':request.path,"profiles":all_profiles,'almanac_page':almanac_page,'content':almanac_page_text,'all_pages':all_pages}
+    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'enable_admin':enable_admin,'url_path':request.path,"profiles":all_profiles,'almanac_page':almanac_page,'content':almanac_page_text,'all_pages':all_pages,'ply_version':settings.PLY_VERSION}
     return render(request,"almanac_dashboard.html",context)

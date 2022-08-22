@@ -1,0 +1,10 @@
+<div class="card" id="msg-{{m.uuid}}" name="msg-{{m.uuid}}">
+   {%include "stream_card_header.html" %}
+   {%load stream_roll_widget %}
+    <div class="card-body">
+    {% stream_roll_widget event=m.contents_text profile=profile as output %}
+    {{output|safe}}
+    </div>
+    {%include "stream_card_footer.html" %}
+</div>
+<br/><br/>

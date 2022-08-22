@@ -40,8 +40,8 @@ class DiceRollAdmin(admin.ModelAdmin):
 
 class DiceEventRoll(models.Model):
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
-    event = models.ForeignKey(DiceEvent,verbose_name="Community",on_delete=models.CASCADE)
-    roll = models.ForeignKey(DiceRoll,verbose_name="Community",on_delete=models.CASCADE)
+    event = models.ForeignKey(DiceEvent,verbose_name="Event",on_delete=models.CASCADE)
+    roll = models.ForeignKey(DiceRoll,verbose_name="Roll",on_delete=models.CASCADE)
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['event', 'roll'], name='unique_roll')
