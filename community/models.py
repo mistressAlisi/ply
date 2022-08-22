@@ -57,7 +57,7 @@ class VHostAdmin(admin.ModelAdmin):
 
 class CommunityProfile(models.Model):
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
+    profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT,null=True)
     joined = models.DateTimeField(verbose_name='Joined')
     def __str__(self):
         return f"Community: {self.community.name}. Profile: {self.profile.name}. Joined: {self.joined}"

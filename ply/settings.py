@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'group',
     'keywords',
     'community',
+    'plyscript',
     'gallery_photos',
     'metrics',
     'stats',

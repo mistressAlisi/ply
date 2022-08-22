@@ -1,18 +1,23 @@
+import io
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,HttpResponse
 from PIL import Image
+from contextlib import redirect_stdout
 import datetime
 # Ply:
 from profiles.models import Profile,ProfilePageNode
 from profiles.forms import ProfileForm
+from preferences.models import Preferences
 from community.forms import CommunityForm
 from ply import settings,system_uuids
-from ply.toolkit import vhosts,profiles,logger,file_uploader
+from ply.toolkit import vhosts,profiles,logger,file_uploader,scripts
 from dynapages.models import Templates,Page,Widget,PageWidget
 from dashboard.navigation import SideBarBuilder
 from stats.models import BaseStat,ProfileStat
 from community.models import Community,CommunityProfile,CommunityAdmins
+from forge.forms import NewScriptForm,SaveScriptForm
+from plyscript.models import Script
 # Create your views here.
 
 # Upload an avatar and apply it to the currently specified profile in the session space:
@@ -196,3 +201,54 @@ def finish_community_profile(request):
     community.updated = datetime.datetime.utcnow()
     community.save()
     return JsonResponse({"res":"ok"},safe=False)  
+
+
+# Evaluate a script from scriptStudio:
+@login_required
+def script_studio_eval(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    code_body = request.POST['code_body']
+    pid = request.POST['profile']
+    cid = request.POST['community']
+    pro = Profile.objects.get(pk=pid)
+    com = Community.objects.get(pk=cid)
+    try:
+           ret = scripts.exec_script_str(com,pro,code_body)
+    except Exception as e:
+            return JsonResponse({"res":"err",'out':f"<strong>*ERROR:* {str(e)}.</strong><br/>"},safe=False)
+    ret = ret.replace("\n","<br/>")
+    return JsonResponse({"res":"ok",'out':ret},safe=False)
+
+
+# Save a script from scriptStudio:
+@login_required
+def script_studio_save(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    function_name = request.POST['function_name']
+    scriptObj = Script.objects.get_or_create(function_name=function_name,community=community,creator=profile.creator)[0]
+    form_saver = SaveScriptForm(request.POST,instance=scriptObj)
+    if (not form_saver.is_valid()):
+        return JsonResponse({"res":"err","e":str(form_saver.errors.as_data())},safe=False)
+    form_saver.save()
+    return JsonResponse("ok",safe=False)
+
+@login_required
+def script_studio_get(request,script):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    scriptObj = Script.objects.get(pk=script)
+    return JsonResponse({'res':"ok",'data':scriptObj.body},safe=False)

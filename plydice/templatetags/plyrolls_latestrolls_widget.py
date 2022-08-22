@@ -7,7 +7,7 @@ from plydice.models import DiceRoll
 
 #from gallery.templatetags import thumbnail_card
 @register.simple_tag
-def plydice_render_roll(item, prefobj, *args, **kwargs):
+def _plydice_render_roll(item, prefobj, *args, **kwargs):
     rds = ""
     for d in item.contents_json["dice"]:
         rds += str(d)+","
@@ -28,7 +28,7 @@ def plyrolls_latestrolls_widget(item,profile, *args, **kwargs):
     prefobj = Preferences.objects.get_or_create(user=profile.creator)[0]
     contents_str = ""
     for msg in contents:
-        contents_str += plydice_render_roll(msg,prefobj)
+        contents_str += _plydice_render_roll(msg,prefobj)
     card_str = f"<br/><div class=\"card\"><div class=\"card-header\"><h5><i class=\"fa-solid fa-dice-d20\"></i>&#160;@{profile.profile_id}'s {count} latest rolls:</h5></div><div class=\"card-body\">{contents_str}</div><div class=\"card-footer\"><a href=\"/dice/@{profile.profile_id}\" target=\"_blank\"><i class=\"fa-solid fa-share-from-square\"></i>&#160;Roll History</a></div></div>"
 
     return card_str

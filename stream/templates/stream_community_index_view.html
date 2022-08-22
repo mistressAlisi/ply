@@ -60,11 +60,11 @@
     {% if m.message_type == "text/plain" %}
       {% include "stream_message_card.html" %}
     {% elif m.message_type == "application/ply.stream.refmsg" %}
-              {% include "stream_reference_card.html" %}
-          {% endif %}
-
-    {% if m.message_type == "application/ply.stream.gallery" %}
-       {% include "stream_message_gallery_card.html" %}
+    {% include "stream_reference_card.html" %}
+    {% elif m.message_type == "application/ply.stream.gallery" %}
+    {% include "stream_message_gallery_card.html" %}
+    {% elif m.message_type == "application/ply.stream.diceroll" %}
+    {% include "stream_diceroll_card.html" %}
     {% endif %}
 {% endfor %}
 </div>
