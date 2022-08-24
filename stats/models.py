@@ -1,8 +1,9 @@
+import uuid
+from django.contrib import admin
 from django.db import models
 from community.models import Community
 from profiles.models import Profile
-import uuid
-from django.contrib import admin
+
 # Create your models here.
 
 
@@ -63,3 +64,42 @@ class ProfileStatHistory(models.Model):
 @admin.register(ProfileStatHistory)
 class ProfileStatHistoryAdmin(admin.ModelAdmin):
     pass  
+
+
+# Class types for player profiles
+class ClassType(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    name = models.TextField(verbose_name='Name')
+    descr = models.TextField(verbose_name='Description')
+    icon = models.TextField(verbose_name='Icon',null=True,blank=True)
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    updated = models.DateTimeField(verbose_name='Updated',auto_now_add=True)
+    selectable = models.BooleanField(verbose_name="Selectable FLAG",default=True)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    system = models.BooleanField(verbose_name="System FLAG",default=False)
+    def __str__(self):
+        return f"Char Class: {self.name}, in community: {self.community.name} Selectable: {self.selectable}"
+@admin.register(ClassType)
+class ClassTypeAdmin(admin.ModelAdmin):
+    pass
+
+
+# Classes have stats applied to them:
+class ClassTypeStat(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    classtype  = models.ForeignKey(ClassType,verbose_name = "ClassType",on_delete=models.RESTRICT)
+    stat = models.ForeignKey(BaseStat,verbose_name="Stat",on_delete=models.CASCADE)
+    updated = models.DateTimeField(verbose_name='Updated',auto_now_add=True)
+    blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    value = models.IntegerField(verbose_name='Starting Value',default=1)
+    def __str__(self):
+        return f"Char Class Type Stat: {self.stat.name}, in community: {self.community.name} Applied to Class Type {self.classtype.name}:  Starting Value: {self.value}"
+@admin.register(ClassTypeStat)
+class ClassTypeStatAdmin(admin.ModelAdmin):
+    pass
+

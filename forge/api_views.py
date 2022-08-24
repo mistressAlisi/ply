@@ -1,3 +1,4 @@
+
 import io
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -18,11 +19,15 @@ from stats.models import BaseStat,ProfileStat
 from community.models import Community,CommunityProfile,CommunityAdmins
 from forge.forms import NewScriptForm,SaveScriptForm
 from plyscript.models import Script
+from stats.models import ClassType
+from exp.models import ProfileExperience,Level
 # Create your views here.
 
 # Upload an avatar and apply it to the currently specified profile in the session space:
 @login_required
 def upload_profile_picture(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
     if 'charImage' not in request.FILES:
         return JsonResponse({"res":"try-again"},safe=False)  
     profile = Profile.objects.get(uuid=request.session['profile'])
@@ -56,12 +61,21 @@ def upload_profile_picture(request):
 # UPDATE the currently enabled profile in session space with the provided data from the form:
 @login_required
 def update_character_profile(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
     profile = Profile.objects.get(uuid=request.session['profile'])
     form = ProfileForm(request.POST,instance=profile)
     if (not form.is_valid()):
         return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
     form.save()
     profile.save()
+    # Update the class data:
+    _classtype = request.POST['classtype']
+    classtype = ClassType.objects.get(uuid=_classtype)
+    stlevel = Level.objects.get(level=0)
+    peo = ProfileExperience.objects.get_or_create(community=community,profile=profile,classtype=classtype,level=stlevel)[0]
+    peo.classtype = classtype
+    peo.save()
     return JsonResponse({"res":"ok"},safe=False)   
 
 

@@ -130,4 +130,4 @@ class ProfilePageNodeAdmin(admin.ModelAdmin):
     pass
 
 
-     
+
