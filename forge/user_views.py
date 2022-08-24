@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from ply import settings,toolkit
 from ply.toolkit import vhosts
 from profiles.models import Profile
+from stats.models import ClassType
+from exp.models import ProfileExperience
 # Create your views here.
 
 
@@ -32,11 +34,12 @@ def create_profile(request):
     community = (vhosts.get_vhost_community(hostname=vhost))
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_placeholder_profile(request)
+    classes = ClassType.objects.filter(selectable=True,frozen=False,archived=False,blocked=False)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'profile':profile}
+        context = {'community':community,'vhost':vhost,'profile':profile,'classtypes':classes}
         return render(request,"forge-create_profile.html",context)
 
 
@@ -46,13 +49,15 @@ def edit_profile(request):
     #  Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
-    # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
-    profile = toolkit.profiles.get_active_profile(request)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
+
     else:
+        # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
+        profile = toolkit.profiles.get_active_profile(request)
+        exo = ProfileExperience.objects.get(community=community,profile=profile)
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL}
+        context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo,'class_skip':True}
         return render(request,"forge-create_profile.html",context)
 
 
@@ -66,7 +71,8 @@ def create_profile_preview(request):
     community = (vhosts.get_vhost_community(hostname=vhost))
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_placeholder_profile(request)
-    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    exo = ProfileExperience.objects.get(community=community,profile=profile)
+    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo}
     return render(request,"forge-preview_profile.html",context)
 
 # Render the Edit Profile Preview Forge Page:
@@ -77,6 +83,26 @@ def edit_profile_preview(request):
     community = (vhosts.get_vhost_community(hostname=vhost))
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_active_profile(request)
-    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    exo = ProfileExperience.objects.get(community=community,profile=profile)
+    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo}
     return render(request,"forge-preview_profile.html",context)
 
+
+
+
+@login_required
+def level_up(request):
+    #  Ignore port:
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    if community is None:
+        return render(request,"error-no_vhost_configured.html",{})
+    # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
+    profile = toolkit.profiles.get_active_profile(request)
+    exo = ProfileExperience.objects.get(community=community,profile=profile)
+    request.session['community'] = str(community.uuid)
+    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo}
+    if (not exo.can_level()):
+        return render(request,"forge-create_profile.html",context)
+    else:
+        return render(request,"forge/levelup/no_levelup.html",context)

@@ -11,11 +11,12 @@ from stats.models import BaseStat,ProfileStat
 from dynapages import models as dynapages
 from profiles.models import ProfilePageNode
 from stats.models import BaseStat,ProfileStat
+from exp.models import ProfileExperience
 # Render the User Dashboard Home page:
 @login_required
 def dashboard_home(request):
     #  Ignore port:
-    vhost = request.META["HTTP_HOST"].split(":")[0];
+    vhost = request.META["HTTP_HOST"].split(":")[0]
     community = (vhosts.get_vhost_community(hostname=vhost))
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
@@ -31,9 +32,10 @@ def dashboard_home(request):
         groups = []
         primaryGroup = False
     profilePage = ProfilePageNode.objects.get(profile=profile,node_type='dashboard')
+    exo = ProfileExperience.objects.get(community=community,profile=profile)
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
-    stats = ProfileStat.objects.filter(profile=profile)
-    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':settings.PLY_VERSION,'widgets':widgets,'template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s Dashboard",'profile':profile,"stats":stats}
+    stats = ProfileStat.objects.filter(profile=profile,community=community)
+    context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':settings.PLY_VERSION,'widgets':widgets,'template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s Dashboard",'profile':profile,"stats":stats,'profile_xp':exo}
     return render(request,'profile_dashboard_dynapage_wrapper.html',context)
 
 

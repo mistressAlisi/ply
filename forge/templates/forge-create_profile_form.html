@@ -15,7 +15,29 @@
               </div>
             </div>
              
-           
+          <div class="row g-3">
+            <div class="col-sm-12">
+
+              <label for="classtype" class="form-label">Character Class:</label>
+               <div class="input-group has-validation">
+                <span class="input-group-text"><i class="fa-solid fa-book-skull"></i></span>
+                {% if class_skip is False  %}
+                <select class="form-control" id="classtype" name="classtype">
+                <option value="-1">select class...</option>
+                {% for class in classtypes %}
+                <option value="{{class.uuid}}">Class: '{{class.name}}': - {{class.descr}}</option>
+                {% endfor %}
+                </select>
+                {% else %}
+                 <input type="text" class="form-control"  required="" disabled="" placeholder="Level {{exp.level.level}} {{exp.classtype.name}}  ({{exp.classtype.descr}})">
+
+                </input>
+                {% endif %}
+              <div class="invalid-feedback">
+                  A character class is required.
+                </div>
+              </div>
+            </div>
 
             <div class="col-12">
               <label for="profile_id" class="form-label">Profile ID / @handle :</label>

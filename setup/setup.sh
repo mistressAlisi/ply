@@ -97,6 +97,11 @@ echo "*** Creating Initial Community ***"
 python3 ./manage.py create_community
 
 
+echo "*** Creating Initial Levels and Classes ***"
+python3 ./manage.py init_experience
+python3 ./manage.py init_stats
+
+
 echo "****** SETUP COMPLETE! Further parameters can be modified in 'config/settings.ini'! *****"
 echo "You may (now hopefully) start the Django environment using runserver! :3!"
 echo "Thank you for using Ply! :3 :3"
