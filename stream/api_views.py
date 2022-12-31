@@ -14,7 +14,7 @@ from dynapages.models import Templates,Page,Widget,PageWidget
 from dashboard.navigation import SideBarBuilder
 from stats.models import BaseStat,ProfileStat
 from community.models import Community,CommunityProfile,CommunityAdmins
-from stream.forms import StreamSettingsForm
+from stream.forms import StreamSettingsForm,CreateStreamForm
 from stream.models import Stream,StreamMessage
 import ply
 # Create your views here.
@@ -202,3 +202,18 @@ def finish_community_profile(request):
     community.updated = datetime.datetime.utcnow()
     community.save()
     return JsonResponse({"res":"ok"},safe=False)  
+
+# FINISH editing the community:
+@login_required
+def create_stream(request):
+    vhost = request.META["HTTP_HOST"].split(":")[0];
+    community = (vhosts.get_vhost_community(hostname=vhost))
+    profile = profiles.get_active_profile(request)
+    form = CreateStreamForm(request.POST,community=community,profile=profile)
+    if (not form.is_valid()):
+        return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
+    form.save()
+    message = StreamMessage(stream=stream,community=community,type='text/plain',contents_text=f'@{profile.profile_id} created this stream!')
+    message.save()
+    return JsonResponse({"res":"ok","uuid":form.instance.uuid},safe=False)
+

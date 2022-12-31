@@ -62,3 +62,7 @@ body, .main-container,#sidebarMenu {
 #gallery_canvas {
 
 }
+
+.profile_avatar {
+    padding-top: 25px;
+}

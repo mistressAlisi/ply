@@ -12,7 +12,7 @@ from gallery.models import GalleryCollection,GalleryItemsByCollectionPermission
 from metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit,GalleryHomePageHit
 from metrics.toolkit import request_data_capture
 from stream.forms import StreamSettingsForm
-from stream.models import Stream,StreamMessage,MessagesPerStreamView
+from stream.models import Stream,StreamMessage,MessagesPerStreamView,StreamMessageKeywords
 from group.models import Group
 
 
@@ -68,8 +68,16 @@ def profile_steam(request,profile_id):
     stream = Stream.objects.get_or_create(community=community,profile=stream_profile,root_stream=True,type="PROFILE")[0]
     stream.views = stream.views+1
     stream.save()
+    updated_keywords = []
     messages = StreamMessage.objects.filter(stream=stream).order_by('created')
-    
+    for msg in messages:
+        kws = StreamMessageKeywords.objects.filter(message=msg)
+        # only update keyword views ONCE per page rendering:
+        for k in kws:
+            if k.keyword.id not in updated_keywords:
+                updated_keywords.append(k.keyword.id)
+                k.keyword.views += 1
+                k.keyword.save()
     # Create the gallery metrics:
     #gal_hit = GalleryProfilePageHit.objects.create(profile=stream_profile,type="GALPAGE",community=community)
     #request_data_capture(request,gal_hit)
@@ -100,13 +108,22 @@ def community_stream(request):
         all_profiles = False
         settingsForm = False
     request.session["community"] = str(community.uuid)
+    updated_keywords = []
     messages = MessagesPerStreamView.objects.filter(community=community,stream_type="PROFILE").order_by('message_created')
-
+    for msg in messages:
+        kws = StreamMessageKeywords.objects.filter(message=msg.id)
+        # only update keyword views ONCE per page rendering:
+        for k in kws:
+            if k.keyword.id not in updated_keywords:
+                updated_keywords.append(k.keyword.id)
+                k.keyword.views += 1
+                k.keyword.save()
     # Create the gallery metrics:
     #gal_hit = GalleryProfilePageHit.objects.create(profile=stream_profile,type="GALPAGE",community=community)
     #request_data_capture(request,gal_hit)
     # Now render the page:
     #colls = serialisers.serialise_community_per_profile_items(request,stream_profile)
-    context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"messages":messages}
+    # NOTE: profile added to context to support widget rendering :)
+    context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"messages":messages,'profile':profile}
     return render(request,'stream_community_index_view.html',context)
 

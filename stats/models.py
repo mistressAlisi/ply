@@ -12,9 +12,11 @@ class BaseStat(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     name = models.TextField(verbose_name='Name')
+    descr = models.TextField(verbose_name='Description',blank=True)
     icon = models.TextField(verbose_name='Icon',null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
     updated = models.DateTimeField(verbose_name='Updated',auto_now_add=True)
+    progressable = models.BooleanField(verbose_name="Can Level up Progress FLAG",default=True)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
@@ -40,6 +42,10 @@ class ProfileStat(models.Model):
     pminimum = models.IntegerField(verbose_name='Minimum Value',default=0)
     pmaximum = models.IntegerField(verbose_name='Maximum Value',default=10)
     value = models.IntegerField(verbose_name='Current Value',default=1)
+
+    def get_progress_pct(self):
+        return (self.value/self.stat.maximum)*100
+
     def __str__(self):
         return f"Profile Stat: {self.stat.name}, in community: {self.community.name} Applied to Profile {self.profile.name}: Min: {self.pminimum}, Max: {self.pmaximum}, Current Value: {self.value}"
 @admin.register(ProfileStat)
@@ -60,7 +66,7 @@ class ProfileStatHistory(models.Model):
     value = models.IntegerField(verbose_name='Current Value',default=1)
     notes = models.TextField(verbose_name='Name')
     def __str__(self):
-        return f"Profile Stat History: {self.name}, in community: {self.community.name} Applied to Profile {self.profile.name}: Min: {self.pminimum}, Max: {self.pmaximum}, Current Value: {self.value}, Date: {self.created}" 
+        return f"Profile Stat History: {self.stat.name}, in community: {self.community.name} Applied to Profile {self.profile.name}: Min: {self.stat.pminimum}, Max: {self.stat.pmaximum}, Current Value: {self.value}, Date: {self.created}"
 @admin.register(ProfileStatHistory)
 class ProfileStatHistoryAdmin(admin.ModelAdmin):
     pass  

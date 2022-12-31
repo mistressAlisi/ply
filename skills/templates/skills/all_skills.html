@@ -1,0 +1,48 @@
+{% extends "dashboard_main_panel-95.html" %}
+{% load django_bootstrap5 %}
+
+{%block dashboard_name %}{%endblock%}
+{%block dashboard_content %}
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+
+        <div class="card">
+        <div class="card-header">
+          <h2> All Skills for: "{{profile.name}}"</h2>
+        </div>
+        <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+            <th scope="col">Stat</th>
+            <th scope="col">Min</th>
+            <th scope="col">Max</th>
+            <th scope="col">Current</th>
+            </tr>
+          </thead>
+          <tbody>
+          {%for stat in stats %}
+           <tr>
+              <td><strong>{{stat.stat.name}}:</strong> {{stat.stat.descr}}</td>
+              <td>{{stat.stat.minimum}}</td>
+              <td>{{stat.stat.maximum}}</td>
+              <td>{{stat.value}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+
+
+
+        <h6>...and assign {{next.skillpoints}} points on Skills:</h6>
+        <a href="/dashboard/user/">Back to Dashboard...</a>
+        </div>
+        </div>
+
+    </div>
+    <div class="container-fluid row g-5">
+
+    </div>
+    
+{%endblock%}

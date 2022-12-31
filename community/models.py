@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from profiles.models import Profile
 from group.models import Group
 from dynapages.models import Page
+
 # Create your models here.
 class Community(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
@@ -165,3 +166,35 @@ class Friend(models.Model):
 @admin.register(Friend)
 class FriendAdmin(admin.ModelAdmin):
     pass
+
+
+class Friend_ExpLvl_View(models.Model):
+    friend1_id = models.UUIDField(verbose_name="Friend 1 UUID")
+    approved = models.DateTimeField(verbose_name="Approved?",null=True)
+    approved_flag = models.BooleanField(verbose_name="Approved FLAG",default=False)
+    friend2_id = models.UUIDField(verbose_name="Friend 2 UUID")
+    community_id = models.UUIDField(verbose_name="Community  UUID")
+    profile_id = models.CharField(verbose_name="Profile ID",max_length=200)
+    updated = models.DateTimeField(verbose_name="Friendship Updated")
+    age = models.IntegerField(verbose_name="Profile Age")
+    name = models.CharField(verbose_name="Name",max_length=200)
+    class_name = models.CharField(verbose_name="Class Name",max_length=200)
+    status = models.CharField(verbose_name="Status",max_length=200)
+    species = models.CharField(verbose_name="Species",max_length=200)
+    introduction = models.TextField(verbose_name='Profile Intro')
+    slug = models.TextField(verbose_name='Slugified Name')
+    pronouns = models.TextField(max_length=200,verbose_name='Pronouns')
+    gender = models.TextField(max_length=200,verbose_name='Gender')
+    avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True)
+    level_id = models.UUIDField(verbose_name="Level UUID")
+    classtype_id = models.UUIDField(verbose_name="Classtype UUID")
+    community_id = models.UUIDField(verbose_name="Community UUID")
+    expr = models.IntegerField(verbose_name="Experience Points")
+    current_level = models.IntegerField(verbose_name="Current Level")
+
+
+    def __str__(self):
+        return f"Friend ExpLevel View: Friend: [{self.friend1_id}]-with->[{self.friend2_id}]"
+    class Meta:
+        managed = False
+        db_table = 'community_friend_explvl_view'

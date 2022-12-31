@@ -47,8 +47,6 @@ def profile_index(request):
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     view_profiles = ProfilePerCoummunityView.objects.filter(community=community).order_by('profile_created')
-    if community is None:
-        return render(request,"error-no_vhost_configured.html",{})
     if request.user.is_authenticated:
         current_profile = profiles.get_active_profile(request)
         all_profiles = profiles.get_all_profiles(request)

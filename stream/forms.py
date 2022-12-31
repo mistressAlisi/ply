@@ -2,7 +2,7 @@ from django import forms
 from colorful.fields import RGBColorField
 from dynapages.models import Templates
 from almanac.models import AlmanacPage
-from stream.models import Stream
+from stream.models import Stream,StreamType
 class NewPageForm(forms.Form):
     dynaPages = []
     try:
@@ -35,3 +35,54 @@ class AddPageForm(forms.Form):
     except:
         pages = []
     almanac_page = forms.ChoiceField(label='Select Page:',choices=pages)
+
+
+
+class CreateStreamForm(forms.ModelForm):
+    class Meta:
+        model = Stream
+        fields = ('name','tag','descr','streamtype','type','profile','community')
+        help_texts = {
+            'name': ('The Human readable name of the Stream or Game room.'),
+            'tag': ('Unique tag to find and share the stream'),
+            'descr': ('A longer description of the  stream / game room'),
+            'streamtype': ('Stream / Game Room Type'),
+
+        }
+        error_messages = {
+            'name': {
+                'blank': ("Cannot be blank!"),
+            },
+            'tag': {
+                'blank': ("Cannot be blank!"),
+            },
+            'streamtype': {
+                'blank': ("Cannot be blank!"),
+            }
+        },
+        widgets = {
+            'name': forms.TextInput(attrs={}),
+            'tag': forms.TextInput(attrs={}),
+            'descr': forms.TextInput(attrs={}),
+            'streamtype':forms.Select(),
+            'type':forms.HiddenInput(),
+            'profile':forms.HiddenInput(),
+            'community':forms.HiddenInput()
+        }
+    def __init__(self,*args,**kwargs):
+        community = kwargs.pop('community')
+        profile = kwargs.pop('profile')
+        super(CreateStreamForm,self).__init__(*args,**kwargs)
+        types = []
+        types.append(('-1','Select Type!'))
+        #try:
+        ss = StreamType.objects.filter(community=community)
+        for s in ss:
+            types.append((s.uuid,f'[{s.name}]->|{s.descr}|'))
+        # Workaround to allow installation on blank databases:
+        #except:
+        #    pass
+        self.fields["streamtype"].choices=types
+        self.fields["profile"].initial = profile.uuid
+        self.fields["type"].initial = 'GAMEROOM'
+        self.fields["community"].initial = community.uuid

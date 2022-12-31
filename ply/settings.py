@@ -287,6 +287,10 @@ REGISTRATION_SALT = 'ae3Phoge'
 # PLY:
 PLY_USER_DASHBOARD_MODULES = [
     "profiles",
+    "community",
+    "stats",
+    "skills",
+    "stream",
     "gallery",
     "notifications",
     "preferences"

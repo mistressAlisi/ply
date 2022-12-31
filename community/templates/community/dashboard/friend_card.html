@@ -1,0 +1,58 @@
+<div class="card col" style="display: inline-block; vertical-align: top;">
+<div class="card_body">
+            <div class="row">
+                <div class="col-3 profile_avatar">
+                <img src="{{av_path}}/{{profile.avatar}}" class=" mx-auto rounded float-start img-thumbnail" alt="{{profile.name|slice:2}}" onerror="this.onerror=null;this.src='/static/img/avatar_0.jpg';">
+                </div>
+                <div class="col profile_data">
+                <br/>
+                    <div class="profile_name_div">
+                    {%include "dashboard/friend-interactions-widget.html" %}
+                    <br/>
+                    </div> 
+                    <div class="accordion" id="accordion_{{profile.profile_id}}">
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_{{profile.profile_id}}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{profile.id}}" aria-expanded="true" aria-controls="collapse_{{profile.id}}">
+                    <i class="fa-solid fa-feather-pointed"></i>&#160; @{{profile.profile_id}}'s bio:
+                    </button>
+                    </h2>
+                     <div id="collapse_{{profile.id}}" class="accordion-collapse collapse" aria-labelledby="heading_{{profile.profile_id}}" data-bs-parent="#accordion_{{profile.id}}">
+                    <div class="accordion-body">{{profile.introduction}}</div>
+                    </div>
+                    </div>
+                    </div>
+                    <hr/>
+
+                    <div class="col stats_data_1">
+                    <strong>Level  {{profile.current_level}} {{profile.class_name}}</strong><br/>
+                    <strong><i class="fa-solid fa-atom"></i>Species:</strong>&#160;{{profile.species}}
+                    <strong><i class="fa-solid fa-user"></i> Gender:</strong>&#160;{{profile.gender}}&#160;<em class="pronouns">({{profile.pronouns}})</em> 
+
+                    </div>
+                    
+                    <div class="col stats_data_2">
+                    {% if primaryGroup %}
+                    <strong><i class="fa-solid fa-chess-queen"></i> Title:</strong>&#160;{{primaryGroup.title.title}}</em>&#160; 
+                    <strong><i class="fa-solid fa-user-group"></i> Clan:</strong>&#160;{{primaryGroup.group.name}}</em>&#160; 
+                    {% endif %}
+                    <strong><i class="fa-solid fa-signal"></i> Current Status:</strong>&#160;{{profile.status}} (EXP: {{profile.expr}})</em>
+                    </div>
+                    <div class="col stats_data_3">
+                   <!-- <strong><i class="fa-solid fa-file-waveform"></i> HP:</strong>&#160;{{profile.HP}} (max: {{profile.max_HP}})</em>&#160;
+                    <strong><i class="fa-solid fa-bolt-lightning"></i> MP:</strong>&#160;{{profile.MP}} (max: {{profile.max_MP}})</em>&#160; 
+                    <strong><i class="fa-solid fa-syringe"></i> STA:</strong>&#160;{{profile.STA}} (max: {{profile.max_STA}})</em> -->
+<!--                     <br/> -->
+                    <strong><i class="fa-solid fa-clock"></i> Friended on:</strong>&#160;{{profile.updated}}</em>
+                    <br/><br/>
+                    </div>
+
+                    <div class="col actions">
+                
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+

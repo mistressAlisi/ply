@@ -4,12 +4,12 @@
 <meta property="dynapage_template_author" content="Alisi"/>
 <meta property="dynapage_template_description" content="A simple stats widget for profiles."/>
 {%if widget.mainbody == True %}
+&#160;
 <div class="card">
-<div class="card_title h3">
-<i class="fa-solid fa-signal"></i> Basic Stats:
+<div class="card-header"><h3><i class="fa-solid fa-signal"></i>&#160;@{{profile.profile_id}}'s Stats:
 <hr/>
 </div>
-<div class="card_body">
+<div class="card-body">
     <div class="widget_statsDisplay-main" data-widget="statsDisplay">
         <div class="container-fluid">
             <div class="row">
@@ -32,7 +32,7 @@
         </div>
         <div class="card_footer">
         <hr/>
-        Points available to allocate: 0
+        Points available to allocate: {{exp.statpoints}}
         </div>
     </div>
 </div></div>

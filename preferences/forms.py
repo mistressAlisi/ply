@@ -9,10 +9,11 @@ class PreferencesForm(ModelForm):
 
     class Meta:
         model = Preferences
-        fields = [ "shortdate", "longdate", "time", "timezone", "theme","min_zoom","max_zoom", "stream_top","messages_top","user"]
+        fields = [ "shortdate", "shortdatetime", "longdate", "time", "timezone", "theme","min_zoom","max_zoom", "stream_top","messages_top","user"]
 
         help_texts = {
             'shortdate': ('Example value: "03/05/2022" Default: "%x" (Accepts Python strftime formatting)'),
+            'shortdatetime': ('Example value: "03/05/2022 07:06:05" Default: "%x %X" (Accepts Python strftime formatting)'),
             'longdate': ('Example value: "Mon Sep 30 07:06:05 2020" Default: "%c" (Accepts Python strftime formatting)'),
             'time': ('Example value: "07:06:05" Default: "%I:%M:%S" (Accepts Python strftime formatting)'),
             'timezone':('Select your Current Timezone; times are expressed relative to this value.'),
@@ -29,6 +30,7 @@ class PreferencesForm(ModelForm):
         },
         widgets = {
             'shortdate': TextInput(attrs={}),
+            'shortdatetime': TextInput(attrs={}),
             'longdate': TextInput(attrs={}),
             'time': TextInput(attrs={}),
             'stream_top':CheckboxInput(attrs={'class':'switch'}),

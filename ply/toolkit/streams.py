@@ -52,7 +52,7 @@ def post_to_profile_stream(profile,community,content_type,contents_text,contents
     """
     #community = Community.objects.get(uuid=request.session['community'])
     #profile = Profile.objects.get(uuid=request.session['profile'])
-    stream = Stream.objects.get(community=community,profile=profile,root_stream=True,type=stream_type)
+    stream = Stream.objects.get_or_create(community=community,profile=profile,root_stream=True,type=stream_type)[0]
     stream.nodes += 1
     stream.save()
     message = StreamMessage(stream=stream,author=profile,type=content_type,contents_text=contents_text,contents_json=contents_json)

@@ -12,7 +12,7 @@ import metrics
 from ply.toolkit.reqtools import vhost_community_or_404
 from ply.toolkit import streams as stream_toolkit,profiles,vhosts,reqtools
 from dynapages.models import Widget,PageWidget
-
+from profiles.models import Profile,ProfilePageNode
 
 log = plylog.getLogger('dynapages.api_views',name='dynapages.api_views')
 #queue = GalleryPublisher(ply.settings.PLY_MSG_BROKER_URL,log)
@@ -38,7 +38,7 @@ def widget_setup(request,widget_id,mode):
 
 
 @login_required
-def widget_setup_factory(request):
+def widget_setup_factory(request,node_type='profile'):
     community = reqtools.vhost_community_or_404(request)
     w_id = request.POST["widget_id"]
     mode = request.POST["widget_mode"]
@@ -55,7 +55,8 @@ def widget_setup_factory(request):
         return JsonResponse({'res':"err",'err':setup_form.errors.items},safe=False)
     #print(setup_form.cleaned_data)
     profile = profiles.get_active_profile(request)
-    pageWidget = PageWidget(widget=widget,page=profile.dynapage,plugin_data=setup_form.cleaned_data)
+    profilePage = ProfilePageNode.objects.get(profile=profile,node_type=node_type)
+    pageWidget = PageWidget(widget=widget,page=profilePage.dynapage,plugin_data=setup_form.cleaned_data)
     if (mode == "banner"):
         pageWidget.banner = True
     elif (mode == "mainbody"):
@@ -70,11 +71,12 @@ def widget_setup_factory(request):
     return render(request,'dynapages_api/widget_container.html',context)
 
 @login_required
-def widget_factory(request,widget_id,mode):
+def widget_factory(request,widget_id,mode,node_type='profile'):
     community = reqtools.vhost_community_or_404(request)
     widget = Widget.objects.get(widget_id=widget_id)
     profile = profiles.get_active_profile(request)
-    pageWidget = PageWidget(widget=widget,page=profile.dynapage)
+    profilePage = ProfilePageNode.objects.get(profile=profile,node_type=node_type)
+    pageWidget = PageWidget(widget=widget,page=profilePage.dynapage)
     if (mode == "banner"):
         pageWidget.banner = True
     elif (mode == "mainbody"):

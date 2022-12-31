@@ -52,4 +52,71 @@ community_communityprofile.profile_id = profiles_profile.uuid
 WHERE
 profiles_profile.placeholder = false;
 
+DROP VIEW IF EXISTS "community_friend_explvl_view";
+CREATE VIEW "community_friend_explvl_view" AS SELECT
+    community_friend.id as id,
+	community_friend.friend1_id,
+	community_friend.friend2_id,
+	community_friend.community_id,
+	exp_profile_lvlview.profile_id,
+	exp_profile_lvlview.created,
+	exp_profile_lvlview.updated,
+	exp_profile_lvlview.last_seen,
+	exp_profile_lvlview.age,
+	exp_profile_lvlview."name",
+	exp_profile_lvlview.status,
+	exp_profile_lvlview.species,
+	exp_profile_lvlview.introduction,
+	exp_profile_lvlview.pronouns,
+	exp_profile_lvlview.slug,
+	exp_profile_lvlview.gender,
+	exp_profile_lvlview.avatar,
+	exp_profile_lvlview."system",
+	exp_profile_lvlview.level_id,
+	exp_profile_lvlview.classtype_id,
+	exp_profile_lvlview.class_name,
+	exp_profile_lvlview.expr,
+	exp_profile_lvlview."level" AS current_level,
+	community_friend.approved,
+	community_friend.approved_flag
+FROM
+	exp_profile_lvlview
+	JOIN
+	community_friend
+	ON
+		exp_profile_lvlview.uuid = community_friend.friend2_id;
 
+
+DROP VIEW IF EXISTS "community_friend2_explvl_view";
+CREATE VIEW "community_friend2_explvl_view" AS SELECT
+    community_friend.id as id,
+	community_friend.friend1_id,
+	community_friend.friend2_id,
+	community_friend.community_id,
+	exp_profile_lvlview.profile_id,
+	exp_profile_lvlview.created,
+	exp_profile_lvlview.updated,
+	exp_profile_lvlview.last_seen,
+	exp_profile_lvlview.age,
+	exp_profile_lvlview."name",
+	exp_profile_lvlview.status,
+	exp_profile_lvlview.species,
+	exp_profile_lvlview.introduction,
+	exp_profile_lvlview.pronouns,
+	exp_profile_lvlview.slug,
+	exp_profile_lvlview.gender,
+	exp_profile_lvlview.avatar,
+	exp_profile_lvlview."system",
+	exp_profile_lvlview.level_id,
+	exp_profile_lvlview.classtype_id,
+	exp_profile_lvlview.class_name,
+	exp_profile_lvlview.expr,
+	exp_profile_lvlview."level" AS current_level,
+	community_friend.approved,
+	community_friend.approved_flag
+FROM
+	exp_profile_lvlview
+	JOIN
+	community_friend
+	ON
+		exp_profile_lvlview.uuid = community_friend.friend2_id;

@@ -1,0 +1,40 @@
+{% load django_bootstrap5 %}
+<div id="new_ScriptModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus"></i>Create/Open Script</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="load_script_form" method="POST" target="#" onsubmit="script_studio.create(); return false;"/>
+        {% bootstrap_form new_script_form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Confirm"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="save_ScriptModal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-file-arrow-up"></i>Save Script</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="create_script_form" method="POST" target="#" onsubmit="script_studio.save(); return false;"/>
+        {% bootstrap_form save_script_form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Save"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

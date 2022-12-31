@@ -1,0 +1,30 @@
+{% extends 'dashboard_main_panel-95.html' %}
+{% load django_bootstrap5 %} 
+{% block dashboard_name %}
+{{community.name}} - All Friends
+{% endblock %}
+{% block dashboard_content %}
+
+{% with page_title="My Friends" %}
+
+
+{% endwith %}
+<div class="container-fluid main-container" id="friends_container">
+
+{% for profile in friends1 %}
+{% include "community/dashboard/friend_card.html" %}
+
+{% endfor %}
+
+{% for profile in friends2 %}
+{% include "community/dashboard/friend_card.html" %}
+
+{% endfor %}
+</div>
+
+{% include "community/dashboard/remove_friend_modal.html" %}
+
+<script type="text/javascript">
+friends.init();
+</script>
+{% endblock %}
