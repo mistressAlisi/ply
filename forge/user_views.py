@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from ply import settings,toolkit
-from ply.toolkit import vhosts
+from ply.toolkit import vhosts,levels
 from profiles.models import Profile
-from stats.models import ClassType
-from exp.models import ProfileExperience
+from stats.models import ClassType,ProfileStat
+from exp.models import ProfileExperience,ProfileExperienceHistory
 # Create your views here.
 
 
@@ -39,7 +40,7 @@ def create_profile(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'profile':profile,'classtypes':classes}
+        context = {'community':community,'vhost':vhost,'profile':profile,'classtypes':classes,'class_skip':False}
         return render(request,"forge-create_profile.html",context)
 
 
@@ -91,6 +92,7 @@ def edit_profile_preview(request):
 
 
 @login_required
+@transaction.atomic
 def level_up(request):
     #  Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
@@ -100,9 +102,13 @@ def level_up(request):
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_active_profile(request)
     exo = ProfileExperience.objects.get(community=community,profile=profile)
+    nlvl = exo.next_level()
+    pstats = ProfileStat.objects.filter(community=community,profile=profile)
     request.session['community'] = str(community.uuid)
-    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo}
-    if (not exo.can_level()):
-        return render(request,"forge-create_profile.html",context)
+    context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo,"next":nlvl,"stats":pstats}
+    if (levels.can_levelup(profile,community) is True):
+        # Level up time!
+        context["exp"] = levels.levelup(profile,community)
+        return render(request,"forge/levelup/levelup.html",context)
     else:
         return render(request,"forge/levelup/no_levelup.html",context)

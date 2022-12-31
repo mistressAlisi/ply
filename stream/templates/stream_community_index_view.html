@@ -47,11 +47,13 @@
   </button>
 {%include "dashboard-main-navmenu.html" %}
 </header>
+
 <div class="card"> 
 {%include "community-header.html" %}
 </div>
 </div>
 {%include "gallery-modal-viewer.html" %}
+
 <div class="container-fluid main-container" id="dashboard_mainPanel">
 <br/>
 
@@ -75,8 +77,10 @@
 <br/><br/>
 <br/><br/>
 <br/><br/>
-
+{% if profile %}
 {% include "stream_post_box_offcanvas_bottom.html" %}
 <script src="/static/stream_publisher/js/stream_publisher_core.js"></script>
+{% endif %}
 {% endblock %}
+
 

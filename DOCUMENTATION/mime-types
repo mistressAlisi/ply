@@ -4,3 +4,5 @@ application/ply.stream.refmsg|Message referencing another stream's message.
 application/ply.stream.gallery|Message referencing a ply gallery item.
 application/ply.stream.diceroll|Message referencing a diceroll event.
 application/ply.script.generic|Generic Type containing all Plyscripts
+application/ply.stream.levelup|Message referencing a levelup event.
+application/ply.stream.statup|Message referencing a stat assigned event.

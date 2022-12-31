@@ -19,3 +19,13 @@ def exec_script_str(community,profile,code_body):
         ret_data = exec(code_body, {"built" : __builtins__},globals)
     ret = fe_o.getvalue()
     return ret
+
+
+def exec_script(script_obj,profile,community):
+    globals = {'community':community,'profile':profile,'pref':Preferences.objects.get(user=profile.creator),'__function_name__':script_obj.function_name}
+    fe_o = io.StringIO()
+    with redirect_stdout(fe_o):
+        code_body = script_obj.body
+        ret_data = exec(code_body, {"built" : __builtins__},globals)
+    ret = fe_o.getvalue()
+    return ret

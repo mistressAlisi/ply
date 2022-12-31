@@ -15,7 +15,7 @@ from ply import settings,system_uuids
 from ply.toolkit import vhosts,profiles,logger,file_uploader,scripts
 from dynapages.models import Templates,Page,Widget,PageWidget
 from dashboard.navigation import SideBarBuilder
-from stats.models import BaseStat,ProfileStat
+from stats.models import BaseStat,ProfileStat,ProfileStatHistory
 from community.models import Community,CommunityProfile,CommunityAdmins
 from forge.forms import NewScriptForm,SaveScriptForm
 from plyscript.models import Script
@@ -119,6 +119,8 @@ def finish_character_profile(request):
     for stat in stats:
         n_stat = ProfileStat.objects.get_or_create(community=community,profile=profile,stat=stat,value=stat.starting,pminimum=stat.minimum,pmaximum=stat.maximum)[0]
         n_stat.save()
+        n_stat_h = ProfileStatHistory.objects.get_or_create(community=community,profile=profile,stat=stat,value=stat.starting,pminimum=stat.minimum,pmaximum=stat.maximum,notes="Added by the Forge during Chargen.")[0]
+        n_stat_h.save()
     # Join the community! 
     join_comm  = CommunityProfile.objects.get_or_create(community=community,profile=profile,joined=datetime.datetime.utcnow())[0]
     join_comm.save()

@@ -23,6 +23,7 @@ class Script(models.Model):
             models.UniqueConstraint(fields=['community', 'function_name'], name='unique_funcname'),
             models.UniqueConstraint(fields=['community', 'name'], name='unique_name')
         ]
+
     def __str__(self):
         return f"Script {self.name} Callable: {self.function_name} by {self.creator} in community: {self.community.uuid} TYPE: {self.type}"
 

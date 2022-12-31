@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from dynapages.models import Page
+
 import uuid
 # Create your models here.
 class Profile(models.Model):
@@ -44,6 +45,7 @@ class Profile(models.Model):
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
+
     def __str__(self):
         if (self.placeholder):
             return f"PLACEHOLDER Profile \"{self.name}\" from user: {self.creator.username}"

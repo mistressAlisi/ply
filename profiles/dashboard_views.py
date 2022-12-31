@@ -9,7 +9,8 @@ from ply.toolkit import vhosts
 from gallery.uploader import upload_plugins_builder
 from profiles.models import Profile,ProfilePageNode
 from group.models import Group,GroupMember,GroupTitle
-from stats.models import BaseStat,ProfileStat
+from stats.models import BaseStat,ClassType,ProfileStat,ProfileStatHistory
+from exp.models import ProfileExperience,ProfileExperienceHistory,LevelScript
 # Create your views here.
 
 # Render the User Dashboard Home page:
@@ -24,9 +25,10 @@ def profile_view(request):
     except GroupMember.DoesNotExist:
         groups = []
         primaryGroup = False
-    profilePage = ProfilePageNode.objects.filter(profile=profile,node_type='profile')
-    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage)
+    profilePage = ProfilePageNode.objects.get(profile=profile,node_type='profile')
+    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
     available_widgets = dynapages.Widget.objects.filter(active=True,profile=True)
+    exp = ProfileExperience.objects.get(community=community,profile=profile)
     stats = ProfileStat.objects.filter(profile=profile)
-    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'dynapage_template':profilePage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s profile",'available_widgets':available_widgets}
+    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'dynapage_template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s profile",'available_widgets':available_widgets,'exp':exp}
     return render(request,'dynapages_tools/widget_editor.html',context)

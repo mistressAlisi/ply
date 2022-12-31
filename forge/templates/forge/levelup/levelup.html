@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="en" class="h-100">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--     JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Page title -->
+
+    <title>{{community.name}}: Leveling Up "{{profile.name}}"</title>
+
+
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+    <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+    <!-- Bootstrap JavaScript: !-->
+     {% bootstrap_javascript %}
+
+    {% block bootstrap5_extra_head %}{% endblock %}
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+    
+    <!--   Login Functions -->
+</head>
+
+<body class="bg-light">
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <div class="card">
+        <div class="card-header">
+          <h1> Level Up "{{profile.name}}"</h1>
+        </div>
+        <div class="card-body">
+        <h2>Congrats! You've reached Level {{next.level}}!</h2>
+        <h4>You now have {{exp.skillpoints}} skillpoints and {{exp.statpoints}} statpoints available!</h4>
+        <p class="text">You can assign both from the dashboard.</p>
+        <a href="/dashboard/user/">Back to Dashboard...</a>
+        </div>
+        </div>
+
+    </div>
+    <div class="container-fluid row g-5">
+
+    </div>
+    
+
+</body>
+</html>

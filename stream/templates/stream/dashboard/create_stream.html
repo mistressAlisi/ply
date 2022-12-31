@@ -1,0 +1,37 @@
+{% load django_bootstrap5 %}
+<form method="POST" action="#" id="stream-form" onsubmit="stream_create.goSave(); return false;">
+{% csrf_token %}
+<div class="card">
+  <div class="card-header">
+   <i class="fa-solid fa-star fa-2x"></i></i><span class="h2">&#160;Create Stream / Game Room</span>
+  </div>
+  <div class="card-body">
+   {% bootstrap_form streamForm %}
+   </div>
+              <div class="card-footer text-muted">
+              {% bootstrap_button "Create and Join!" button_type="submit" button_class="btn-primary" %}
+
+              </div>
+</div>
+</form>
+<div class="modal" tabindex="-1" id="stream_modal" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-check"></i>&#160;Stream Created!</h5>
+
+      </div>
+      <div class="modal-body">
+        <p>Your stream has been created!</p>
+        <p>Click the button below to join the new stream.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="stream_create.join_created();">Join Stream</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/static/js/stream/create_stream.js"></script>
+<script>
+stream_create.init();
+</script>

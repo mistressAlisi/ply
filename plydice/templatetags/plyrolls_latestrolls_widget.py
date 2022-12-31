@@ -4,7 +4,6 @@ import ply
 register = template.Library()
 from preferences.models import Preferences
 from plydice.models import DiceRoll
-
 #from gallery.templatetags import thumbnail_card
 @register.simple_tag
 def _plydice_render_roll(item, prefobj, *args, **kwargs):

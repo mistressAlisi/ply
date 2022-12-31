@@ -21,6 +21,7 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('profiles/',include('profiles.public_urls')),
     path('p/', include('profiles.sharing_urls')),
+    path('s/k/', include('keywords.sharing_urls')),
     path('dynapages/api/',include('dynapages.api_urls')),
     path('almanac/',include('almanac.public_urls')),
     path('almanac/user/',include('almanac.user_urls')),    
@@ -38,9 +39,9 @@ urlpatterns = [
     path('g/', include('gallery.sharing_urls')),
     path('stream/', include('stream.public_urls')),
     path('stream/api/', include('stream.api_urls')),
+    path('stats/api/', include('stats.api_urls')),
     path('SLHUD/', include('SLHUD.hud_urls')),
     path('SLHUD/api/', include('SLHUD.api_urls')),
-    #path('s/', include('gallery.sharing_urls')),
     path('dice/api/',include('plydice.api_urls')),
     path('', include('community.public_urls'))
 ]

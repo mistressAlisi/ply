@@ -1,0 +1,54 @@
+{% extends "dashboard_main_panel-95.html" %}
+{% load django_bootstrap5 %}
+
+{%block dashboard_name %}{%endblock%}
+{%block dashboard_content %}
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+
+        <div class="card">
+        <div class="card-header">
+          <h2> All Stats for: "{{profile.name}}"</h2>
+        </div>
+        <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+            <th scope="col">Statistic</th>
+            <th scope="col">Min</th>
+            <th scope="col">Current</th>
+            <th scope="col">Max</th>
+            </tr>
+          </thead>
+          <tbody>
+          {%for stat in stats %}
+           <tr>
+              <td><i class="{{stat.stat.icon}}"></i>&#160;<strong>{{stat.stat.name}}:</strong> {{stat.stat.descr}}</td>
+              <td>{{stat.stat.minimum}}</td>
+              <td>
+              <div class="progress">
+              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{stat.value}}" aria-valuemin="{{stat.stat.minimum}}" aria-valuemax="{{stat.stat.maximum}}" style="width:{{stat.get_progress_pct}}%">{{stat.value}}</div>
+              </div>
+              </td>
+              <td>{{stat.stat.maximum}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        {%if exp.statpoints > 0%}
+        <h4>You have {{exp.statpoints}} skillpoints available:</h4>
+
+        <p class="text-muted">Click below to assign them to skills!</p>
+          <button class="btn btn-primary" type="button" onclick="stats.assign_start();"><i class="fa-solid fa-angles-up"></i>&#160;Assign skill!</button>
+          {%include "stats/modal.html" %}
+        {%endif %}
+        </div>
+        </div>
+
+    </div>
+    <div class="container-fluid row g-5">
+
+    </div>
+
+{%endblock%}
