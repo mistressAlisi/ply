@@ -1,7 +1,7 @@
 {% extends 'ply-bootstrap5-stickyfooter.html' %}
 {% load django_bootstrap5 %} 
 {% block bootstrap5_title %}
-{{community.name}} - {{profile.name}}'s Stream
+{{community.name}}: Stream
 {% endblock %}
 {%load mathfilters %}
 
@@ -10,7 +10,7 @@
 {% block meta-og-url %}https://{{vhost}}/stream/{{profile.profile_id}}{% endblock %}
 {% block meta-og-image %}{{av_path}}/{{profile.avatar}}{% endblock %}
 {% block meta-og-site_name %}{{community.name}}{% endblock %}
-{% block meta-og-description %}{{profile.name}}'s Stream @ {{community.name}} - at https://{{vhost}} {% endblock %}
+{% block meta-og-description %}{{community.name}}: Stream - at https://{{vhost}} {% endblock %}
 
 {% block bootstrap_doc_body %}
 {% if stream.bkgt == "s1" %}
@@ -78,6 +78,12 @@
 <br/><br/>
 <br/><br/>
 {% if profile %}
+
+{% include "notifications/notservices.html" %}
+{% include "community/modals/follow_or_friend.html" %}
+
+<script src="/static/js/notifications/notservices.js"></script>
+<script src="/static/community/js/follow_or_friend.js"></script>
 {% include "stream_post_box_offcanvas_bottom.html" %}
 <script src="/static/stream_publisher/js/stream_publisher_core.js"></script>
 {% endif %}
