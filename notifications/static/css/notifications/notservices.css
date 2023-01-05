@@ -1,0 +1,13 @@
+.notifications_service {
+    z-index: 10000;
+    position: fixed;
+    float: right;
+    top: 50px;
+    right: 2px;
+    max-width: 600px;
+}
+
+.notifications_service .alert .btn-close {
+    position: relative;
+    top: -6px;
+}

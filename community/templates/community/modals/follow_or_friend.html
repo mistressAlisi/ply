@@ -1,0 +1,66 @@
+<div id="fof_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Follow or Friend?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>If you <strong>follow</strong> someone; you are notified of their new content. If you <strong>friend</strong> someone, both of you are notified of each other's posts.</p>
+        <p>Following does not require approval; friendship requests do.</p>
+
+        <button type="button" class="btn btn-success" id="fof_modal_follow" onclick="fof._gfollow();"><i class="fa-solid fa-magnifying-glass-plus"></i>&#160;Follow [PROFILE]</button>
+        <br/>
+        <br/>
+        <button type="button" class="btn btn-primary" id="fof_modal_friend" onclick="fof._gfriend();"><i class="fa-solid fa-user-plus"></i>&#160;Friend [PROFILE]</button>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="fof_unfollow_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Unfollow?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       Are you sure you want to unfollow?
+
+        <button type="button" class="btn btn-success" id="fof_modal_unfollow" onclick="fof._gufol();"><i class="fa-solid fa-magnifying-glass-minus"></i>&#160;Unfollow [PROFILE]</button>
+        <br/>
+        <br/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="fof_unfriend_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Unfriend?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       Are you sure you want to unfriend?
+
+        <button type="button" class="btn btn-success" id="fof_modal_unfriend" onclick="fof._gunfriend();"><i class="fa-solid fa-user-minus"></i>&#160;Unfriend [PROFILE]</button>
+        <br/>
+        <br/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
