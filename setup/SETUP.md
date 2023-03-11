@@ -4,7 +4,7 @@
 <p>This is a really brief description for getting your own local devel instance of Ply up and running. We do our devwork on Debian Linux - and our setup script is designed for debian. But it can easily be modified for RHEL and Ark distros.</p>
 <h3 align="center">--In a Nutshell:--</h3>
 <p>
-You might want to review setup.sh<br/>But if you just want to get started quickly, the script will (if it is not installed) install python3 and python3-venv, ask you for a path to create a virtual env, and then install our 'requirements.txt' into the virtual env. We also need pwgen and we install it at this point.
+You might want to review setup.sh as your read along.<br/>But if you just want to get started quickly, the script will (if it is not installed) install python3 and python3-venv, ask you for a path to create a virtual env, and then install our 'requirements.txt' into the virtual env. We also need pwgen and we install it at this point.
 </p>
 <p>
 In order to support containerisation and portability; the design assumes that .config will be mounted at any given time the application runs. You should create an external config dir and bind-mount it even if you intend to run locally - this way your config is not inside the devtree and it should never be.
