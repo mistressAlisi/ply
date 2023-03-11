@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Ply!</h1>
+  <h1>Welcome to Ply.</h1>
 </div>
 
 <div align="center">
@@ -9,6 +9,9 @@
   <a href="">![GitHub issues](https://img.shields.io/github/issues/di-delta9/ply?style=for-the-badge)</a>
 </div>
 
-<div align="center">
-  <p>The ultimate social networking and website engine :3</p>
-</div>
+<h2 align="center">
+  Nerdy name aside; Ply is a toolkit and platform to rapidly create, implement and customise websites and webapps that have Social, Sharing, and RolePlaying components.
+</h2>
+<p align="center">Ply is highly flexible and can be used in an infinite number of configurations to host Communites, Websites, Galleries, Role Playing games that use Pen and Paper information, and in the future, Second Life-based Roleplaying using an integrated HUD we call PlyHUD (under development.)
+</p>
+
