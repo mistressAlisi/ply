@@ -18,7 +18,7 @@ Ply is built on PostgreSQL release 13. If we're using it locally for development
 </p>
 <h3 align="center">--If you are creating a new database--</h3>
 <p>
-Once the database is created; the script will automatically execute migrations and then run the SQL installation procedure to install SQL routines to the database. Afterwards, please follow the prompts to create a superuser, install timezones, templates, dynapages, and other database initialisation routines.
+Once the database is created in postgres; the script will automatically execute migrations and then run the SQL installation procedure to install SQL routines to the database. Afterwards, please follow the prompts to create a superuser, install timezones, templates, dynapages, and other database initialisation routines.
 Finally, the script will ask you to create a community as detailed in the main README.md: at the very least; you must have one community for the application to function.
 </p>
 
