@@ -14,7 +14,7 @@
 </h4>
 <hr/>
 <h3 align="center">--Design Philosphy--</h3>
-<p align="center">The application is built mostly with Python and Django. It makes heavy use of PostgreSQL and some neat features like PL/pgSQL for the backend: The philosophy behind the backend is to "make it as simple and efficient as possible" - one of the ways we do that is by keeping processing of data to the minimum level possible, and by reducing all not needed loops for data algos. PL/pgSQL helps us greatly in doing a lot of lifting inside the database itself to keep the Django Engine highly performant and responsive. Ply scales very well using UWSGI/Gunicorn (we test using UWSGI) and NGINX. Several key concepts that Ply relies on are explained below:
+<p align="center">The application is built mostly with Python and Django. It makes heavy use of PostgreSQL and some neat features like PL/pgSQL for the backend: The philosophy behind the backend is to "make it as simple and efficient as possible" - one of the ways we do that is by keeping processing of data to the minimum level possible, and by reducing all not needed loops for data algos. PL/pgSQL helps us greatly in doing a lot of lifting inside the database itself to keep the Django Engine highly performant and responsive. Ply scales very well using UWSGI/Gunicorn (we test using UWSGI) and NGINX. Several key concepts that Ply relies on are explained below. (Please note; modules MAY have cross-dependencies! Such as the Dynapages module explained further below.)
 </p>
 
 <h3 align="center">--Introduction--</h3>
@@ -29,7 +29,9 @@
 <h3 align="center">--Core Ply features--</h3>
 <p align="center">By design, Ply is highly customisable and extensible. It relies on the Django philosophy of keeping individual "Apps" (or services) in their own separate modules inside the main ply namespace. The following modules are provided and under active development:
 <ol>
-<li><strong>"Almanac":</strong> A dynamic webpage and blogging service that closely resembles a CRM, with customisable, user-editable pages and menus.</li>
+  <li><strong><em>Almanac</em>:</strong> A dynamic webpage and blogging module that closely resembles a CRM, with customisable, user-editable pages and menus.</li>
+  <li><strong><em>Categories</em>:</strong> Provides a set of Disciplines and Categories, mostly designed to implement Artwork galleries and content sharing. Disciplines and Categories allow you to tag artwork, such as, Photography/Nature for photos of such, or Artwork/calligraphy if so desired. All values are fully customisable and flexible. Ply ships with a default set of datasets which can easily be used or ignored as you need in a TSV file.</li>
+  <li><strong><em>Combat</em>:</strong> A module to implement RPG-style turn-and-dice combat rolls and actions for role-playing situations, both on-platform and inside the SLHUD. (under heavy development)</li>
 </ol>
 </p>
 
