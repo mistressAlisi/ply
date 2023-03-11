@@ -24,7 +24,11 @@
 <p align="center">The application is built mostly with Python and Django. It makes heavy use of PostgreSQL and some neat features like PL/pgSQL for the backend: The philosophy behind the backend is to "make it as simple and efficient as possible" - one of the ways we do that is by keeping processing of data to the minimum level possible, and by reducing all not needed loops for data algos. PL/pgSQL helps us greatly in doing a lot of lifting inside the database itself to keep the Django Engine highly performant and responsive. Ply scales very well using UWSGI/Gunicorn (we test using UWSGI) and NGINX. Several key concepts that Ply relies on are explained below:
 </p>
 
-
+<h3 align="center">--Database design philosophy--</h3>
+<p align="center">
+The database design is crucial for the flexibility and scalability of the platform. We have deliberately designed it to be completely capable of many communities at once, with any given profile being able to join an unlimited number of these. To further leverage scalability; any plyhost can support any given number of virtual hosts just like NGINX or Apache. Using HTTP header matching, Ply can seamlessly support an unlimited number of Virtual Hosts, thus, an unlimited number of communities can be hosted on-platform. This design decision is critical and it leads to the database structures you will find throughought Ply.
+Users can own unlimited profiles. Each profile can join unlimited communities. Each community can have unlimited groups. Users can use the same authentication token and structure consitently throughout communities as long as they are using the same account to change from one community (or host) to the other. Since a user can have an unlimited number of profiles, it is perfectly possible to keep data separate even if the same account owns the profiles. Of course, if the user so chooses, they may join any given community with both, or all of their profiles. As long as the relationship is not duplicated; it will be valid. (And ply does not allow for this duplication by design anyway - so don't worry about it!)
+</p>
 
 <h3 align="center">--Core Ply features--</h3>
 <p align="center">By design, Ply is highly customisable and extensible. It relies on the Django philosophy of keeping individual "Apps" (or services) in their own separate modules inside the main ply namespace. The following modules are provided and under active development:
@@ -48,7 +52,7 @@
   </li>
   <li><strong><em>gallery</em>:</strong> The gallery module is a highly configurable system for creating artwork galleries. Multiple artwork types are supported by a plugin interface: For example, gallery_photos provides a photography module. gallery_writing a prose and written artwork module. The gallery module core is responsible for the logic of storing, serialising, and cataloguing the data. It supports a dynamic upload of content to any storage mechanism (see docs) and it contains the data structures for collections and items alike. The gallery plugin module is only responsible for rendering and processing the artwork for the main module. This is obviously further explained in the gallery's readme.
   </li>
-  <li><strong><em>group</em>:</strong> Groups are just like social media / community groups. A grouping of n+1 profiles. They must belong to a community.
+  <li><strong><em>group</em>:</strong> Groups are just like social media / community groups. A grouping of n+1 profiles. They must belong to a community. Groups have custom pages just like profiles and a few other neat features like group-level communications.
   </li>
   <li><strong><em>items</em>:</strong>Items that will be used in-world. These are NOT inventory items, rather, they are objects that can exist in SL and be interacted with. (in design stage..)
   </li>
