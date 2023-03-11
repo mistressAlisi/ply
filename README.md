@@ -24,7 +24,7 @@
 <h3 align="center">--Core Ply features--</h3>
 <p align="center">By design, Ply is highly customisable and extensible. It relies on the Django philosophy of keeping individual "Apps" (or services) in their own separate modules inside the main ply namespace. The following modules are provided and under active development:
 <ol>
-<li>A fully fledged Database engine.</li>
+<li><strong>"Almanac":</strong> A dynamic webpage and blogging service that closely resembles a CRM, with customisable, user-editable pages and menus.</li>
 </ol>
 </p>
 
