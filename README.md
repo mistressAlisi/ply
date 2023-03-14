@@ -2,6 +2,8 @@
   <h1>Welcome to Ply.</h1>
 </div>
 
+
+
 <div align="center">
   <!-- breaks if we dont have this blank line -->
   
@@ -12,6 +14,7 @@
 <h4 align="center">
   Nerdy name aside; Ply is a toolkit and platform to rapidly create, implement and customise websites and webapps that have Social, Sharing, and RolePlaying components.
 </h4>
+<h5> Does it run yet? Yes! Check out our demo gallery: <a href="https://obscura.ply.ooo/gallery/@alisi" target="_blank">Alisi's Gallery - built with Ply!</a></h5>
 <hr/>
 
 <h2 align="center">--Introduction--</h2>
