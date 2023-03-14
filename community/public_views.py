@@ -32,16 +32,12 @@ def community_home(request):
         if (community.backgroundItem is not False):
             try:
                 bkg_item = GalleryItemsByCollectionPermission.objects.filter(item=community.backgroundItem,gif_thumbnail=False)
-                if 'file' in bkg_item:
-                    path = ply.toolkit.file_uploader.get_temp_path(bkg_item.file.name,bkg_item.profile)[0]
-                    bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
-                else:
-                    bkg_path = ""
+                path = ply.toolkit.file_uploader.get_temp_path(bkg_item[0].file.name,bkg_item[0].profile)
+                bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
             except GalleryItemsByCollectionPermission.DoesNotExist:
                 bkg_path= ""
-
         else:
-            bkg_path = False
+            bkg_path = ""
         context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path}
         return render(request,"dynapages/"+community.dynapage.template.filename,context)
 
