@@ -6,7 +6,7 @@ class SideBarBuilder():
   modules = {}
   
   def __init__(self):
-    if (len(self.modules) is 0): self.register(ply.settings.PLY_USER_DASHBOARD_MODULES)
+    if (len(self.modules) == 0): self.register(ply.settings.PLY_USER_DASHBOARD_MODULES)
   # Register a module to the sidebar, pass it's Module.Navigation class to this constructor: 
   def register(self,data):
     if data is False: raise ValueError('Register must recieve a Navigation object from a module.')
