@@ -1,0 +1,35 @@
+digraph G {
+  label="PLY System Architecture"
+  node [colorscheme=blues9 style=filled]
+  subgraph cluster_django {
+    label="Django Workers"
+
+    u0 [label="UWSGI:Frontend Workers"  color=9 style=filled];
+    c1 [label="Celery:Backend Queue Workers" color=2 style=filled];
+    u0->c1;
+  }
+
+  subgraph cluster_static {
+    label="Static Files"
+
+    tf [label="Local Temp Files" color=3 style=filled]
+    cdp [label="CDN Proxy" color=4 style=filled]
+  }
+
+    subgraph cluster_storage {
+    label="Persistent Storage"
+
+    db [label="PostgreSQL Database" color=5];
+    cdn [label="CDN Storage (S3/DO)" color=6];
+    cdp->cdn;
+    u0->db;
+    c1->db;
+  }
+  nxf [label="NGINX Proxy/Router" color=7  style="rounded,filled", shape=diamond];
+  int [label="The Internet(tm)" color=8  style="rounded,filled", shape=diamond];
+  nxf->u0;
+  nxf->cdp;
+  nxf->tf;
+  int->nxf;
+
+}
