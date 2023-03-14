@@ -64,19 +64,24 @@ def update_character_profile(request):
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     profile = Profile.objects.get(uuid=request.session['profile'])
+    # Save the Dynapage node before update:
+    old_dynapage = profile.dynapage
     form = ProfileForm(request.POST,instance=profile)
     if (not form.is_valid()):
         return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
     form.save()
+    if (old_dynapage is not False):
+        profile.dynapage = old_dynapage
     profile.save()
-    # Update the class data:
-    _classtype = request.POST['classtype']
-    classtype = ClassType.objects.get(uuid=_classtype)
-    stlevel = Level.objects.get(level=0)
-    peo = ProfileExperience.objects.get_or_create(community=community,profile=profile,classtype=classtype,level=stlevel)[0]
-    peo.classtype = classtype
-    peo.save()
-    return JsonResponse({"res":"ok"},safe=False)   
+    # Update the class data if it's present:
+    if 'classtype' in request.POST:
+        _classtype = request.POST['classtype']
+        classtype = ClassType.objects.get(uuid=_classtype)
+        stlevel = Level.objects.get(level=0)
+        peo = ProfileExperience.objects.get_or_create(community=community,profile=profile,classtype=classtype,level=stlevel)[0]
+        peo.classtype = classtype
+        peo.save()
+    return JsonResponse({"res":"ok"},safe=False)
 
 
 # FINISH the currently enabled profile in session space:

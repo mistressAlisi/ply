@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 #PLY:
 from ply import settings
-from ply.toolkit import vhosts,profiles
+from ply.toolkit import vhosts,profiles,dynapages as dp_tools
 from dashboard.navigation import SideBarBuilder
 from profiles.models import Profile
 from group.models import Group,GroupMember,GroupTitle
@@ -31,9 +31,16 @@ def dashboard_home(request):
     except GroupMember.DoesNotExist:
         groups = []
         primaryGroup = False
-    profilePage = ProfilePageNode.objects.get(profile=profile,node_type='dashboard')
+    #profilePage = ProfilePageNode.objects.get(profile=profile,node_type='dashboard')
+    profilePage = ProfilePageNode.objects.get(profile=profile,node_type='profile')
+    # Don't allow empty profile Page nodes.
+    # This check will automatically fix the condition if it ever arises:
+    if (profilePage.dynapage == None):
+        print(f"Initialising Dynapages for {profile.profile_id}'s dashboard.")
+        profilePage = dp_tools.dashboard_initDynaPage(request.user,profile)
+    print(f"Profile Node: {profilePage.dynapage.pk}, {profilePage.node_type}")
     exo = ProfileExperience.objects.get(community=community,profile=profile)
-    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
+    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profile.dynapage)
     stats = ProfileStat.objects.filter(profile=profile,community=community)
     context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':settings.PLY_VERSION,'widgets':widgets,'template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s Dashboard",'profile':profile,"stats":stats,'profile_xp':exo}
     return render(request,'profile_dashboard_dynapage_wrapper.html',context)

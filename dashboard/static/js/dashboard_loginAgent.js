@@ -48,7 +48,11 @@ window.loginAgent = Object({
         };
         
         console.log("Login Transaction in progress...");
-        
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken",Cookies.get('csrftoken'));
+            }
+        });
         $.post(this.settings.loginurl,$(this.settings.loginform).serialize(),this._handleReply);
     }
 });

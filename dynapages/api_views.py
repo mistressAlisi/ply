@@ -21,6 +21,17 @@ log = plylog.getLogger('dynapages.api_views',name='dynapages.api_views')
 
 @login_required
 def widget_setup(request,widget_id,mode):
+    """
+    @brief SETUP a new widget for a given profile reference.
+    ===============================
+    :param request: p_request:Django Request Object
+    :type request: t_request:str
+    :param request: p_widget_id:Widget ID from the request
+    :type request: t_request:str
+    :param request: p_mode:Mode to start and configure the widget in
+    :type request: t_request:str
+    :returns: r:HTML Rendered Widget, ready to start on the page.
+    """
     community = reqtools.vhost_community_or_404(request)
     widget = Widget.objects.get(widget_id=widget_id)
     profile = profiles.get_active_profile(request)
