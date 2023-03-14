@@ -49,7 +49,7 @@ CREATE OR REPLACE VIEW stream_messageview  AS SELECT DISTINCT
 	stream_streammessage.threads AS threads,
 	stream_streammessage.replies AS replies,
 	stream_streammessage.contents_text_parsed AS contents_text_parsed,
-	stream_streammessage.references_id AS references_id,
+	stream_streammessage.references_id AS references_id
 FROM
 	stream_stream
 	FULL OUTER JOIN
