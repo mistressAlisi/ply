@@ -8,7 +8,9 @@ class NewScriptForm(forms.Form):
         for s in ss:
             scripts.append((s.uuid,f'[{s.function_name}]: {s.name}'))
     # Workaround to allow installation on blank databases:
-    except:
+    except Exception as e:
+        print("Script save Exception on forms:")
+        print(e)
         pass
 
     load_script = forms.ChoiceField(label='New Script...',choices=scripts)
