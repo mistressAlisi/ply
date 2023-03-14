@@ -7,7 +7,7 @@ import ply
 from dynapages import models as dynapages
 from ply.toolkit import vhosts,profiles
 from gallery.uploader import upload_plugins_builder
-from profiles.models import Profile
+from profiles.models import Profile,ProfilePageNode
 from group.models import Group,GroupMember,GroupTitle
 from stats.models import BaseStat,ProfileStat
 from community.models import CommunityProfile,ProfilePerCoummunityView
@@ -34,10 +34,14 @@ def profile_view(request,profile_id):
     # Create the Profile metrics:
     gal_hit = ProfilePageHit.objects.create(profile=profile,type="PROFILE",community=community)
     request_data_capture(request,gal_hit)
+    # We need the profile template:
+    profilePage = ProfilePageNode.objects.get(profile=profile,node_type='profile')
+    print(f"Profile Node: {profilePage.dynapage.pk}, {profilePage.node_type}")
     # now render the page:
-    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profile.dynapage)
+    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
     stats = ProfileStat.objects.filter(profile=profile)
-    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'template':profile.dynapage.template.filename,'current_profile':current_profile,'profiles':all_profiles}
+
+    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'template':profilePage.dynapage.template.filename,'current_profile':current_profile,'profiles':all_profiles}
     return render(request,'profile_dashboard_dynapage_wrapper.html',context)
 
 # Render the User Profile Directory (index) for this community:

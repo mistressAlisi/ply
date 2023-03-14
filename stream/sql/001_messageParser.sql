@@ -12,11 +12,13 @@ BEGIN
     IF (NEW.contents_text IS NOT NULL) THEN
     MSG  := keywords_parsestr(NEW.contents_text);
     MSG  := profiles_parsestr_and_mention(MSG,'stream.message',CAST(NEW.uuid as text),STREAM.community_id);
-    --- CREATE KEYWORD links for parsed message: ---
+    --- CREATE KEYWORD links for parsed messag if applicable: ---
     KEYWORD_IDS = get_str_keyword_ids(NEW.contents_text);
-    FOREACH kw in ARRAY KEYWORD_IDS LOOP
-        INSERT INTO stream_streammessagekeywords (stream_id,message_id,keyword_id) VALUES (NEW.stream_id,NEW.uuid,kw);
-    END LOOP;
+    if (KEYWORD_IDS IS NOT NULL) THEN
+        FOREACH kw in ARRAY KEYWORD_IDS LOOP
+            INSERT INTO stream_streammessagekeywords (stream_id,message_id,keyword_id) VALUES (NEW.stream_id,NEW.uuid,kw);
+        END LOOP;
+    END IF;
     ---RAISE NOTICE 'Message is %',MSG;---
     ---UPDATE "stream_streammessage" SET contents_text_parsed = MSG where uuid = NEW.uuid;---
         NEW.contents_text_parsed = MSG;

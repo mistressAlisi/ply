@@ -7,32 +7,32 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">
+          <a class="nav-link active" aria-current="page" href="#" onclick="dynapage_editor.toggle_editor();">
           <i class="fa-solid fa-file-pen"></i>&#160;
           Edit Page</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" aria-current="page" href="#" aria-disabled="true">
+          <a class="nav-link active" aria-current="page" href="/p/@{{profile.profile_id}}" target="_blank">
           <i class="fa-solid fa-magnifying-glass"></i>&#160;
           Preview</a>
         </li>
-        <li class="nav-item">
+       <!-- <li class="nav-item">
           <a class="nav-link disabled" aria-current="page" href="#" aria-disabled="true">
           <i class="fa-solid fa-floppy-disk"></i>
           &#160;Save</a>
-        </li>
-        <li class="nav-item">
+        </li>-->
+       <!-- <li class="nav-item">
           <a class="nav-link disabled" aria-current="page" href="#" aria-disabled="true">
           <i class="fa-solid fa-reply"></i>
           &#160;Revert</a>
+        </li>-->
+        <li class="nav-item">
+          <a class="nav-link active" id="widget_btn" aria-current="page" href="#" onclick="dynapage_editor.toggle_widget_bar();">
+          <i class="fa-solid fa-object-group" ></i>
+          &#160;Widget Bar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" aria-current="page" href="#" aria-disabled="true">
-          <i class="fa-solid fa-object-group"></i>
-          &#160;Widgets</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-current="page" href="#" aria-disabled="true">
+          <a class="nav-link active" aria-current="page" href="/support/docs/widget_editor/" target="_blank">
           <i class="fa-solid fa-circle-question"></i>
           &#160;Help</a>
         </li>

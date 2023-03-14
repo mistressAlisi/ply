@@ -8,6 +8,8 @@ window.dynapage_editor = Object({
        "editModal": "#widget_form_modal",
        "editForm": "#widget_editor_form",
        "dropzones": ".drop-accept",
+       "hint_class":".widget-area-hint",
+       "widget_btn": "#widget_btn",
        "loadstr":'<span class="spinner-border text-primary" role="status"><span class="visually-hidden">Starting Widget...</span></span><span class="h6 text-muted">Starting Widget...</span></span>'
    },
    els: {
@@ -17,6 +19,7 @@ window.dynapage_editor = Object({
        'dt':false,
        'de': false
    },
+   editing: false,
    modal: false,
    edit_modal: false,
    widgets: false,
@@ -61,22 +64,26 @@ window.dynapage_editor = Object({
    },
    save_and_init: function() {
         data = $(this.settings.editForm).serialize();
+        // console.info("Save and init. Data is:"+data);
         $.post(this.settings.setup_post_url,data,this._save_handle);
    },
    drag_start: function(e) {
-//        e.dataTransfer.setData("text/plain", e.target.id);
-//        console.warn("Drag Start",e);
+        e.dataTransfer.setData("text/plain", e.target.id);
+        // console.info("Drag Start",e);
    },
    drag_end: function(e) {
 //        console.warn("Drag End",e);
+        window.dtt = $(e.target);
         dynapage_editor.els.de = $(e.target);
         target = dynapage_editor.els.de.data("widget_id");
         wtype =  dynapage_editor.els.dt.data("widget_type");
         wcol = dynapage_editor.els.dt.data("widget_col");
-        if (wcol != "") {
+        if (wcol == undefined) {
+            wtype = wtype + "?col=A"
+        } else if (wcol != "") {
             wtype = wtype + "?col="+wcol;
         };
-        console.warn("Wcol",wcol,dynapage_editor.els.dt.data("widget_col"));
+        // console.warn("Drag End for Widget. type: "+wtype," Column: "+wcol,"Type: "+wtype);
         $.get(this.settings.setup_url+"/"+target+"/"+wtype,this._widget_setup);
 
    },
@@ -88,11 +95,33 @@ window.dynapage_editor = Object({
 //        console.warn("Drag Allow",e);
        e.preventDefault();
    },
+   /** These three functions start, stop, and toggle the editor from the webpage: **/
    start_edit: function() {
         $(this.settings.dropzones).addClass('active');
         $(this.settings.dropzones).on('drop',dynapage_editor.drag_drop);
         $(this.settings.dropzones).on('dragover',dynapage_editor.drag_allow);
+        $(this.settings.hint_class).show();
         this.els.wofc.show();
+   },
+   stop_edit: function() {
+        $(this.settings.dropzones).remove('active');
+        $(this.settings.dropzones).on('drop',dynapage_editor.drag_drop);
+        $(this.settings.dropzones).on('dragover',dynapage_editor.drag_allow);
+        $(this.settings.hint_class).hide();
+        this.els.wofc.hide();
+   },
+   toggle_widget_bar: function() {
+     this.els.wofc.toggle();
+   },
+   toggle_editor: function() {
+       if (this.editing == false) {
+           // Not editing, we can start edition now:
+           this.editing = true;
+           this.start_edit();
+        } else {
+           this.editing = false;
+           this.stop_edit();
+        }
    },
    goSave: function() {
         $.ajaxSetup({
@@ -105,13 +134,16 @@ window.dynapage_editor = Object({
        data = $(this.settings.form).serialize();
        $.post(this.settings.url,data,this._success);
    },
+
+
    init: function() {
        this.els.widgets = $(this.settings.widgets);
        this.els.edit_modal = $(this.settings.editModal);
        this.els.wofc = new bootstrap.Offcanvas(this.els.widgets);
        console.log(this.els.edit_modal);
        this.edit_modal =  new bootstrap.Modal(this.els.edit_modal);
-       this.start_edit();
+       //this.start_edit();
+       // console.log("Editor ready");
 
    }
 });

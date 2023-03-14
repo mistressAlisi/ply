@@ -26,6 +26,7 @@ def profile_view(request):
         groups = []
         primaryGroup = False
     profilePage = ProfilePageNode.objects.get(profile=profile,node_type='profile')
+    print(f"Profile Node: {profilePage.dynapage.pk}, {profilePage.node_type}")
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
     available_widgets = dynapages.Widget.objects.filter(active=True,profile=True)
     exp = ProfileExperience.objects.get(community=community,profile=profile)
