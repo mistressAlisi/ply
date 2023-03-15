@@ -34,7 +34,7 @@ def almanac_home(request):
         enable_admin = False
     request.session['community'] = str(community.uuid)
     try:
-        almanac_page = AlmanacPage.objects.get(page_id='community_index_page')
+        almanac_page = AlmanacPage.objects.get(page_id='community_index_page',community=community)
         almanac_page_text = AlmanacPageText.objects.get(page=almanac_page,current=True)
     except AlmanacPage.DoesNotExist as e:
         almanac_page = False
