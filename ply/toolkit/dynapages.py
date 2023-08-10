@@ -1,6 +1,6 @@
-from dynapages.models import Templates,Page,Widget,PageWidget
-from profiles.models import Profile,ProfilePageNode
-from ply import settings,system_uuids
+from core.dynapages.models import Page, PageWidget
+from communities.profiles.models import ProfilePageNode
+from ply import system_uuids
 def profile_initDynaPage(user,profile):
     """
     @brief Initialise an empty DynaPage node and apply it to the Specified profile. This method copies the DynaPage structures from the global system default dynapage node.

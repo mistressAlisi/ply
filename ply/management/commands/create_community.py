@@ -4,7 +4,7 @@ from ply import system_uuids,settings
 import os
 import ply
 from django.utils.text import slugify
-from community.models import Community,VHost
+from communities.community import Community,VHost
 
 class Command(BaseCommand):
     help = 'Creates a Community and attaches it to a VHost.'

@@ -4,11 +4,9 @@ toolkit/profiles.py
 Toolkit utilities for interacting with Ply Profiles
 """
 
-
-from community.models import Community,VHost
 from ply.toolkit.logger import getLogger
-from profiles.models import Profile
-from community.models import ProfilePerCoummunityView
+from communities.profiles.models import Profile
+from communities.community.models import ProfilePerCoummunityView
 # get_vhost_community: Find the right community node for the given Vhost.
 # To match VHosts, we must at least match the host name, and optionally, the iapddr.
 # 

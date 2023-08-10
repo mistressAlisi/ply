@@ -5,13 +5,11 @@ from django.contrib.auth.decorators import login_required
 from ply import settings
 from ply.toolkit import vhosts,profiles,dynapages as dp_tools
 from dashboard.navigation import SideBarBuilder
-from profiles.models import Profile
-from group.models import Group,GroupMember,GroupTitle
-from stats.models import BaseStat,ProfileStat
-from dynapages import models as dynapages
-from profiles.models import ProfilePageNode
-from stats.models import BaseStat,ProfileStat
-from exp.models import ProfileExperience
+from communities.group.models import GroupMember
+from core.dynapages import models as dynapages
+from communities.profiles.models import ProfilePageNode
+from roleplaying.stats.models import ProfileStat
+from roleplaying.exp.models import ProfileExperience
 # Render the User Dashboard Home page:
 @login_required
 def dashboard_home(request):

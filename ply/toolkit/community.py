@@ -4,7 +4,7 @@ toolkit/friends.py
 Toolkit utilities for interacting with Friends:
 """
 import uuid
-from community.models import Community,Friend,Follower
+from communities.community.models import Community,Friend,Follower
 
 
 

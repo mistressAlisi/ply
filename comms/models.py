@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib import admin
-from profiles.models import Profile
+from communities.profiles.models import Profile
 # Create your models here.
-# Notificaitons Table:
+# Notifications Table:
 class Notification(models.Model):
     source = models.ForeignKey(Profile,verbose_name = "Source Profile",on_delete=models.RESTRICT,related_name='+')
     dest = models.ForeignKey(Profile,verbose_name = "Dest Profile",on_delete=models.RESTRICT,related_name='+')

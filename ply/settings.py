@@ -46,38 +46,38 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_bootstrap5',
     'django_registration',
-    'martor',
-    'preferences',
     'storages',
+    'martor',
     'mathfilters',
     'phonenumber_field',
     'colorful',
-    'emoji',
-    'categories',
-    'notifications',
+    'communities.preferences',
+    'content_manager.emoji',
+    'content_manager.categories',
+    'communities.notifications',
     'dashboard',
-    'dynapages',
-    'profiles',
+    'core.dynapages',
+    'communities.profiles',
     'comms',
-    'gallery',
-    'stream',
-    'group',
-    'keywords',
-    'community',
-    'plyscript',
-    'gallery_photos',
-    'metrics',
-    'stats',
-    'combat',
-    'skills',
-    'equipment',
-    'spells',
-    'items',
-    'forge',
-    'almanac',
-    'exp',
-    'SLHUD',
-    'plydice',
+    'communities.stream',
+    'communities.group',
+    'content_manager.keywords',
+    'communities.community',
+    'core.plyscript',
+    'media.gallery.core',
+    'media.gallery.photos',
+    'core.metrics',
+    'roleplaying.stats',
+    'roleplaying.combat',
+    'roleplaying.skills',
+    'roleplaying.equipment',
+    'roleplaying.spells',
+    'roleplaying.items',
+    'core.forge',
+    'content_manager.almanac',
+    'roleplaying.exp',
+    'roleplaying.SLHUD',
+    'roleplaying.plydice',
     'ply'
 ]
 
@@ -286,19 +286,18 @@ REGISTRATION_SALT = 'ae3Phoge'
 
 # PLY:
 PLY_USER_DASHBOARD_MODULES = [
-    "profiles",
-    "community",
-    "stats",
-    "skills",
-    "stream",
-    "gallery",
-    "notifications",
-    "preferences"
+    "communities.profiles",
+    "communities.community",
+    "roleplaying.stats",
+    "roleplaying.skills",
+    "communities.stream",
+    "communities.notifications",
+    "communities.preferences"
     
     ]
 
 PLY_GALLERY_PLUGINS = [
-    "gallery_photos"
+    "media.gallery.photos"
     ]
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]

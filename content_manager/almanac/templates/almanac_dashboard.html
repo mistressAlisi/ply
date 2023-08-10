@@ -1,0 +1,60 @@
+{% extends 'ply-bootstrap5.html' %}
+{% load django_bootstrap5 %} 
+{% load martortags %}
+{% block bootstrap5_title %}
+{{community.name}}: World Almanac : {{almanac_page.title}}    
+{% endblock %}
+{% block bootstrap5_content %}
+
+
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+<!-- <script src="/static/js/dashboard.js"></script> -->
+<link href="/static/css/dashboard.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> -  Almanac <i class="fas fa-caret-square-down"></i></a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="offcanvasWithBackdrop" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+{%include "almanac_dashboard_sidebar.html" %}
+{% with page_title="- Almanac:" %}
+{%include "dashboard-main-navmenu.html" %}
+{% endwith %}
+</header>
+<div class="container-fluid main-container" id="dashboard_mainPanel">
+<div class="card">
+        <div class="card_header">
+        <h3 class="title">{{almanac_page.title}}</h3>
+        {% if enable_admin  %}
+        <a class="btn btn-primary bg-primary" href="/content_manager/almanac/user/page/edit/{{almanac_page.page_id}}"><i class="fa-solid fa-file-pen"></i> edit page</a>
+        {% endif %}
+        {% with almanac_page.creator as profile %}
+        <h6>Last Edited: <em>{{almanac_page.updated}}</em> by <a href="/communities/profiles/@{{almanac_page.creator.profile_id}}" target="_blank"><img src="{{av_path}}/{{almanac_page.creator.avatar}}" alt="{{almanac_page.creator.name|slice:" 0:2"}}" class="rounded-circle me-2" width="32" height="32"></img> {{almanac_page.creator.name}}</a> </h6>
+        <div class="profile_name_div">
+        {%include "dashboard-profileid-interactions-widget.html" %}
+        </div> 
+        {% endwith %}
+        <p class="introduction">{{almanac_page.introduction}}</p>
+        <hr/>
+        </div>
+        <div class="card_body">
+        {{content.page_contents|safe_markdown }}
+        </div>
+        <div class="card_footer">
+        <hr/>
+       
+        </div>
+
+
+     
+
+
+ </div>
+</div>
+
+
+ 
+{% endblock %}
