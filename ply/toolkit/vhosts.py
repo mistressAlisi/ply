@@ -1,4 +1,4 @@
-from community.models import Community,VHost
+from communities.community.models import VHost
 from ply.toolkit.logger import getLogger
 import logging
 # get_vhost_community: Find the right community node for the given Vhost.

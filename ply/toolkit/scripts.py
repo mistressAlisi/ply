@@ -5,12 +5,8 @@ Toolkit utilities for interacting with Plyscripts
 """
 import io
 from contextlib import redirect_stdout
-from community.models import Community,VHost
-from plyscript.models import Script,ScriptRegistry
-from ply.toolkit.logger import getLogger
-from profiles.models import Profile
-from preferences.models import Preferences
-from community.models import ProfilePerCoummunityView
+from communities.preferences.models import Preferences
+
 
 def exec_script_str(community,profile,code_body):
     globals = {'community':community,'profile':profile,'pref':Preferences.objects.get(user=profile.creator)}

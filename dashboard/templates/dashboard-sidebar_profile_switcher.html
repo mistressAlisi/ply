@@ -6,13 +6,13 @@
         <div class="collapse" id="dp_profiles-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
             {%if profile_xp.can_level %}
-            <li><a href="/forge/levelup" class="btn btn-primary pill-rounded text-white" role="button"><i class="fa-solid fa-signal"></i>&#160;Level up now!</a></li>
+            <li><a href="/core/forge/levelup" class="btn btn-primary pill-rounded text-white" role="button"><i class="fa-solid fa-signal"></i>&#160;Level up now!</a></li>
             {% else %}
             <li><h6>Level {{profile_xp.level.level}} {{profile_xp.classtype.name}}.</h6></li>
             {% endif %}
             <li><h6 class="text-muted">Current Profile:</h6></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" data-trgt="profiles/current" onclick="dc_handleLink(event,true);"><i class="fas fa-user-circle"></i>&#160;&#160;View/Edit Profile Page</a></li>
-            <li><a href="/forge/edit/profile" class="link-dark rounded sidebar-submenu-link" data-trgt="false" onclick="dc_handleLink(event,true);"><i class="fas fa-user-pen"></i>&#160;&#160;Edit Details</a></li>
+            <li><a href="/core/forge/edit/profile" class="link-dark rounded sidebar-submenu-link" data-trgt="false" onclick="dc_handleLink(event,true);"><i class="fas fa-user-pen"></i>&#160;&#160;Edit Details</a></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('account');"><i class="fas fa-chart-simple"></i>&#160;&#160;Statistics</a></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('profiles');"><i class="fas fa-users-cog"></i>&#160;Share!</a></li>
             <li><h6 class="text-muted">Switch Profile:</h6></li> 
@@ -23,7 +23,7 @@
             <li><h6 class="text-muted">Profiles and Settings:</h6></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('account');"><i class="fas fa-user-circle"></i>&#160;&#160;My Account</a></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.view('profiles');"><i class="fas fa-users-cog"></i>&#160;Profile Manager</a></li>
-            <li><a href="/forge/create/profile" class="link-dark rounded sidebar-submenu-link"><i class="fa-solid fa-user-plus"></i>&#160;New Profile</a></li>
+            <li><a href="/core/forge/create/profile" class="link-dark rounded sidebar-submenu-link"><i class="fa-solid fa-user-plus"></i>&#160;New Profile</a></li>
             <li><a href="#" class="link-dark rounded sidebar-submenu-link" onclick="dc_settings.logout();"><i class="fas fa-sign-out-alt"></i>&#160;Log Out</a></li>
         </ul>
     </div>

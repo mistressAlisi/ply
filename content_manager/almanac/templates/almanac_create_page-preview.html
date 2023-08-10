@@ -1,0 +1,69 @@
+{% extends 'django_bootstrap5/bootstrap5.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% load martortags %}
+{% block bootstrap5_title %}
+{{community.name}}: World Almanac : Previewing '{{title}}'
+{% endblock %}
+{% block bootstrap5_content %}
+
+<link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+<link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+<link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> -  Create Almanac Page <i class="fas fa-caret-square-down"></i></a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="offcanvasWithBackdrop" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+{%include "dashboard-main-navmenu.html" %}
+
+<link href="/static/css/dashboard.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+</header>
+    {%include "almanac_dashboard_sidebar.html" %}
+<div class="container-fluid main-container" id="dashboard_mainPanel">
+<form action="/content_manager/almanac/user/page/create/commit" method="POST">
+  {% csrf_token %}
+  <input type="hidden" id="title" value="{{title}}" name="title"></input>
+  <input type="hidden" id="introduction" value="{{introduction}}" name="introduction"></input>
+  <input type="hidden" id="dynaPage" value="{{dynapage}}" name="dynaPage"></input>
+  <input type="hidden" id="page_contents" value="{{content}}" name="page_contents"></input>
+    <div class="card">
+        <div class="card_header">
+        <h3 class="title">{{title}}</h3>
+        <h6>Last Edited: <em>{{timestamp}}</em> by <a href="/communities/profiles/@{{current_profile.profile_id}}" target="_blank"><img src="{{av_path}}/{{current_profile.avatar}}" alt="{{current_profile.name|slice:" 0:2"}}" class="rounded-circle me-2" width="32" height="32"></img> {{current_profile.name}}</a> </h6>
+        <p class="introduction">{{introduction}}
+        <hr/>
+        </div>
+        <div class="card_body">
+        {{content|safe_markdown }}
+        </div>
+        <div class="card_footer">
+        <hr/>
+        {% bootstrap_button button_type="submit" content="Save and Publish" %}
+        <button type="button" class="btn btn-secondary" onclick="history.back();">Return to Editor</button>   
+        </div>
+    </div>
+ </div>
+
+
+</form>
+</div>
+</div>
+  <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}"></script>
+
+{% endblock %}
