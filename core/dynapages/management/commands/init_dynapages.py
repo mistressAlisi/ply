@@ -20,13 +20,20 @@ class Command(BaseCommand):
         
         # Create the magic Profile in the System:
         self.stdout.write(self.style.SUCCESS('Creating Magic profile...'))
-        mprofile = Profile.objects.get_or_create(uuid=system_uuids.profile_uuid,system=True,name='Default Profile',profile_id=system_uuids.profile_uuid,creator=owner)[0]
+        mprofile = Profile.objects.get_or_create(uuid=system_uuids.profile_uuid,creator=owner)[0]
+        mprofile.system=True
+        mprofile.name='Default Profile'
+        mprofile.profile_id=system_uuids.profile_uuid
+        mprofile.creator=owner
         mprofile.save()
         
         # Create it's dynapage node FOR PROFILE DISPLAY:
         template = Templates.objects.get(template_id=settings.PLY_DYNAPAGES_PROFILE_TEMPLATE)
         self.stdout.write(self.style.SUCCESS('Creating Magic Dynapage Profile Node...'))
-        mpage = Page.objects.get_or_create(page_id=system_uuids.profile_dynapage_uuid,slug=system_uuids.profile_dynapage_uuid,label="Magic Profile Template Node",creator=owner,template=template)[0]
+        mpage = Page.objects.get_or_create(page_id=system_uuids.profile_dynapage_uuid,creator=owner,template=template)[0]
+        mpage.slug=system_uuids.profile_dynapage_uuid
+        mpage.label="Magic Profile Template Node"
+
         mpage.save()
         
         # Add a basic Header Widget to the dynapage template:
@@ -39,7 +46,9 @@ class Command(BaseCommand):
         # Create it's dynapage node FOR DASHBOARD DISPLAY:
         template = Templates.objects.get(template_id=settings.PLY_DYNAPAGES_DASHBOARD_TEMPLATE)
         self.stdout.write(self.style.SUCCESS('Creating Magic Dynapage Profile Dashboard Node...'))
-        mpage = Page.objects.get_or_create(page_id=system_uuids.pdashboard_dynapage_uuid,slug=system_uuids.profile_dynapage_uuid,label="Magic Profile Template Node",creator=owner,template=template)[0]
+        mpage = Page.objects.get_or_create(page_id=system_uuids.pdashboard_dynapage_uuid,creator=owner,template=template)[0]
+        mpage.slug=system_uuids.pdashboard_dynapage_uuid
+        mpage.label="Magic Profile Template Node"
         mpage.save()
 
         # Add a basic Header Widget to the dynapage template:
@@ -48,5 +57,15 @@ class Command(BaseCommand):
         widget.save()
         pageWidget = PageWidget.objects.get_or_create(page_id=mpage.page_id,widget=widget,banner=True)[0]
         pageWidget.save()
+
+
+        # Create the Dynapage node for INSTALL COMPLETE Splash:
+        template = Templates.objects.get(template_id=settings.PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE)
+        self.stdout.write(self.style.SUCCESS('Creating Dynapage "Install Complete" Coverpage Node...'))
+        mpage = Page.objects.get_or_create(page_id=system_uuids.install_complete_uuid,creator=owner,template=template)[0]
+        mpage.slug=system_uuids.install_complete_uuid
+        mpage.label="Magic Dynapage Install Complete Coverpage Node"
+        mpage.template=template
+        mpage.save()
 
         self.stdout.write(self.style.SUCCESS('Success!'))

@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 from ply import system_uuids,settings
 import os
 
-from communities.community import Community
-from roleplaying.exp import Level
+from communities.community.models import Community
+from roleplaying.exp.models import Level
 
 class Command(BaseCommand):
     help = 'Creates the Base level: Level 1 in all communities: THIS SHOULD ONLY BE DONE ONCE PER SETUP!'

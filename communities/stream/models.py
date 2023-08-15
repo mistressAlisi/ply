@@ -225,4 +225,4 @@ class MessagesPerStreamView(models.Model):
         return f"Message in Stream View: {self.message_uuid} in stream {self.stream.uuid} in community {self.community.uuid}"
     class Meta:
         managed = False
-        db_table = 'communities_stream_stream_message_view'
+        db_table = 'communities_stream_message_view'

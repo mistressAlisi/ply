@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Find all widgets:
         for app in ply.settings.INSTALLED_APPS:
-            widget_dir  = os.getcwd() + f"/{app}/dynapages/widgets"
+            widget_dir  = os.getcwd() + f"/{app.replace('.','/')}/dynapages/widgets"
             if (os.path.isdir(widget_dir)):
                 widgets =  os.listdir(widget_dir)
                 for widget in widgets:

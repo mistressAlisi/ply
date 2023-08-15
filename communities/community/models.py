@@ -143,7 +143,7 @@ class ProfilePerCoummunityView(models.Model):
         return f"Profile {self.profile_id} as member of Community {self.name}"
     class Meta:
         managed = False
-        db_table = 'community_profileper_community_view'
+        db_table = 'community_profile_per_community_view'
 
 # Followers Table:
 class Follower(models.Model):
