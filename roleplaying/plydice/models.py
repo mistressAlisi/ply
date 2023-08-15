@@ -5,6 +5,8 @@ from django.contrib import admin
 import uuid
 # Create your models here.
 class DiceEvent(models.Model):
+    class Meta:
+        db_table ="roleplaying_plydice_dice_event"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     date = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Event Created')
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
@@ -21,6 +23,8 @@ class DiceEventAdmin(admin.ModelAdmin):
     pass
 
 class DiceRoll(models.Model):
+    class Meta:
+        db_table = "roleplaying_plydice_dice_roll"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     date = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Roll Time')
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
@@ -43,6 +47,7 @@ class DiceEventRoll(models.Model):
     event = models.ForeignKey(DiceEvent,verbose_name="Event",on_delete=models.CASCADE)
     roll = models.ForeignKey(DiceRoll,verbose_name="Roll",on_delete=models.CASCADE)
     class Meta:
+        db_table = "roleplaying_plydice_dice_event_roll"
         constraints = [
             models.UniqueConstraint(fields=['event', 'roll'], name='unique_roll')
         ]

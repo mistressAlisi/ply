@@ -11,6 +11,8 @@ from core.dynapages.models import Page
 
 # Create your models here.
 class Community(models.Model):
+    class Meta:
+        db_table = "communities_community_community"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     hash = models.TextField(max_length=200,verbose_name='Community Hash')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
@@ -38,6 +40,8 @@ class CommunityAdmin(admin.ModelAdmin):
     pass  
 
 class VHost(models.Model):
+    class Meta:
+        db_table = "communities_community_vhost"
     community = models.ForeignKey(Community,verbose_name="Community to Apply to VHOST",on_delete=models.CASCADE,default=uuid.uuid4)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='VHost Created')
     updated = models.DateTimeField(verbose_name='VHost Updated',auto_now_add=True)
@@ -57,6 +61,8 @@ class VHostAdmin(admin.ModelAdmin):
 
 
 class CommunityProfile(models.Model):
+    class Meta:
+        db_table = "communities_community_profile"
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT,null=True)
     joined = models.DateTimeField(verbose_name='Joined')
@@ -67,6 +73,8 @@ class CommunityProfileAdmin(admin.ModelAdmin):
     pass  
 
 class CommunityGroup(models.Model):
+    class Meta:
+        db_table = "communities_community_community_group"
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     group = models.ForeignKey(Group,verbose_name = "Group",on_delete=models.RESTRICT,null=True)
     joined = models.DateTimeField(verbose_name='Joined')
@@ -78,6 +86,8 @@ class CommunityGroupAdmin(admin.ModelAdmin):
 
 
 class CommunityAdmins(models.Model):
+    class Meta:
+        db_table = "communities_community_community_admins"
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
     joined = models.DateTimeField(verbose_name='Joined')
@@ -133,10 +143,12 @@ class ProfilePerCoummunityView(models.Model):
         return f"Profile {self.profile_id} as member of Community {self.name}"
     class Meta:
         managed = False
-        db_table = 'community_profilepercommunityview'
+        db_table = 'community_profileper_community_view'
 
 # Followers Table:
 class Follower(models.Model):
+    class Meta:
+        db_table = "communities_community_follower"
     source = models.ForeignKey(Profile,verbose_name = "Source Profile",on_delete=models.RESTRICT,related_name='+')
     dest = models.ForeignKey(Profile,verbose_name = "Dest Profile",on_delete=models.RESTRICT,related_name='+')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Relationship Created')
@@ -152,6 +164,8 @@ class FollowerAdmin(admin.ModelAdmin):
 
 # Friends Table:
 class Friend(models.Model):
+    class Meta:
+        db_table = "communities_community_friend"
     friend1 = models.ForeignKey(Profile,verbose_name = "Friend 1 Profile",on_delete=models.RESTRICT,related_name='+')
     friend2 = models.ForeignKey(Profile,verbose_name = "Friend 2 Profile",on_delete=models.RESTRICT,related_name='+')
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)

@@ -9,6 +9,8 @@ from communities.profiles.models import Profile
 
 # Mapping SLAgent to Ply Profile, 1 to n is supported of course.
 class SLAgent(models.Model):
+    class Meta:
+        db_table ="roleplaying_slhud_sl_agent"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = True)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     owner = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE,null=True)
@@ -30,6 +32,8 @@ class SLAgentAdmin(admin.ModelAdmin):
 
 # Mapping SLAgent to Ply Community, 1 to n is supported of course.
 class SLParcel(models.Model):
+    class Meta:
+        db_table ="roleplaying_slhud_sl_parcel"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = True)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Agent First seen')
@@ -48,6 +52,7 @@ class SLParcelAdmin(admin.ModelAdmin):
 # Mapping SLAgent to Ply Community, 1 to n is supported of course.
 class SLParcelAgent(models.Model):
     class Meta:
+        db_table ="roleplaying_sl_parcel_agent"
         indexes = [
             models.Index(fields=['uuid'])
             ]
@@ -69,6 +74,8 @@ class SLParcelAgentAdmin(admin.ModelAdmin):
 
 # Mapping SLHUD Settings per Community:
 class SLHUDSettings(models.Model):
+    class Meta:
+        db_table = "roleplaying_sl_hud_settings"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = True)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Settings Created/updated')

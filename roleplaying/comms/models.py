@@ -4,6 +4,8 @@ from communities.profiles.models import Profile
 # Create your models here.
 # Notifications Table:
 class Notification(models.Model):
+    class Meta:
+        db_table ="roleplaying_comms_notifications"
     source = models.ForeignKey(Profile,verbose_name = "Source Profile",on_delete=models.RESTRICT,related_name='+')
     dest = models.ForeignKey(Profile,verbose_name = "Dest Profile",on_delete=models.RESTRICT,related_name='+')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Notification Created')
@@ -23,6 +25,8 @@ class NotificationAdmin(admin.ModelAdmin):
     pass
 
 class Message(models.Model):
+    class Meta:
+        db_table ="roleplaying_comms_message"
     source = models.ForeignKey(Profile,verbose_name = "Source Profile",on_delete=models.RESTRICT,related_name='+')
     dest = models.ForeignKey(Profile,verbose_name = "Dest Profile",on_delete=models.RESTRICT,related_name='+')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Message Created')
@@ -42,6 +46,8 @@ class MessageAdmin(admin.ModelAdmin):
     pass
 
 class MessageContents(models.Model):
+    class Meta:
+        db_table ="roleplaying_comms_message_contents"
     message = models.ForeignKey(Message,verbose_name = "Parent Message",on_delete=models.RESTRICT)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
     updated = models.DateTimeField(null=True,editable=False,verbose_name='Recieved')

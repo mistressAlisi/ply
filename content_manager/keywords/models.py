@@ -4,6 +4,8 @@ from django.contrib import admin
 
 
 class Keyword(models.Model):
+    class Meta:
+        db_table = "content_manager_keywords_keyword"
     keyword = models.TextField(max_length=200,verbose_name='Keyword')
     hash =  models.TextField(max_length=200,verbose_name='Hash')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Item Created')

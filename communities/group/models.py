@@ -8,6 +8,8 @@ import uuid
 # Create your models here.
 
 class Group(models.Model):
+    class Meta:
+        db_table = "communities_group_group"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     creator = models.ForeignKey(User,verbose_name = "User (Creator)",on_delete=models.CASCADE)
     creator_profile = models.ForeignKey(Profile,verbose_name = "Profile (Creator)",on_delete=models.CASCADE)
@@ -33,6 +35,8 @@ class GroupAdmin(admin.ModelAdmin):
     
 
 class GroupKeywords(models.Model):
+    class Meta:
+        db_table = "communities_group_group_keywords"
     group = models.ForeignKey(Group,verbose_name='Groups',on_delete=models.RESTRICT)
     keyword = models.ForeignKey(Keyword,verbose_name='keyword',on_delete=models.RESTRICT)
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -48,6 +52,8 @@ class GroupKeywordsAdmin(admin.ModelAdmin):
 
 
 class GroupTitle(models.Model):
+    class Meta:
+        db_table = "communities_group_group_title"
     group = models.ForeignKey(Group,verbose_name='Group',on_delete=models.RESTRICT)
     title = models.TextField(max_length=200,verbose_name='Title')
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -63,6 +69,8 @@ class GroupTitleAdmin(admin.ModelAdmin):
 
 
 class GroupMember(models.Model):
+    class Meta:
+        db_table = "communities_group_group_memeber"
     group = models.ForeignKey(Group,verbose_name='Group',on_delete=models.RESTRICT)
     title = models.ForeignKey(GroupTitle,verbose_name='Group Title',on_delete=models.RESTRICT)
     profile = models.ForeignKey(Profile,verbose_name='Profile',on_delete=models.CASCADE)

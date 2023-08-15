@@ -5,6 +5,8 @@ from core.dynapages.models import Page
 import uuid
 # Create your models here.
 class Profile(models.Model):
+    class Meta:
+        db_table = "communities_profiles_profile"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     placeholder = models.BooleanField(verbose_name="Placeholder FLAG",default=False)
     profile_id = models.TextField(max_length=200,verbose_name='Profile ID',unique=True)
@@ -59,6 +61,8 @@ class ProfileAdmin(admin.ModelAdmin):
     
 # The ticket system is used to keep track of support / behaviour requests on behalf of bad profiles or actors. Or in case a user needs support:
 class TicketType(models.Model):
+    class Meta:
+        db_table = "communities_profiles_ticket_type"
     type_id = models.TextField(max_length=200,verbose_name='Type ID')
     label = models.TextField(max_length=200,verbose_name='Type Label')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Type Created')
@@ -73,6 +77,8 @@ class TicketTypeAdmin(admin.ModelAdmin):
 
 
 class Ticket(models.Model):
+    class Meta:
+        db_table = "communities_profiles_ticket"
     type = models.ForeignKey(TicketType,verbose_name = 'Ticket Type',on_delete=models.RESTRICT)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Ticket Created')
@@ -93,6 +99,8 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class ProfilePermission(models.Model):
+    class Meta:
+        db_table = "communities_profiles_profile_permission"
     profile = models.ForeignKey(Profile,verbose_name='Profile',on_delete=models.RESTRICT,related_name="+")
     visitor = models.ForeignKey(Profile,verbose_name='Visitor',on_delete=models.RESTRICT,null=True,related_name="+")
     group = models.ForeignKey('group.Group',verbose_name='Group',on_delete=models.RESTRICT,null=True)
@@ -117,10 +125,12 @@ class ProfilePermissionAdmin(admin.ModelAdmin):
 
 
 class ProfilePageNode(models.Model):
+
     profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT,null=True)
     dynapage = models.ForeignKey(Page,on_delete=models.RESTRICT,blank=True,null=True,verbose_name="DynaPage Node/Page")
     node_type = models.TextField(verbose_name='Dynapage Node Type',null=True)
     class Meta:
+        db_table = "communities_profiles_profile_page_node"
         constraints = [
             models.UniqueConstraint(fields=['profile','node_type'], name='unique_dynapage_node')
     ]

@@ -37,9 +37,9 @@ DB_PORT='5432'
 read  -p "Port? [5432]: " nDB_PORT
 DB_PORT=${nDB_PORT:-$DB_PORT}
 
-DB_NAME='ply'
-read  -p "DB name? [ply]: " nDB_NAME
-DB_NAME=${nDB_NAME:-$DB_NAME}
+db_table='ply'
+read  -p "DB name? [ply]: " ndb_table
+db_table=${ndb_table:-$db_table}
 
 DB_USER='ply'
 read  -p "User name? [ply]: " nDB_USER
@@ -49,7 +49,7 @@ DB_PW='ply'
 read -s -p "User Password? (will not be echoed) [ply]: " nDB_PW
 echo "\n"
 DB_PW=${nDB_PW:-$DB_PW}
-echo "*** Connection String is: pgsql://$DB_USER@$DB_HOST:$DB_PORT/$DB_NAME ***"
+echo "*** Connection String is: pgsql://$DB_USER@$DB_HOST:$DB_PORT/$db_table ***"
 read -n1 -p "Is this correct? (y/n): " correct
 if [ $correct == 'y' ];
 then
@@ -59,7 +59,7 @@ echo "\n"
 done;
 echo "Generating Config file 'config/settings.ini'..."
 cp setup/INI_DEF config/settings.ini
-sed -i "s/DBNAME/${DB_NAME}/" config/settings.ini
+sed -i "s/DBNAME/${db_table}/" config/settings.ini
 sed -i "s/DBUSER/${DB_USER}/" config/settings.ini
 sed -i "s/DBPW/${DB_PW}/" config/settings.ini
 sed -i "s/DBHOST/${DB_HOST}/" config/settings.ini

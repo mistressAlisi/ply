@@ -22,6 +22,7 @@ class Level(models.Model):
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     class Meta:
+        db_table ="roleplaying_exp_level"
         constraints = [
             models.UniqueConstraint(fields=['community', 'level'], name='unique_level'),
         ]
@@ -39,6 +40,7 @@ class LevelScript(models.Model):
     level = models.ForeignKey(Level,verbose_name = "Level Reached",on_delete=models.RESTRICT)
     script = models.ForeignKey(Script,verbose_name = "Script Callable",on_delete=models.RESTRICT)
     class Meta:
+        db_table ="roleplaying_exp_level_script"
         constraints = [
             models.UniqueConstraint(fields=['community','classtype','script', 'level'], name='unique_class_level_script'),
         ]
@@ -50,6 +52,7 @@ class LevelScriptAdmin(admin.ModelAdmin):
     pass
 
 class ProfileExperience(models.Model):
+
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT)
@@ -59,6 +62,7 @@ class ProfileExperience(models.Model):
     statpoints = models.IntegerField(verbose_name='Stat Points Available',default=0)
     skillpoints = models.IntegerField(verbose_name='Skill Points Available',default=0)
     class Meta:
+        db_table = "roleplaying_exp_profile_experience"
         constraints = [
             models.UniqueConstraint(fields=['community','profile'], name='unique_profile_exp'),
         ]
@@ -103,6 +107,8 @@ class ProfileExperienceAdmin(admin.ModelAdmin):
 
 
 class ProfileExperienceHistory(models.Model):
+    class Meta:
+        db_table ="roleplaying_exp_profile_experience_history"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT)

@@ -6,6 +6,8 @@ import uuid
 
 
 class Templates(models.Model):
+    class Meta:
+        db_table ="core_dynapages_templates"
     template_id = models.TextField(max_length=200,verbose_name='Template ID')
     label = models.TextField(max_length=200,verbose_name='Template Label')
     filename = models.TextField(max_length=200,verbose_name='Template Filename')
@@ -29,6 +31,8 @@ class TemplatesAdmin(admin.ModelAdmin):
     
 
 class Widget(models.Model):
+    class Meta:
+        db_table ="core_dynapages_widgets"
     widget_uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     widget_id = models.TextField(max_length=200,verbose_name="Widget ID",default="",unique=True)
     widget_name = models.TextField(max_length=200,verbose_name="Widget Name",default="",unique=True)
@@ -72,6 +76,8 @@ class WidgetAdmin(admin.ModelAdmin):
     
     
 class Page(models.Model):
+    class Meta:
+        db_table ="core_dynapages_page"
     page_id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     slug = models.TextField(max_length=200,verbose_name='Page slug')
     label = models.TextField(max_length=200,verbose_name='Page Label')
@@ -89,6 +95,8 @@ class PageAdmin(admin.ModelAdmin):
  
  
 class PageWidget(models.Model):
+    class Meta:
+        db_table ="core_dynapages_page_widget"
     pagewidget_id = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     page = models.ForeignKey(Page,verbose_name = "DynaPage",on_delete=models.CASCADE)
     widget = models.ForeignKey(Widget,verbose_name = "Widget",on_delete=models.CASCADE)

@@ -9,6 +9,8 @@ import uuid,json
 
 # Create your models here.
 class GalleryType(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_type"
     type_id = models.TextField(max_length=200,verbose_name='Type ID')
     label = models.TextField(max_length=200,verbose_name='Type Label')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Type Created')
@@ -22,6 +24,8 @@ class GalleryTypeAdmin(admin.ModelAdmin):
     pass
 
 class GalleryArtworkCat(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_artwork_cat"
     cat_id = models.TextField(max_length=200,verbose_name='Cat ID')
     label = models.TextField(max_length=200,verbose_name='Cat Label')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Cat Created')
@@ -36,6 +40,8 @@ class GalleryArtworkCatAdmin(admin.ModelAdmin):
 
 
 class GalleryCatGroups(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_cat_groups"
     group_id = models.TextField(max_length=200,verbose_name='Group ID')
     label = models.TextField(max_length=200,verbose_name='Group Label')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Group Created')
@@ -50,6 +56,8 @@ class GalleryCatGroupsAdmin(admin.ModelAdmin):
     pass
 
 class GalleryCatGroupObject(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_cat_group_object"
     group = models.ForeignKey(GalleryCatGroups,verbose_name='Gallery Category Parent Group',on_delete=models.CASCADE)
     category = models.ForeignKey(GalleryArtworkCat,verbose_name='Gallery Category',on_delete=models.CASCADE)
     active = models.BooleanField(verbose_name="Item Active Flag",default=True)
@@ -65,6 +73,8 @@ class GalleryCatGroupObjectAdmin(admin.ModelAdmin):
 
 
 class GalleryItemTypes(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_item_types"
     type_id = models.TextField(max_length=200,verbose_name='Type ID')
     label = models.TextField(max_length=200,verbose_name='Type Label')
     mimetypes = models.TextField(verbose_name='Type Mimetypes')
@@ -79,6 +89,8 @@ class GalleryItemTypesAdmin(admin.ModelAdmin):
 
 
 class GalleryItem(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_item"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     item_hash = models.TextField(max_length=200,verbose_name='Item Hash')
     title = models.TextField(max_length=200,verbose_name='Item Title')
@@ -121,6 +133,8 @@ class GalleryItemAdmin(admin.ModelAdmin):
     pass
 
 class GalleryItemFile(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_item_file"
     name = models.TextField(verbose_name='File Name')
     item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
     hash = models.TextField(verbose_name='File Hash')
@@ -147,6 +161,8 @@ class GalleryItemFileAdmin(admin.ModelAdmin):
     pass
 
 class GalleryCollection(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_collection"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     collection_id = models.TextField(max_length=200,verbose_name='Collection ID')
     label = models.TextField(max_length=200,verbose_name='Collection Label')
@@ -165,6 +181,8 @@ class GalleryCollectionAdmin(admin.ModelAdmin):
     pass
 
 class GalleryCollectionItems(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_collection_items"
     collection = models.ForeignKey(GalleryCollection,verbose_name='Collection',on_delete=models.CASCADE)
     item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -180,6 +198,8 @@ class GalleryCollectionItemsAdmin(admin.ModelAdmin):
     
     
 class GalleryItemCategory(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_item_category"
     item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
     category = models.ForeignKey(GalleryArtworkCat,verbose_name='category',on_delete=models.RESTRICT)
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -195,6 +215,8 @@ class GalleryItemCategoryAdmin(admin.ModelAdmin):
     pass
 
 class GalleryItemKeyword(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_item_keyword"
     item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.RESTRICT)
     keyword = models.ForeignKey(Keyword,verbose_name='keyword',on_delete=models.RESTRICT)
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -209,6 +231,8 @@ class GalleryItemKeywordAdmin(admin.ModelAdmin):
     pass
 
 class GalleryItemComments(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_item_comments"
     item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.RESTRICT)
     comment = models.TextField(verbose_name='Comment')
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -227,6 +251,8 @@ class GalleryItemCommentsAdmin(admin.ModelAdmin):
      
      
 class GalleryCollectionPermission(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_collection_permission"
     collection = models.ForeignKey(GalleryCollection,verbose_name="Gallery Collection",on_delete=models.CASCADE)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.RESTRICT,null=True,blank=True)
     profile = models.ForeignKey(Profile,verbose_name='Profile',on_delete=models.RESTRICT,null=True)
@@ -257,6 +283,8 @@ class GalleryCollectionPermissionAdmin(admin.ModelAdmin):
      
 
 class GalleryTempFile(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_temp_file"
     name = models.TextField(verbose_name='File Name')
     profile = models.ForeignKey(Profile,verbose_name='Profile',on_delete=models.RESTRICT,null=True)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
@@ -282,6 +310,8 @@ class GalleryTempFileAdmin(admin.ModelAdmin):
     pass
 
 class GalleryTempFileThumb(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_temp_file_thumb"
     file = models.ForeignKey(GalleryTempFile,verbose_name='Item',on_delete=models.CASCADE)
     path = models.TextField(verbose_name='File Path',blank=True,null=True)
     file_size = models.FloatField(verbose_name='File Size',default=0)
@@ -299,6 +329,8 @@ class GalleryTempFileThumbAdmin(admin.ModelAdmin):
     pass
      
 class GalleryTempFileCollections(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_temp_file_collections"
     collection = models.ForeignKey(GalleryCollection,verbose_name='Collection',on_delete=models.CASCADE)
     file = models.ForeignKey(GalleryTempFile,verbose_name='Item',on_delete=models.CASCADE)
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -309,6 +341,8 @@ class GalleryTempFileCollections(models.Model):
 
 
 class GalleryTempFileKeywords(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_temp_file_keywords"
     file = models.ForeignKey(GalleryTempFile,verbose_name='Temp File',on_delete=models.CASCADE)
     keyword = models.ForeignKey(Keyword,verbose_name='keyword',on_delete=models.CASCADE)
     order = models.IntegerField(verbose_name='Order Column',default=0)
@@ -324,10 +358,11 @@ class GalleryFavourite(models.Model):
     profile = models.ForeignKey(Profile,verbose_name='Item',on_delete=models.RESTRICT)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
-    archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    archived = models.BooleanField(verbose_name="Archived FLAG",default=False,null=True)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     flagged = models.BooleanField(verbose_name="FLAGGED",default=False)
     class Meta:
+        db_table =  "media_gallery_core_favourite"
         constraints = [
             models.UniqueConstraint(fields=['item', 'profile','community'], name='unique_favourite')
         ]
@@ -339,6 +374,8 @@ class GalleryFavouriteAdmin(admin.ModelAdmin):
     pass
 
 class GalleryItemsByCollectionPermission(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_items_by_collection"
     gcp_id = models.IntegerField(verbose_name="Collection Permission ID")
     gcp_updated = models.DateTimeField(verbose_name="Collection Permission Updated")
     gcp_owner = models.BooleanField(verbose_name="Collection Permission Is Owner?")
@@ -419,11 +456,13 @@ class GalleryItemsByCollectionPermission(models.Model):
         return f"Gallery Permissions Item: collection.item.file: {self.collection.label}.{self.item.item_hash}.{self.file.name}"
     class Meta:
         managed = False
-        db_table = 'gallery_itemsbycollectionpermission'
+        db_table = 'media_gallery_core_items_by_collection_permission'
 
 
 
 class GalleryItemsByFavourites(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_items_by_favourites"
     gci_title = models.CharField(verbose_name="Gallery Item Title",max_length=200)
     gci_descr = models.CharField(verbose_name="Gallery Item Description",max_length=200)
     gci_details = models.CharField(verbose_name="Gallery Item Details Style",max_length=200)
@@ -480,4 +519,4 @@ class GalleryItemsByFavourites(models.Model):
         return f"Gallery Favourite Item: item.file in item.id: {self.item.item_hash}.{self.gci_uuid} for profile {self.profile_slug}"
     class Meta:
         managed = False
-        db_table = 'gallery_itemsbyfavouriteview'
+        db_table = 'media_gallery_core_items_by_favourite_view'
