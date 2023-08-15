@@ -216,8 +216,24 @@ MARTOR_TOOLBAR_BUTTONS = [
     'direct-mention', 'toggle-maximize', 'help'
 ]
 
+# Django Bootstrap 5 settings:
+BOOTSTRAP5= {
+    "javascript_in_head": True,
+    "css_url": {
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css",
+        "integrity": "sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9",
+        "crossorigin": "anonymous",
+    },
 
-BOOTSTRAP5= {"javascript_in_head": True }
+    # The complete URL to the Bootstrap JavaScript file
+    "javascript_url": {
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js",
+        "integrity": "sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm",
+        "crossorigin": "anonymous",
+    }
+}
+
+
 # To setup the martor editor with title label or not (default is False)
 MARTOR_ENABLE_LABEL = False
 
@@ -301,7 +317,7 @@ PLY_GALLERY_PLUGINS = [
     ]
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]
-PLY_VERSION = "2023.03.1405"
+PLY_VERSION = "2023.08.1505"
 try:
     PLY_HOSTNAME = socket.gethostname()
 except:
@@ -329,4 +345,5 @@ PLY_DYNAPAGES_PROFILE_TEMPLATE=config("PLY_DYNAPAGES_PROFILE_TEMPLATE")
 PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET")
 PLY_DYNAPAGES_DASHBOARD_TEMPLATE=config("PLY_DYNAPAGES_DASHBOARD_TEMPLATE")
 PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET")
+PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE=config("PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE",default="communities-community-installComplete-cover")
 GRAPPELLI_ADMIN_TITLE="PLY Admin @ "+PLY_HOSTNAME

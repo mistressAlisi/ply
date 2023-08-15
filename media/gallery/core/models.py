@@ -374,8 +374,6 @@ class GalleryFavouriteAdmin(admin.ModelAdmin):
     pass
 
 class GalleryItemsByCollectionPermission(models.Model):
-    class Meta:
-        db_table =  "media_gallery_core_items_by_collection"
     gcp_id = models.IntegerField(verbose_name="Collection Permission ID")
     gcp_updated = models.DateTimeField(verbose_name="Collection Permission Updated")
     gcp_owner = models.BooleanField(verbose_name="Collection Permission Is Owner?")
@@ -456,13 +454,12 @@ class GalleryItemsByCollectionPermission(models.Model):
         return f"Gallery Permissions Item: collection.item.file: {self.collection.label}.{self.item.item_hash}.{self.file.name}"
     class Meta:
         managed = False
-        db_table = 'media_gallery_core_items_by_collection_permission'
+        db_table = 'media_gallery_core_collection_permission_view'
 
 
 
 class GalleryItemsByFavourites(models.Model):
-    class Meta:
-        db_table =  "media_gallery_core_items_by_favourites"
+
     gci_title = models.CharField(verbose_name="Gallery Item Title",max_length=200)
     gci_descr = models.CharField(verbose_name="Gallery Item Description",max_length=200)
     gci_details = models.CharField(verbose_name="Gallery Item Details Style",max_length=200)

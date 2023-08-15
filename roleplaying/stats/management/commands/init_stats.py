@@ -6,8 +6,8 @@ from ply import system_uuids,settings
 from django.contrib.auth.models import User
 import os
 
-from core.dynapages import Templates,Page,Widget,PageWidget
-from communities.community import Community
+from core.dynapages.models import Templates,Page,Widget,PageWidget
+from communities.community.models import Community
 from roleplaying.stats.models import BaseStat,ClassType
 
 class Command(BaseCommand):

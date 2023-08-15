@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Find all templates:
         for app in ply.settings.INSTALLED_APPS:
-            template_dir  = os.getcwd() + f"/{app}/templates/dynapages"
+            template_dir  = os.getcwd() + f"/{app.replace('.','/')}/templates/dynapages"
             if (os.path.isdir(template_dir)):
                 templates =  os.listdir(template_dir)
                 for template in templates:

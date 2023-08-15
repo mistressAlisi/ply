@@ -4,8 +4,8 @@ from ply import system_uuids,settings
 import os
 import ply
 from django.utils.text import slugify
-from communities.community import Community,VHost
-
+from communities.community.models import Community,VHost
+from core.dynapages.models import Page
 class Command(BaseCommand):
     help = 'Creates a Community and attaches it to a VHost.'
 
@@ -22,6 +22,8 @@ class Command(BaseCommand):
             slug = dslug
         self.stdout.write(self.style.SUCCESS(f"Creating Community '{name}' (@{slug})...."))
         com = Community(name=name,hash=slug)
+        page = Page.objects.get(page_id=system_uuids.install_complete_uuid)
+        com.dynapage = page
         com.save()
         self.stdout.write(self.style.SUCCESS(f"Creating Default VHost for '127.0.0.1' for @{slug}..."))
         vh = VHost(community=com,hostname='127.0.0.1')
@@ -29,4 +31,11 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Creating Default VHost for 'localhost' for @{slug}..."))
         vh = VHost(community=com,hostname='localhost')
         vh.save()
+        newvhost = "n"
+        while (newvhost != ""):
+            newvhost = str(input(f"Enter hostname for additional VHost or press enter to continue: "))
+            if (newvhost != "") :
+                self.stdout.write(self.style.SUCCESS(f"Creating Default VHost for '{newvhost}' for @{slug}..."))
+                vh = VHost(community=com, hostname=newvhost)
+                vh.save()
         self.stdout.write(self.style.SUCCESS('Success!'))
