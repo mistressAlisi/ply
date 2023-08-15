@@ -1,19 +1,19 @@
-DROP VIEW IF EXISTS  stream_messageview;
-CREATE OR REPLACE VIEW stream_messageview  AS SELECT DISTINCT
-	stream_streammessage.uuid AS id,
-	stream_stream.community_id AS community_id,
-	stream_stream.uuid AS stream_id,
-	stream_stream.created AS stream_created,
-	stream_stream."type" AS stream_type,
-	stream_stream.icon AS stream_icon,
-	stream_stream.shares AS stream_shares,
-	stream_stream.views AS stream_views,
-	stream_stream.nodes AS stream_nodes,
-	stream_stream.archived AS stream_archived,
-	stream_stream.hidden AS stream_hidden,
-	stream_stream."system" AS stream_system,
-	stream_stream.group_id AS stream_group_id,
-	stream_stream.profile_id AS stream_profile_id,
+DROP VIEW IF EXISTS  communities_stream_message_view;
+CREATE OR REPLACE VIEW communities_stream_message_view  AS SELECT DISTINCT
+	communities_stream_stream_message.uuid AS id,
+	communities_stream_stream.community_id AS community_id,
+	communities_stream_stream.uuid AS stream_id,
+	communities_stream_stream.created AS stream_created,
+	communities_stream_stream."type" AS stream_type,
+	communities_stream_stream.icon AS stream_icon,
+	communities_stream_stream.shares AS stream_shares,
+	communities_stream_stream.views AS stream_views,
+	communities_stream_stream.nodes AS stream_nodes,
+	communities_stream_stream.archived AS stream_archived,
+	communities_stream_stream.hidden AS stream_hidden,
+	communities_stream_stream."system" AS stream_system,
+	communities_stream_stream.group_id AS stream_group_id,
+	communities_stream_stream.profile_id AS stream_profile_id,
 	profiles.uuid AS profile_uuid,
 	profiles.profile_id AS profile_id,
 	profiles.created AS profile_created,
@@ -34,32 +34,32 @@ CREATE OR REPLACE VIEW stream_messageview  AS SELECT DISTINCT
 	profiles.frozen AS profile_frozen,
 	profiles."system" AS profile_system,
 	profiles.blocked AS profile_blocked,
-	stream_streammessage.uuid AS message_uuid,
-	stream_streammessage.author_id AS author_id,
-	stream_streammessage.created AS message_created,
-	stream_streammessage."type" AS message_type,
-	stream_streammessage.icon AS message_icon,
-	stream_streammessage.shares AS shares,
-	stream_streammessage.views AS views,
-	stream_streammessage.contents_text AS contents_text,
-	stream_streammessage.contents_json AS contents_json,
-	stream_streammessage.contents_bin AS contents_bin,
-	stream_streammessage.likes AS likes,
-	stream_streammessage.reposts AS reposts,
-	stream_streammessage.threads AS threads,
-	stream_streammessage.replies AS replies,
-	stream_streammessage.contents_text_parsed AS contents_text_parsed,
-	stream_streammessage.references_id AS references_id
+	communities_stream_stream_message.uuid AS message_uuid,
+	communities_stream_stream_message.author_id AS author_id,
+	communities_stream_stream_message.created AS message_created,
+	communities_stream_stream_message."type" AS message_type,
+	communities_stream_stream_message.icon AS message_icon,
+	communities_stream_stream_message.shares AS shares,
+	communities_stream_stream_message.views AS views,
+	communities_stream_stream_message.contents_text AS contents_text,
+	communities_stream_stream_message.contents_json AS contents_json,
+	communities_stream_stream_message.contents_bin AS contents_bin,
+	communities_stream_stream_message.likes AS likes,
+	communities_stream_stream_message.reposts AS reposts,
+	communities_stream_stream_message.threads AS threads,
+	communities_stream_stream_message.replies AS replies,
+	communities_stream_stream_message.contents_text_parsed AS contents_text_parsed,
+	communities_stream_stream_message.references_id AS references_id
 FROM
-	stream_stream
+	communities_stream_stream
 	FULL OUTER JOIN
-	stream_streammessage
+	communities_stream_stream_message
 	ON
-		stream_stream.uuid = stream_streammessage.posted_in_id OR
-		stream_stream.uuid = stream_streammessage.stream_id
+		communities_stream_stream.uuid = communities_stream_stream_message.posted_in_id OR
+		communities_stream_stream.uuid = communities_stream_stream_message.stream_id
 	INNER JOIN
-	profiles_profile AS profiles
+	communities_profiles_profile AS profiles
 	ON
-		stream_stream.profile_id = profiles.uuid;
+		communities_stream_stream.profile_id = profiles.uuid;
 
 

@@ -9,6 +9,8 @@ from communities.profiles.models import Profile
 
 # Base Stats definitions:
 class BaseStat(models.Model):
+    class Meta:
+        db_table ="roleplaying_stats_base_stat"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     name = models.TextField(verbose_name='Name')
@@ -32,6 +34,8 @@ class BaseStatAdmin(admin.ModelAdmin):
 
 # Apply each Stat, per Profile, per Community - and track it's state:
 class ProfileStat(models.Model):
+    class Meta:
+        db_table ="roleplaying_stats_profile_stat"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile  = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT)
@@ -54,6 +58,8 @@ class ProfileStatAdmin(admin.ModelAdmin):
 
 # Track each stat change using a history table linked to the aforementioned profile/community/stat table defined above:
 class ProfileStatHistory(models.Model):
+    class Meta:
+        db_table ="roleplaying_stats_profile_stat_history"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile  = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT)
@@ -74,6 +80,8 @@ class ProfileStatHistoryAdmin(admin.ModelAdmin):
 
 # Class types for player profiles
 class ClassType(models.Model):
+    class Meta:
+        db_table ="roleplaying_stats_class_type"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     name = models.TextField(verbose_name='Name')
@@ -95,6 +103,8 @@ class ClassTypeAdmin(admin.ModelAdmin):
 
 # Classes have stats applied to them:
 class ClassTypeStat(models.Model):
+    class Meta:
+        db_table ="roleplaying_stats_class_type_stat"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     classtype  = models.ForeignKey(ClassType,verbose_name = "ClassType",on_delete=models.RESTRICT)

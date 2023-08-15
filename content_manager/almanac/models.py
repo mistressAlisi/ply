@@ -11,6 +11,8 @@ from core.dynapages import models as dynamodels
 
 
 class AlmanacPage(models.Model):
+    class Meta:
+        db_table ="content_manager_almanac_page"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     page_id = models.TextField(max_length=200,verbose_name='Page ID',unique=True)
     title = models.TextField(max_length=200,verbose_name='Page Title')
@@ -36,6 +38,8 @@ class PageAdmin(admin.ModelAdmin):
     pass
 
 class AlmanacPageText(models.Model):
+    class Meta:
+        db_table ="content_manager_almanac_page_text"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     page = models.ForeignKey(AlmanacPage,verbose_name = "AlmanacPage",on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Page Text Created')
@@ -52,6 +56,8 @@ class PageTextAdmin(admin.ModelAdmin):
 
 
 class AlmanacMenuCategory(models.Model):
+    class Meta:
+        db_table ="content_manager_almanac_menu_category"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     category_id = models.TextField(max_length=200,verbose_name='MenuCat ID',unique=True)
     icon = models.TextField(max_length=200,verbose_name='MenuCat Icon')
@@ -68,6 +74,8 @@ class AlmanacMenuCategoryAdmin(admin.ModelAdmin):
     pass
 
 class AlmanacMenuCategoryEntry(models.Model):
+    class Meta:
+        db_table ="content_manager_almanac_menu_category_entry"
     category = models.ForeignKey(AlmanacMenuCategory,verbose_name = "AlmanacMenu Category",on_delete=models.CASCADE)
     page = models.ForeignKey(AlmanacPage,verbose_name = "AlmanacPage",on_delete=models.CASCADE)
     order = models.IntegerField(verbose_name='Order Count',default=0)

@@ -1,122 +1,53 @@
-DROP VIEW IF EXISTS "community_profilepercommunityview";
-CREATE OR REPLACE VIEW "community_profilepercommunityview" AS  SELECT DISTINCT
-community_communityprofile.community_id, 
-community_community.created AS joined, 
-community_community."name" AS community_name, 
-community_community.uuid AS community_uuid,
-profiles_profile.uuid, 
-profiles_profile.profile_id, 
-profiles_profile.created AS profile_created, 
-profiles_profile.updated AS profile_updated, 
-profiles_profile.creator_id AS profile_creator,
-profiles_profile.last_seen, 
-profiles_profile.age, 
-profiles_profile."name",
-profiles_profile.status, 
-profiles_profile.species, 
-profiles_profile.introduction, 
-profiles_profile."level", 
-profiles_profile."max_HP", 
-profiles_profile."HP", 
-profiles_profile."max_MP", 
-profiles_profile."max_STUN", 
-profiles_profile."STUN", 
-profiles_profile."SHIELD", 
-profiles_profile."MP", 
-profiles_profile."max_SHIELD", 
-profiles_profile."max_STA", 
-profiles_profile.slug, 
-profiles_profile.pronouns, 
-profiles_profile."STA", 
-profiles_profile.avatar, 
-profiles_profile.gender, 
-profiles_profile.posts, 
-profiles_profile.views, 
-profiles_profile.nodes, 
-profiles_profile.archived, 
-profiles_profile.blocked, 
-profiles_profile.frozen, 
-profiles_profile."system", 
-profiles_profile.creator_id, 
-profiles_profile.dynapage_id
+DROP VIEW IF EXISTS "community_profile_per_community_view";
+CREATE OR REPLACE VIEW "community_profile_per_community_view" AS  SELECT DISTINCT
+communities_community_profile.community_id,
+communities_community_community.created AS joined,
+communities_community_community."name" AS community_name,
+communities_community_community.uuid AS community_uuid,
+communities_profiles_profile.uuid,
+communities_profiles_profile.profile_id,
+communities_profiles_profile.created AS profile_created,
+communities_profiles_profile.updated AS profile_updated,
+communities_profiles_profile.creator_id AS profile_creator,
+communities_profiles_profile.last_seen,
+communities_profiles_profile.age,
+communities_profiles_profile."name",
+communities_profiles_profile.status,
+communities_profiles_profile.species,
+communities_profiles_profile.introduction,
+communities_profiles_profile."level",
+communities_profiles_profile."max_HP",
+communities_profiles_profile."HP",
+communities_profiles_profile."max_MP",
+communities_profiles_profile."max_STUN",
+communities_profiles_profile."STUN",
+communities_profiles_profile."SHIELD",
+communities_profiles_profile."MP",
+communities_profiles_profile."max_SHIELD",
+communities_profiles_profile."max_STA",
+communities_profiles_profile.slug,
+communities_profiles_profile.pronouns,
+communities_profiles_profile."STA",
+communities_profiles_profile.avatar,
+communities_profiles_profile.gender,
+communities_profiles_profile.posts,
+communities_profiles_profile.views,
+communities_profiles_profile.nodes,
+communities_profiles_profile.archived,
+communities_profiles_profile.blocked,
+communities_profiles_profile.frozen,
+communities_profiles_profile."system",
+communities_profiles_profile.creator_id,
+communities_profiles_profile.dynapage_id
 FROM
-community_communityprofile
+communities_community_profile
 INNER JOIN
-community_community
-ON 
-community_communityprofile.community_id = community_community.uuid
+communities_community_community
+ON
+communities_community_profile.community_id = communities_community_community.uuid
 INNER JOIN
-profiles_profile
-ON 
-community_communityprofile.profile_id = profiles_profile.uuid
+communities_profiles_profile
+ON
+communities_community_profile.profile_id = communities_profiles_profile.uuid
 WHERE
-profiles_profile.placeholder = false;
-
-DROP VIEW IF EXISTS "community_friend_explvl_view";
-CREATE VIEW "community_friend_explvl_view" AS SELECT
-    community_friend.id as id,
-	community_friend.friend1_id,
-	community_friend.friend2_id,
-	community_friend.community_id,
-	exp_profile_lvlview.profile_id,
-	exp_profile_lvlview.created,
-	exp_profile_lvlview.updated,
-	exp_profile_lvlview.last_seen,
-	exp_profile_lvlview.age,
-	exp_profile_lvlview."name",
-	exp_profile_lvlview.status,
-	exp_profile_lvlview.species,
-	exp_profile_lvlview.introduction,
-	exp_profile_lvlview.pronouns,
-	exp_profile_lvlview.slug,
-	exp_profile_lvlview.gender,
-	exp_profile_lvlview.avatar,
-	exp_profile_lvlview."system",
-	exp_profile_lvlview.level_id,
-	exp_profile_lvlview.classtype_id,
-	exp_profile_lvlview.class_name,
-	exp_profile_lvlview.expr,
-	exp_profile_lvlview."level" AS current_level,
-	community_friend.approved,
-	community_friend.approved_flag
-FROM
-	exp_profile_lvlview
-	JOIN
-	community_friend
-	ON
-		exp_profile_lvlview.uuid = community_friend.friend2_id;
-
-
-DROP VIEW IF EXISTS "community_friend2_explvl_view";
-CREATE VIEW "community_friend2_explvl_view" AS SELECT
-    community_friend.id as id,
-	community_friend.friend1_id,
-	community_friend.friend2_id,
-	community_friend.community_id,
-	exp_profile_lvlview.profile_id,
-	exp_profile_lvlview.created,
-	exp_profile_lvlview.updated,
-	exp_profile_lvlview.last_seen,
-	exp_profile_lvlview.age,
-	exp_profile_lvlview."name",
-	exp_profile_lvlview.status,
-	exp_profile_lvlview.species,
-	exp_profile_lvlview.introduction,
-	exp_profile_lvlview.pronouns,
-	exp_profile_lvlview.slug,
-	exp_profile_lvlview.gender,
-	exp_profile_lvlview.avatar,
-	exp_profile_lvlview."system",
-	exp_profile_lvlview.level_id,
-	exp_profile_lvlview.classtype_id,
-	exp_profile_lvlview.class_name,
-	exp_profile_lvlview.expr,
-	exp_profile_lvlview."level" AS current_level,
-	community_friend.approved,
-	community_friend.approved_flag
-FROM
-	exp_profile_lvlview
-	JOIN
-	community_friend
-	ON
-		exp_profile_lvlview.uuid = community_friend.friend2_id;
+communities_profiles_profile.placeholder = false;

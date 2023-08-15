@@ -10,12 +10,14 @@ from communities.group.models import Group
 
 
 class StreamType(models.Model):
+
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.RESTRICT,null=True)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Type Created')
     name = models.TextField(verbose_name='Type Name',null=True,blank=True)
     descr = models.TextField(verbose_name='Type Descr',null=True,blank=True)
     class Meta:
+        db_table = "communities_stream.stream_type"
         constraints = [
             models.UniqueConstraint(fields=['name','community'], name='unique_stream_type')
     ]
@@ -54,6 +56,7 @@ class Stream(models.Model):
     midpoint = models.IntegerField(verbose_name='Stream Bkg Midpoint ',default=50)
     angle = models.IntegerField(verbose_name='Stream Bkg Midpoint ',default=90)
     class Meta:
+        db_table = "communities_stream_stream"
         constraints = [
             models.UniqueConstraint(fields=['tag','profile','community'], name='unique_stream_tag')
     ]
@@ -73,6 +76,8 @@ class StreamAdmin(admin.ModelAdmin):
 
 # Stream Suscriber Table:
 class StreamSubscriber(models.Model):
+    class Meta:
+        db_table = "communities_stream_stream_subscriber"
     stream = models.ForeignKey(Stream,verbose_name="Notification",on_delete=models.CASCADE)
     subscriber = models.ForeignKey(Profile,verbose_name = "Subscriber Profile",on_delete=models.RESTRICT,related_name='+')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Notification Inbox Created')
@@ -91,6 +96,8 @@ class StreamSubscriberAdmin(admin.ModelAdmin):
 
 # Stream Messages Table:
 class StreamMessage(models.Model):
+    class Meta:
+        db_table = "communities_stream_stream_message"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Stream Created')
     stream = models.ForeignKey(Stream,verbose_name="Stream",on_delete=models.CASCADE)
@@ -128,6 +135,8 @@ class StreamMessageAdmin(admin.ModelAdmin):
 
 
 class StreamMessageKeywords(models.Model):
+    class Meta:
+        db_table = "communities_stream_stream_message_keywords"
     stream = models.ForeignKey(Stream,verbose_name="Stream",on_delete=models.CASCADE)
     message = models.ForeignKey(StreamMessage,verbose_name="Message",on_delete=models.CASCADE)
     keyword = models.ForeignKey(Keyword,verbose_name="Keyword",on_delete=models.CASCADE)
@@ -141,6 +150,8 @@ class StreamMessageKeywordsAdmin(admin.ModelAdmin):
 
 
 class StreamThread(models.Model):
+    class Meta:
+        db_table = "communities_stream_stream_thread"
     stream = models.ForeignKey(Stream,verbose_name="Stream",on_delete=models.CASCADE)
     hash =  models.TextField(max_length=200,verbose_name='Hash')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Thread Created')
@@ -214,4 +225,4 @@ class MessagesPerStreamView(models.Model):
         return f"Message in Stream View: {self.message_uuid} in stream {self.stream.uuid} in community {self.community.uuid}"
     class Meta:
         managed = False
-        db_table = 'stream_messageview'
+        db_table = 'communities_stream_stream_message_view'

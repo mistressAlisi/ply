@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'dashboard',
     'core.dynapages',
     'communities.profiles',
-    'comms',
+    'roleplaying.comms',
     'communities.stream',
     'communities.group',
     'content_manager.keywords',
@@ -119,7 +119,7 @@ WSGI_APPLICATION = 'ply.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE'),
-        'NAME': config('DB_NAME'),
+        'NAME': config('db_table'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PW'),
         'HOST': config('DB_HOST'),

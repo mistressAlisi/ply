@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib import admin
 # Create your models here.
 class Discipline(models.Model):
+    class Meta:
+        db_table ="content_manager_categories_discipline"
     name = models.TextField(max_length=200,verbose_name='Discipline Name')
     hash =  models.TextField(max_length=200,verbose_name='Hash')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
@@ -39,6 +41,7 @@ class Category(models.Model):
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     class Meta:
+        db_table ="content_manager_categories_category"
         constraints = [
             models.UniqueConstraint(fields=['hash', 'discipline'], name='unique_hashdis')
         ]

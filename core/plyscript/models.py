@@ -19,6 +19,7 @@ class Script(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Script Created/updated')
     body = models.TextField(verbose_name='Script Body')
     class Meta:
+        db_table ="core_plyscript_script"
         constraints = [
             models.UniqueConstraint(fields=['community', 'function_name'], name='unique_funcname'),
             models.UniqueConstraint(fields=['community', 'name'], name='unique_name')
@@ -32,6 +33,7 @@ class ScriptAdmin(admin.ModelAdmin):
     pass
 
 class ScriptRegistry(models.Model):
+
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.CASCADE)
@@ -41,6 +43,7 @@ class ScriptRegistry(models.Model):
     contents_json = models.TextField(verbose_name='Value (JSON)',null=True)
     contents_bin = models.BinaryField(verbose_name='Value (BIN)',null=True)
     class Meta:
+        db_table ="core_plyscript_script_registry"
         constraints = [
             models.UniqueConstraint(fields=['community', 'profile','script','key'], name='unique_keyperpr'),
         ]

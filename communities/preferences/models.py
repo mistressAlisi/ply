@@ -7,6 +7,8 @@ import uuid
 
 # Timezones:
 class Timezone(models.Model):
+    class Meta:
+        db_table = "communities_preferences_timezone"
     tz = models.TextField(verbose_name='TimeZone Code',default='America/New_York')
     timezone = models.TextField(verbose_name='TimeZone Name',default='America/New_York')
     offset = models.TextField(verbose_name='TimeZone Code',default='-05:00')
@@ -20,6 +22,8 @@ class TimezoneAdmin(admin.ModelAdmin):
 
 # Timezones:
 class Theme(models.Model):
+    class Meta:
+        db_table = "communities_preferences_theme"
     theme_id = models.TextField(verbose_name='Theme ID',default='default')
     name = models.TextField(verbose_name='Theme Name',default='Ply Default Theme')
     active = models.BooleanField(verbose_name="Active",default=True)
@@ -32,6 +36,8 @@ class ThemeAdmin(admin.ModelAdmin):
     pass
 
 class Preferences(models.Model):
+    class Meta:
+        db_table = "communities_preferences_preferences"
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     user = models.ForeignKey(User,verbose_name = "User",on_delete=models.CASCADE)
     updated = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Preferences Node Updated')

@@ -10,10 +10,10 @@ BEGIN
         SELECT friend1_id,friend2_id FROM community_friend WHERE community_id = NEW.community_id
         LOOP
             IF iterator.friend1_id != NEW.source_id THEN
-                INSERT INTO notifications_notificationinbox (notification_id,community_id,recipient_id,created,archived,hidden,system,deleted) VALUES (NEW.uuid,NEW.community_id,iterator.friend1_id,current_timestamp,false,false,false,false) ON CONFLICT DO NOTHING;
+                INSERT INTO communities_notifications_notificationsinbox (notification_id,community_id,recipient_id,created,archived,hidden,system,deleted) VALUES (NEW.uuid,NEW.community_id,iterator.friend1_id,current_timestamp,false,false,false,false) ON CONFLICT DO NOTHING;
                 UPDATE profiles_profile SET notifications = profiles_profile.notifications + 1 WHERE uuid = iterator.friend1_id;
             ELSE
-                INSERT INTO notifications_notificationinbox (notification_id,community_id,recipient_id,created,archived,hidden,system,deleted) VALUES (NEW.uuid,NEW.community_id,iterator.friend2_id,current_timestamp,false,false,false,false) ON CONFLICT DO NOTHING;
+                INSERT INTO communities_notifications_notificationsinbox (notification_id,community_id,recipient_id,created,archived,hidden,system,deleted) VALUES (NEW.uuid,NEW.community_id,iterator.friend2_id,current_timestamp,false,false,false,false) ON CONFLICT DO NOTHING;
                 UPDATE profiles_profile SET notifications = profiles_profile.notifications + 1 WHERE uuid = iterator.friend2_id;
             END IF;
     END LOOP;
@@ -24,7 +24,7 @@ BEGIN
     FOR iterator IN 
         SELECT source_id FROM community_follower WHERE community_id = NEW.community_id AND dest_id = NEW.source_id
         LOOP
-            INSERT INTO notifications_notificationinbox (notification_id,community_id,recipient_id,created,archived,hidden,system,deleted) VALUES (NEW.uuid,NEW.community_id,iterator.source_id,current_timestamp,false,false,false,false)  ON CONFLICT DO NOTHING;
+            INSERT INTO communities_notifications_notificationsinbox (notification_id,community_id,recipient_id,created,archived,hidden,system,deleted) VALUES (NEW.uuid,NEW.community_id,iterator.source_id,current_timestamp,false,false,false,false)  ON CONFLICT DO NOTHING;
             UPDATE profiles_profile SET notifications = profiles_profile.notifications + 1 WHERE uuid = iterator.source_id;
 
     END LOOP;
@@ -33,8 +33,8 @@ BEGIN
 END;
 $notifications_sendToInbox$ LANGUAGE plpgsql;
 
-DROP TRIGGER  IF EXISTS  "after_Inst_NotInbox" ON "notifications_notification";
-CREATE TRIGGER "after_Inst_NotInbox" AFTER INSERT ON "notifications_notification"
+DROP TRIGGER  IF EXISTS  "after_Inst_NotInbox" ON "communities_notifications_notifications";
+CREATE TRIGGER "after_Inst_NotInbox" AFTER INSERT ON "communities_notifications_notifications"
 FOR EACH ROW EXECUTE FUNCTION notifications_sendToInbox();
 
 
@@ -49,6 +49,6 @@ BEGIN
 END;
 $mention_sendToInbox$ LANGUAGE plpgsql;
 
-DROP TRIGGER  IF EXISTS  "after_Inst_MenInbox" ON "notifications_mentions";
-CREATE  TRIGGER "after_Inst_MenInbox" AFTER INSERT ON "notifications_mentions"
+DROP TRIGGER  IF EXISTS  "after_Inst_MenInbox" ON "communities_notifications_mentions";
+CREATE  TRIGGER "after_Inst_MenInbox" AFTER INSERT ON "communities_notifications_mentions"
 FOR EACH ROW EXECUTE FUNCTION mention_sendToInbox();
