@@ -7,6 +7,7 @@ Toolkit utilities for interacting with Ply Profiles
 from ply.toolkit.logger import getLogger
 from communities.profiles.models import Profile
 from communities.community.models import ProfilePerCoummunityView
+
 # get_vhost_community: Find the right community node for the given Vhost.
 # To match VHosts, we must at least match the host name, and optionally, the iapddr.
 # 
@@ -24,7 +25,10 @@ def get_active_profile(request):
     :returns: r:Profile object
     """
     if 'profile' not in request.session:
-       profile = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)[0]
+       try:
+           profile = Profile.objects.get(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)
+       except:
+           return None
        request.session['profile'] = str(profile.uuid)
        request.session.modified = True
     else:
