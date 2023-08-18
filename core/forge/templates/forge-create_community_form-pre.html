@@ -1,6 +1,6 @@
       <div class="col-md-4 col-lg-7">
         <h4 class="mb-3"><i class="fa-solid fa-id-card"></i>&#160;Basic Details:</h4>
-        <form class="needs-validation" method="POST" action="#" onsubmit="return create_community.start();" id="profile_form">
+        <form class="needs-validation" method="POST" action="#" onsubmit="return create_community.finish();" id="community_form">
         {%csrf_token%}
           <div class="row g-3">
             <div class="col-sm-12">
@@ -97,11 +97,11 @@
          </div>
 
           <hr class="my-4">
-  <button class="w-60 btn btn-success btn-lg" type="button" onclick="window.history.back();"><i class="fa-solid fa-rotate-left"></i>Make Changes</button>
+  <button class="w-60 btn btn-success btn-lg" type="button" onclick="create_community.reset_form();"><i class="fa-solid fa-rotate-left"></i>Make Changes</button>
           {% if not profile.placeholder  %}
-          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick="create_community.finish();"><i class="fa-solid fa-star"></i>All set: Back to Dashboard!</button>
+          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick=""><i class="fa-solid fa-star"></i>All set: Back to Dashboard!</button>
           {% else %}
-          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick="create_community.finish();"><i class="fa-solid fa-rocket"></i>Create
+          <button class="w-60 btn btn-primary btn-lg" type="submit" onclick=""><i class="fa-solid fa-rocket"></i>Create
           Community!</button>
           {%endif %}
         </form>

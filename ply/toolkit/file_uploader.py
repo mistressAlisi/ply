@@ -116,7 +116,7 @@ def save_avatar_file(file,profile,name=False):
             raise Exception('Unable to store Avatar in S3 Storage')
     else:
         # Storage to hard drive:
-        destpath = ply.settings.PLY_AVATAR_FILE_BASE_PATH+path
+        destpath = ply.settings.PLY_AVATAR_FILE_BASE_PATH+f"/{path}"
         if not os.path.exists(os.path.dirname(destpath)):
             try:
                 os.makedirs(os.path.dirname(destpath))

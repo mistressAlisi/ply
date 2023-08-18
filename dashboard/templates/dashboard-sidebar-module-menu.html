@@ -6,7 +6,7 @@
         <div class="collapse" id="{{module.mname}}-collapse"  aria-labelledby="sidebar-btn-{{module.mname}}" >
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
             {% for sme in module.menu %}
-            <li><a href="#" data-trgt="{{sme.url}}" data-wt="{{sme.label}}"  class="link-dark rounded sidebar-submenu-link" onclick="dc_handleLink(event,true);" {%if sme.onclick != False %} data-onclick="{{sme.onclick}}" {%endif%} >
+            <li><a href="#" data-trgt="{{sme.url}}" data-wt="{{sme.label}}"  class="rounded sidebar-submenu-link" onclick="dc_handleLink(event,true);" {%if sme.onclick != False %} data-onclick="{{sme.onclick}}" {%endif%} >
             {% if sme.icon %}
                 <i class="fa {{sme.icon}}" aria-hidden="true"></i>
             {% endif %}

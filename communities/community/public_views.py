@@ -13,7 +13,7 @@ def community_home(request):
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     request.session["community"] = str(community.uuid)
-    sideBar = SideBarBuilder()
+
     if request.user.is_authenticated:
         profile = profiles.get_active_profile(request)
         all_profiles = profiles.get_all_profiles(request)
@@ -38,6 +38,6 @@ def community_home(request):
                 bkg_path= ""
         else:
             bkg_path = ""
-        context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path}
+        context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path}
         return render(request,"dynapages/"+community.dynapage.template.filename,context)
 
