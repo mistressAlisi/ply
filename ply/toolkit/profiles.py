@@ -28,7 +28,11 @@ def get_active_profile(request):
        try:
            profile = Profile.objects.get(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)
        except:
-           return None
+           # If we are a super user, we are allowed to use the system profile - this is needed to allow profile-less community management and to complete setup:
+           if request.user.is_superuser == True:
+                profile = Profile.objects.get(creator=request.user,archived=False,blocked=False,system=True,placeholder=False)
+           else:
+               return None
        request.session['profile'] = str(profile.uuid)
        request.session.modified = True
     else:

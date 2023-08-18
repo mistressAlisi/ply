@@ -2,6 +2,7 @@
 {% load django_bootstrap5 %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
+{% if forge_full_body %}
 <html lang="en" class="h-100">
 <head>
 
@@ -36,7 +37,8 @@
 
 <body class="bg-light">
 <div class="container">
-  <main>
+<main>
+{% endif %}
     <div class="py-5 text-center">
       {%if editing_mode  %}
       <h2>Updating Community: {{community.name}}</h2>
@@ -53,7 +55,7 @@
     {%include "forge-create_community_form-pre.html"%}
     </div>
     
-    
+ {% if forge_full_body %}
 <!-- Status Modal     -->
 <!-- Modal -->
 <div class="modal fade" id="progressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
@@ -77,8 +79,11 @@
 </div>
 
 <!-- Forge Javascript -->
+
+</main>
+</div>
+</body>
 <script src="/static/js/util-get_cookie.js"></script>
 <script src="/static/js/forge_create-community.js"></script>
-
-</body>
 </html>
+{% endif %}

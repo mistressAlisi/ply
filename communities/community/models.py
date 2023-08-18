@@ -90,7 +90,7 @@ class CommunityAdmins(models.Model):
         db_table = "communities_community_community_admins"
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
-    joined = models.DateTimeField(verbose_name='Joined')
+    joined = models.DateTimeField(verbose_name='Joined',auto_now=True)
     active = models.BooleanField(verbose_name="Active FLAG",default=True)
     def __str__(self):
         return f"Community ADMIN: {self.community.name}. Profile: {self.profile.name}."
