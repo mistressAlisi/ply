@@ -1,0 +1,30 @@
+{% extends "ui_base.html" %}
+{% block body %}
+              <h1>Connecting to Application...</h1>
+          </hgroup>
+            <hgroup>
+                        <h3>{{ app.title }}</h3>
+                        <h4>{{ app.author }}</h4>
+            </hgroup>
+{% if app.staff_only %}
+    <div class="alert alert-danger">
+    This is a staff application. Do not access this application outside Furrydelphia controlled Information Systems.
+    </div>
+    {% endif %}
+            <form class="form-signin" action="{{ app.postUrl }}" method="GET" {% if rapid %}style="display: none"{% endif %}>
+<hr>
+            <h5>You will be authenticating as: {{ request.user.username }}</h5>
+                <small><a href="/connect/logout/?from={{ app.code }}">(Not you?)</a></small>
+<br><br>
+            <input type="hidden" value="{{ otp.key }}" name="uflsStaffSession">
+            <button role="button" class="btn btn-primary" type="submit" id="continue">Continue</button>
+            </form>
+    {% if rapid %}
+    <script type="text/javascript">
+
+         var n = setTimeout(() => {
+             document.getElementById("continue").click();
+         },250);
+    </script>
+    {% endif %}
+{% endblock %}

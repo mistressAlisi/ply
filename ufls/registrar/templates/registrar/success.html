@@ -1,0 +1,29 @@
+{%extends "registrar/base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{%block bootstrap5_content %}
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+        <h2>Furrydelphia 2023</h2>
+        <p><strong>On-Site Registration Complete!</strong></p>
+        <hr/>
+         <p class="lead">Thank you! The following registrations have been completed. You will recieve an email reciept and can now proceed to  checkin and badge pickup! Enjoy the con!</p>
+         <div class="row g-5">
+
+      <div class="col-md-10 col-lg-12">
+
+        <h4 class="mb-3">Attendees Registered:</h4>
+        <div id="cart_container">
+        {%include "registrar/render_reg_contents.html" %}
+        </div>
+        <hr/>
+        <a href="/app/registrar" class="btn btn-success btn-lg w-40" tabindex="-1" role="button"> Back to Registrar</a>
+      </div>
+    </div>
+    </main>
+</div>
+<script src="/static/js/registrar.js"></script>
+
+{%endblock %}

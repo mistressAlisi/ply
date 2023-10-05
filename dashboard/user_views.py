@@ -10,6 +10,9 @@ from core.dynapages import models as dynapages
 from communities.profiles.models import ProfilePageNode
 from roleplaying.stats.models import ProfileStat
 from roleplaying.exp.models import ProfileExperience
+
+import logging
+log = logging.getLogger(__name__)
 # Render the User Dashboard Home page:
 @login_required
 def dashboard_home(request):
@@ -22,6 +25,10 @@ def dashboard_home(request):
         request.session['community'] = str(community.uuid)
     sideBar = SideBarBuilder()
     profile = profiles.get_active_profile(request)
+    # This is a rare condition, but in early-stage databases, an admin user may be using the default system profile. If this condition arises; we re-direct the user to /select_profile where they can either select a proper profile, or
+    # go through the forge process to create a new, non-system profile.
+    if profile.system is True:
+        return redirect("/forge/select/profile/")
     all_profiles = profiles.get_all_profiles(request)
     try:
         groups = GroupMember.objects.get(profile=request.session["profile"])
@@ -30,6 +37,7 @@ def dashboard_home(request):
         groups = []
         primaryGroup = False
     #profilePage = ProfilePageNode.objects.get(profile=profile,node_type='dashboard')
+    log.error(f"Profile Dashboard Home, f{profile}")
     profilePage = ProfilePageNode.objects.get(profile=profile,node_type='profile')
     # Don't allow empty profile Page nodes.
     # This check will automatically fix the condition if it ever arises:
@@ -41,7 +49,7 @@ def dashboard_home(request):
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profile.dynapage)
     stats = ProfileStat.objects.filter(profile=profile,community=community)
     context = {'community':community,'vhost':vhost,'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':settings.PLY_VERSION,'widgets':widgets,'template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s Dashboard",'profile':profile,"stats":stats,'profile_xp':exo}
-    return render(request,'profile_dashboard_dynapage_wrapper.html',context)
+    return render(request,'communities_profiles/profile_dashboard_dynapage_wrapper.html',context)
 
 
 @login_required

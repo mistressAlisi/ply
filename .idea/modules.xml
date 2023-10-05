@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/projects/CSCI211/cardShuffle/.idea/cardShuffle.iml" filepath="$USER_HOME$/projects/CSCI211/cardShuffle/.idea/cardShuffle.iml" />
+      <module fileurl="file://$USER_HOME$/projects/CSCI211/firestation/.idea/firestation.iml" filepath="$USER_HOME$/projects/CSCI211/firestation/.idea/firestation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ply.iml" filepath="$PROJECT_DIR$/.idea/ply.iml" />
+      <module fileurl="file://$USER_HOME$/projects/CSCI211/stormtracker/.idea/stormtracker.iml" filepath="$USER_HOME$/projects/CSCI211/stormtracker/.idea/stormtracker.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ufls/.idea/ufls.iml" filepath="$PROJECT_DIR$/../ufls/.idea/ufls.iml" />
     </modules>
   </component>

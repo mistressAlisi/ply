@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE|default:'en_us' }}">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Metadata for Open Graph -->
+    <meta id="og-title" property="og:title" content="{% block meta-og-title %}Furrydelphia Registration{% endblock %}" />
+    <meta id="og-type" property="og:type" content="{% block meta-og-type %}website{% endblock %}" />
+    <meta id="og-url" property="og:url" content="{% block meta-og-url %}https://furrydelphia.org{% endblock %}" />
+    <meta id="og-image" property="og:image" content="{% block meta-og-image %}static/favicon.png{% endblock %}" />
+    <meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}Furrydelphia Registration{% endblock %}" />
+    <meta id="og-description" property="og:description" content="{% block meta-og-description %}Furrrydelphia 2023 Registration Page{% endblock %}" />
+
+    <style>
+        .mb-3 {
+            text-align: left;
+        }
+    </style>
+
+    <!-- Page title -->
+    <title>{% block bootstrap5_title %}Furrydelphia 2023 On-Site Registration{% endblock %}</title>
+
+    <!--     JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+    <!-- Bootstrap JavaScript: !-->
+     {% bootstrap_javascript %}
+
+    {% block bootstrap5_extra_head %}{% endblock %}
+
+</head>
+{% block bootstrap_doc_body %}<body>{% endblock %}
+{% block bootstrap5_before_content %}{% endblock %}
+{% block bootstrap5_content %} CONTENT {% endblock %}
+{% block bootstrap5_after_content %}{% endblock %}
+
+
+{% block bootstrap5_extra_script %}{% endblock %}
+
+</body>
+
+</html>
+

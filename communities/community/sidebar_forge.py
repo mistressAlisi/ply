@@ -1,8 +1,8 @@
 sidebar = {
   "mname":"community",
-  "label":"Community & Friends",
+  "label":"Community",
   "icon":"fa-solid fa-users-rectangle",
-  "url":"community",
+  "url":"communities/community",
   "js":"/static/js/forge_create-community.js",
   "menu":[
     {"url":"forge/edit/community/cover","label":"Community Details",'icon':'fa-solid fa-user-group','onclick':''},

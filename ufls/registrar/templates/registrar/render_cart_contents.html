@@ -1,0 +1,16 @@
+  <ul class="list-group mb-3">
+        {% for reg in sessionRegs %}
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div style="text-align: left;">
+              <h6 class="my-0">{{reg.firstName}} {{reg.lastName}} </h6>
+              <small class="text-muted">{{reg.level.label}}</small>
+            </div>
+            <span class="text-muted">${{reg.total}} <a href="#" class="badge rounded-pill bg-danger text-white" onclick="registrar.rem('{{reg.pk}}');">X</a></span>
+
+          </li>
+          {% endfor %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong id="total_amount">${{sessionTotal}}</strong>
+          </li>
+        </ul>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+    <h2>PocketSec v2022.x</h2>
+
+    <p>Current access code: <code>letmein2</code></p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <a href="https://distribute.furrydelphia.org/apps/2022/org.furrydelphia.pocketsec/app-release.apk" class="btn btn-block btn-success">Android</a>
+        </div>
+        <div class="col-md-6">
+            <!--
+            <a href="itms-services://?action=download-manifest&url=https://furrydelphia-distribute-dwd8ejgfbfa7hgee.z01.azurefd.net/apps/2022/org.furrydelphia.pocketsec/manifest.plist" class="btn-block btn btn-primary">iOS</a>
+            -->
+            <a href="/distribute/app/license/ios-pocketsec/" class="btn btn-block btn-primary">iOS (License Assignment)</a>
+        </div>
+    </div>
+{% endblock %}

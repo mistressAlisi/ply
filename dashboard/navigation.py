@@ -7,8 +7,8 @@ log = logging.getLogger(__name__)
 class SideBarBuilder():
   modules = {}
   
-  def __init__(self,data,menu_module_name="sidebar_menu"):
-    if (len(self.modules) == 0): self.register(ply.settings.PLY_USER_DASHBOARD_MODULES,menu_module_name)
+  def __init__(self,data=ply.settings.PLY_USER_DASHBOARD_MODULES,menu_module_name="sidebar_menu"):
+    if (len(self.modules) == 0): self.register(data,menu_module_name)
   # Register a module to the sidebar, pass it's Module.Navigation class to this constructor: 
   def register(self,data,menu_module_name="sidebar_menu"):
     if data is False: raise ValueError('Register must recieve a Navigation object from a module.')

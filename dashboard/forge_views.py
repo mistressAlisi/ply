@@ -26,7 +26,7 @@ def dashboard_home(request):
     is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
     if (len(is_admin) < 1):
         return render(request,"error-access-denied.html",{})
-    sideBar = SideBarBuilder(settings.PLY_USER_DASHBOARD_MODULES, "sidebar_forge")
+    sideBar = SideBarBuilder(settings.PLY_WORLDFORGE_DASHBOARD_MODULES, "sidebar_forge")
     context = {'community':community,'vhost':vhost,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'ply_version':settings.PLY_VERSION,'sidebar':sideBar.modules.values()}
     return render(request,'dashboard/community_admin/dashboard/index.html',context)
 

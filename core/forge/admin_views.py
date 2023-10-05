@@ -59,7 +59,7 @@ def script_studio(request):
         return render(request,"error-access-denied.html",{})
     templates = dynaModels.Templates.objects.filter(page_template=True,archived=False,blocked=False)
     backgroundItems = GalleryItem.objects.filter(profile=profile,active=True)
-    all_profiles = profiles.get_all_profiles(request)
+    all_profiles = profiles.get_all_profiles(request,True)
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
@@ -68,5 +68,5 @@ def script_studio(request):
         nsf = NewScriptForm()
         ssf = SaveScriptForm()
         context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'hostname':settings.PLY_HOSTNAME,'editing_mode':True,'templates':templates,'backgroundItems':backgroundItems,'enable_admin':True,'current_profile':profile,"profiles":all_profiles,'ply_version':settings.PLY_VERSION,'new_script_form':nsf,'save_script_form':ssf}
-        return render(request,"forge/script_studio/dashboard.html",context)
+        return render(request,"forge/script_studio/embedded.html",context)
 

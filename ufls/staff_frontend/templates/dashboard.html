@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load fd_helpers %}
+{% block body %}
+    {% filter_director_access request.user as access %}
+    {% if access.count > 0 %}
+        <br>
+        <h3>Your Leadership Roles</h3>
+        <div class="row">
+    {% for x in access %}
+        <div class="col-md-4">
+            <div class="card" style="margin-bottom: 10px">
+                <div class="card-header">
+                    <p class="card-title">{{ x.department.name }} ({{ x.showDisplayTitle }})</p>
+                </div>
+                <div class="card-body">
+                    <a href="{% url "front:new-department-announcement" x.department.pk %}" class="btn btn-block btn-primary">Add Announcement</a>
+                    <a href="{% url "front:new-department-task" x.department.pk %}" class="btn btn-block btn-warning">Add New Task</a>
+                    <a href="{% url "front:department" x.department.pk %}" class="btn btn-block btn-link">Department Apps</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        </div>
+    {% endif %}
+    {% if assignments.count == 0 %}
+        <div class="jumbotron">
+            <h4>You have not been added to a Department.</h4>
+            <p>Please contact your Department Director or Board Member if you believe this is in error.</p>
+        </div>
+        <h4>Department Contacts</h4>
+        <div class="row">
+            {% for x in departments %}
+                <div class="col-md-4">
+                <div class="card" style="margin-bottom: 10px">
+                    <div class="card-header">
+                        <p class="card-title">{{ x.name }}</p>
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                            {% if x.departmentBoard %}
+                            <dt>Assigned Board Member</dt>
+                            <dd>{{ x.departmentBoard.first_name }} ({{ x.departmentBoard.username }})</dd>
+                            {% endif %}
+                            {% if x.departmentHead %}
+                            <dt>Department Director</dt>
+                            <dd>{{ x.departmentHead.first_name }} ({{ x.departmentHead.username }})</dd>
+                            {% endif %}
+                            {% if x.departmentSecond %}
+                            <dt>Department Assistant Director</dt>
+                            <dd>{{ x.departmentSecond.first_name }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <br>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Your Assignments</h4>
+            <div class="row">
+                {% for x in assignments %}
+                    <div class="col-md-12">
+                        <div class="card" style="margin-bottom: 10px">
+                            <div class="card-header">
+                                <p class="card-title">{{ x.department.name }}</p>
+                            </div>
+                            <div class="card-body">
+                                <dl>
+                                {% if x.department.departmentBoard %}
+                                <dt>Assigned Board Member</dt>
+                                <dd>{{ x.department.departmentBoard.first_name }} ({{ x.department.departmentBoard.username }})</dd>
+                                {% endif %}
+                                {% if x.department.departmentHead %}
+                                <dt>Department Director</dt>
+                                <dd>{{ x.department.departmentHead.first_name }} ({{ x.department.departmentHead.username }})</dd>
+                                {% endif %}
+                                {% if x.department.departmentSecond %}
+                                <dt>Department Assistant Director</dt>
+                                <dd>{{ x.department.departmentSecond.first_name }}</dd>
+                                {% endif %}
+                                <dt>Department Staff</dt>
+                                {% for y in x.department.getStaff %}
+                                    <dd>{{ y.user.username }} - {{ y.showDisplayTitle }}</dd>
+                                {% endfor %}
+                                </dl>
+                            {% if x.department.name == "Public Safety" or x.department.name == "Executive" or x.department.name == "Operations" %}
+                                <a href="/distribute/apps/" class="btn btn-success btn-block">PocketSec 2022.x</a>
+                            {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h3>Your Actions</h3>
+            <div class="card">
+                <div class="card-body text-center">
+                                <h4>You're all set for now.</h4>
+                                <p>You've completed all actions required at this moment. If you need to do anything else you will be sent an e-mail.</p>
+                </div>
+            </div>
+
+            <h3>Apps and Links</h3>
+            <div class="row">
+                <div class="col-md-3"><a href="https://outlook.office.com/staff.furrydelphia.org" target="_blank" class="btn btn-primary btn-block">Staff E-mail</a></div>
+                <div class="col-md-3"><a href="https://furrydelphia.sharepoint.com" target="_blank" class="btn btn-info btn-block">Sharepoint</a></div>
+                <div class="col-md-3"><a href="https://chat.furrydelphia.org" target="_blank" class="btn btn-success btn-block">Staff Chat (Mattermost)</a></div>
+                <div class="col-md-3"><a href="https://helpdesk.furrydelphia.org" target="_blank" class="btn btn-secondary btn-block">IT Helpdesk</a></div>
+            </div>
+
+            <hr>
+            <h3>Department Announcments</h3>
+            <p>No announcements at this time.</p>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

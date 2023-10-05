@@ -1,0 +1,7 @@
+{% extends "ui_base.html" %}
+{% block body %}
+              <h1>Pardon the interruption...</h1>
+    <p>You do not have the appropriate credentials to access this software. Please contact an administrator.</p>
+    <p>Your Account: {{ request.user.username }}</p>
+    <p><a href="/connect/logout/?from={{ x.code }}">Try another Account</a></p>
+{% endblock %}

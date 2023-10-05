@@ -33,7 +33,7 @@
     <!--   Login Functions -->
 </head>
 
-<body class="bg-light">
+<body data-bs-theme="dark">
 <div class="container">
   <main>
     <div class="py-5 text-center">
@@ -51,11 +51,11 @@
     <ul class="list-group">
         {% for pr in profiles %}
 
-              <a href="/dashboard/user/set_profile/{{pr.uuid}}?r=/" class="list-group-item list-group-item-action link-dark rounded">
+              <a href="/dashboard/user/set_profile/{{pr.uuid}}?r=/dashboard/user/" class="list-group-item list-group-item-action link-dark rounded">
               <img style="position: relative; top: -10px;" src="{{av_path}}/{{pr.avatar}}" alt="{{pr.name|slice:"0:2"}}" class="rounded-circle me-2" width="50" height="50"/>
-              <div style="display: inline-block; margin: 0;">
+              <div style="display: inline-block; margin: 0;" class="text-primary">
                 <blockquote class="blockquote">{{pr.name}}</blockquote>
-                <figcaption class="blockquote-footer">
+                <figcaption class="blockquote-footer  text-muted">
                 @{{pr.profile_id}}
                 </figcaption>
               </div>
@@ -63,8 +63,9 @@
         {% endfor %}
     </ul>
     </div>
+    <br/><br/>
     <div class="modal-footer">
-        {% bootstrap_button "Create new Profile" button_type="link" href="/forge/create/profile" button_class="btn-success" %}
+        {% bootstrap_button "Create new Profile" button_type="link" href="/forge/create/profile" button_class="btn-outline-success" %}
     <div>
     </div>
     </div>

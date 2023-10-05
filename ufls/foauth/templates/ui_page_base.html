@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    {% include "includes/header.html" %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/simplex/bootstrap.min.css" integrity="sha384-FYrl2Nk72fpV6+l3Bymt1zZhnQFK75ipDqPXK0sOR0f/zeOSZ45/tKlsKucQyjSp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+        {% block headExtras %}
+    {% endblock %}
+    </head>
+    <body>
+    <!-- login box -->
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12">
+            {% block headerExtras %}
+            {% endblock %}
+            {% block body %}
+            {% endblock %}
+            {% block footerExtras %}
+            {% endblock %}
+        </div>
+        </div>
+    </div>
+    {% block footer %}
+        {% include "includes/footer.html" %}
+    {% endblock %}
+    </body>
+</html>
