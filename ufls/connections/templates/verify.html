@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block body %}
+<form class="form-signin" action="{{ app.postUrl }}" method="GET">
+
+  <h5 class="h5 mb-3 font-weight-normal" style="text-transform: uppercase; color: darkgrey">Connect to Application?</h5>
+    <div class="row">
+        <div class="col-5 text-right">
+            <img class="mb-4" style="border-radius: 50%" src="/static/ufls/opsicon.png" alt="" width="72" height="72">
+        </div>
+        <div class="col-2 text-center">
+            <span class="fa fa-arrow-right text-dark" style="padding: 25px"></span>
+        </div>
+        <div class="col-5 text-left">
+            <img class="mb-4" style="border-radius: 50%" src="/static/{{ app.code }}.png" alt="" width="72" height="72">
+        </div>
+    </div>
+    <h1 class="h3 mb-3 font-weight-normal text-dark">{{ app.title }}</h1>
+    <h2 class="h4 mb-3" style="color: darkgrey">{{ app.author }}</h2>
+    <p style="color: darkgrey">{{ app.description }}</p>
+
+    <h4 class="text-dark">We will send {{ app.title }} this information:</h4>
+    <div class="card">
+    <div class="card-body">
+    <dl>
+        <dt>Account Username</dt>
+        <dd>{{ user.username }}</dd>
+        <dt>Department Assignments</dt>
+        {% for x in user.groups.all %}
+        <dd>{{ x.name }}</dd>
+        {% endfor %}
+        <dt>Active Staff, Validation Token</dt>
+        <dd>{% if user.is_staff %}<span class="text-success">Valid Staff Token Cached!</span>{% endif %}</dd>
+    </dl>
+    </div>
+    </div>
+    <br>
+    <input type="hidden" value="{{ otp.key }}" name="uflsStaffSession">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Continue</button>
+  <p class="mt-5 mb-3 text-muted">Unified Furrydelphia Login System, &copy;2021 Furrydelphia Inc.</p>
+</form>
+{% endblock %}

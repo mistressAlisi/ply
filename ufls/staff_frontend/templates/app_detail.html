@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load fd_helpers %}
+{% block body %}
+    <br>
+    <h2>Application Detail</h2>
+        {% if request.user.is_superadmin %}
+        <a href="/onboarding/convert/{{ app.pk }}/" class="btn btn-info">Convert to Onboarding Record</a>
+        {% endif %}
+        <a class="btn btn-success disabled">Board Member or Dept Head Must Approve.</a>
+        <a href="/onboarding/decline/{{ app.pk }}/" class="btn btn-danger">Decline, Remove App</a>
+        <table class="table table-striped">
+            {{ x }}
+        </table>
+        <hr>
+{% endblock %}

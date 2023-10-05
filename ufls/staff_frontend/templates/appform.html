@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>New Staff Application</h1>
+<p>Use this form to submit interest in joining Furrydelphia Staff.</p>
+    {% if pkcheck != None %}
+    <p>Applying for: {{ assignment.name }} in {{ assignment.department.name }}</p>
+    {% else %}
+    <p>Note, you are not applying for any one particlar position, to see a list of open positions, visit: <a href="https://staff.furrydelphia.org/open/">https://staff.furrydelphia.org/open/</a>.</p>
+    {% endif %}
+{% include "form.html" %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+    <h2>Downloading {{ license.get_program_display }} v2022.x</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <h4>To Redeem on iOS:</h4>
+            <ol>
+                <li>Open this page on your iPhone, iPad, or other Apple iOS Device</li>
+                <li>Click the Link Below</li>
+            </ol>
+            <a href="https://apps.apple.com/redeem?code={{ license.key }}&ctx=apps">Click Here to Go to the iOS App Store</a>
+            <hr>
+            <h5>Alternatively:</h5>
+            <ol>
+                <li>Open the App Store on your Device</li>
+                <li>Tap "Apps"</li>
+                <li>Tap your icon in the top right</li>
+                <li>Tap "Redeem Gift Card or Code"</li>
+                <li>Enter the code: {{ license.key }}</li>
+                <li>Follow the on screen instructions.</li>
+            </ol>
+            <hr>
+            <p><strong>Keep in mind: </strong> Your Staff Account will only allow one license of {{ license.get_program_display }} to be assigned to you. This license will apply for <i>ALL iOS DEVICES ON YOUR ACCOUNT.</i> If you require another license, please contact IT.</p>
+        </div>
+    </div>
+{% endblock %}

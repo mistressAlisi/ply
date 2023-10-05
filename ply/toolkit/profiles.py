@@ -45,7 +45,7 @@ def get_active_profile(request):
     return profile
     
 # Returns all the profiles associated with the User:       
-def get_all_profiles(request):
+def get_all_profiles(request,system=False):
     """
     Return all the profiles in the community for the user in the request
 
@@ -55,7 +55,7 @@ def get_all_profiles(request):
     :rtype: Profiles object
 
    """
-    profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)
+    profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=system,placeholder=False)
     return profiles
     
 

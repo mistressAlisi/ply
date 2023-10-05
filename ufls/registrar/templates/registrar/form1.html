@@ -1,0 +1,115 @@
+{%extends "registrar/base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{%block bootstrap5_content %}
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+        <h2>Furrydelphia 2023</h2>
+        <p><strong>On-Site Registration Checkout</strong></p>
+        <hr/>
+         <p class="lead">Welcome to Furrydelphia 2023. Please fill out this form to complete your registration.</p>
+         <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Your cart</span>
+          <span class="badge bg-primary rounded-pill" id="current_count">{{sessionRegCount}}</span>
+        </h4>
+        <div id="cart_container">
+        {%include "registrar/render_cart_contents.html" %}
+        </div>
+        <a href="/app/registrar/checkout" class="btn btn-primary btn-lg w-40" tabindex="-1" role="button">Continue to Checkout</a>
+
+          <!--<div class="input-group">
+          <form class="card p-2">
+          <button type="submit" class="btn btn-danger">Reset Form</button>
+          &#160;
+            <button type="submit" class="btn btn-success">Checkout</button>
+            </form>
+          </div>!-->
+
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <form class="needs-validation" id="attendee_form" onsubmit="registrar.start1(); return false;">
+        <h4 class="mb-3">Attendee Details:</h4>
+         {% csrf_token %}
+
+         {% bootstrap_form regform %}
+        <hr/>
+        <h4 class="mb-3">Terms and Conditions:</h4>
+            <p>Please review the <a href="javascript:///" data-bs-toggle="modal" data-bs-target="#cocModal" class="link">Code of Conduct</a>, <a href="javascript:///" data-bs-toggle="modal" data-bs-target="#refModal" class="link">Refund Policy</a> and <a href="javascript:///" data-bs-toggle="modal" data-bs-target="#covidModal" class="link">COVID Policy</a>.</p>
+        {% bootstrap_form condform %}
+          <hr class="my-4">
+         <button class="w-40 btn btn-success btn-lg" type="submit">Add Attendee</button>
+
+        </form>
+      </div>
+    </div>
+    </main>
+</div>
+<script src="/static/js/registrar.js"></script>
+
+    <div class="modal fade" id="cocModal" tabindex="-1" aria-labelledby="cocModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cocModalLabel">Code of Conduct</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Scan the QR Code Below to view the Code of Conduct           <a href="https://docs.google.com/document/d/e/2PACX-1vQwPV-toFZdjPJioZjlUGTWoLeC3kssVd8YRPGTKP99337JMCnQP94gpRWygr5dA9J9DITQE6ChdRWU/pub" target="_blank">Or click here.</a></p>
+
+          <img class="img-fluid" src="/static/img/coc.png">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <div class="modal fade" id="refModal" tabindex="-1" aria-labelledby="refModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="refModalLabel">Refund Policy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Scan the QR Code Below to view the Refund Policy           <a href="https://docs.google.com/document/d/e/2PACX-1vT0UeuovtkweavYzWoB8iv018_fwy3z89HCR_v72gqZWu_aaWJPN5O16trpR_hPgJFM880-4mHO2tc5/pub" target="_blank">Or click here.</a></p>
+
+          <img class="img-fluid" src="/static/img/ref.png">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="modal fade" id="covidModal" tabindex="-1" aria-labelledby="covidModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="covidModalLabel">COVID-19 Policy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        - I understand and agree that I must be fully vaccinated against COVID-19 to attend Furrydelphia 2023
+
+- I understand and agree that I must provide authentic proof of my COVID-19 vaccination to pick up my badge at Furrydelphia 2023
+
+- I understand and agree that I will be denied entry and be ineligable for a refund if I fail to adhere to the above two statements
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{%endblock %}

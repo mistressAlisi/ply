@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Silkscreen&family=Space+Grotesk:wght@300&display=swap');
+
+        html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+            {% if badge.registrant.determineAge == 18 %}
+                background: url("{{ badge.registrant.determineBadgeArtwork }}") no-repeat;
+                {% elif badge.registrant.determineAge == 15 %}
+                background: url("/static/reg/badges/2022/minor-independent.png") no-repeat;
+                {% elif badge.registrant.determineAge == 14 %}
+                background: url("/static/reg/badges/2022/minor-dependent.png") no-repeat;
+            {% endif %}
+            background-size: contain;
+      }
+
+      .paper {
+        width: 100%;
+        height: 100%;
+        background-color: #ddde;
+      }
+
+      .badgeName {
+        {% if badge.registrant.conIsStaff %}
+          position: absolute;
+          font-weight: bold;
+          font-size: 24px;
+          width: 100%;
+          text-align: center;
+          overflow: hidden;
+          text-overflow: clip clip;
+          white-space: nowrap;
+            top: 58mm;
+            font-family: 'Silkscreen', cursive;
+        {% else %}
+                      position: absolute;
+          font-weight: bold;
+          font-size: 24px;
+          width: 100%;
+          text-align: left;
+          overflow: hidden;
+          text-overflow: clip clip;
+          white-space: nowrap;
+                        top: 58mm;
+            font-family: 'Silkscreen', cursive;
+            left: 8mm;
+        {% endif %}
+      }
+        .badgeNumber {
+        {% if badge.registrant.conIsStaff %}
+          position: absolute;
+          top: 65mm;
+          width: 100%;
+          text-align: left;
+            left: 8mm;
+            font-family: 'Silkscreen', cursive;
+        {% else %}
+          position: absolute;
+          top: 60mm;
+          width: 100%;
+          text-align: right;
+          right: 8mm;
+            font-family: 'Silkscreen', cursive;
+        {% endif %}
+      }
+        .badgeLevel {
+          position: absolute;
+          top: 65mm;
+          width: 100%;
+          text-align: right;
+          right: 8mm;
+        {% if badge.registrant.conIsStaff %}
+            font-family: 'Silkscreen', cursive;
+        {%  else  %}
+            font-family: 'Space Grotesk', sans-serif;
+        {% endif %}
+      }
+        </style>
+    </head>
+    <body>
+        <div class="paper">
+            <div class="badgeName">{{ badge.registrant.conBadgeName|truncatechars:25 }}</div>
+            <div class="shipDept">{{ badge.registrant.determineDeptOrShipName }}</div>
+            <div class="badgeNumber">{{ badge.number }}</div>
+            <div class="badgeLevel">
+                {% if badge.registrant.conIsStaff %}Staff {% endif %}
+                {% if badge.registrant.conIsDealer %}Dealer {% endif %}
+                {% if badge.registrant.conIsDealerAssistant %}Assistant {% endif %}
+                {% if badge.registrant.conIsStaff == False and badge.registrant.conIsDealerAssistant == False and badge.registrant.conIsDealer == False %}{{ badge.registrant.conRegLevel.badgeLevel }}{% endif %}
+            </div>
+        </div>
+    </body>
+</html>

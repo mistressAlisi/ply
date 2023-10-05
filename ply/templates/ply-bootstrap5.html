@@ -31,7 +31,7 @@
     {% block bootstrap5_extra_head %}{% endblock %}
 
 </head>
-{% block bootstrap_doc_body %}<body>{% endblock %}
+{% block bootstrap_doc_body %}<body  {%block bootstrap_body_theme %}data-bs-theme="dark"{% endblock %}>{% endblock %}
 {% block bootstrap5_before_content %}{% endblock %}
 {% block bootstrap5_content %} CONTENT {% endblock %}
 {% block bootstrap5_after_content %}{% endblock %}

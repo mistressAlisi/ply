@@ -310,8 +310,17 @@ PLY_USER_DASHBOARD_MODULES = [
     "communities.notifications",
     "communities.preferences"
     
-    ]
+]
 
+PLY_WORLDFORGE_DASHBOARD_MODULES = [
+    "communities.community",
+    "communities.profiles",
+    "communities.stream",
+    "communities.notifications",
+    "media.gallery.core",
+    "roleplaying.stats",
+    "roleplaying.skills",
+]
 PLY_GALLERY_PLUGINS = [
     "media.gallery.photos"
     ]
