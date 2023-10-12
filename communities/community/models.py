@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib import admin
 import uuid
 from django.contrib.auth.models import User
-
+from django.conf import settings
+from django.apps import apps
 # PLY
 
 from communities.profiles.models import Profile
@@ -21,8 +22,10 @@ class Community(models.Model):
     name = models.TextField(verbose_name='Name')
     action_call_cover = models.TextField(verbose_name='Action Call for Cover page')
     introduction = models.TextField(verbose_name='Introduction')
-    tagline = models.TextField(verbose_name='Tagline',null=True)
+    tagline = models.TextField(verbose_name='Tagline',null=True,default=None,blank=True)
     avatar = models.TextField(verbose_name='Avatar',null=True)
+    icon = models.ImageField(verbose_name="Community Icon",null=True,blank=True)
+    logo = models.ImageField(verbose_name="Community Logo", null=True,blank=True)
     posts = models.IntegerField(verbose_name='Post Count',default=0)
     profile = models.IntegerField(verbose_name='Profile Count',default=0)
     group = models.IntegerField(verbose_name='Group Count',default=0)
@@ -212,3 +215,64 @@ class Friend_ExpLvl_View(models.Model):
     class Meta:
         managed = False
         db_table = 'community_friend_explvl_view'
+
+
+class CommunityRegistry(models.Model):
+    class Meta:
+        db_table = "communities_community_registry"
+        unique_together = ['community','key']
+
+
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    key = models.TextField(max_length=200,verbose_name='Setting key')
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Setting Created')
+    updated = models.DateTimeField(verbose_name='Setting Updated',auto_now_add=True)
+    name = models.TextField(verbose_name='Setting Name')
+    action_call_cover = models.TextField(verbose_name='Action Call for Cover page')
+    text_value = models.TextField(verbose_name='Text Value',null=True,blank=True)
+    int_value = models.IntegerField(verbose_name='Int Value', null=True, blank=True)
+    json_value = models.JSONField(verbose_name='Json Value', null=True, blank=True)
+    bin_value = models.BinaryField(verbose_name='Binary Value', null=True, blank=True)
+    def __str__(self):
+        return f"Community: {self.community.name} - Registry Setting {self.key}"
+
+@admin.register(CommunityRegistry)
+class CommunityRegistryAdmin(admin.ModelAdmin):
+    pass
+
+
+class CommunitySidebarMenu(models.Model):
+    class Meta:
+        db_table = "communities_community_sidebar"
+        unique_together = ['community','module','sidebar_class']
+        ordering = ["community","application_mode","ordering"]
+
+
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    application_mode = models.TextField(max_length=200, verbose_name='Application Mode')
+    module = models.TextField(max_length=200, verbose_name='Module',choices=[(x,x) for x in settings.INSTALLED_APPS])
+    sidebar_class = models.TextField(max_length=200,verbose_name='Sidebar Class',default='sidebar_menu')
+    ordering = models.IntegerField(verbose_name="Ordering Key",default=1)
+    active = models.BooleanField(verbose_name='Entry Active',default=True)
+    def __str__(self):
+        return f"Community: {self.community.name} - Sidebar Entry  {self.module}.{self.sidebar_class} for mode {self.application_mode}"
+
+@admin.register(CommunitySidebarMenu)
+class CommunitySidebarMenuAdmin(admin.ModelAdmin):
+    pass
+
+
+class CommunitySidebarMenuView(models.Model):
+    class Meta:
+        db_table = "communities_community_sidebar_view"
+        managed = False
+        ordering = ["community", "application_mode", "ordering"]
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    application_mode = models.TextField(max_length=200, verbose_name='Application Mode')
+    module = models.TextField(max_length=200, verbose_name='Module',choices=[(x,x) for x in settings.INSTALLED_APPS])
+    sidebar_class = models.TextField(max_length=200,verbose_name='Sidebar Class',default='sidebar_menu')
+    ordering = models.IntegerField(verbose_name="Ordering Key",default=1)
+    active = models.BooleanField(verbose_name='Entry Active',default=True)

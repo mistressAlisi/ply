@@ -51,3 +51,18 @@ ON
 communities_community_profile.profile_id = communities_profiles_profile.uuid
 WHERE
 communities_profiles_profile.placeholder = false;
+
+
+
+DROP VIEW IF EXISTS communities_community_sidebar_view;
+
+CREATE VIEW communities_community_sidebar_view AS SELECT
+	communities_community_sidebar.uuid,
+	communities_community_sidebar.application_mode,
+	communities_community_sidebar."module",
+	communities_community_sidebar.sidebar_class,
+	communities_community_sidebar."ordering",
+	communities_community_sidebar.active,
+	communities_community_sidebar.community_id
+FROM
+	communities_community_sidebar;

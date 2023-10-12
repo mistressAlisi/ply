@@ -78,7 +78,10 @@ INSTALLED_APPS = [
     'roleplaying.exp',
     'roleplaying.SLHUD',
     'roleplaying.plydice',
-    'ply'
+    'ply',
+    'ufls.themes.neon_nights',
+    'ufls.furry',
+    'ufls.registrar'
 ]
 
 MIDDLEWARE = [
@@ -173,6 +176,8 @@ if USE_S3:
     # s3 static settings
     AWS_LOCATION = config('AWS_LOCATION')
     STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    MEDIA_ROOT = "media_root/"
+    MEDIA_URL = "/media/"
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     if (config("ALWAYS_LOAD_S3") == "TRUE"):
@@ -183,9 +188,13 @@ else:
         AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
         AWS_DEFAULT_ACL = 'public-read'
         AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+        MEDIA_ROOT = "media_root/"
+        MEDIA_URL = "/media/"
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    MEDIA_ROOT = "/var/www/html/media/"
+    MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -195,6 +204,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MARTOR:
 # Choices are: "semantic", "bootstrap"
 MARTOR_THEME = 'bootstrap'
+
 
 # Global martor settings
 # Input: string boolean, `true/false`

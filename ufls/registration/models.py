@@ -14,6 +14,8 @@ from django.utils import timezone
 # Create your models here.
 
 class Event(models.Model):
+    class Meta:
+        db_table = "ufls_"
     name = models.CharField(max_length=100)
     active = models.BooleanField(default=False)
     regfoxPageCode = models.CharField(max_length=100)
