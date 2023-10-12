@@ -13,7 +13,7 @@ class WidgetForm(forms.Form):
             items = GalleryItemsByCollectionPermission.objects.filter(profile=self.profile,gif_thumbnail=False)
             for item in items:
                 ITEMS.append((item.gci_uuid,item.gci_title))
-                self.fields['item'].choices = ITEMS
+            self.fields['item'].choices = ITEMS
 
 
     item = forms.ChoiceField(label='Select Gallery Item:')

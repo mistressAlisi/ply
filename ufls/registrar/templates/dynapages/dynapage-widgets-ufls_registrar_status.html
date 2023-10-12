@@ -1,0 +1,9 @@
+
+<meta property="dynapage_template_name" content="Registrar Status"/>
+<meta property="dynapage_template_version" content="v1.0"/>
+<meta property="dynapage_template_author" content="Alisi"/>
+<meta property="dynapage_template_description" content="A simple registration status widget."/>
+<br/>
+{% load ufls_registrar_widget %}
+{% ufls_registrar_widget item=widget profile=profile as output %}
+{{ output|safe }}

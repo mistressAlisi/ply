@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Page title -->
 
-    <title>Ply: Select Profile</title>
+    <title>{{community.name}}: Select Profile</title>
 
 
     <!-- Bootstrap CSS -->
@@ -22,7 +22,12 @@
     <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+
+    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Neonderthaw&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <link href="/static/neon_nights/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/neon_nights/css/neon_nights.css" rel="stylesheet">
     <!-- Bootstrap JavaScript: !-->
      {% bootstrap_javascript %}
 
@@ -37,9 +42,16 @@
 <div class="container">
   <main>
     <div class="py-5 text-center">
+        {% if community.icon %}
       <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-
-        <h2>Select Profile</h2>
+        {% else %}
+        <h2 class="logo-text">{{community.name}}</h2>
+        {% if community.tagline %}
+            <p class="tagline-text">{{community.tagline}}</p>
+        <br/>
+        {% endif %}
+        {% endif %}
+        <h3>Select Profile</h3>
         <p class="lead">Please select a profile below or create a new one!</p>
 
 

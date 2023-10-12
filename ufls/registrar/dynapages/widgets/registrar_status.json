@@ -1,0 +1,27 @@
+{
+    "title":"Registrar Status",
+    "descr":"Display your Registrar Status for a given Event anywhere in the profile.",
+    "helptext":"Display your Registrar Status for a given Event anywhere in the profile.",
+    "version":"1.0",
+    "author":"Alisi",
+    "plugin":"ufls.registrar",
+    "widget_name":"ufls_registrar-status",
+    "dynapage_template":"dynapage-widgets-ufls_registrar_status",
+    "widget_data": {},
+    "icon":"fa-solid fa-dice-d20",
+    "setup_required":true,
+    "setup_form":"ufls.registrar.dynapages.forms.registrar_status",
+    "modes":{
+        "banner":true,
+        "mainbody":true,
+        "sidecol":true,
+        "footer":true
+    },
+    "used_in": {
+        "profile":true,
+        "group":false,
+        "dashboard":true,
+        "SLHUD":false,
+        "blog":false
+    }
+}
