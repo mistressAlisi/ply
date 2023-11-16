@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 import uuid,datetime
 import datetime
 from communities.profiles.models import Profile
+from communities.community.models import Community
 
 
 
@@ -22,17 +23,17 @@ class Event(models.Model):
     banList = models.TextField(blank=True, null=True, help_text="Enter a First/Last name, or known Con Badge Name. One entry per line. Security will be notified if this name is detected.")
     startDate = models.DateField(blank=True,null=True)
     endDate = models.DateField(blank=True, null=True)
-    regOpen = models.DateTimeField(default=datetime.datetime.now())
-    regClose = models.DateTimeField(default=datetime.datetime.now())
-    regEditOpen = models.DateTimeField(default=datetime.datetime.now())
-    regEditClose = models.DateTimeField(default=datetime.datetime.now())
+    regOpen = models.DateTimeField(default=datetime.datetime.now)
+    regClose = models.DateTimeField(default=datetime.datetime.now)
+    regEditOpen = models.DateTimeField(default=datetime.datetime.now)
+    regEditClose = models.DateTimeField(default=datetime.datetime.now)
     # advanced forms
-    dealersOpen = models.DateTimeField(default=datetime.datetime.now())
-    dealersClose = models.DateTimeField(default=datetime.datetime.now())
-    aaOpen = models.DateTimeField(default=datetime.datetime.now())
-    aaClose = models.DateTimeField(default=datetime.datetime.now())
-    eventsOpen = models.DateTimeField(default=datetime.datetime.now())
-    eventsClose = models.DateTimeField(default=datetime.datetime.now())
+    dealersOpen = models.DateTimeField(default=datetime.datetime.now)
+    dealersClose = models.DateTimeField(default=datetime.datetime.now)
+    aaOpen = models.DateTimeField(default=datetime.datetime.now)
+    aaClose = models.DateTimeField(default=datetime.datetime.now)
+    eventsOpen = models.DateTimeField(default=datetime.datetime.now)
+    eventsClose = models.DateTimeField(default=datetime.datetime.now)
     eventAppCode = models.CharField(max_length=100)
     def __str__(self):
         return f"Event: {self.name}"
@@ -64,8 +65,8 @@ class Application(models.Model):
         db_table = "ufls_registrar_application"
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     questions = models.JSONField(default=[])
-    openDate = models.DateTimeField(default=datetime.datetime.now())
-    closeDate = models.DateTimeField(default=datetime.datetime.now())
+    openDate = models.DateTimeField(default=datetime.datetime.now)
+    closeDate = models.DateTimeField(default=datetime.datetime.now)
     description = models.TextField()
     showOnSidebar = models.BooleanField(default=True, help_text="Shows on Dashboard Sidebar as an Application to submit for")
     showOnHomepage = models.BooleanField(default=True, help_text="Shows to Guests before login on the Homepage.")
@@ -102,10 +103,15 @@ class ApplicationSubmissionAdmin(admin.ModelAdmin):
 class RegistrantLevel(models.Model):
     class Meta:
         db_table = "ufls_registrar_registrant_level"
+    uuid =  models.UUIDField(primary_key=True,default=uuid.uuid4)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     level_id = models.TextField(max_length=200,verbose_name='Level ID')
     label = models.TextField(max_length=200,verbose_name='Level Label')
     active = models.BooleanField(verbose_name="Level Active Flag",default=True)
-    cost = models.IntegerField(verbose_name='Cost',default=65)
+    cost = models.DecimalField(verbose_name='Level Cost',default=65,max_digits=10,decimal_places=2)
+    sold = models.IntegerField(verbose_name='Current Count Sold', default=0)
+    max = models.IntegerField(verbose_name='Max Sellable Count', default=1000)
+    limit_to_max_sales = models.BooleanField(verbose_name="Limit sales to specified max ticket #",default=False)
     stripe_price = models.TextField(max_length=200,verbose_name='Level Stripe Price ID')
     stripe_price_test = models.TextField(max_length=200,verbose_name='Level Stripe Test Price ID')
     def __str__(self):
@@ -115,6 +121,48 @@ class RegistrantLevel(models.Model):
 class RegistrantLevelAdmin(admin.ModelAdmin):
     pass
 
+class RegistrationLoot(models.Model):
+    class Meta:
+        db_table = "ufls_registrar_registration_loot"
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    level_id = models.TextField(max_length=200,verbose_name='Loot ID')
+    label = models.TextField(max_length=200,verbose_name='Loot Label')
+    descr = models.TextField(verbose_name='Loot Description')
+    active = models.BooleanField(verbose_name="Loot Active Flag",default=True)
+    picture = models.ImageField(verbose_name="Loot Image/Photo", null=True,blank=True)
+    purchasable = models.BooleanField(verbose_name="Loot Available for Direct Purchase", default=True)
+    customisable = models.BooleanField(verbose_name="Loot Can be Customisable", default=False)
+    options = models.JSONField(verbose_name="Customisation options",blank=True,null=True)
+    cost = models.FloatField(verbose_name='Loot Cost',default=65)
+    sold = models.IntegerField(verbose_name='Current Count Sold', default=0)
+    max = models.IntegerField(verbose_name='Max Sellable Count', default=1000)
+    limit_to_max_sales = models.BooleanField(verbose_name="Limit sales to specified max count #",default=False)
+    stripe_price = models.TextField(max_length=200,verbose_name='Loot Stripe Price ID')
+    stripe_price_test = models.TextField(max_length=200,verbose_name='Loot Stripe Test Price ID')
+    def __str__(self):
+        return f'Registration Loot: {self.label} (${self.cost})'
+
+@admin.register(RegistrationLoot)
+class RegistrationLootAdmin(admin.ModelAdmin):
+    pass
+
+class RegistrationLevelLoot(models.Model):
+    class Meta:
+        db_table = "ufls_registrar_registration_level_loot"
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    level = models.ForeignKey(RegistrantLevel,verbose_name='Registration Level',on_delete=models.CASCADE)
+    item = models.ForeignKey(RegistrationLoot,verbose_name="Registration Loot Item",on_delete=models.CASCADE)
+    cost = models.IntegerField(verbose_name='Loot Cost',default=65)
+    count = models.IntegerField(verbose_name='Item Count', default=1)
+    active = models.BooleanField(verbose_name="Loot Active Flag",default=True)
+    def __str__(self):
+        return f'Registration Level Loot: For {self.level.label} Loot item: {self.item.label}'
+
+@admin.register(RegistrationLevelLoot)
+class RegistrationLevelLootAdmin(admin.ModelAdmin):
+    pass
 
 # Create your models here.
 class Registrant(models.Model):
@@ -135,7 +183,8 @@ class Registrant(models.Model):
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created: ')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated: ')
     level = models.ForeignKey(RegistrantLevel,verbose_name="Registrant Level: ",on_delete=models.RESTRICT)
-    profile = models.ForeignKey(Profile,verbose_name="Registrant Profile: ",on_delete=models.RESTRICT,blank=True,null=True)
+    event = models.ForeignKey(Event,verbose_name="Registrant Event:",on_delete=models.RESTRICT,null=True)
+    profile = models.ForeignKey(Profile,verbose_name="Select profile: ",on_delete=models.RESTRICT,blank=True,null=True)
     fdDonation =  models.DecimalField(verbose_name='Furrydelphia Donation: ',default=0,max_digits=10,decimal_places=2)
     chDonation =  models.DecimalField(verbose_name='Charity Donation: ',default=0,max_digits=10,decimal_places=2)
     badgeName = models.CharField(max_length=100,verbose_name="Badge Name: ")
@@ -406,7 +455,6 @@ class Badge(models.Model):
     number = models.CharField(max_length=50, default="NEW")
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, blank=True, null=True)
     def save(self, *args, **kwargs):
-        print(self.number)
         ##
         #
         # D = Day Pass
@@ -445,7 +493,7 @@ class Badge(models.Model):
             super(Badge, self).save(*args, **kwargs)
         #if(self.event == None):
         #    e = Event.objects.filter(pk=self.registrant.event.pk).first()
-        #    self.event = e 
+        #    self.event = e
         ##    e.save()
         #    super(Badge, self).save(*args, **kwargs)
 
@@ -468,3 +516,54 @@ class PrintJob(models.Model):
 @admin.register(PrintJob)
 class PrintJobAdmin(admin.ModelAdmin):
     pass
+
+class EventCommunityMapping(models.Model):
+    class Meta:
+        db_table = "ufls_registrar_event_community_mapping"
+        unique_together = ["event","community"]
+    uuid = models.UUIDField(default=uuid.uuid4,primary_key=True)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, verbose_name="Event", on_delete=models.CASCADE)
+    active = models.BooleanField(verbose_name="Active",default=True)
+
+    def __str__(self):
+        return f"Event->Community Mapping: {self.event.name}->{self.community.name}"
+
+@admin.register(EventCommunityMapping)
+class EventCommunityMappingAdmin(admin.ModelAdmin):
+        pass
+
+class RegistrarLevelLootView(models.Model):
+    class Meta:
+        managed = False
+        db_table = "ufls_registrar_level_loot_view"
+    #level_id = models.UUIDField(verbose_name="Level UUID")
+    level = models.ForeignKey(RegistrantLevel,on_delete=models.CASCADE,related_name="+")
+    loot = models.ForeignKey(RegistrationLoot,on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, verbose_name="Loot ID")
+    label = models.TextField(verbose_name="Level Label")
+    active = models.BooleanField(verbose_name="Level Active")
+    picture = models.ImageField(verbose_name="Loot Image/Photo", null=True, blank=True)
+    loot_label = models.TextField(verbose_name="Loot Label")
+    loot_active = models.BooleanField(verbose_name="Loot Active")
+    cost = models.DecimalField(verbose_name="Loot Cost",max_digits=10,decimal_places=2)
+    purchasable = models.BooleanField(verbose_name="Loot Purchasable")
+    descr = models.TextField(verbose_name="Loot Descr")
+    count = models.PositiveIntegerField(verbose_name="Loot Count",default=1)
+
+class RegistrantLootFulfillment(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, verbose_name="Fulfilment Request ID")
+    registrant = models.ForeignKey(Registrant,on_delete=models.CASCADE,verbose_name="Registrant")
+    loot = models.ForeignKey(RegistrationLoot,on_delete=models.CASCADE,verbose_name="Loot Type")
+    event = models.ForeignKey(Event, verbose_name="Event", on_delete=models.CASCADE)
+    count = models.IntegerField(verbose_name="Item Count",default=1)
+    active = models.BooleanField(verbose_name="Fulfilment Request Active",default=False)
+    fulfilled = models.BooleanField(verbose_name="Request Complete",default=False)
+    created = models.DateTimeField(verbose_name="Request Created",auto_now_add=True)
+    fulfilled_on = models.DateTimeField(verbose_name="Request Fulfilled on",blank=True,null=True)
+    remarks = models.TextField(verbose_name="Request Remarks",blank=True,null=True)
+    def __str__(self):
+        return f"Event->Registrant Loot Fulfilment: {self.event.name}, Reg: {self.registrant}, Loot: {self.loot}, Count: {self.count}"
+@admin.register(RegistrantLootFulfillment)
+class RegistrantLootFulfillmentAdmin(admin.ModelAdmin):
+        pass

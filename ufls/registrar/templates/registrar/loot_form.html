@@ -1,0 +1,31 @@
+<div class="text-left">
+<div class="accordion" id="accordionExample" data-bs-theme="dark">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button h4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Included with your Registration(s)
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        {%include "registrar/loot_item.html" %}
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed h4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        Additional Item(s)
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+         {%include "registrar/purchase_items.html" %}
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>

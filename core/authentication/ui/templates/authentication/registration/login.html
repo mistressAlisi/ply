@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="en" class="h-100">
+<html lang="en" class="h-100" data-bs-theme="dark">
 <head>
 
     <!-- Required meta tags -->
@@ -14,7 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Page title -->
 
-    <title>Ply Login</title>
+    <title>{{community.name}}: Login</title>
+    <link href="/static/neon_nights/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/neon_nights/css/neon_nights.css" rel="stylesheet">
 
 
     <!-- Bootstrap CSS -->
@@ -22,7 +24,10 @@
     <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
     <!-- Bootstrap JavaScript: !-->
      {% bootstrap_javascript %}
 
@@ -33,23 +38,21 @@
     <!--   Login Functions -->
 </head>
 
-<body class="bg-light">
-<div class="container">
+<body class="bg-dark" data-bs-theme="dark">
+{% include "neon_nights/effects/particles/cover_particles.html" %}
+<div class="container" style="z-index: 3;">
   <main>
-    <div class="py-5 text-center">
-      <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-
-        <h2>welcome to Ply!</h2>
-        <p class="lead">Already have an account- have an account? Login now!</p>
-
-
+    <div class="py-5 text-center" style="z-index: 3; position: relative;" >
+        <h2 class="logo-text">{{community.name}}</h2>
+        <p class="tagline-text">{{community.tagline}}</p>
+        <p class="lead">Already have an account- have an account? Login now! - if you don't, please proceed to <a href="/accounts/register/"> registration</a> to create one</p>
 
     </div>
     <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
-    <div class="card"  style="margin-left: auto; margin-right: auto; padding: 20px;">
-    <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-user-plus"></i> Step one: Enter Account Details:</h5>
+    <div class="card"  style="margin-left: auto; margin-right: auto; padding: 20px; z-index: 2;">
+    <h5 class="modal-title"> <i class="fa-solid fa-user-plus"></i> Step one: Enter Account Details:</h5>
     <div class="modal-body">
-    <form id="register_form" method="POST">
+    <form id="register_form" method="POST" action="/accounts/api/login/">
     {%csrf_token%}
         {% bootstrap_form form %}
     </div>
@@ -83,7 +86,5 @@
     </div>
   </div>
 </div>
-
-
 </body>
 </html>

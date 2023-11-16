@@ -20,17 +20,15 @@
     <!-- Bootstrap CSS -->
     {% bootstrap_css %}
     <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Neonderthaw&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
-    <link href="/static/neon_nights/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/neon_nights/css/neon_nights.css" rel="stylesheet">
     <!-- Bootstrap JavaScript: !-->
      {% bootstrap_javascript %}
-
+    {% with THEME_PATH|add:"body/headers/css.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    {% with THEME_PATH|add:"body/headers/fonts.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
     {% block bootstrap5_extra_head %}{% endblock %}
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
@@ -39,25 +37,20 @@
 </head>
 
 <body data-bs-theme="dark">
+{% with THEME_PATH|add:"ui_modules/forge/profile/selector_before_body.html" as import_template %}
+{% include import_template %}
+{% endwith %}
 <div class="container">
   <main>
     <div class="py-5 text-center">
-        {% if community.icon %}
-      <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-        {% else %}
-        <h2 class="logo-text">{{community.name}}</h2>
-        {% if community.tagline %}
-            <p class="tagline-text">{{community.tagline}}</p>
-        <br/>
-        {% endif %}
-        {% endif %}
-        <h3>Select Profile</h3>
-        <p class="lead">Please select a profile below or create a new one!</p>
-
-
+    {% with THEME_PATH|add:"components/community/branding/form_header.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    <h3>Select Profile</h3>
+    <p class="lead">Please select a profile below or create a new one!</p>
     </div>
     <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
-    <div class="card col-6"  style="margin-left: auto; margin-right: auto; padding: 20px;">
+    <div class="card col-6"  style="margin-left: auto; margin-right: auto; padding: 20px; z-index: 100;">
     <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-users"></i> Switch Profile:</h5>
     <div class="modal-body">
     <ul class="list-group">
@@ -81,5 +74,8 @@
     <div>
     </div>
     </div>
+{% with THEME_PATH|add:"ui_modules/forge/profile/selector_after_body.html" as import_template %}
+{% include import_template %}
+{% endwith %}
 </body>
 </html>
