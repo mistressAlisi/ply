@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from ply import settings,toolkit
-from ply.toolkit import vhosts,levels
+from ply.toolkit import vhosts,levels,themes
 from roleplaying.stats.models import ClassType,ProfileStat
 from roleplaying.exp.models import ProfileExperience
 
@@ -16,6 +16,8 @@ def select_profile(request):
     #  Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
+    theme = themes.get_community_theme_or_def(community)
+
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
@@ -24,7 +26,8 @@ def select_profile(request):
         if (all_profiles.count() == 0):
             return redirect("/forge/create/profile")
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL}
+        print(settings.PLY_DEFAULT_THEME)
+        context = {'community':community,'vhost':vhost,'THEME_PATH':theme.THEME_PATH,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL}
         return render(request,"forge-select_profile.html",context)
 
 

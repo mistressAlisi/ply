@@ -6,6 +6,8 @@ import uuid
 # Create your models here.
 
 class Department(models.Model):
+    class Meta:
+        db_table = "ufls_furry_department"
     name = models.CharField(max_length=100)
     def __str__(self):
         return self.name
@@ -28,6 +30,8 @@ class Department(models.Model):
 #         return self.user.username
 
 class EmailValidation(models.Model):
+    class Meta:
+        db_table = "ufls_furry_email_validation"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     key = models.UUIDField(default=uuid.uuid4)
     used = models.BooleanField(default=False)
@@ -35,16 +39,22 @@ class EmailValidation(models.Model):
     usedFor = models.CharField(max_length=100, default='Generic')
 
 class RoomMonitor(models.Model):
+    class Meta:
+        db_table = "ufls_furry_room_monitor"
     name = models.SlugField(unique=True, max_length=50, primary_key=True)
     display_name = models.CharField(max_length=50)
     count = models.IntegerField(default=0)
 
 class RoomMonitorHistory(models.Model):
+    class Meta:
+        db_table = "ufls_furry_room_monitor_history"
     room = models.ForeignKey('furry.RoomMonitor', on_delete=models.CASCADE)
     date_recorded = models.DateTimeField(auto_now_add=True)
     count = models.IntegerField()
 
 class RegistrantAssociationKey(models.Model):
+    class Meta:
+        db_table = "ufls_furry_registrant_association_key"
     key = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True)
     account = models.ForeignKey(Profile, on_delete=models.CASCADE)
     registrant = models.ForeignKey('registrar.RegistrantData', on_delete=models.CASCADE)

@@ -1,0 +1,38 @@
+<div class="col">
+            <div class="card">
+              {% for entry in sessionRegs %}
+              <div class="card-header">
+                  <h4>{{entry.firstName}} {{entry.lastName}}'s Loot:</h4>
+                  <span class="text-muted">Current registration level: <em>{{entry.level}}</em> (${{entry.level_cost}})</span>
+              </div>
+              <div class="card-body">
+                {% for le in entry.loot %}
+                 <div class="container-flex">
+                     <div class="row">
+                        <div class="col">
+                            <div class="row">
+                          {% if le.item.picture %}
+                            <div class="col-2">
+                          <img class="img-fluid" src="{{le.picture.url}}" alt="Loot Item Picture"/>
+                            </div>
+                          {% endif %}
+                            <div class="col-9">
+                            <h5 class="text-success">{{le.item.label}}:</h5>
+                            <p>{{le.item.descr}}</p>
+                            </div>
+                            </div>
+                        </div>
+                         <div class="col-1 text-primary">
+                             <em class="text-muted">${{le.item.cost}}</em>
+
+                     </div>
+                 </div>
+
+
+                {% endfor %}
+              </div>
+               {% endfor %}
+
+            </div>
+            </div>
+</div>

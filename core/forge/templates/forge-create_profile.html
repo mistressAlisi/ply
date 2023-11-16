@@ -24,7 +24,11 @@
     <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <link href="/static/neon_nights/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/neon_nights/css/neon_nights.css" rel="stylesheet">
     <!-- Bootstrap JavaScript: !-->
      {% bootstrap_javascript %}
 
@@ -39,7 +43,15 @@
 <div class="container">
   <main>
     <div class="py-5 text-center">
+       {% if community.icon %}
       <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        {% else %}
+        <h2 class="logo-text">{{community.name}}</h2>
+        {% if community.tagline %}
+            <p class="tagline-text">{{community.tagline}}</p>
+        <br/>
+        {% endif %}
+        {% endif %}
         {% if profile.profile_id %}
         <h2> Editing Profile "{{profile.name}}"</h2>
         <p class="lead">Use the form below to make changes to this profile: When you're satisfied; click 'Review Profile' to continue.</p>
