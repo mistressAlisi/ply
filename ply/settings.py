@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     'content_manager.keywords',
     'communities.community',
     'core.plyscript',
+    'core.authentication',
+    'core.authentication.ui',
     'media.gallery.core',
     'media.gallery.photos',
     'core.metrics',
@@ -366,3 +368,18 @@ PLY_DYNAPAGES_DASHBOARD_TEMPLATE=config("PLY_DYNAPAGES_DASHBOARD_TEMPLATE")
 PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET")
 PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE=config("PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE",default="communities-community-installComplete-cover")
 GRAPPELLI_ADMIN_TITLE="PLY Admin @ "+PLY_HOSTNAME
+# PAYMENT PROCESSING:
+PAYMENT_HOST = config('UFLS_PAYMENT_HOST', default="http://localhost:8000/")
+PAYMENT_USES_SSL = config("UFLS_PAYMENTS_USES_SSL", default=False)
+PAYMENT_STRIPE_WEBHOOK_SECRET = config("UFLS_STRIPE_WEBHOOK_SECRET",default="")
+PAYMENT_STRIPE_TEST = config('UFLS_STRIPE_TEST', cast=bool, default=True)
+if (PAYMENT_STRIPE_TEST == True):
+    PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY_TEST', default=False)
+    PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY_TEST', default=False)
+    PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM_TEST', default=False)
+else:
+    PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY', default=False)
+    PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
+    PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
+
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")

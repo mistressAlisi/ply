@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="en" class="h-100">
+<html lang="en" class="h-100" data-bs-theme="dark">
 <head>
 
     <!-- Required meta tags -->
@@ -14,7 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Page title -->
 
-    <title>Ply Account Registration</title>
+    <title>{{community.name}}: Login</title>
+
 
 
     <!-- Bootstrap CSS -->
@@ -22,10 +23,15 @@
     <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+
     <!-- Bootstrap JavaScript: !-->
      {% bootstrap_javascript %}
-
+    {% with THEME_PATH|add:"body/headers/css.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    {% with THEME_PATH|add:"body/headers/fonts.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
     {% block bootstrap5_extra_head %}{% endblock %}
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
@@ -33,28 +39,28 @@
     <!--   Login Functions -->
 </head>
 
-<body class="bg-light">
-<div class="container">
+<body class="" data-bs-theme="dark">
+{% include "neon_nights/effects/particles/cover_particles.html" %}
+<div class="container" style="z-index: 3;">
   <main>
-    <div class="py-5 text-center">
-      <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-
-        <h2>Create Ply Account</h2>
-        <p class="lead">Welcome! We are happy you are here. Please create a Ply account to join our community - have an account? You can just <a href="/accounts/login">login</a> to join!</p>
-
+    <div class="py-5 text-center" style="z-index: 3; position: relative;" >
+        <h2 class="logo-text">{{community.name}}</h2>
+        <p class="tagline-text">{{community.tagline}}</p>
+        <p class="lead">Already have an account- have an account? Login now! - if you don't, please proceed to <a href="/accounts/register/"> registration</a> to create one</p>
 
     </div>
     <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
-    <div class="card"  style="margin-left: auto; margin-right: auto; padding: 20px;">
-    <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-user-plus"></i> Step one: Enter Account Details:</h5>
+    <div class="card"  style="margin-left: auto; margin-right: auto; padding: 20px; z-index: 2;">
+    <h5 class="modal-title"> <i class="fa-solid fa-user-plus"></i> Step one: Enter Account Details:</h5>
     <div class="modal-body">
-    <form id="register_form" method="POST">
+    <form id="register_form" method="POST" action="/accounts/api/login/">
     {%csrf_token%}
         {% bootstrap_form form %}
     </div>
     <div class="modal-footer">
-        {% bootstrap_button "Clear Form" button_type="reset" button_class="btn-primary" %}
-        {% bootstrap_button "Register Now!" button_type="submit" button_class="btn-success" %}
+        {% bootstrap_button "Forgot Password" button_type="link" href="/accounts/password_reset" button_class="btn-outline-secondary" %}
+        {% bootstrap_button "Clear Form" button_type="reset" button_class="btn-outline-primary" %}
+        {% bootstrap_button "Login" button_type="submit" button_class="btn-outline-success" %}
     <div>
     </div>
     </div>
@@ -81,7 +87,5 @@
     </div>
   </div>
 </div>
-
-
 </body>
 </html>

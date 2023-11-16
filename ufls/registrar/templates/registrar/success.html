@@ -3,27 +3,35 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {%block bootstrap5_content %}
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
 <div class="container">
     <main>
         <div class="py-5 text-center">
-        <h2>Furrydelphia 2023</h2>
-        <p><strong>On-Site Registration Complete!</strong></p>
+        <h2 class="logo-text">{{community.name}}</h2>
+        <p class="tagline-text">{{community.tagline}}</p>
         <hr/>
-         <p class="lead">Thank you! The following registrations have been completed. You will recieve an email reciept and can now proceed to  checkin and badge pickup! Enjoy the con!</p>
+         <p class="lead text-primary">Thank you! The following registrations have been completed.<br/> If you're logged in and a profile has been created; it has been automatically linked to this badge/reg!</p>
          <div class="row g-5">
 
       <div class="col-md-10 col-lg-12">
 
-        <h4 class="mb-3">Attendees Registered:</h4>
+       <h4 class="mb-3 text-primary"><i class="fa-solid fa-users"></i>Attendees registered:</h4>
         <div id="cart_container">
         {%include "registrar/render_reg_contents.html" %}
         </div>
+        <h4 class="mb-3 text-primary"><i class="fa-solid fa-gifts"></i>Loot Obtained:</h4>
+        <div id="loot_container">
+        {%include "registrar/render_loot_contents.html" %}
+        </div>
         <hr/>
-        <a href="/app/registrar" class="btn btn-success btn-lg w-40" tabindex="-1" role="button"> Back to Registrar</a>
+        <a href="/" class="btn btn-warning btn-lg w-40" tabindex="-1" role="button"> Back to Index</a>
+        <a href="/dashboard/user" class="btn btn-success btn-lg w-40" tabindex="-1" role="button"> Back to My profile</a>
+        <a href="/app/registrar" class="btn btn-info btn-lg w-40" tabindex="-1" role="button"> Back to Registrar</a>
       </div>
     </div>
     </main>
 </div>
+
 <script src="/static/js/registrar.js"></script>
 
 {%endblock %}
