@@ -29,8 +29,11 @@ urlpatterns = [
     path('dashboard/forge/',include('dashboard.forge_urls')),
     path('keywords/api/',include('content_manager.keywords.api_urls')),
     path('forge/', include('core.forge.urls')),
+    path('accounts/', include('core.authentication.ui.urls')),
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/api/', include('django.contrib.auth.urls')),
+    path('accounts/api/', include('django_registration.backends.activation.urls')),
     path('admin/', admin.site.urls),
     path('api/',include('ply.api_urls')),
     path('martor/', include('martor.urls')),
@@ -43,4 +46,10 @@ urlpatterns = [
     path('SLHUD/api/', include('roleplaying.SLHUD.api_urls')),
     path('dice/api/',include('roleplaying.plydice.api_urls')),
     path('', include('communities.community.public_urls'))
+]
+
+# UFLS URLs:
+urlpatterns += [
+    # Registrar App paths:
+    path('app/registrar/', include('ufls.registrar.urls')),
 ]

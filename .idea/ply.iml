@@ -7,12 +7,9 @@
     <orderEntry type="jdk" jdkName="Python 3.11 (ply)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ufls" />
-    <orderEntry type="module" module-name="cardShuffle" />
-    <orderEntry type="module" module-name="stormtracker" />
-    <orderEntry type="module" module-name="firestation" />
   </component>
   <component name="PyDocumentationSettings">
-    <option name="format" value="PLAIN" />
-    <option name="myDocStringFormat" value="Plain" />
+    <option name="format" value="EPYTEXT" />
+    <option name="myDocStringFormat" value="Epytext" />
   </component>
 </module>

@@ -3,13 +3,17 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {%block bootstrap5_content %}
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
 <div class="container">
     <main>
         <div class="py-5 text-center">
-        <h2>Furrydelphia 2023</h2>
-        <p><strong>On-Site Registration Checkout</strong></p>
+
+        <h2 class="logo-text">{{community.name}}</h2>
+        <p class="tagline-text">{{community.tagline}}</p>
+        <p class="lead"><em>Welcome!</em> You're registering for {{event.name}}. Please fill out this form to complete your registration.</p>
+            {% include "registrar/progressbar.html" %}
         <hr/>
-         <p class="lead">Welcome to Furrydelphia 2023. Please fill out this form to complete your registration.</p>
+
          <div class="row g-5">
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -19,7 +23,7 @@
         <div id="cart_container">
         {%include "registrar/render_cart_contents.html" %}
         </div>
-        <a href="/app/registrar/checkout" class="btn btn-primary btn-lg w-40" tabindex="-1" role="button">Continue to Checkout</a>
+        <a href="/app/registrar/merch" class="btn btn-primary btn-lg w-40" tabindex="-1" role="button">Continue to Step 2</a>
 
           <!--<div class="input-group">
           <form class="card p-2">
@@ -102,7 +106,7 @@
 
 - I understand and agree that I must provide authentic proof of my COVID-19 vaccination to pick up my badge at Furrydelphia 2023
 
-- I understand and agree that I will be denied entry and be ineligable for a refund if I fail to adhere to the above two statements
+- I understand and agree that I will be denied entry and be ineligible for a refund if I fail to adhere to the above two statements
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -111,5 +115,28 @@
   </div>
 </div>
 
-
+{% if not is_logged_in %}
+<div class="modal show" id="login-modal" tabindex="-1" aria-labelledby="loginModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Welcome back!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span class="text-success">Have you registered for an account and created a profile before?</span><br/>
+        You can associate this registration with any profile you may have by <a href="/accounts/login">logging in</a> first.
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='/accounts/login';">Login now!</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    var nglmodal = new bootstrap.Modal($('#login-modal'), {})
+    nglmodal.show();
+</script>
+{% endif %}
 {%endblock %}

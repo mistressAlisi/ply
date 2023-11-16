@@ -35,6 +35,7 @@ class Community(models.Model):
     restricted = models.BooleanField(verbose_name="Restricted Join Mode FLAG",default=False)
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     backgroundItem = models.ForeignKey('core.GalleryItem',blank=True,null=True,on_delete=models.RESTRICT)
+    theme = models.TextField(verbose_name="Community Theme Class Name",blank=True,null=True)
     def __str__(self):
         return f"Community: {self.name}, hash: {self.hash}"
     

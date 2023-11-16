@@ -1,0 +1,35 @@
+{%load dict_key %}
+{%load concat %}
+<di}v class="col">
+            <div class="card">
+              <div class="card-body">
+                {% for le in purchasable%}
+                 <div class="container-flex">
+                     <div class="row">
+                        <div class="col">
+                            <div class="row">
+                          {% if le.picture %}
+                            <div class="col-2">
+                          <img class="img-fluid" src="{{le.picture.url}}" alt="Loot Item Picture"/>
+                            </div>
+                          {% endif %}
+                            <div class="col-10">
+                            <h5 class="text-success">{{le.label}}:</h5>
+                            <p>{{le.descr}}</p>
+                            </div>
+                             <div class="col-2 text-primary text-center">
+                                  <input id="loot_{{le.id}}" onchange="registrar.updateLootTotal();" value="{{le.count}}" name="loot_{{le.id}}" data-cost="{{le.cost}}" class="form-control form-control-lg update_totals" type="number" min="0" max="999" placeholder="0" aria-label="Amount of {{le.label}} to purchase at a cost of {{le.cost}} each."> x ${{le.cost}}
+                             </div>
+
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+
+                </br>
+
+                {% endfor %}
+              </div>
+            </div>
+            </div>
+</div>
