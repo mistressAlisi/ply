@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_bootstrap5',
+
     'django_registration',
     'storages',
     'martor',
@@ -83,6 +84,7 @@ INSTALLED_APPS = [
     'ply',
     'ufls.themes.neon_nights',
     'ufls.furry',
+    'ufls.event',
     'ufls.registrar'
 ]
 
@@ -326,12 +328,8 @@ PLY_USER_DASHBOARD_MODULES = [
 
 PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "communities.community",
-    "communities.profiles",
-    "communities.stream",
-    "communities.notifications",
-    "media.gallery.core",
-    "roleplaying.stats",
-    "roleplaying.skills",
+    "ufls.event",
+    "ufls.registrar"
 ]
 PLY_GALLERY_PLUGINS = [
     "media.gallery.photos"

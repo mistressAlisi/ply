@@ -1,0 +1,30 @@
+{%extends "ply-bootstrap5-noheader.html" %}
+{%load django_bootstrap5 %}
+{% block bootstrap5_title %}
+Event->Community Link
+{%endblock%}
+{% block bootstrap5_content %}
+
+<form id="link_form" method="POST" onsubmit="events.submitLink(); return false;">
+  {%csrf_token%}
+<div class="container-fluid row g-5">
+  <div class="card">
+    {{form.media}}
+    <div class="card-header">
+      <h2 class="text-primary"> <i class="fa-solid fa-star"></i>(Re-) Link community to Event</h2>
+      <p class="text-muted">Create/modify the link from a given event to this community using the form below. Communities can only be linked to one event.</p>
+    </div>
+    <div class="card-body">
+    {%bootstrap_form form %}
+    </div>
+    <div class="card-footer text-right">
+      <input type="reset" class="btn btn-outline-primary" value="Reset Form">
+      <input type="submit" class="btn btn-outline-success" value="Create Link">
+    </div>
+  </div>
+</div>
+</form>
+
+<script src="/static/js/util-get_cookie.js"></script>
+
+{% endblock %}

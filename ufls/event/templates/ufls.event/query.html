@@ -1,0 +1,33 @@
+{%extends "ply-bootstrap5-noheader.html" %}
+{%load django_bootstrap5 %}
+{% block bootstrap5_title %}
+Event Query
+{%endblock%}
+{% block bootstrap5_content %}
+
+<div class="container-fluid row g-5">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="text-primary"> <i class="fa-solid fa-search"></i>Event Query</h2>
+      <p class="text-muted">Use this tool to query existing events</p>
+      Select Event: <select id="event_id" name="event_id" class="form-select" onchange="events._query();">
+          <option value="" selected="selected" >...</option>
+          {% for event in events %}
+          <option value="{{event.pk}}">{{event.name}}</option>
+          {%endfor %}
+      </select>
+
+    </div>
+    <div class="card-body" id="event_query_div">
+
+    </div>
+    <div class="card-footer text-right">
+
+    </div>
+  </div>
+</div>
+
+
+<script src="/static/js/util-get_cookie.js"></script>
+
+{% endblock %}

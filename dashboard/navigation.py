@@ -12,7 +12,7 @@ class SideBarBuilder():
     if (len(self.modules) == 0): self.register(data,menu_module_name)
   # Register a module to the sidebar, pass it's Module.Navigation class to this constructor: 
   def register(self,data,menu_module_name="sidebar_menu"):
-    if data is False: raise ValueError('Register must recieve a Navigation object from a module.')
+    if data is False: raise ValueError('Register must receive a Navigation object from a module.')
     for mname in data:
       try:
         mod = include(f"{mname}.{menu_module_name}")[0]
