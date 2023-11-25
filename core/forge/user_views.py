@@ -26,7 +26,7 @@ def select_profile(request):
         if (all_profiles.count() == 0):
             return redirect("/forge/create/profile")
         request.session['community'] = str(community.uuid)
-        print(settings.PLY_DEFAULT_THEME)
+
         context = {'community':community,'vhost':vhost,'THEME_PATH':theme.THEME_PATH,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL}
         return render(request,"forge-select_profile.html",context)
 
@@ -37,6 +37,7 @@ def create_profile(request):
     #  Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
+    theme = themes.get_community_theme_or_def(community)
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_placeholder_profile(request)
     classes = ClassType.objects.filter(selectable=True,frozen=False,archived=False,blocked=False)
@@ -44,7 +45,7 @@ def create_profile(request):
         return render(request,"error-no_vhost_configured.html",{})
     else:
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'profile':profile,'classtypes':classes,'class_skip':False}
+        context = {'community':community,'vhost':vhost,'profile':profile,'classtypes':classes,'THEME_PATH':theme.THEME_PATH,'class_skip':False}
         return render(request,"forge-create_profile.html",context)
 
 
@@ -54,6 +55,7 @@ def edit_profile(request):
     #  Ignore port:
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
+    theme = themes.get_community_theme_or_def(community)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
 
@@ -62,7 +64,7 @@ def edit_profile(request):
         profile = toolkit.profiles.get_active_profile(request)
         exo = ProfileExperience.objects.get(community=community,profile=profile)
         request.session['community'] = str(community.uuid)
-        context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo,'class_skip':True}
+        context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo,'THEME_PATH':theme.THEME_PATH,'class_skip':True}
         return render(request,"forge-create_profile.html",context)
 
 

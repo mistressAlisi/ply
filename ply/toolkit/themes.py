@@ -35,3 +35,4 @@ def get_community_theme_or_def(community):
         return get_theme_info(community.theme)
     else:
         return get_theme_info(settings.PLY_DEFAULT_THEME)
+

@@ -7,57 +7,8 @@ import uuid,datetime
 import datetime
 from communities.profiles.models import Profile
 from communities.community.models import Community
+from ufls.event.models import Event
 
-
-
-class Event(models.Model):
-    class Meta:
-        db_table = "ufls_registrar_event"
-    uuid = models.UUIDField(primary_key=True,default=uuid.uuid4)
-    name = models.CharField(max_length=100)
-    active = models.BooleanField(default=False)
-    timeLastSync = models.DateTimeField(blank=True,null=True)
-    isSecAccessEnabled = models.BooleanField(default=False, help_text="Enables the PocketSec application to be used by PSafe")
-    uniqueBadgeNumbers = models.IntegerField(default=1)
-    uniqueBadgeNumbersCard = models.IntegerField(default=100)
-    banList = models.TextField(blank=True, null=True, help_text="Enter a First/Last name, or known Con Badge Name. One entry per line. Security will be notified if this name is detected.")
-    startDate = models.DateField(blank=True,null=True)
-    endDate = models.DateField(blank=True, null=True)
-    regOpen = models.DateTimeField(default=datetime.datetime.now)
-    regClose = models.DateTimeField(default=datetime.datetime.now)
-    regEditOpen = models.DateTimeField(default=datetime.datetime.now)
-    regEditClose = models.DateTimeField(default=datetime.datetime.now)
-    # advanced forms
-    dealersOpen = models.DateTimeField(default=datetime.datetime.now)
-    dealersClose = models.DateTimeField(default=datetime.datetime.now)
-    aaOpen = models.DateTimeField(default=datetime.datetime.now)
-    aaClose = models.DateTimeField(default=datetime.datetime.now)
-    eventsOpen = models.DateTimeField(default=datetime.datetime.now)
-    eventsClose = models.DateTimeField(default=datetime.datetime.now)
-    eventAppCode = models.CharField(max_length=100)
-    def __str__(self):
-        return f"Event: {self.name}"
-@admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
-    pass
-
-class ConBadgeLevelMap(models.Model):
-    class Meta:
-        db_table = "ufls_registrar_conbadgelevelmap"
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    regfoxPath = models.CharField(max_length=100)
-    regfoxValue = models.CharField(max_length=100)
-    stripePrice = models.CharField(max_length=200)
-    badgeLevel = models.CharField(max_length=100)
-    badgeImageLocation = models.CharField(max_length=250)
-    badgeHasMerch = models.BooleanField(default=False, help_text="Badge has Merch.")
-    badgeIsCard = models.BooleanField(default=False, help_text="Badge is CR80 sized.")
-    def __str__(self):
-        return "%s / %s" % (self.event.name, self.badgeLevel)
-
-@admin.register(ConBadgeLevelMap)
-class ConBadgeLevelMapAdmin(admin.ModelAdmin):
-    pass
 
 
 class Application(models.Model):
@@ -108,6 +59,8 @@ class RegistrantLevel(models.Model):
     level_id = models.TextField(max_length=200,verbose_name='Level ID')
     label = models.TextField(max_length=200,verbose_name='Level Label')
     active = models.BooleanField(verbose_name="Level Active Flag",default=True)
+    minor = models.BooleanField(verbose_name="Minor Flag", default=True)
+    day_pass = models.BooleanField(verbose_name="Day Pass Flag", default=True)
     cost = models.DecimalField(verbose_name='Level Cost',default=65,max_digits=10,decimal_places=2)
     sold = models.IntegerField(verbose_name='Current Count Sold', default=0)
     max = models.IntegerField(verbose_name='Max Sellable Count', default=1000)
@@ -224,11 +177,7 @@ class RegistrantData(models.Model):
     class Meta:
         db_table = "ufls_registrar_registrant_data"
     profile = models.ForeignKey(Profile, blank=True, null=True, on_delete=models.SET_NULL)
-    isCustomPicture = models.BooleanField(default=False)
-    customUploadPicture = models.ImageField(upload_to=upload_path_image, blank=True, null=True)
-    croppedImage = models.ImageField(upload_to=upload_cropped_image_path, blank=True, null=True)
     event = models.ForeignKey(Event, on_delete=models.PROTECT)
-    rId = models.CharField(max_length=50, help_text="Regfox ID", blank=True, null=True)
     rUUID = models.UUIDField(help_text="Internal Registrar UUID", blank=True, null=True)
     displayId = models.CharField(max_length=100,blank=True, null=True)
     formId = models.CharField(max_length=100,blank=True, null=True)
@@ -267,7 +216,7 @@ class RegistrantData(models.Model):
     conStaffDepartment = models.CharField(max_length=100, blank=True, null=True)
     conCustomBadgeLevel = models.CharField(max_length=100, blank=True, null=True)
     hasMealPlan = models.BooleanField(default=False)
-    conRegLevel = models.ForeignKey(ConBadgeLevelMap, blank=True, null=True, on_delete=models.SET_NULL)
+    conRegLevel = models.ForeignKey(RegistrantLevel, blank=True, null=True, on_delete=models.SET_NULL)
     vetoBadgePic = models.BooleanField(default=False)
     isForwarding = models.BooleanField(default=False)
     generatedViaWebhook = models.BooleanField(default=False)
@@ -283,6 +232,8 @@ class RegistrantData(models.Model):
     a11yNotes = models.TextField(blank=True, null=True)
     a11yEvents = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"Registrant Data {self.pk}: {self.conFirstName} {self.conLastName}, {self.conRegLevel}"
     def save(self, *args, **kwargs):
         super(RegistrantData, self).save(*args, **kwargs)
         if(self.conBadgeNumber != None):
@@ -517,21 +468,6 @@ class PrintJob(models.Model):
 class PrintJobAdmin(admin.ModelAdmin):
     pass
 
-class EventCommunityMapping(models.Model):
-    class Meta:
-        db_table = "ufls_registrar_event_community_mapping"
-        unique_together = ["event","community"]
-    uuid = models.UUIDField(default=uuid.uuid4,primary_key=True)
-    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, verbose_name="Event", on_delete=models.CASCADE)
-    active = models.BooleanField(verbose_name="Active",default=True)
-
-    def __str__(self):
-        return f"Event->Community Mapping: {self.event.name}->{self.community.name}"
-
-@admin.register(EventCommunityMapping)
-class EventCommunityMappingAdmin(admin.ModelAdmin):
-        pass
 
 class RegistrarLevelLootView(models.Model):
     class Meta:

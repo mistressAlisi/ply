@@ -5,8 +5,8 @@
       <div class="offcanvas-body">
         <ul class="nav flex-column">
          <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded" href="/dashboard/forge/#">
-          <i class="fas fa-home fa-2x"></i> Dashboard / Landing Page
+        <button class="btn btn-toggle align-items-center rounded" onclick="dc_panel_home();">
+          <i class="fas fa-home fa-2x"></i> Dashboard
         </button>
         </li>
          <li class="mb-1"><hr/></li>
@@ -15,7 +15,7 @@
 
       <li class="mb-1"><hr/></li>
       {% for module in sidebar %}
-      {% include "dashboard-sidebar-module-menu.html" %}
+      {% include "dashboard/dashboard-sidebar-module-menu.html" %}
       {% endfor %}
 
       </ul>

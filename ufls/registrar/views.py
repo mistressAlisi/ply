@@ -3,8 +3,9 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse,HttpResponse
 from ufls.registrar.forms import RegistrantForm,ConditionsForm
-from ufls.registrar.models import Registrant, RegistrantLevel, ConBadgeLevelMap, Event, RegistrantData, \
-    EventCommunityMapping, RegistrarLevelLootView, RegistrationLoot, RegistrantLootFulfillment, RegistrationLevelLoot
+from ufls.event.models import Event,EventCommunityMapping
+from ufls.registrar.models import Registrant, RegistrantLevel, RegistrantData, \
+     RegistrarLevelLootView, RegistrationLoot, RegistrantLootFulfillment, RegistrationLevelLoot
 from django.conf import settings
 from decouple import config
 from decimal import *
@@ -337,8 +338,11 @@ def stripe_webhook(request):
                         conLastName=regobj.lastName,
                         conEmail=regobj.email,
                         conBadgeName=regobj.badgeName,
-                        conDOB=regobj.dob.strftime("%Y-%m-%d")
+                        conDOB=regobj.dob.strftime("%Y-%m-%d"),
+                        conRegLevel=regobj.level
                     )
+                    if regobj.profile:
+                        registration.profile = regobj.profile
                     registration.save()
 
                     #Generate Loot fullfilment requests:

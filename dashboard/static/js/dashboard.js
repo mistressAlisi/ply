@@ -7,6 +7,8 @@ window.dashboard = Object({
         systemMenudiv:"#_systemmenu",
         systemMenuOpen:false,
         systemMenuWidth:'250px',
+        toastSuccessCls:'bg-outline-success text-success',
+        toastErrorCls:'bg-outline-warning text-warning',
     },
     /** Current main panel: **/
     cmp: false,
@@ -37,6 +39,24 @@ window.dashboard = Object({
             $("#dashboard-menu-toggle_mainPanel").html(data);
         });
     },
+    // Toast API:
+    successToast: function(header,body) {
+        new bs5.Toast({
+		body: body,
+		header: header,
+		className: dashboard.settings.toastSuccessCls,
+
+	}).show()
+    },
+    errorToast: function(header,body) {
+        new bs5.Toast({
+		body: body,
+		header: header,
+		className: dashboard.settings.toastErrorCls,
+
+	}).show()
+    },
+
     handleNotify: function(data) {
         $(dashboard.settings.notifyul).empty();
         $(dashboard.settings.notifycountul).text(data.count);
@@ -172,6 +192,10 @@ function dc_handleLink(a,sublink=false,link_class=".sm_"){
 function dc_reloadPanel() {
     $("#dashboard_mainPanel").load(dashboard.cmp);
 };
+
+function dc_panel_home() {
+    $("#dashboard_mainPanel").load("dashboard_panel_home");
+}
 
 $(document).ready(function(){
   $(document).data.modules = [];
