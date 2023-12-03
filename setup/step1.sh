@@ -20,7 +20,7 @@ echo "\n"
 if [ $ipq == 'y' ];
 then
     echo "Installing PostgreSQL..."
-    sudo apt-get install postgresql-13
+    sudo apt-get install postgresql-15
     echo "Installation Complete: PSQL Must be configured!"
     read -p "*** Please configure 'pg_hba.conf' and 'postgresql.conf' and press Enter to continue when ready. ***" abort
 fi
