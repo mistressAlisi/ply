@@ -1,7 +1,5 @@
-
-
 from django.forms import ModelForm,HiddenInput
-from .models import Community,CommunityStaff
+from .models import Community,CommunityStaff,CommunityAdmins
 from communities.profiles.models import Profile
 class CommunityForm(ModelForm):
     class Meta:
@@ -16,6 +14,23 @@ class CommunityStaffForm(ModelForm):
 
     def __init__(self,  *args, **kwargs):
         super(CommunityStaffForm, self).__init__(*args, **kwargs)
+        self.fields['community'].widget = HiddenInput()
+
+    def set_community(self,community):
+        if isinstance(community,Community):
+            self.fields['community'].initial = community.pk
+        self.fields["profile"].queryset = Profile.objects.filter(system=False)
+
+
+
+
+class CommunityAdminForm(ModelForm):
+    class Meta:
+        model = CommunityAdmins
+        fields = ["community","profile","active"]
+
+    def __init__(self,  *args, **kwargs):
+        super(CommunityAdminForm, self).__init__(*args, **kwargs)
         self.fields['community'].widget = HiddenInput()
 
     def set_community(self,community):

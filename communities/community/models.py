@@ -124,6 +124,7 @@ class CommunityAdmins(models.Model):
     class Meta:
         db_table = "communities_community_community_admins"
         unique_together = ('community','profile')
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
     created = models.DateTimeField(verbose_name='Staff Created',auto_now=True)
