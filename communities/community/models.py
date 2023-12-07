@@ -88,19 +88,67 @@ class CommunityGroup(models.Model):
 class CommunityGroupAdmin(admin.ModelAdmin):
     pass  
 
+class CommunityDashboardType(models.Model):
+    class Meta:
+        db_table = "communities_community_community_dashboard_type"
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    type = models.TextField(max_length=200,verbose_name='Dashboard Type Tag')
+    name = models.TextField(max_length=200,verbose_name='Dashboard Type Name')
+    descr = models.TextField(max_length=200, verbose_name='Dashboard Type Descr')
+    privileged = models.BooleanField(default=False,verbose_name="Dashboard type is privileged")
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
+    updated = models.DateTimeField(verbose_name='Updated',auto_now_add=True)
+    def __str__(self):
+        if not self.privileged:
+            return f"Dashboard Type: {self.type} -  {self.name} Created: {self.created}"
+        else:
+            return f"PRIVILEGED Dashboard Type: {self.type} -  {self.name} Created: {self.created}"
+@admin.register(CommunityDashboardType)
+class CommunityDashboardTypeAdmin(admin.ModelAdmin):
+    pass
+
+class CommunityProfileDashboardRoles(models.Model):
+    class Meta:
+        db_table = "communities_community_community_profile_dashboard_roles"
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
+    type = models.ForeignKey(CommunityDashboardType,verbose_name = "Dashboard Type",on_delete=models.RESTRICT,null=True)
+    active = models.BooleanField(verbose_name="Active FLAG",default=True)
+    def __str__(self):
+        return f"Community: {self.community.name}. Profile: {self.profile.name} Dashboard type: {self.type.type}"
+@admin.register(CommunityProfileDashboardRoles)
+class CommunityProfileDashboardRolesAdmin(admin.ModelAdmin):
+    pass
 
 class CommunityAdmins(models.Model):
     class Meta:
         db_table = "communities_community_community_admins"
+        unique_together = ('community','profile')
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
-    joined = models.DateTimeField(verbose_name='Joined',auto_now=True)
-    active = models.BooleanField(verbose_name="Active FLAG",default=True)
+    created = models.DateTimeField(verbose_name='Staff Created',auto_now=True)
+    active = models.BooleanField(verbose_name="Active",default=True)
     def __str__(self):
         return f"Community ADMIN: {self.community.name}. Profile: {self.profile.name}."
 @admin.register(CommunityAdmins)
 class CommunityAdminsAdmin(admin.ModelAdmin):
     pass  
+
+class CommunityStaff(models.Model):
+    class Meta:
+        db_table = "communities_community_community_staff"
+        unique_together = ('community','profile')
+
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name = "Profile",on_delete=models.RESTRICT,null=True)
+    created = models.DateTimeField(verbose_name='Created',auto_now=True)
+    active = models.BooleanField(verbose_name="Active FLAG",default=True)
+    def __str__(self):
+        return f"Community Staff: {self.community.name}. Profile: {self.profile.name}."
+@admin.register(CommunityStaff)
+class CommunityStaffAdmin(admin.ModelAdmin):
+    pass
 
 class ProfilePerCoummunityView(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)

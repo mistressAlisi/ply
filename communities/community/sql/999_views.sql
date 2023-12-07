@@ -66,3 +66,21 @@ CREATE VIEW communities_community_sidebar_view AS SELECT
 	communities_community_sidebar.community_id
 FROM
 	communities_community_sidebar;
+
+
+DROP VIEW IF EXISTS communities_community_per_profile_dashboard_view;
+CREATE VIEW communities_community_per_profile_dashboard_view AS SELECT
+	communities_community_community_profile_dashboard_roles."id",
+	communities_community_community_profile_dashboard_roles.active,
+	communities_community_community_profile_dashboard_roles.community_id,
+	communities_community_community_profile_dashboard_roles.profile_id,
+	communities_community_community_dashboard_type."type",
+	communities_community_community_dashboard_type.created,
+	communities_community_community_dashboard_type.updated,
+	communities_community_community_dashboard_type."name"
+FROM
+	communities_community_community_dashboard_type
+	INNER JOIN
+	communities_community_community_profile_dashboard_roles
+	ON
+		communities_community_community_dashboard_type.uuid = communities_community_community_profile_dashboard_roles.type_id;

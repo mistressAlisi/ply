@@ -331,6 +331,9 @@ PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "ufls.event",
     "ufls.registrar"
 ]
+PLY_STAFF_DASHBOARD_MODULES = [
+
+]
 PLY_GALLERY_PLUGINS = [
     "media.gallery.photos"
     ]
