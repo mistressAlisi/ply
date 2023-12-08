@@ -2,7 +2,7 @@ from django.shortcuts import render
 # Create your views here.
 
 import ply
-from ply.toolkit import vhosts,profiles
+from ply.toolkit import vhosts,profiles,themes
 from dashboard.navigation import SideBarBuilder
 from media.gallery.core.models import GalleryItemsByCollectionPermission
 from core.metrics.models import CommunityPageHit
@@ -23,10 +23,12 @@ def community_home(request):
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
+        theme = themes.get_community_theme_or_def(community)
         # Create the community metrics:
         gal_hit = CommunityPageHit.objects.create(community=community,type="COMPAGE")
         request_data_capture(request,gal_hit)
         # now render the page:
+
         if (community.backgroundItem is not False):
             try:
                 bkg_item = GalleryItemsByCollectionPermission.objects.filter(item=community.backgroundItem,gif_thumbnail=False)
@@ -38,6 +40,6 @@ def community_home(request):
                 bkg_path= ""
         else:
             bkg_path = ""
-        context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path}
+        context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path,'THEME_PATH':theme.THEME_PATH}
         return render(request,"dynapages/"+community.dynapage.template.filename,context)
 
