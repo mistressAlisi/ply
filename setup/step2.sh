@@ -34,6 +34,10 @@ python3 ./manage.py init_experience
 python3 ./manage.py init_stats
 
 
+echo "*** Load Dashboard Type Data ***"
+python3 ./manage.py load_dashboard_types DOCUMENTATION/dashboards/types.tsv
+
+
 echo "****** SETUP COMPLETE! Further parameters can be modified in 'config/settings.ini'! *****"
 echo "You may (now hopefully) start the Ply/Django environment using runserver and continue setup :3!"
 echo "Thank you for using Ply! :3 :3"

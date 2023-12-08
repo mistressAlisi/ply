@@ -1,13 +1,18 @@
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar offcanvas " aria-labelledby="sidebar" data-bs-scroll="false" data-bs-backdrop="true">
     <div class="offcanvas-header">
-    <h4 class="offcanvas-title">Dashboard Menu</h4>
+    <h4 class="offcanvas-title">Main Menu</h4>
     </div>
       <div class="offcanvas-body">
         <ul class="nav flex-column">
          <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded" href="/dashboard/user/#">
-          <i class="fas fa-home fa-2x"></i> My Home Page
+          <i class="fas fa-home fa-2x"></i> My Dashboard
         </button>
+        {% if show_dbswitch %}
+         <button class="btn btn-toggle align-items-center rounded" onclick="location.href='/dashboard/';">
+         <i class="fas fa-repeat fa-2x"></i> Switch Dashboards
+        </button>
+        {% endif %}
          <li class="mb-1"><hr/></li>
       </li>
         {% include "dashboard/dashboard-sidebar_profile_switcher.html" %}

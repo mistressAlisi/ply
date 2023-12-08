@@ -25,7 +25,7 @@ def dashboard_home(request):
     if (len(is_staff) < 1):
         return render(request,"error-access-denied.html",{})
     sideBar = SideBarBuilder_dynamic(community,"staff")
-    context.update({'sidebar':sideBar.modules.values()})
+    context.update({'sidebar':sideBar.modules.values(),'dashboard_name':'Staff'})
     return render(request,'dashboard/community_admin/dashboard/index.html',context)
 
 @login_required

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="en" class="h-100">
+<head>
+<meta id="og-title" property="og:title" content="{% block meta-og-title %}{{community.name}}{% endblock %}" />
+<meta id="og-type" property="og:type" content="{% block meta-og-type %}https://{{vhost}}{% endblock %}" />
+<meta id="og-url" property="og:url" content="{% block meta-og-url %}https://{{vhost}}{% endblock %}" />
+<meta id="og-image" property="og:image" content="{% block meta-og-image %}{{bkg_path}}{% endblock %}" />
+<meta id="og-site_name" property="og:site_name" content="{% block meta-og-site_name %}{{community.name}}{% endblock %}" />
+<meta id="og-description" property="og:description" content="{% block meta-og-description %}{{community.introduction}}{% endblock %}" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--     JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- ParticlesJS -->
+    <script src="/static/plugins/particles.js/particles.js"></script>
+    <!-- Page title -->
+    <title>{{community.name}}: {{community.tagline}}</title>
+
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+    <link href="/static/css/default-community-coverPage.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Bootstrap JavaScript: !-->
+     {% bootstrap_javascript %}
+
+    <!-- Themes !-->
+    {%include "ply/core/theme_loader.html" %}
+    <link href="/static/neon_nights/css/cover.css" rel="stylesheet">
+    {% block bootstrap5_extra_head %}{% endblock %}
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+
+    <!--     Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet">
+    <!--   Login Functions -->
+    <script src="/static/js/dashboard_loginAgent.js"></script>
+
+</head>
+
+
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column bg-black">
+  <video class="video-cover w-100 h-100" autoplay muted loop>
+  <source src="/static/neon_nights/media/vaporwave_bkg.mp4" type="video/mp4">
+  </video>
+  <header class="mb-auto">
+    <div style="top: -17px; position: relative; opacity: 0.7; z-index: 10;">
+
+    </div>
+  </header>
+
+  <main class="px-3" style="z-index: 10;">
+      <br/><br/>
+    {%include "neon_nights/components/community/branding/form_header.html" %}
+
+    <p class="lead">
+      <a href="/app/registrar/" class="btn btn-lg fw-bold btn-outline-primary text-primary" style="z-index: 2;"><i class="fa-solid fa-earth-africa"></i> Register Now!</a>
+      <br/>
+
+    </p>
+
+  </main>
+
+  <footer class="mt-auto text-white-50">
+    <p><span class="ply-brand_font">Ply</span> powered, (v) {{ply_version}} </p>
+  </footer>
+</div>
+<script type="text/javascript">
+
+particlesJS('particles-js',
+  {
+    "particles": {
+      "number": {
+        "value": 80,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#ffffff"
+      },
+      "shape": {
+        "type": "circle",
+        "stroke": {
+          "width": 0,
+          "color": "#000000"
+        },
+        "polygon": {
+          "nb_sides": 5
+        },
+        "image": {
+          "src": "img/github.svg",
+          "width": 100,
+          "height": 100
+        }
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": false,
+        "anim": {
+          "enable": false,
+          "speed": 1,
+          "opacity_min": 0.1,
+          "sync": false
+        }
+      },
+      "size": {
+        "value": 5,
+        "random": true,
+        "anim": {
+          "enable": false,
+          "speed": 40,
+          "size_min": 0.1,
+          "sync": false
+        }
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#ffffff",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 6,
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "attract": {
+          "enable": false,
+          "rotateX": 600,
+          "rotateY": 1200
+        }
+      }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": {
+        "onhover": {
+          "enable": false,
+          "mode": "repulse"
+        },
+        "onclick": {
+          "enable": true,
+          "mode": "push"
+        },
+        "resize": true
+      },
+      "modes": {
+        "grab": {
+          "distance": 400,
+          "line_linked": {
+            "opacity": 1
+          }
+        },
+        "bubble": {
+          "distance": 400,
+          "size": 40,
+          "duration": 2,
+          "opacity": 8,
+          "speed": 3
+        },
+        "repulse": {
+          "distance": 200
+        },
+        "push": {
+          "particles_nb": 4
+        },
+        "remove": {
+          "particles_nb": 2
+        }
+      }
+    },
+    "retina_detect": true,
+    "config_demo": {
+      "hide_card": false,
+      "background_color": "#b61924",
+      "background_image": "",
+      "background_position": "50% 50%",
+      "background_repeat": "no-repeat",
+      "background_size": "cover"
+    }
+  }
+
+);
+
+</script>

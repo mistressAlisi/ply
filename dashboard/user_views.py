@@ -8,6 +8,7 @@ from dashboard.navigation import SideBarBuilder,SideBarBuilder_dynamic
 from communities.group.models import GroupMember
 from core.dynapages import models as dynapages
 from communities.profiles.models import ProfilePageNode
+from communities.community.models import CommunityProfileDashboardRoles
 from roleplaying.stats.models import ProfileStat
 from roleplaying.exp.models import ProfileExperience
 
@@ -50,7 +51,12 @@ def dashboard_home(request):
 
     widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
     stats = ProfileStat.objects.filter(profile=profile,community=community)
-    context.update({'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':settings.PLY_VERSION,'widgets':widgets,'template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s Dashboard",'profile':profile,"stats":stats,'profile_xp':exo})
+    dashboards = CommunityProfileDashboardRoles.objects.filter(profile=profile,community=community)
+    if (len(dashboards)>0):
+        show_dbswitch = True
+    else:
+        show_dbswitch = False
+    context.update({'sidebar':sideBar.modules.values(),'current_profile':profile,'profiles':all_profiles,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':settings.PLY_VERSION,'widgets':widgets,'template':profilePage.dynapage.template.filename,'dynapage_page_name':f"@{profile.profile_id}'s Dashboard",'profile':profile,"stats":stats,'profile_xp':exo,'show_dbswitch':show_dbswitch})
     return render(request,'communities_profiles/profile_dashboard_dynapage_wrapper.html',context)
 
 
