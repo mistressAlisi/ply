@@ -329,7 +329,8 @@ PLY_USER_DASHBOARD_MODULES = [
 PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "communities.community",
     "ufls.event",
-    "ufls.registrar"
+    "ufls.registrar",
+    "communities.stream"
 ]
 PLY_STAFF_DASHBOARD_MODULES = [
 
