@@ -1,0 +1,4 @@
+[submodule "ufls"]
+	path = ufls
+	url = git@github.com:furrydelphia/ufls-ng.git
+	branch = main
