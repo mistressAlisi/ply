@@ -171,7 +171,24 @@ class StreamThread(models.Model):
 @admin.register(StreamThread)
 class StreamThreadAdmin(admin.ModelAdmin):
     pass   
+class StreamXMPPSettings(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    enabled = models.BooleanField(default=False,verbose_name="Enable XMPP Subsystem",help_text="Enable the XMPP Subsystem and integration with Ejabberd and the global XMPP network.")
+    endpoint = models.TextField(verbose_name="XMPP API REST Endpoint",help_text="Ejabberd mod_http management API endpoint URL")
+    server = models.TextField(verbose_name="XMPP Server Hostname",help_text="XMPP Server Hostname (where clients connect to)")
 
+
+    class Meta:
+        db_table = "communities_stream_stream_xmpp_settings"
+
+    def __str__(self):
+        return f"XMPP Settings - Community: {self.community.name}. XMPP Enabled: {self.enabled}"
+
+
+@admin.register(StreamXMPPSettings)
+class StreamXMPPSettingsAdmin(admin.ModelAdmin):
+    pass
 
 class MessagesPerStreamView(models.Model):
     stream_created = models.DateTimeField(verbose_name="Stream Created")
@@ -226,3 +243,6 @@ class MessagesPerStreamView(models.Model):
     class Meta:
         managed = False
         db_table = 'communities_stream_message_view'
+
+
+

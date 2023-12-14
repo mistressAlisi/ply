@@ -239,3 +239,6 @@ text-shadow: 0 0 0.6rem #ffe6ff, 0 0 1.5rem #ff65bd,
   -webkit-animation: blink 3s infinite;
   color: var(--primary)
 }
+.card .text-primary {
+  color: #fe0bdd;
+}
