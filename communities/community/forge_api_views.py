@@ -19,7 +19,7 @@ from roleplaying.exp.models import ProfileExperience
 @login_required
 def create_community_staff(request):
     #  Ignore port:
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
     if (len(is_admin) < 1):
@@ -39,7 +39,7 @@ def create_community_staff(request):
 
 @login_required
 def delete_community_staff(request,staff):
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
     if (len(is_admin) < 1):
@@ -56,7 +56,7 @@ def delete_community_staff(request,staff):
 @login_required
 def create_community_admin(request):
     #  Ignore port:
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
     if (len(is_admin) < 1):
@@ -73,7 +73,7 @@ def create_community_admin(request):
 
 @login_required
 def delete_community_admin(request,staff):
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
     if (len(is_admin) < 1):
