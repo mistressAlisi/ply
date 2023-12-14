@@ -3,7 +3,7 @@ from django.shortcuts import render,get_object_or_404
 #PLY:
 import ply
 from core.dynapages import models as dynapages
-from ply.toolkit import vhosts,profiles
+from ply.toolkit import vhosts,profiles,contexts,themes
 from communities.profiles.models import Profile,ProfilePageNode
 from communities.group.models import GroupMember
 from roleplaying.stats.models import ProfileStat
@@ -39,7 +39,7 @@ def profile_view(request,profile_id):
     stats = ProfileStat.objects.filter(profile=profile)
 
     context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'template':profilePage.dynapage.template.filename,'current_profile':current_profile,'profiles':all_profiles}
-    return render(request,'profile_dashboard_dynapage_wrapper.html',context)
+    return render(request,'communities_profiles/profile_dashboard_dynapage_wrapper.html',context)
 
 # Render the User Profile Directory (index) for this community:
 def profile_index(request):
