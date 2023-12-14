@@ -3,8 +3,9 @@
   <component name="Black">
     <option name="executionMode" value="BINARY" />
     <option name="pathToExecutable" value="/usr/bin/black" />
+    <option name="sdkName" value="Python 3.10 (ufls)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (ply)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (ply)" project-jdk-type="Python SDK" />
   <component name="PyCharmProfessionalAdvertiser">
     <option name="shown" value="true" />
   </component>
