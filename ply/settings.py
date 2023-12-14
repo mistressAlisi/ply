@@ -85,11 +85,13 @@ INSTALLED_APPS = [
     'ufls.themes.neon_nights',
     'ufls.furry',
     'ufls.event',
-    'ufls.registrar'
+    'ufls.registrar',
+    'whitenoise'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -197,6 +199,7 @@ else:
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
     MEDIA_ROOT = "/var/www/html/media/"
     MEDIA_URL = "/media/"
 
