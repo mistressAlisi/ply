@@ -10,10 +10,10 @@ BEGIN
     ---RAISE NOTICE 'UUID: %',NEW.stream_id;---
     --- PARSE the message: ---
     IF (NEW.contents_text IS NOT NULL) THEN
-    MSG  := keywords_parsestr(NEW.contents_text);
-    MSG  := profiles_parsestr_and_mention(MSG,'stream.message',CAST(NEW.uuid as text),STREAM.community_id);
+    MSG  := content_manager_keywords_parsestr(NEW.contents_text);
+    MSG  := communities_profiles_parsestr_and_mention(MSG,'stream.message',CAST(NEW.uuid as text),STREAM.community_id);
     --- CREATE KEYWORD links for parsed messag if applicable: ---
-    KEYWORD_IDS = get_str_keyword_ids(NEW.contents_text);
+    KEYWORD_IDS = content_manager_get_str_keyword_ids(NEW.contents_text);
     if (KEYWORD_IDS IS NOT NULL) THEN
         FOREACH kw in ARRAY KEYWORD_IDS LOOP
             INSERT INTO communities_stream_stream_message_keywords (stream_id,message_id,keyword_id) VALUES (NEW.stream_id,NEW.uuid,kw);

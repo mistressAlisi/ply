@@ -51,20 +51,31 @@
     </div>
     <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
     <div class="card"  style="margin-left: auto; margin-right: auto; padding: 20px; z-index: 2;">
-    <h5 class="modal-title"> <i class="fa-solid fa-user-plus"></i> Step one: Enter Account Details:</h5>
+    <h5 class="modal-title"> <i class="fa-solid fa-user-plus"></i> Account Details:</h5>
     <div class="modal-body">
     <form id="register_form" method="POST" action="/accounts/api/login/">
     {%csrf_token%}
         {% bootstrap_form form %}
-    </div>
+
     <div class="modal-footer">
+    <div class="text-center container">
         {% bootstrap_button "Forgot Password" button_type="link" href="/accounts/password_reset" button_class="btn-outline-secondary" %}
+        &#160;&#160;
         {% bootstrap_button "Clear Form" button_type="reset" button_class="btn-outline-primary" %}
+        &#160;&#160;
         {% bootstrap_button "Login" button_type="submit" button_class="btn-outline-success" %}
-    <div>
+    </div>
+
+     <div class="text-center container">
+         <hr/>
+         {% bootstrap_button "External account login (SSO/Email)" button_type="link" onclick="login.showsso();" href="#" button_class="btn-outline-primary" %}
+     </div>
+    </div>
+    </form>
     </div>
     </div>
-    
+    </div>
+  </main>
     
 <!-- Status Modal     -->
 <!-- Modal -->
@@ -87,5 +98,9 @@
     </div>
   </div>
 </div>
+
+{%include "authentication/registration/sso/modal.html" %}
+</div>
+<script src="/static/core.authentication/js/login.js"></script>
 </body>
 </html>
