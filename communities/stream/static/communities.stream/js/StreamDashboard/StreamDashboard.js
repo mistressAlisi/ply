@@ -1,4 +1,4 @@
-export default class StreamDashboard {
+export class StreamDashboard {
     constructor() {
         alert("Hi!");
     }
