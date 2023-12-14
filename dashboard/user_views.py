@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 @login_required
 def dashboard_home(request):
     #  Ignore port:
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     #vhost,community,context = request.META["HTTP_HOST"].split(":")[0]
     #community = (vhosts.get_vhost_community(hostname=vhost))
     if community is None:

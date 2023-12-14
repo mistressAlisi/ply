@@ -1,2 +1,2 @@
 import { StreamDashboard } from "./StreamDashboard/StreamDashboard.js";
-var streams= new StreamDashboard();
+window.streams= new StreamDashboard();
