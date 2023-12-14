@@ -7,7 +7,7 @@ services:
       dockerfile: ./devops/docker/fullstack/debian_linux-fullstack-local.dockerfile
     container_name: ply
     ports:
-      - "8080:8080"
+      - "8000:8000"
     networks:
       - ply-net
 
