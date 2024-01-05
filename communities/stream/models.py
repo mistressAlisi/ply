@@ -177,10 +177,24 @@ class StreamXMPPSettings(models.Model):
     enabled = models.BooleanField(default=False,verbose_name="Enable XMPP Subsystem",help_text="Enable the XMPP Subsystem and integration with Ejabberd and the global XMPP network.")
     endpoint = models.TextField(verbose_name="XMPP API REST Endpoint",help_text="Ejabberd mod_http management API endpoint URL")
     server = models.TextField(verbose_name="XMPP Server Hostname",help_text="XMPP Server Hostname (where clients connect to)")
+    domain = models.TextField(verbose_name="XMPP Server FQDN",help_text="XMPP Server Domain (For JID creation: user@fqdn)")
+    streams = models.TextField(verbose_name="XMPP Streams Hostname",help_text="XMPP Streams Service Hostname (where Stream objects are created): subdomain only!")
+    pubsub = models.TextField(verbose_name="XMPP Pubsub Hostname",help_text="XMPP Pubsub Service Hostname (where Pubsub objects are created): subdomain only!")
+    conference = models.TextField(verbose_name="XMPP Conference Hostname",help_text="XMPP Conf Hostname (where Conf objects are created): subdomain only!")
+    self_reg = models.BooleanField(default=True,verbose_name="Enable User self-registration",help_text="Allow users to register JIDs by themselves: UID@fqdn from their User Dashboard!")
+    auto_group = models.BooleanField(default=True,verbose_name="Automatic MUC for Groups",help_text="Automatically create a MUC (Multi User Channel/Chat) for any created groups, streams, users, etc.")
+    # grant_admin = models.BooleanField(default=True,verbose_name="Grant XMPP Admin for Admin Profiles",help_text="For Profiles with ADMIN Status, grant XMPP Admin status during JID creation.")
+    # grant_mod = models.BooleanField(default=False,verbose_name="Grant XMPP Mod for Admin Profiles",help_text="For Profiles with ADMIN Status, grant XMPP Mod status during JID creation.")
+    # grant_admin2staff = models.BooleanField(default=False,verbose_name="Grant XMPP Admin for Staff Profiles",help_text="For Profiles with Staff Status, grant XMPP Admin status during JID creation.")
+    # grant_mod2staff = models.BooleanField(default=True,verbose_name="Grant XMPP Mod for Staff Profiles",help_text="For Profiles with Staff Status, grant XMPP Mod status during JID creation.")
+    #
 
 
     class Meta:
         db_table = "communities_stream_stream_xmpp_settings"
+        constraints = [
+            models.UniqueConstraint(fields=['community'], name='unique_xmpp_settings')
+        ]
 
     def __str__(self):
         return f"XMPP Settings - Community: {self.community.name}. XMPP Enabled: {self.enabled}"
@@ -188,6 +202,62 @@ class StreamXMPPSettings(models.Model):
 
 @admin.register(StreamXMPPSettings)
 class StreamXMPPSettingsAdmin(admin.ModelAdmin):
+    pass
+
+
+class StreamProfileXMPPSettings(models.Model):
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.CASCADE)
+    jid = models.TextField(verbose_name="JID")
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Settings Created')
+    updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Settings Updated')
+
+
+    class Meta:
+        db_table = "communities_stream_stream_xmpp_profile_settings"
+        constraints = [
+            models.UniqueConstraint(fields=['profile', 'community'], name='unique_stream_xmpp_profile'),
+            models.UniqueConstraint(fields=['jid'], name='unique_stream_xmpp_jid')
+        ]
+
+
+    def __str__(self):
+        return f"XMPP Profile Settings - Community: {self.community.name}. Profile: {self.profile.name}"
+
+    def get_UID(self):
+        return self.jid.split("@")[0]
+
+@admin.register(StreamProfileXMPPSettings)
+class StreamProfileXMPPSettingsAdmin(admin.ModelAdmin):
+    pass
+
+
+
+class StreamProfileXMPPMUCs(models.Model):
+    class Meta:
+        db_table = "communities_stream_stream_xmpp_profile_mucs"
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'service','host'], name='unique_stream_xmpp_muc'),
+        ]
+
+    uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
+    XMPPJID = models.ForeignKey(StreamProfileXMPPSettings,verbose_name="Source XMPP JID",on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile,verbose_name="Profile",on_delete=models.CASCADE)
+    name = models.TextField(verbose_name="Room Name")
+    descr = models.TextField(verbose_name="Room Description")
+    service = models.TextField(verbose_name="Service Host FQDN")
+    host = models.TextField(verbose_name="Room Host/Virtual Host")
+    created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Settings Created')
+    updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Settings Updated')
+
+
+    def __str__(self):
+        return f"XMPP Profile MUC - Source JID: {self.XMPPJID.jid}. Room: {self.name}@{self.service} at {self.host}"
+
+
+@admin.register(StreamProfileXMPPMUCs)
+class StreamProfileXMPPMUCsAdmin(admin.ModelAdmin):
     pass
 
 class MessagesPerStreamView(models.Model):

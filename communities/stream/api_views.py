@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -7,13 +8,17 @@ from django.db import transaction
 # Ply:
 from communities.profiles.models import Profile
 from communities.community.forms import CommunityForm
+from communities.stream.ejabberapictl.rest import RESTAPIClient
 from ply import settings,system_uuids
 from ply.toolkit import vhosts,profiles, file_uploader,groups,reqtools
 from core.dynapages.models import Templates,Page, PageWidget
+from ply.toolkit.contexts import default_context
+from ply.toolkit.roles import is_profile_admin
 from roleplaying.stats.models import BaseStat,ProfileStat
 from communities.community.models import Community,CommunityProfile,CommunityAdmins
 from communities.stream.forms import StreamSettingsForm,CreateStreamForm
-from communities.stream.models import Stream,StreamMessage
+from communities.stream.models import Stream, StreamMessage, StreamXMPPSettings, StreamProfileXMPPSettings, \
+    StreamProfileXMPPMUCs
 
 
 # Create your views here.
@@ -216,3 +221,51 @@ def create_stream(request):
     message.save()
     return JsonResponse({"res":"ok","uuid":form.instance.uuid},safe=False)
 
+
+@login_required
+def xmpp_enroll(request):
+    context,vhost,community,profile = default_context(request)
+    # Is registration enabled?
+    site_settings = StreamXMPPSettings.objects.get_or_create()[0]
+    if not site_settings.enabled or not site_settings.self_reg:
+        raise PermissionDenied("XMPP and/or self_reg is disabled.")
+    # Always the same:
+    jid = f"{request.POST['UID']}@{site_settings.domain}"
+    # XMPP Services hook:
+    xmppctl = RESTAPIClient(community)
+    # Update JID pathway:
+    if ('update' in request.POST):
+
+        jid_o = StreamProfileXMPPSettings.objects.get(jid=jid)
+        if jid_o.community != community or jid_o.profile != profile:
+            return JsonResponse({"res": "err", 'code': "400","str":"Access Denied!"}, safe=False)
+        xmppctl.update_password(jid_o.get_UID(),site_settings.domain,request.POST['APW'])
+        return JsonResponse({"res": "ok"}, safe=False)
+
+    # NOTE: IF YOU UPDATED, YOU SURE AS S* AIN'T HERE!
+    # Create JID pathway:
+
+    if len(StreamProfileXMPPSettings.objects.filter(jid=jid)) > 0:
+        return JsonResponse({"res": "err",'bad':"jid"}, safe=False)
+    try:
+        xmppctl.register_jid(request.POST['UID'],site_settings.domain,request.POST['APW'])
+    except Exception as e:
+        return JsonResponse({"res": "err",'bad':"jid",'e':str(e)}, safe=False)
+    # create MUCs:
+    if site_settings.auto_group:
+        for service,muc,descr in [
+            (site_settings.streams,f"__{request.POST['UID']}_saved-msgs",f"{request.POST['UID']}: Saved Messages"),
+            (site_settings.streams, f"__{request.POST['UID']}_scratchpad", f"{request.POST['UID']}: Scratchpad"),
+            (site_settings.streams, f"__{request.POST['UID']}_cast", f"{request.POST['UID']}: Stream Casting"),
+            (site_settings.pubsub, f"__{request.POST['UID']}_pub", f"{request.POST['UID']}: Publish Bridge"),
+            (site_settings.pubsub, f"__{request.POST['UID']}_bcast", f"{request.POST['UID']}: Broadcast Bridge"),
+
+        ]:
+            xmppctl.register_muc(muc,site_settings.domain,site_settings.streams)
+            xmu = StreamProfileXMPPMUCs(name=muc,host=site_settings.domain,service=service,descr=descr)
+            xmu.save()
+
+    sp = StreamProfileXMPPSettings.objects.get_or_create(community=community,profile=profile)[0]
+    sp.jid = jid
+    sp.save()
+    return JsonResponse({"res":"ok"},safe=False)
