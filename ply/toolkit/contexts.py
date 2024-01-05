@@ -3,6 +3,9 @@ from django.core.exceptions import PermissionDenied
 from communities.community.models import CommunityAdmins
 from ply import settings
 from ply.toolkit import vhosts,levels,themes,profiles
+from ply.toolkit.roles import is_profile_admin
+
+
 def default_context(request,current_profile=False):
     """
     Generate the basic Context required for any Ply view from any given Request.
@@ -32,7 +35,7 @@ def admin_context(request,current_profile=False):
     @return: Returns 4 objects: Context Dict, VHost object, Community object and Current Profile object.
     """
     a,b,c,d = default_context(request,current_profile)
-    is_admin = CommunityAdmins.objects.filter(community=c, profile=d, active=True)
-    if (len(is_admin) < 1):
+    is_admin = is_profile_admin(c,d)
+    if not is_admin:
         raise PermissionDenied("You're not an admin!")
     return a,b,c,d

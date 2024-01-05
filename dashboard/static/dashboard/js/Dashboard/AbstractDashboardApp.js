@@ -4,13 +4,18 @@ export class AbstractDashboardApp {
             if (data.responseJSON.res == "ok") {
                 dashboard.successToast('<h6><i class="fa-solid fa-check"></i>&#160;Success!','Operation complete!');
                 dashboard.panel_home();
+                return true;
 
             } else {
                 dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Success!','An Error Occured! '+data.responseJSON.e);
                 console.error("Unable to add Event: ",data.responseJSON.e)
+                return false;
             }
     }
 
+    _getModal() {
+        this.modal =  new bootstrap.Modal($(this.elements["modal"])[0]);
+    }
     submit() {
             console.log("Submitting Dashboard App Data");
             $.ajax({
@@ -26,7 +31,8 @@ export class AbstractDashboardApp {
             "submit":"/some/url"
         }
         this.elements = {
-            "form":"#some_form"
+            "form":"#some_form",
+            "modal":"#some_modal"
         }
      }
 }

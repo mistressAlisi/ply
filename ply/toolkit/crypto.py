@@ -1,3 +1,6 @@
+import string
+import random
+
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import unpad
@@ -39,3 +42,9 @@ def decrypt_from_skey(request,idata,ivd):
     except (ValueError, KeyError) as e:
         print(e)
         print("Incorrect decryption")
+
+
+def random_password(count=16):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for i in range(count))
+    return password
