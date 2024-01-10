@@ -11,6 +11,7 @@ export class Dashboard {
             systemMenudiv: "#_systemmenu",
             systemMenuOpen: false,
             systemMenuWidth: '250px',
+            sidebar_rightdiv: "#_dashboard_offcanvas_right",
             toastSuccessCls: 'bg-outline-success text-success',
             toastErrorCls: 'bg-outline-warning text-warning',
         }
@@ -101,6 +102,16 @@ export class Dashboard {
 
             $("#__sidebarModuleArea").load(this.settings.currentSideBar,false,dc_updateLinks);
         };
+    }
+
+    open_sidebarRight() {
+        const bso = new bootstrap.Offcanvas(this.settings.sidebar_rightdiv);
+        bso.show();
+    }
+
+    close_sidebarRight() {
+        const bso = new bootstrap.Offcanvas(this.settings.sidebar_rightdiv);
+        bso.hide();
     }
     /** Callback function for loadPlugin: **/
     _loadPlugin(d) {

@@ -212,7 +212,16 @@ class StreamProfileXMPPSettings(models.Model):
     jid = models.TextField(verbose_name="JID")
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Settings Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Settings Updated')
+    auto_add_friend = models.BooleanField(default=True,verbose_name="Automatically add new friends to XMPP Contacts",help_text="When enabled, any new friends you add on the site will be automatically added to your XMPP contact list as well.")
+    create_mucs = models.BooleanField(default=True,verbose_name="Create MUCs (Multi user Chatrooms) for new streams",help_text="When enabled, any new stream you create will automatically be assigned a MUC in the XMPP server.")
+    publish_streams = models.BooleanField(default=True,verbose_name="Automatically Publish Stream content to XMPP",help_text="When enabled, any stream posts you create on-site will be published via the XMPP service automatically.")
+    publish_notices = models.BooleanField(default=True,verbose_name="Automatically Publish Stream notifications to XMPP",help_text="When enabled, any stream posts you create on-site will be published via the XMPP service automatically.")
+    publish_to_groups = models.BooleanField(default=True,verbose_name="Automatically Publish Stream content to Group XMPP Streams",help_text="When enabled, any stream posts you create on-site will be published via the XMPP service to the related groups.")
+    join_group_mucs = models.BooleanField(default=True,verbose_name="Automaticlaly join the XMPP MUCs for any group joined",help_text="When enabled, you'll be automatically added to the XMPP multi-user-chat (MUC) for any group you join on the site.")
+    pubsub_to_friends = models.BooleanField(default=True,verbose_name="Enable Publish/Subscribe module for XMPP Friends",help_text="When enabled, any content you create is published in streams your friends can follow using an XMPP client.")
+    enable_webclient = models.BooleanField(default=True,verbose_name="Enable XMPP Webclient",help_text="Enable/disable the embedded XMPP client for all pages on the site. This does not control/disable other XMPP Clients")
 
+    
 
     class Meta:
         db_table = "communities_stream_stream_xmpp_profile_settings"
