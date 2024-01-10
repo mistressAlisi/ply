@@ -4,7 +4,7 @@ from ply.toolkit import vhosts,profiles
 from communities.profiles.models import Profile
 import ply
 import uuid
-from communities.stream.forms import CreateStreamForm
+from communities.stream.forms import CreateStreamForm, StreamXMPPSettingsForm
 from communities.stream.models import Stream, StreamMessage, StreamProfileXMPPSettings, StreamXMPPSettings
 from media.gallery.core import serialisers
 from ply.toolkit.contexts import default_context
@@ -85,4 +85,26 @@ def configure_xmpp(request):
     context["site_settings"] = site_settings
     context["xmpp_settings"] = settings
     return render(request,'stream/dashboard/xmpp/configure.html',context)
+    #return JsonResponse(colls,safe=False)
+
+
+@login_required
+def configure_stream_xmpp_integration(request):
+    context,vhost,community,profile = default_context(request)
+    context["app_password"] = random_password(24)
+    site_settings = StreamXMPPSettings.objects.get_or_create()[0]
+    try:
+        settings = StreamProfileXMPPSettings.objects.get(profile=profile)
+    except:
+        # Is registration enabled?
+        if not site_settings.enabled or not site_settings.self_reg:
+            return render(request, 'stream/dashboard/xmpp/disabled.html', context)
+        else:
+            context["site_settings"] = site_settings
+
+            return render(request, 'stream/dashboard/xmpp/setup/index.html', context)
+    context["site_settings"] = site_settings
+    context["xmpp_settings"] = settings
+    context["xmpp_form"] = StreamXMPPSettingsForm(instance=settings)
+    return render(request,'stream/dashboard/xmpp/stream_integration.html',context)
     #return JsonResponse(colls,safe=False)
