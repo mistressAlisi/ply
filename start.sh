@@ -1,1 +1,1 @@
-gunicorn ply.wsgi:application
+gunicorn ply.wsgi:application -b 0.0.0.0:8000
