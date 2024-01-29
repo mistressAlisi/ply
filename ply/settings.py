@@ -86,7 +86,8 @@ INSTALLED_APPS = [
     'ufls.furry',
     'ufls.event',
     'ufls.registrar',
-    'whitenoise'
+    'whitenoise',
+    'jsignature'
 ]
 
 MIDDLEWARE = [
