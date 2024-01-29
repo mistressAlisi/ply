@@ -200,7 +200,7 @@ else:
     STATIC_ROOT = config('STATIC_ROOT')
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
     STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
-    MEDIA_ROOT = "/var/www/html/media/"
+    MEDIA_ROOT = "/app/media/"
     MEDIA_URL = "/media/"
 
 # Default primary key field type
@@ -302,6 +302,8 @@ ALLOWED_URL_SCHEMES = [
     "sftp", "ssh", "tel", "telnet", "tftp", "vnc", "xmpp",
 ]
 CSRF_COOKIE_HTTPONLY = False
+
+CSRF_TRUSTED_ORIGINS = ['https://*.furrydelphia.org']
 
 # EMAIL CONFIG:
 EMAIL_HOST = config("EMAIL_HOST")
