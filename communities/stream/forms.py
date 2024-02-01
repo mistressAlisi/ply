@@ -1,7 +1,11 @@
 from django import forms
+from django.forms import HiddenInput
+
 from core.dynapages.models import Templates
 from content_manager.almanac.models import AlmanacPage
-from communities.stream.models import Stream,StreamType
+from communities.stream.models import Stream, StreamType, StreamProfileXMPPSettings
+
+
 class NewPageForm(forms.Form):
     dynaPages = []
     try:
@@ -85,3 +89,9 @@ class CreateStreamForm(forms.ModelForm):
         self.fields["profile"].initial = profile.uuid
         self.fields["type"].initial = 'GAMEROOM'
         self.fields["community"].initial = community.uuid
+
+
+class StreamXMPPSettingsForm(forms.ModelForm):
+    class Meta:
+        model = StreamProfileXMPPSettings
+        fields = ['auto_add_friend','create_mucs','publish_streams','publish_notices','publish_to_groups','pubsub_to_friends','enable_webclient','join_group_mucs']

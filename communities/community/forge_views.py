@@ -16,7 +16,7 @@ from roleplaying.exp.models import ProfileExperience
 @login_required
 def community_staff(request):
     #  Ignore port:
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
@@ -35,7 +35,7 @@ def community_staff(request):
 @login_required
 def community_admins(request):
     #  Ignore port:
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
