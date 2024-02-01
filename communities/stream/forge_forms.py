@@ -8,10 +8,14 @@ from django.forms.widgets import SelectDateWidget,HiddenInput,TextInput
 class XMPPSettingsForm(ModelForm):
     class Meta:
         model = StreamXMPPSettings
-        fields = ["community","enabled","server","endpoint"]
+        fields = ["community","enabled","server","domain","streams","conference","pubsub","endpoint","self_reg","auto_group"]
         widgets = {
             "uuid":HiddenInput(),
             "community":HiddenInput(),
             "server":TextInput(),
-            "endpoint":TextInput()
+            "streams": TextInput(),
+            "conference": TextInput(),
+            "pubsub": TextInput(),
+            "endpoint":TextInput(),
+            "domain": TextInput()
         }

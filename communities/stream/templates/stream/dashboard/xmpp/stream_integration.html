@@ -1,0 +1,45 @@
+{% load django_bootstrap5 %}
+<form method="POST" action="#" id="xmpp_form" onsubmit="xmpp_setup.submit(); return false;">
+{% csrf_token %}
+ <input type="hidden" id="fqdn" name="fqdn" value="{{site_settings.domain}}"/>
+ <input type="hidden" id="update" name="update" value="true"/>
+<div class="card">
+  <div class="card-header">
+   <h3><i class="fa-solid fa-tower-broadcast"></i>&#160;Configure Stream<->XMPP Integration</h3>
+  </div>
+  <div class="card-body">
+        <h4>XMPP Integration settings:</h4>
+        <p>XMPP integration can publish and subscribe to and from multiple sources of data. XMPP publishing synchronises content from website streams to your XMPP client(s) and friends.</p>
+        {% bootstrap_form xmpp_form %}
+   </div>
+              <div class="card-footer text-muted">
+              {% bootstrap_button "Submit" button_type="submit" button_class="btn-primary" %}
+
+              </div>
+</div>
+</form>
+<div class="modal" tabindex="-1" id="XMPP_modal" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary"><i class="fa-solid fa-check"></i>&#160;Confirm Password Reset!</h5>
+
+      </div>
+       <div id="modal-progress" class="text-primary text-center" style="padding: 10px;">
+           <i class="fa-solid fa-atom fa-spin fa-3x"></i>
+           <h2>Processing... please wait.</h2>
+       </div>
+      <div id="modal-confirm">
+      <div class="modal-body">
+        <h6>Please double-check and write down your new password!</h6>
+        <p class="h5"><strong class="text-primary">JID:</strong> <span id="jid">jid@server.org</span></p>
+        <p class="h5"><strong class="text-primary">Pass:</strong> <span id="psw" class="text-muted">password</span></p>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary" onclick="xmpp_setup.cancel();">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="xmpp_setup.confirm();">Confirm & Update Password</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
