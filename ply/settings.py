@@ -328,7 +328,9 @@ PLY_USER_DASHBOARD_MODULES = [
     "roleplaying.skills",
     "communities.stream",
     "communities.notifications",
-    "communities.preferences"
+    "communities.preferences",
+    "ufls.registrar"
+
     
 ]
 

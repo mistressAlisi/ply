@@ -1,2 +1,2 @@
-import { StreamDashboard } from "./forge/forge.js";
-var streams= new StreamDashboard();
+import { StreamDashboard } from "./StreamDashboard/StreamDashboard.js";
+window.streams= new StreamDashboard();

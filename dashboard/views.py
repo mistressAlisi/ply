@@ -16,8 +16,9 @@ from roleplaying.exp.models import ProfileExperience
 
 import logging
 log = logging.getLogger(__name__)
+@login_required
 def dashboard_selector(request):
-    vhost,website,context = contexts.default_context(request)
+    context,vhost,website,profile = contexts.default_context(request)
     dashboard_types = CommunityDashboardType.objects.filter(privileged=False)
     privileged_dashboard_types = CommunityProfileDashboardRoles.objects.filter(community=context['community'])
     context["dashboards"] = dashboard_types
