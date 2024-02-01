@@ -3,6 +3,7 @@ toolkit/profiles.py
 ====================================
 Toolkit utilities for interacting with Ply Profiles
 """
+import uuid
 
 from ply.toolkit.logger import getLogger
 from communities.profiles.models import Profile
@@ -64,7 +65,13 @@ def get_all_profiles(request,system=False):
 # NOTE: It's up to the forge, or whatever module is creating this profile to UNPLACEHOLDER it, and to create the dynaPage structure(s) needed for the profile to render correctly at all.
 # WARNING: DON'T SCREW THE NOTE'd comment UP - it WILL break your installation!
 def get_placeholder_profile(request):
-       profile = Profile.objects.get_or_create(creator=request.user,archived=False,blocked=False,placeholder=True)[0]
+       profile = Profile.objects.filter(creator=request.user,archived=False,blocked=False,placeholder=True).first()
+       if profile is None:
+           profile = Profile.objects.create(
+               uuid=uuid.uuid4(),
+               creator=request.user, archived=False, blocked=False, placeholder=True,
+               profile_id=request.user.username.lower()
+           )
        request.session['profile'] = str(profile.uuid)
        request.session.modified = True
        request.session.placeholder = True
