@@ -15,7 +15,7 @@ from roleplaying.exp.models import ProfileExperience
 @login_required
 def dashboard_home(request):
     #  Ignore port:
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
     else:
@@ -30,6 +30,6 @@ def dashboard_home(request):
 
 @login_required
 def dashboard_panel_home(request):
-    vhost,community,context = contexts.default_context(request)
+    context,vhost,community,profile = contexts.default_context(request)
 
     return render(request,"dashboard/community_admin/dashboard/panel_home.html",context)
