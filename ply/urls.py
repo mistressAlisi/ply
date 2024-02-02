@@ -13,8 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path,include
+
+from . import settings
 from .auth_views import login
 
 urlpatterns = [
@@ -53,3 +56,5 @@ urlpatterns += [
     path('app/registrar/', include('ufls.registrar.urls')),
     path('app/ufls/return/', include('ufls.backend_connection_urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
