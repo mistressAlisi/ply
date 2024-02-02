@@ -50,7 +50,7 @@ class VHost(models.Model):
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='VHost Created')
     updated = models.DateTimeField(verbose_name='VHost Updated',auto_now_add=True)
     hostname = models.TextField(max_length=200,null=True,verbose_name='VHost Hostname')
-    ipaddr = models.GenericIPAddressField(null=True,verbose_name='VHost IP address')
+    ipaddr = models.GenericIPAddressField(null=True,verbose_name='VHost IP address',blank=True)
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
     frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)

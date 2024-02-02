@@ -72,7 +72,7 @@ def widget_setup_factory(request,node_type='profile'):
         pageWidget.footer = True
     pageWidget.pos = col
     pageWidget.save()
-    context = {'widget':pageWidget,'mode':mode,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    context = {'widget':pageWidget,'mode':mode,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'community':community}
     return render(request,'dynapages_api/widget_container.html',context)
 
 @login_required
@@ -93,5 +93,5 @@ def widget_factory(request,widget_id,mode,node_type='profile'):
     if ('col' in request.GET):
         pageWidget.pos = request.GET['col']
     pageWidget.save()
-    context = {'widget':pageWidget,'mode':mode,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL}
+    context = {'widget':pageWidget,'mode':mode,'profile':profile,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'community':community}
     return render(request,'dynapages_api/widget_container.html',context)
