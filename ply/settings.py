@@ -174,18 +174,24 @@ USE_S3 = config('USE_S3') == 'TRUE'
 
 if USE_S3:
     # aws settings
+    STATIC_URL = '/static/'
+    STATIC_ROOT = config('STATIC_ROOT')
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
+    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
+    MEDIA_URL = config('PLY_MEDIA_URL')
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_S3_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_S3_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
     AWS_LOCATION = config('AWS_LOCATION')
-    STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
-    MEDIA_ROOT = "media_root/"
-    MEDIA_URL = "/media/"
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     if (config("ALWAYS_LOAD_S3") == "TRUE"):
         # aws settings
