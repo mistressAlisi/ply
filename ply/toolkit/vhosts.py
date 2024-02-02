@@ -27,6 +27,7 @@ def get_vhost_and_community(request, ipaddr=None):
             host = VHost.objects.get(hostname=request.META["HTTP_HOST"], archived=False, frozen=False, blocked=False)
         return host,host.community
     except VHost.DoesNotExist as e:
-        logging.error(f"VHost '{hostname}' (IP: {ipaddr}): not found.");
+        host = request.META["HTTP_HOST"]
+        logging.error(f"VHost '{host}' (IP: {ipaddr}): not found.");
         return None
 
