@@ -89,7 +89,13 @@ window.dynapage_editor = Object({
    },
    drag_drop: function(e) {
        // Set the Drop Target:
-       dynapage_editor.els.dt = $(e.target);
+       trgt = $(e.target);
+       if (trgt.hasClass("drop-accept") == true) {
+        dynapage_editor.els.dt = trgt;
+       } else {
+        dynapage_editor.els.dt = trgt.parent(".drop-accept");
+       }
+
    },
    drag_allow: function(e) {
 //        console.warn("Drag Allow",e);
