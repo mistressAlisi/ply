@@ -50,3 +50,33 @@ def community_admins(request):
     context["admins"] = staff
     context["admin_form"] = form
     return render(request,'dashboard/community_admin/community_admins/index.html',context)
+
+
+
+@login_required
+def default_profile_editor(request):
+    context,vhost,community,profile = contexts.default_context(request)
+    if community is None:
+        return render(request,"error-no_vhost_configured.html",{})
+    else:
+        request.session['community'] = str(community.uuid)
+    profile = profiles.get_active_profile(request)
+    is_admin = CommunityAdmins.objects.filter(community=community,profile=profile,active=True)
+    if (len(is_admin) < 1):
+        return render(request,"error-access-denied.html",{})
+    try:
+        groups = GroupMember.objects.get(profile=request.session["profile"])
+        primaryGroup = GroupMember.objects.get(profile=request.session["profile"],primary=True)
+    except GroupMember.DoesNotExist:
+        groups = []
+        primaryGroup = False
+    profilePage = ProfilePageNode.objects.get(profile=profile,node_type='profile')
+    print(f"Profile Node: {profilePage.dynapage.pk}, {profilePage.node_type}")
+    widgets = dynapages.PageWidget.objects.order_by('order').filter(page=profilePage.dynapage)
+    available_widgets = dynapages.Widget.objects.filter(active=True,profile=True)
+    print(available_widgets)
+
+    exp = ProfileExperience.objects.get(community=community,profile=profile)
+    stats = ProfileStat.objects.filter(profile=profile)
+    context = {'community':community,'vhost':vhost,'profile':profile,'widgets':widgets,'groups':groups,'primaryGroup':primaryGroup,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"stats":stats,'dynapage_template':profilePage.dynapage.template.filename,'dynapage_page_name':f"Default Community Profile",'available_widgets':available_widgets,'exp':exp}
+    return render(request,'dynapages_tools/widget_editor.html',context)
