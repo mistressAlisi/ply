@@ -1,0 +1,69 @@
+{% load django_bootstrap5 %}
+<form method="POST" action="#" id="xmpp_form" onsubmit="xmpp_setup.submit(); return false;">
+{% csrf_token %}
+ <input type="hidden" id="fqdn" name="fqdn" value="{{site_settings.domain}}"/>
+ <input type="hidden" id="update" name="update" value="true"/>
+<div class="card">
+  <div class="card-header">
+   <h3><i class="fa-solid fa-satellite-dish"></i>&#160;Configure XMPP Integration</h3>
+  </div>
+  <div class="card-body">
+
+        <h2 class="text-primary">{{community.name}} supports XMPP integration!</h2>
+         <h6 class="text-secondary">XMPP Integration is already enabled!</h6>
+        <h4>My JID:</h4>
+        <p>XMPP integration is already enabled - you can't change your JID!</p>
+        <div class="input-group mb-3">
+          <span class="input-group-text text-primary"><i class="fa-solid fa-user-plus"></i>&#160;JID:</span>
+          <input type="text" class="form-control form-control-lg border-primary" placeholder="JID" aria-label="UID" name="UID" id="UID" aria-describedby="basic-addon2" value="{{xmpp_settings.get_UID}}" readonly aria-readonly="true">
+            <span class="input-group-text" id="basic-addon2">@{{site_settings.domain}}</span>
+        </div>
+        <h4>Update Application Password:</h4>
+        <h5>You can change your XMPP Password below.</h5>
+          <p>For safety reasons your previous password is non-retrievable.</p>
+      <p class="text-warning"> <i class="fa-solid fa-triangle-exclamation"></i> <em>ONLY CLICK SUBMIT if you intend to reset your XMPP password <i class="fa-solid fa-triangle-exclamation"></i></em></p>
+
+        <p class="text-danger"> <i class="fa-solid fa-triangle-exclamation"></i> <em>DO NOT Use your account password! <i class="fa-solid fa-triangle-exclamation"></i></em></p>
+        <div class="input-group mb-3">
+          <span class="input-group-text text-primary"><i class="fa-solid fa-lock"></i>&#160; Application Password:</span>
+          <input type="text" class="form-control form-control-lg" placeholder="Application Password" aria-label="Application Password" name="APW" id="APW" aria-describedby="basic-addon2" value="{{app_password}}">
+        </div>
+       <div id="passwordHelpBlock" class="form-text">
+        The default value above is a secure suggestion. Feel free to use any password above; as long as it is at least 8 characters long.
+        </div>
+   </div>
+              <div class="card-footer text-muted">
+              {% bootstrap_button "Submit" button_type="submit" button_class="btn-primary" %}
+
+              </div>
+</div>
+</form>
+<div class="modal" tabindex="-1" id="XMPP_modal" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary"><i class="fa-solid fa-check"></i>&#160;Confirm Password Reset!</h5>
+
+      </div>
+       <div id="modal-progress" class="text-primary text-center" style="padding: 10px;">
+           <i class="fa-solid fa-atom fa-spin fa-3x"></i>
+           <h2>Processing... please wait.</h2>
+       </div>
+      <div id="modal-confirm">
+      <div class="modal-body">
+        <h6>Please double-check and write down your new password!</h6>
+        <p class="h5"><strong class="text-primary">JID:</strong> <span id="jid">jid@server.org</span></p>
+        <p class="h5"><strong class="text-primary">Pass:</strong> <span id="psw" class="text-muted">password</span></p>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary" onclick="xmpp_setup.cancel();">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="xmpp_setup.confirm();">Confirm & Update Password</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<script src="/static/js/stream/create_stream.js"></script>
+<script>
+stream_create.init();
+</script>

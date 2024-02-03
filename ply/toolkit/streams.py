@@ -1,10 +1,8 @@
-from django.http import Http404
-
 # PLY
 #from ply.toolkit import vhosts
-from stream.models import Stream,StreamMessage
-from community.models import Community
-from profiles.models import Profile
+from communities.stream.models import Stream,StreamMessage
+from communities.community.models import Community
+from communities.profiles.models import Profile
 # Basic functions to support PLY requests:
 
 

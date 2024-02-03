@@ -4,11 +4,10 @@ toolkit/profiles.py
 Toolkit utilities for interacting with Ply Profiles
 """
 
-
-from community.models import Community,VHost
 from ply.toolkit.logger import getLogger
-from profiles.models import Profile
-from community.models import ProfilePerCoummunityView
+from communities.profiles.models import Profile
+from communities.community.models import ProfilePerCoummunityView
+
 # get_vhost_community: Find the right community node for the given Vhost.
 # To match VHosts, we must at least match the host name, and optionally, the iapddr.
 # 
@@ -26,7 +25,14 @@ def get_active_profile(request):
     :returns: r:Profile object
     """
     if 'profile' not in request.session:
-       profile = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)[0]
+       try:
+           profile = Profile.objects.get(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)
+       except:
+           # If we are a super user, we are allowed to use the system profile - this is needed to allow profile-less community management and to complete setup:
+           if request.user.is_superuser == True:
+                profile = Profile.objects.get(creator=request.user,archived=False,blocked=False,system=True,placeholder=False)
+           else:
+               return None
        request.session['profile'] = str(profile.uuid)
        request.session.modified = True
     else:
@@ -39,7 +45,7 @@ def get_active_profile(request):
     return profile
     
 # Returns all the profiles associated with the User:       
-def get_all_profiles(request):
+def get_all_profiles(request,system=False):
     """
     Return all the profiles in the community for the user in the request
 
@@ -49,7 +55,7 @@ def get_all_profiles(request):
     :rtype: Profiles object
 
    """
-    profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=False,placeholder=False)
+    profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=system,placeholder=False)
     return profiles
     
 

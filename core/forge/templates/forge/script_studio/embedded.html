@@ -1,0 +1,27 @@
+{%load static %}
+<form id="script_studio_form" method="POST" action="#eval">
+{%csrf_token%}
+<h3>Script Studio</h3>
+<div class="row container-fluid">
+  <div class="col-8" id="studio_colA" >
+  {% include "forge/script_studio/editor_card.html" %}
+  </div>
+
+  <div class="col" id="studio_colB" >
+  {% include "forge/script_studio/test_card.html" %}
+  </div>
+
+
+</div>
+</div>
+</form>
+
+{%include "forge/script_studio/modal.html" %}
+<!-- <script src="{% static 'js/prism/prism.js' %}" crossorigin="anonymous"></script> -->
+<!-- <link href="{% static 'css/prism/prism.css' %}" type="text/css" media="all" rel="stylesheet" /> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-dark.min.css" integrity="sha512-y6rcKLYkttB9ZUBaz0IsncWFo1VoqISrcMY6J1i6Nb9WB9jRrpll8zjt5e1/naZHyXFoR/1VlH72+2VJ1Uzh7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-3/cdM9qaJ5lBlzRKqwhMw+ZcNCVonz66BO6HgJudG/P1azm9wFrru31SsBa4T4Ew1AOH8HfDXSWS6emWwPl42A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/static/css/prism/prism-live.css">
+<script src="/static/js/prism/prism.js?load=python"></script>
+<script src="/static/js/prism/prism-live.js?load=python"></script>
+<script src="/static/js/script_studio/studio.js"></script>

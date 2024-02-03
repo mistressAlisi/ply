@@ -1,0 +1,67 @@
+{%extends "ply-bootstrap5.html" %}
+{%load django_bootstrap5 %}
+{% block bootstrap5_title %}
+       {{community.name}}: Select Dashboard
+{%endblock%}
+{% block bootstrap5_content %}
+<body data-bs-theme="dark">
+{% with THEME_PATH|add:"ui_modules/forge/profile/selector_before_body.html" as import_template %}
+{% include import_template %}
+{% endwith %}
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+    {% with THEME_PATH|add:"components/community/branding/form_header.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    <h3>Select Dashboard</h3>
+    <p class="lead">Please select which dashboard to access:</p>
+    </div>
+    <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
+    <div class="card col-6"  style="margin-left: auto; margin-right: auto; padding: 20px; z-index: 100;">
+    <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-users"></i> Select Dashboard:</h5>
+    <div class="modal-body">
+    <ul class="list-group">
+        {% for pr in dashboards %}
+             <li class="list-group-item" style="border: none;">
+              <a href="/dashboard/{{pr.type}}/" class="list-group-item list-group-item-action link-dark rounded">
+              <div style="display: inline-block; margin: 0;" class="text-primary">
+                <blockquote class="blockquote">{{pr.name}}</blockquote>
+                <figcaption class="blockquote-footer  text-muted">
+                {{pr.descr}}
+                </figcaption>
+              </div>
+              </a>
+            </li>
+
+
+        {% endfor %}
+        {% for pr in priv_dashboards %}
+             <li class="list-group-item" style="border: none;">
+              <a href="/dashboard/{{pr.type.type}}/" class="list-group-item list-group-item-action link-dark rounded">
+              <div style="display: inline-block; margin: 0;" class="text-primary">
+                <blockquote class="blockquote">{{pr.type.name}}</blockquote>
+                <figcaption class="blockquote-footer  text-muted">
+                {{pr.type.descr}}
+                </figcaption>
+              </div>
+              </a>
+            </li>
+
+
+        {% endfor %}
+    </ul>
+    </div>
+    <br/><br/>
+    <div class="modal-footer">
+        {% bootstrap_button "Profile Selector" button_type="link" href="/forge/select/profile" button_class="btn-outline-primary" %}
+        &#160;
+        {% bootstrap_button "Back Home" button_type="link" href="/" button_class="btn-outline-success" %}
+    <div>
+    </div>
+    </div>
+{% with THEME_PATH|add:"ui_modules/forge/profile/selector_after_body.html" as import_template %}
+{% include import_template %}
+{% endwith %}
+
+{% endblock %}

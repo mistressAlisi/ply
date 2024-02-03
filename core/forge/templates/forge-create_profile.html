@@ -1,0 +1,72 @@
+{%extends "ply-bootstrap5.html" %}
+{% block bootstrap5_title %}
+{% if profile.profile_id %}
+        {{community.name}}: Editing Profile '{{profile.name}}'
+{% else %}
+       {{community.name}}: New Profile
+{% endif %}
+{%endblock%}
+{% block bootstrap5_content %}
+<body data-bs-theme="dark">
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+       {% if community.icon %}
+      <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        {% else %}
+        <h2 class="logo-text">{{community.name}}</h2>
+        {% if community.tagline %}
+            <p class="tagline-text">{{community.tagline}}</p>
+        <br/>
+        {% endif %}
+        {% endif %}
+        {% if profile.profile_id %}
+
+        <h2> Editing Profile "{{profile.name}}"</h2>
+        <p class="lead">Use the form below to make changes to this profile: When you're satisfied; click 'Review Profile' to continue.</p>
+        {% else %}
+        <h2>New Character: Profile</h2>
+        <p class="lead">Welcome to {{community.name}}: fill out the form below to create a new profile!</p>
+        {% endif %}
+      
+
+    </div>
+    <div class="container-fluid row g-5">
+
+    {%include "forge-create_profile_image.html"%}
+    {%include "forge-create_profile_form.html"%}
+    </div>
+    
+    
+<!-- Status Modal     -->
+<!-- Modal -->
+<div class="modal fade" id="progressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-microchip"></i> Forge: Processing...</h5>
+        
+      </div>
+      <div class="modal-body">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        &#160; Please wait: Processing Changes!
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Forge Javascript -->
+<script src="/static/js/util-get_cookie.js"></script>
+<script src="/static/js/forge_create-profile.js"></script>
+{% if profile.profile_id %}
+<script>
+    create_profile.settings.preview_url = "/forge/edit/profile/preview";
+    create_profile.settings.finish_url = "/forge/api/profile/finish_edit/";
+</script>
+{% endif %}
+{% endblock %}

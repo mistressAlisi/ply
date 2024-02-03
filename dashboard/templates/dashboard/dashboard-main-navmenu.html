@@ -1,0 +1,103 @@
+{% load humanize %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0"> 
+      </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="/dashboard/static"><i class="fa-solid fa-house"></i> Start</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/content_manager/almanac"><i class="fa-solid fa-earth-africa"></i> About</a>
+        </li>
+        <!--<li class="nav-item">
+           <a class="nav-link" href="/blogs"><i class="fa-solid fa-book-open"></i> Blog</a>
+        </li>-->
+        <li class="nav-item">
+            <a class="nav-link" href="/communities/profiles/index"><i class="fa-solid fa-id-card-clip"></i> Profiles</a>
+        </li>
+        <!--<li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-user-group"></i> Groups</a>
+        </li>-->
+        <li class="nav-item">
+             <a class="nav-link" href="/media/gallery/core/index"><i class="fa-solid fa-images"></i> Galleries</a>
+        </li>
+        <li class="nav-item">
+           <a class="nav-link" href="/communities/stream"><i class="fa-solid fa-wifi"></i> Stream</a>
+        </li>
+       
+         <li class="nav-item dropdown dropstart" >
+            {%if current_profile %}
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {%include "dashboard/dashboard-generic-avatar.html" %}
+                <strong>{{current_profile.name}} (@{{current_profile.profile_id}})</strong>
+                </a>  
+                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: 250px; padding: 5px;">
+                 <li><strong class="dropdown-item-text"><i class="fa-solid fa-bell"></i>&#160;Notifications:</strong></li>
+                 <li class="dropdown-item-text">
+                 <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Notifications">
+                 <i class="fa-solid fa-comment"></i>&#160;{{ current_profile.notifications|intcomma }}
+                 </span>
+                 &#160;
+                 <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Messages">
+                 <i class="fa-solid fa-envelope"></i>&#160;{{ current_profile.messages|intcomma }}
+                 </span>
+                 &#160;
+                 <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Mentions">
+                 <i class="fa-solid fa-quote-left"></i>&#160;{{ current_profile.mentions|intcomma }}
+                 </span>
+                 &#160;
+                 
+                 </li>  
+                
+                 <li><hr/></li>
+                 <li><strong class="dropdown-item-text"><i class="fa-solid fa-user-gear"></i>&#160;My Account:</strong></li>
+                 <li><a class="dropdown-item" href="/dashboard/user/"><i class="fa-solid fa-gauge"></i>&#160;My Dashboard</a></li>
+                <li><hr/></li>                 
+                  <li><strong class="dropdown-item-text"><i class="fa-solid fa-shuffle"></i>&#160;Switch Profile:</strong></li>
+                   {% for pr in profiles %}
+                    <li class=" dropdown-item profile-sel-link-li"><a href="/dashboard/user/set_profile/{{pr.uuid}}" data-trgt="{{pr.uuid}}"   class="link-dark rounded sidebar-submenu-link profile-sel-link" >
+                    <img src="{{av_path}}/{{pr.avatar}}" alt="{{current_profile.pr|slice:"0:2"}}" class="rounded-circle me-2" width="16" height="16">{{pr.name}} (@{{pr.profile_id}})</a></li>
+                    {% endfor %}
+                    <li><hr/></li>
+                    <li><a class="dropdown-item" href="/accounts/logout/"><i class="fa-solid fa-door-open"></i>&#160;Logout</a></li>
+                 </ul>
+            {% else %}
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <strong><i class="fa-solid fa-right-to-bracket"></i> Register/Login</strong>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: 250px; padding: 5px;">
+                    <li>
+
+                        </p>Login with a <span class="ply-brand_font">Ply</span> account:</p>
+                        <div class="form-group">
+                            <label for="plyuserid"><i class="fa-solid fa-user"></i>&#160;Username or Email:</label>
+                            <input type="text" class="form-control" name="plyuserid" id="plyuserid" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="plypass"><i class="fa-solid fa-key"></i>&#160;Password:</label>
+                            <input type="password" class="form-control" name="plypass" id="plypass" placeholder="Password">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="plyremember" name="plyremember">
+                            <label class="form-check-label" for="plyremember">Remember me</label>
+                        </div>
+                        <br/>
+                        <button type="submit" class="btn btn-primary" onclick="loginAgent.start();"> <i class="fa-solid fa-right-to-bracket"></i> Sign in</button>
+                        <input type="hidden" id="plyhashpw" name="plyhashpw"/>
+
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li class="alert alert-danger alert-dismissible fade show" role="alert" id="plyloginalert" style="display: none;">Auth Error!</li>
+                    <li><a class="dropdown-item" href="/accounts/register"><i class="fa-solid fa-user-plus"></i>&#160;Sign up!</a></li>
+                    <li><a class="dropdown-item" href="/accounts/password_reset"><i class="fa-solid fa-lock"></i>&#160;Forgot password?</a></li>
+                </ul>
+        </li>
+        {% endif %}
+        </ul>
+    </div>
+  </div>
+</nav>

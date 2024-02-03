@@ -16,7 +16,7 @@ class Command(BaseCommand):
         parser.add_argument('app', type=str)
 
     def run_dir(self,app):
-        sql_dir  = os.getcwd() + f"/{app}/sql/"
+        sql_dir  = os.getcwd() + f"/{app.replace('.','/')}/sql/"
         if (os.path.isdir(sql_dir)):
             self.stdout.write(self.style.MIGRATE_HEADING(f'...Installing files in: "{sql_dir}"...'))
             sqlfiles =  os.listdir(sql_dir)

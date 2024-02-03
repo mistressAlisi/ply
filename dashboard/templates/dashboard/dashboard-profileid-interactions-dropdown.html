@@ -1,0 +1,30 @@
+<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+    <li><a class="dropdown-item" href="/communities/profiles/@{{profile.profile_id}}"><i class="fa-solid fa-id-card">&#160;</i>Profile</a></li>
+    <li><a class="dropdown-item" href="/media/gallery/core/@{{profile.profile_id}}"><i class="fa-solid fa-images">&#160;</i>Galleries</a></li>
+    <li><a class="dropdown-item" href="/communities/stream/@{{profile.profile_id}}"><i class="fa-solid fa-wifi">&#160;</i>Stream</a></li>
+
+    {% if current_profile %}
+    {% load community_extras %}
+    {% if profile != current_profile %}
+    <li><hr/></li>
+    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-comment-dots"></i>&#160;Message</a></li>
+
+    <li><hr/></li>
+    {% is_friends_with profile as are_friends %}
+
+    {% if are_friends %}
+     <li><a class="dropdown-item text-danger" href="#" onclick="fof.unfriend('{{profile.uuid}}','{{profile.name|urlencode}}'); return false;"><i class="fa-solid fa-user-minus"></i>&#160;Remove friend</a></li>
+    {% else %}
+    {% follows profile as is_followed %}
+    {% if  is_followed %}
+        <li><a class="dropdown-item text-success" href="#" onclick="fof.friend('{{profile.uuid}}'); return false;"><i class="fa-solid fa-user-plus"></i>&#160;Add Friend</a></li>
+        <li><a class="dropdown-item text-danger" href="#" onclick="fof.unfollow('{{profile.uuid}}','{{profile.name|urlencode}}'); return false;"><i class="fa-solid fa-magnifying-glass-minus"></i>&#160;Unfollow</a></li>
+     {% else %}
+        <li><a class="dropdown-item text-primary" href="#" onclick="fof.toggle('{{profile.uuid}}','{{profile.name|urlencode}}'); return false;"><i class="fa-solid fa-user-plus"></i>&#160;<i class="fa-solid fa-magnifying-glass-plus"></i>&#160;Follow/Friend</a></li>
+     {% endif %}
+
+    {% endif %}
+    {% endif %}
+    {% endif %}
+</ul>

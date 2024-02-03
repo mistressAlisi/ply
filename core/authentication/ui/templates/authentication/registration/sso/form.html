@@ -1,0 +1,13 @@
+    <form id="sso_form" method="POST" action="#" onsubmit="login.run(); return false;">
+    {%csrf_token%}
+    <div class="form-group">
+    <label for="exampleInputEmail1">Email address:</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter SSO ID/E-Mail">
+    <small id="emailHelp" class="form-text text-muted">Please use your SSO email</small>
+         <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+    <label class="form-check-label" for="exampleCheck1">Remember login on this computer</label>
+  </div>
+  </div>
+      <button type="submit" class="btn btn-outline-primary">Login</button>
+    </form>

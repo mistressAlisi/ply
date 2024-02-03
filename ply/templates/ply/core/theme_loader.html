@@ -1,0 +1,8 @@
+{% if THEME_PATH %}
+    {% with THEME_PATH|add:"body/headers/css.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    {% with THEME_PATH|add:"body/headers/fonts.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+{% endif %}

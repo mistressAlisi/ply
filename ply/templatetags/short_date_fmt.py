@@ -1,7 +1,5 @@
 from django import template
-from ply import toolkit
-from preferences.models import Preferences
-import ply
+from communities.preferences.models import Preferences
 from pytz import timezone
 register = template.Library()
 
