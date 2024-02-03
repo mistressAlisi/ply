@@ -53,6 +53,7 @@ urlpatterns = [
 # UFLS URLs:
 urlpatterns += [
     # Registrar App paths:
+    path('app/api/', include('ufls.registrar.api_urls')),
     path('app/registrar/', include('ufls.registrar.urls')),
     path('app/ufls/return/', include('ufls.backend_connection_urls')),
 ]
