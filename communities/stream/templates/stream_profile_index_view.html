@@ -1,0 +1,86 @@
+{% extends 'ply-bootstrap5-stickyfooter.html' %}
+{% load django_bootstrap5 %} 
+{% block bootstrap5_title %}
+{{community.name}} - {{profile.name}}'s Stream
+{% endblock %}
+{%load mathfilters %}
+
+{% block meta-og-title %}{{profile.name}}'s Stream{% endblock %}
+{% block meta-og-type %}website{% endblock %}
+{% block meta-og-url %}https://{{vhost}}/stream/{{profile.profile_id}}{% endblock %}
+{% block meta-og-image %}{{av_path}}/{{profile.avatar}}{% endblock %}
+{% block meta-og-site_name %}{{community.name}}{% endblock %}
+{% block meta-og-description %}{{profile.name}}'s Stream @ {{community.name}} - at https://{{vhost}} {% endblock %}
+
+{% block bootstrap_doc_body %}
+{% if stream.bkgt == "s1" %}
+    <body style="background:{{stream.bkg1}};">
+{% elif stream.bkgt == "s2" %}
+    <body style="background:{{stream.bkg2}};">
+{% elif stream.bkgt == "gl" %}
+     <body style="background:linear-gradient({{stream.angle}}deg, {{stream.rgba1}} {{stream.midpoint}}%, {{stream.rgba2}} 100%); ">
+{% elif stream.bkgt == "gr" %}
+     <body style="background:radial-gradient(circle, {{stream.rgba1}} {{stream.midpoint}}%, {{stream.bkg2}} 100%); {{stream.rgba2}}">
+{% else %}
+   <body>
+{% endif %}
+{% endblock %}
+
+{% block bootstrap5_content %}
+<link href="/static/css/dashboard.css" rel="stylesheet">
+<link href="/static/css/profile.css" rel="stylesheet">
+<link href="/static/css/stream_index.css" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap" rel="stylesheet"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://kit.fontawesome.com/4f00122db6.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/gallery_core.js"></script>
+<div class="sticky-top">
+<header class="navbar navbar-dark  bg-dark flex-md-nowrap p-0 shadow"> 
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><em>{{community.name}}</em> - {{profile.name}}'s Stream</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="offcanvasWithBackdrop" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+{%include "dashboard/dashboard-main-navmenu.html" %}
+</header>
+<div class="card"> 
+{%include "gallery-profile-header.html" %} 
+</div>
+</div>
+{%if profile == current_profile %}
+{%include "stream-settings-container.html" %}
+{% endif %}
+{%include "gallery-modal-viewer.html" %}
+<div class="container-fluid main-container" id="dashboard_mainPanel">
+<br/>
+
+<div class="container-fluid" id="stream_container">
+{% for m in messages %}
+    {% if m.type == "text/plain" %}
+      {% include "stream_message_card.html" %}
+    {% elif m.type == "application/ply.stream.gallery" %}
+      {% include "stream_message_gallery_card.html" %}
+    {% elif m.type == "application/ply.stream.refmsg" %}
+      {% include "stream_reference_card.html" %}
+    {% elif m.type == "application/ply.stream.diceroll" %}
+      {% include "stream_diceroll_card.html" %}
+    {% endif %}
+    {% endfor %}
+</div>
+</div>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+
+{% include "stream_post_box_offcanvas_bottom.html" %}
+<script src="/static/stream_publisher/js/stream_publisher_core.js"></script>
+{% endblock %}
+

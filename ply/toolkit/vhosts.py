@@ -1,4 +1,4 @@
-from community.models import Community,VHost
+from communities.community.models import VHost
 from ply.toolkit.logger import getLogger
 import logging
 # get_vhost_community: Find the right community node for the given Vhost.
@@ -17,4 +17,17 @@ def get_vhost_community(hostname, ipaddr=None):
     except VHost.DoesNotExist as e:
         logging.error(f"VHost '{hostname}' (IP: {ipaddr}): not found.");
         return None
-        
+
+
+def get_vhost_and_community(request, ipaddr=None):
+    try:
+        if (ipaddr):
+            host = VHost.objects.get(hostname=request.META["HTTP_HOST"], ipaddr=ipaddr, archived=False, frozen=False, blocked=False)
+        else:
+            host = VHost.objects.get(hostname=request.META["HTTP_HOST"], archived=False, frozen=False, blocked=False)
+        return host,host.community
+    except VHost.DoesNotExist as e:
+        host = request.META["HTTP_HOST"]
+        logging.error(f"VHost '{host}' (IP: {ipaddr}): not found.");
+        return None
+

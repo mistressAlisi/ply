@@ -1,0 +1,44 @@
+<div class="card col-5">
+<div class="card_body">
+            <div class="row">
+                <div class="col profile_avatar">
+                <img src="{{av_path}}/{{profile.avatar}}" class="img-thumbnail" alt="{{profile.name}} Icon">
+                </div>
+                <div class="col profile_data">
+                    <div class="profile_name_div">
+                    {%include "dashboard/dashboard-profileid-interactions-widget.html" %}
+                    </div> 
+                    <div class="col profile_tagline">
+                    <i class="fa-solid fa-feather-pointed"></i>&#160; <em>{{profile.introduction}}</em>
+                    <hr/>
+                    </div>
+                    <div class="col stats_data_1">
+                    <strong><i class="fa-solid fa-user"></i> Gender:</strong>&#160;{{profile.gender}}&#160;<em class="pronouns">({{profile.pronouns}})</em> 
+                    <strong><i class="fa-solid fa-atom"></i>Species:</strong>&#160; Level {{profile.level}} {{profile.species}}
+                    </div>
+                    
+                    <div class="col stats_data_2">
+                    {% if primaryGroup %}
+                    <strong><i class="fa-solid fa-chess-queen"></i> Title:</strong>&#160;{{primaryGroup.title.title}}</em>&#160; 
+                    <strong><i class="fa-solid fa-user-group"></i> Clan:</strong>&#160;{{primaryGroup.group.name}}</em>&#160; 
+                    {% endif %}
+                    <strong><i class="fa-solid fa-signal"></i> Current Status:</strong>&#160;{{profile.status}}</em> 
+                    </div>
+                    
+                    <div class="col stats_data_3">
+                    <strong><i class="fa-solid fa-file-waveform"></i> HP:</strong>&#160;{{profile.HP}} (max: {{profile.max_HP}})</em>&#160; 
+                    <strong><i class="fa-solid fa-bolt-lightning"></i> MP:</strong>&#160;{{profile.MP}} (max: {{profile.max_MP}})</em>&#160; 
+                    <strong><i class="fa-solid fa-syringe"></i> STA:</strong>&#160;{{profile.STA}} (max: {{profile.max_STA}})</em> 
+                    <br/>
+                    <strong><i class="fa-solid fa-clock"></i> Last Seen:</strong>&#160;{{profile.last_seen}}</em> 
+                    </div>
+                    <br/>
+                    <div class="col actions">
+                
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+<br/>

@@ -3,12 +3,9 @@ toolkit/profiles.py
 ====================================
 Toolkit utilities for interacting with Ply Profile's Levels
 """
-from community.models import Community,VHost
 from ply.toolkit.logger import getLogger
 from ply.toolkit import scripts,streams
-from profiles.models import Profile
-from stats.models import ClassType,ProfileStat
-from exp.models import ProfileExperience,ProfileExperienceHistory,LevelScript
+from roleplaying.exp.models import ProfileExperience,ProfileExperienceHistory,LevelScript
 
 logging = getLogger('toolkit.levels',name='toolkit.levels')
 

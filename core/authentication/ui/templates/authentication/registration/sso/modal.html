@@ -1,0 +1,14 @@
+<div class="modal fade" id="ssoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ssoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="ssoModalLabel"> <i class="fa-solid fa-users-gear"></i> External Account (SSO) Login:</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% include "authentication/registration/sso/form.html" %}
+
+      </div>
+    </div>
+  </div>
+</div>

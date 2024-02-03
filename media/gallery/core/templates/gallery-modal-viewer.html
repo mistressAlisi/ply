@@ -1,0 +1,74 @@
+<script src="https://unpkg.com/@panzoom/panzoom@4.5.0/dist/panzoom.min.js"></script>
+<link href="/static/css/gallery_modal_viewer.css" rel="stylesheet"/>
+<!-- Modal -->
+<div class="gallery-modal-viewer"  id="gallery-viewer">
+
+   <div class="gallery-modal-header row container-fluid">
+
+   <div class="col-1" style="max-width: 50px; padding-top: 10px;">
+    {%include "dashboard/dashboard-generic-avatar-45px.html" %}
+   </div>
+   <div class="col-10">
+            <h3><span class="gallery-modal-title" id="title-span">Modal title</span>&#160;</h3>
+            <h6><span id="gallery-span" class="gallery-modal-subtitle">by Profile.</span></h6>
+            <button id="btn-views" type="button" disabled="disabled" class="btn btn-outline-secondary btn-sm"><span class="count">...</span>&#160;<i class="fa-solid fa-eye"></i></button>
+            &#160;
+            <button id="btn-like" type="button" class="btn btn-outline-secondary btn-sm"><span class="count">...</span>&#160;<i class="fa-solid fa-heart"></i></button>
+            &#160;
+            <button id="btn-share" type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="dropdown" aria-expanded="false"><span class="count">...</span>&#160;<i class="fa-solid fa-share"></i></button>
+            <ul class="dropdown-menu share-menu" aria-labelledby="btn-share" style="padding: 5px;">
+                <li class="h5"><i class="fa-solid fa-share-nodes"></i>&#160;Recast and share:</li>
+                <li>
+                <p class="h6 text-muted"><i class="fa-solid fa-podcast"></i>&#160;Recast:</p>
+                <button type="button" class="btn btn-success" onclick="return gallery_core.recast();"><i class="fa-solid fa-share-from-square"></i>Recast!</button>
+                <div class="form-text">Click to recast in your stream!</div>
+                </li>
+                <li><hr/></li>
+                <li>
+                <p class="h6 text-muted"><i class="fa-solid fa-share"></i>&#160;Share URL:</p>
+                <input type="text" name="share-url" class="form-control text-muted" placeholder="Share URL" required="" id="id_share_url" readonly="" onclick="gallery_core.share();">
+                <div class="form-text" id="share_url_fb">Click URL to copy to clipboard!</div>
+                </li>
+                <li>
+                <p class="h6 text-muted"><i class="fa-solid fa-square-share-nodes"></i>&#160;Share to:</p>
+                <a class="btn btn-primary" id="sh_twitter" href="#" role="button" target="_blank"><i class="fa-brands fa-twitter-square"></i></a>
+                <a class="btn btn-primary" id="sh_fb" href="#" role="button" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a class="btn btn-primary" id="sh_li" href="#" role="button" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a class="btn btn-primary" id="sh_tele" href="#" role="button" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                <div class="form-text">Will share the URL above!</div>
+                </p>
+                </li>
+            </ul>
+            &#160;
+            <button id="btn-comments" type="button" class="btn btn-outline-secondary btn-sm" onclick="window.gallery_core.toggle_viewer();"><span class="count">...</span>&#160;<i class="fa-solid fa-comments"></i></button>
+            &#160;
+            <button id="btn-download" type="button" class="btn btn-outline-secondary btn-sm"><span class="count">...</span>&#160;<i class="fa-solid fa-download"></i></button>
+            &#160;
+            <button id="btn-created" type="button" disabled="disabled" class="btn btn-outline-secondary btn-sm"><span class="date">...</span>&#160;<i class="fa-solid fa-calendar-xmark"></i></button>
+            &#160;
+
+            <em>Zoom:</em>
+            <button id="btn-zou" type="button" class="btn btn-outline-secondary btn-sm" onclick="gallery_core._zou_btn();"><i class="fa-solid fa-magnifying-glass-minus"> </i></button>
+             &#160;
+            <input type="range" class="form-range" min="0.1" max="10" step=".1" id="zoom-range" style="max-width: 200px;">
+             &#160;
+            <button id="btn-zin" type="button" class="btn btn-outline-secondary btn-sm" onclick="gallery_core._zin_btn();"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            </div>
+        <br/>
+    </div>   <button type="button" class="btn btn-dark close-btn" onclick="gallery_core.toggle_viewer();"><i class="fa-solid fa-xmark"></i> Close</button> 
+
+   
+   
+   
+    <div id="viewer_div" style="width: 100%; height: 100%;"></div>
+    <div class="gallery-modal-controls row container-fluid">
+   <div class="col-1 float-left gallery-modal-buttons" style="max-width: 20px; padding-top: 10px; z-index:10000000;" id="back-button">
+    <button class="btn btn-outline-secondary" onclick="gallery_core.gallery_card_back();"><i class="fa-solid fa-2x fa-circle-chevron-left"></i></button>
+   </div>
+    <div class="col-lg-11 col-sm-10">&#160; </div>
+    <div class="col-1 float-right gallery-modal-buttons" style="max-width: 20px; padding-top: 10px; padding-left: 50px; z-index:10000000;" id="forw-button">
+    <button class="btn btn-outline-secondary" onclick="gallery_core.gallery_card_forw();"><i class="fa-solid fa-2x fa-circle-chevron-right"></i></button>
+   </div>
+  </div>
+</div>
+</div>

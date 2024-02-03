@@ -45,40 +45,47 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_bootstrap5',
+    'jsignature',
     'django_registration',
-    'martor',
-    'preferences',
     'storages',
+    'martor',
     'mathfilters',
     'phonenumber_field',
     'colorful',
-    'emoji',
-    'categories',
-    'notifications',
+    'communities.preferences',
+    'content_manager.emoji',
+    'content_manager.categories',
+    'communities.notifications',
     'dashboard',
-    'dynapages',
-    'profiles',
-    'comms',
-    'gallery',
-    'stream',
-    'group',
-    'keywords',
-    'community',
-    'plyscript',
-    'gallery_photos',
-    'metrics',
-    'stats',
-    'combat',
-    'skills',
-    'equipment',
-    'spells',
-    'items',
-    'forge',
-    'almanac',
-    'exp',
-    'SLHUD',
-    'plydice',
-    'ply'
+    'core.dynapages',
+    'communities.profiles',
+    'roleplaying.comms',
+    'communities.stream',
+    'communities.group',
+    'content_manager.keywords',
+    'communities.community',
+    'core.plyscript',
+    'core.authentication',
+    'core.authentication.ui',
+    'media.gallery.core',
+    'media.gallery.photos',
+    'core.metrics',
+    'roleplaying.stats',
+    'roleplaying.combat',
+    'roleplaying.skills',
+    'roleplaying.equipment',
+    'roleplaying.spells',
+    'roleplaying.items',
+    'core.forge',
+    'content_manager.almanac',
+    'roleplaying.exp',
+    'roleplaying.SLHUD',
+    'roleplaying.plydice',
+    'ply',
+    'ufls.themes.neon_nights',
+    'ufls.furry',
+    'ufls.event',
+    'ufls.registrar'
 ]
 
 MIDDLEWARE = [
@@ -119,7 +126,7 @@ WSGI_APPLICATION = 'ply.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE'),
-        'NAME': config('DB_NAME'),
+        'NAME': config('db_table'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PW'),
         'HOST': config('DB_HOST'),
@@ -173,6 +180,8 @@ if USE_S3:
     # s3 static settings
     AWS_LOCATION = config('AWS_LOCATION')
     STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    MEDIA_ROOT = "media_root/"
+    MEDIA_URL = "/media/"
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     if (config("ALWAYS_LOAD_S3") == "TRUE"):
@@ -183,9 +192,13 @@ else:
         AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
         AWS_DEFAULT_ACL = 'public-read'
         AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+        MEDIA_ROOT = "media_root/"
+        MEDIA_URL = "/media/"
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    MEDIA_ROOT = "/var/www/html/media/"
+    MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -195,6 +208,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MARTOR:
 # Choices are: "semantic", "bootstrap"
 MARTOR_THEME = 'bootstrap'
+
 
 # Global martor settings
 # Input: string boolean, `true/false`
@@ -216,8 +230,24 @@ MARTOR_TOOLBAR_BUTTONS = [
     'direct-mention', 'toggle-maximize', 'help'
 ]
 
+# Django Bootstrap 5 settings:
+BOOTSTRAP5= {
+    "javascript_in_head": True,
+    "css_url": {
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css",
+        "integrity": "sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9",
+        "crossorigin": "anonymous",
+    },
 
-BOOTSTRAP5= {"javascript_in_head": True }
+    # The complete URL to the Bootstrap JavaScript file
+    "javascript_url": {
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js",
+        "integrity": "sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm",
+        "crossorigin": "anonymous",
+    }
+}
+
+
 # To setup the martor editor with title label or not (default is False)
 MARTOR_ENABLE_LABEL = False
 
@@ -286,23 +316,33 @@ REGISTRATION_SALT = 'ae3Phoge'
 
 # PLY:
 PLY_USER_DASHBOARD_MODULES = [
-    "profiles",
-    "community",
-    "stats",
-    "skills",
-    "stream",
-    "gallery",
-    "notifications",
-    "preferences"
-    
-    ]
+    "communities.profiles",
+    "communities.community",
+    "roleplaying.stats",
+    "roleplaying.skills",
+    "communities.stream",
+    "communities.notifications",
+    "communities.preferences",
+    "ufls.registrar"
 
+    
+]
+
+PLY_WORLDFORGE_DASHBOARD_MODULES = [
+    "communities.community",
+    "ufls.event",
+    "ufls.registrar",
+    "communities.stream"
+]
+PLY_STAFF_DASHBOARD_MODULES = [
+
+]
 PLY_GALLERY_PLUGINS = [
-    "gallery_photos"
+    "media.gallery.photos"
     ]
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]
-PLY_VERSION = "2023.03.1405"
+PLY_VERSION = "2024.02.0201a"
 try:
     PLY_HOSTNAME = socket.gethostname()
 except:
@@ -330,4 +370,20 @@ PLY_DYNAPAGES_PROFILE_TEMPLATE=config("PLY_DYNAPAGES_PROFILE_TEMPLATE")
 PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_PROFILE_TEMPLATE_BANNER_WIDGET")
 PLY_DYNAPAGES_DASHBOARD_TEMPLATE=config("PLY_DYNAPAGES_DASHBOARD_TEMPLATE")
 PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET = config("PLY_DYNAPAGES_DASHBOARD_TEMPLATE_BANNER_WIDGET")
+PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE=config("PLY_DYNAPAGES_INSTALL_COMPLETE_TEMPLATE",default="communities-community-installComplete-cover")
 GRAPPELLI_ADMIN_TITLE="PLY Admin @ "+PLY_HOSTNAME
+# PAYMENT PROCESSING:
+PAYMENT_HOST = config('UFLS_PAYMENT_HOST', default="http://localhost:8000/")
+PAYMENT_USES_SSL = config("UFLS_PAYMENTS_USES_SSL", default=False)
+PAYMENT_STRIPE_WEBHOOK_SECRET = config("UFLS_STRIPE_WEBHOOK_SECRET",default="")
+PAYMENT_STRIPE_TEST = config('UFLS_STRIPE_TEST', cast=bool, default=True)
+if (PAYMENT_STRIPE_TEST == True):
+    PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY_TEST', default=False)
+    PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY_TEST', default=False)
+    PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM_TEST', default=False)
+else:
+    PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY', default=False)
+    PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
+    PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
+
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")

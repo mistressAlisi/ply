@@ -1,0 +1,39 @@
+{% extends 'ply-bootstrap5.html' %}
+{% load django_bootstrap5 %}
+{% block bootstrap5_title %}
+{{community.name}}: Dashboard    
+{% endblock %}
+
+{% block bootstrap5_content %}
+{% include "ply/core/theme_loader.html" %}
+<link href="/static/css/dashboard.css" rel="stylesheet">
+
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  {%block dashboard_title %}<a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" data-bs-toggle="offcanvas" href="#sidebarMenu" role="button" aria-controls="sidebarMenu"><span>{{community.name}}</span> - Dashboard <i class="fas fa-caret-square-down"></i></a>{% endblock %}
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="offcanvasWithBackdrop" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+{%block dashboard_navmenu %}
+{%include "dashboard/dashboard-main-navmenu.html" %}
+{% endblock %}
+
+</header>
+    {%include "dashboard/dashboard_sidebar.html" %}
+
+<div class="container-fluid main-container" id="dashboard_mainPanel">
+
+
+{%block dashboard_maincontent %}
+
+    {%include "dashboard/dashboard_main_panel.html" %}
+
+{% endblock %}
+ </div>
+
+</div>
+<script src="https://unpkg.com/bs5-toast/dist/bs5-toast.js"></script>
+<script type="module" src="/static/dashboard/js/dashboard.js"></script>
+
+
+{% endblock %}

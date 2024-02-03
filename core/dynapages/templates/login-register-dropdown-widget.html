@@ -1,0 +1,75 @@
+{%if current_profile %}
+<div class="dropdown">
+
+<a class="btn btn-black text-white dropdown-toggle" href="#" id="profileSwitchLink" data-bs-toggle="dropdown" aria-expanded="false">
+<img src="{{av_path}}/{{current_profile.avatar}}" alt="{{current_profile.name|slice:"0:2"}}" class="rounded-circle me-2" width="32" height="32"></img>
+        <strong class="text-white">{{current_profile.name}} (@{{current_profile.profile_id}})</strong>
+</a>
+<div class="dropdown-menu" style="min-width: 250px;" aria-labelledby="profileSwitchLink">
+<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu" style="padding: px;">
+ <li><h6 class="dropdown-item"><a href="/dashboard/user" class="dropdown-item"><i class="fa-solid fa-dashboard"></i> &#160;My Dashboard</h6></a></li> 
+ <li><h6 class="dropdown-item"><i class="fa-solid fa-shuffle"></i> &#160;Switch Profile:</h6></li> 
+  {% for pr in profiles %}
+  <li class="nav-profile-sel-link-li"><a href="/dashboard/user/set_profile/{{pr.uuid}}?r={{url_path}}" data-trgt="{{pr.uuid}}"   class="link-dark rounded sidebar-submenu-link profile-sel-link" >
+  <img src="{{av_path}}/{{pr.avatar}}" alt="{{current_profile.pr|slice:"0:2"}}" class="rounded-circle me-2" width="16" height="16">{{pr.name}} (@{{pr.profile_id}})</a></li>
+ {% endfor %}
+</ul>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="/core/forge/select/profile"><i class="fa-solid fa-users"></i>&#160;Profile Selector</a>
+  <a class="dropdown-item" href="/accounts/password_change"><i class="fa-solid fa-lock-open"></i>&#160;Change Password</a>
+  <a class="dropdown-item" href="/accounts/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>&#160;Sign out</a>
+
+</div>
+</div>
+       
+        
+{% else %}
+  <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    
+<div class="collapse navbar-collapse">
+  <a class="btn btn-black text-white dropdown-toggle" href="#" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fa-solid fa-arrow-right-to-bracket"></i> Register/Login
+  </a>
+<div class="dropdown-menu" style="min-width: 250px;">
+  <form class="px-4 py-3" method="POST" action="#" id="plyloginform" onsubmit="loginAgent.start(event);">
+    {%csrf_token%}
+      <p>Login with a <span class="ply-brand_font">Ply</span> account:</p>
+    <div class="form-group">
+      <label for="plyuserid"><i class="fa-solid fa-user"></i>&#160;Username or Email:</label>
+      <input type="text" class="form-control" name="plyuserid" id="plyuserid" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
+      <label for="plypass"><i class="fa-solid fa-key"></i>&#160;Password:</label>
+      <input type="password" class="form-control" name="plypass" id="plypass" placeholder="Password">
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="plyremember" name="plyremember">
+      <label class="form-check-label" for="plyremember">
+        Remember me
+      </label>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="plyloginalert" style="display: none;">
+    Auth Error!
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="loginAgent.start();">Sign in</button>
+    <input type="hidden" id="plyhashpw" name="plyhashpw"/>
+  </form>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="/accounts/register"><i class="fa-solid fa-user-plus"></i>&#160;Sign up!</a>
+  <a class="dropdown-item" href="/accounts/password_reset"><i class="fa-solid fa-lock"></i>&#160;Forgot password?</a>
+</div>
+</div>
+{% endif %}

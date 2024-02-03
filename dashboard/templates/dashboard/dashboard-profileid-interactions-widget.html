@@ -1,0 +1,12 @@
+                   <div class="dropdown">
+                   {%if interaction_banner_name %}
+                        <span class="name"><i class="fa-regular fa-address-card"></i>&#160;{{profile.name}}'s {{interaction_banner_name}}</span>
+                    {% else %}
+                        <span class="name"><i class="fa-regular fa-address-card"></i>&#160;{{profile.name}}</span>
+                    {% endif %}
+                    &#160;
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong>@{{profile.profile_id}}</strong>
+                    </a>
+                       {%include "dashboard/dashboard-profileid-interactions-dropdown.html" %}
+                    </div>

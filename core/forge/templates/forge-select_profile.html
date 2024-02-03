@@ -1,0 +1,50 @@
+{%extends "ply-bootstrap5.html" %}
+{%load django_bootstrap5 %}
+{% block bootstrap5_title %}
+       {{community.name}}: Select Profile
+{%endblock%}
+{% block bootstrap5_content %}
+<body data-bs-theme="dark">
+{% with THEME_PATH|add:"ui_modules/forge/profile/selector_before_body.html" as import_template %}
+{% include import_template %}
+{% endwith %}
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+    {% with THEME_PATH|add:"components/community/branding/form_header.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    <h3>Select Profile</h3>
+    <p class="lead">Please select a profile below or create a new one!</p>
+    </div>
+    <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
+    <div class="card col-6"  style="margin-left: auto; margin-right: auto; padding: 20px; z-index: 100;">
+    <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-users"></i> Switch Profile:</h5>
+    <div class="modal-body">
+    <ul class="list-group">
+        {% for pr in profiles %}
+            <li class="list-group-item" style="border: none;">
+              <a href="/dashboard/user/set_profile/{{pr.uuid}}?r=/dashboard/user/" class="list-group-item list-group-item-action link-dark rounded">
+              <img style="position: relative; top: -10px;" src="{{av_path}}/{{pr.avatar}}" alt="{{pr.name|slice:"0:2"}}" class="rounded-circle me-2" width="50" height="50"/>
+              <div style="display: inline-block; margin: 0;" class="text-primary">
+                <blockquote class="blockquote">{{pr.name}}</blockquote>
+                <figcaption class="blockquote-footer  text-muted">
+                @{{pr.profile_id}}
+                </figcaption>
+              </div>
+              </a>
+            </li>
+        {% endfor %}
+    </ul>
+    </div>
+    <br/><br/>
+    <div class="modal-footer">
+        {% bootstrap_button "Create new Profile" button_type="link" href="/forge/create/profile" button_class="btn-outline-success" %}
+    <div>
+    </div>
+    </div>
+{% with THEME_PATH|add:"ui_modules/forge/profile/selector_after_body.html" as import_template %}
+{% include import_template %}
+{% endwith %}
+
+{% endblock %}
