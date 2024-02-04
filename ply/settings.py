@@ -367,7 +367,7 @@ PLY_GALLERY_PLUGINS = [
     ]
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]
-PLY_VERSION = "2023.08.1505"
+PLY_VERSION = "2024.02.0201a"
 try:
     PLY_HOSTNAME = socket.gethostname()
 except:
