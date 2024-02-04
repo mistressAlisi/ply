@@ -2,11 +2,12 @@ from django.shortcuts import render
 # Create your views here.
 
 import ply
-from ply.toolkit import vhosts,profiles,themes
+from ply.toolkit import vhosts,profiles,themes,version
 from dashboard.navigation import SideBarBuilder
 from media.gallery.core.models import GalleryItemsByCollectionPermission
 from core.metrics.models import CommunityPageHit
 from core.metrics.toolkit import request_data_capture
+
 # Render the User Dashboard Home page:
 def community_home(request):
     # Ignore port:
@@ -40,6 +41,7 @@ def community_home(request):
                 bkg_path= ""
         else:
             bkg_path = ""
-        context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':ply.settings.PLY_VERSION,'bkg_path':bkg_path,'THEME_PATH':theme.THEME_PATH}
+        vers = version.get_version_str
+        context = {'community':community,'vhost':vhost,'current_profile':profile,"profiles":all_profiles,"av_path":ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,'url_path':request.path,'ply_version':vers,'bkg_path':bkg_path,'THEME_PATH':theme.THEME_PATH}
         return render(request,"dynapages/"+community.dynapage.template.filename,context)
 
