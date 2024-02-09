@@ -2,11 +2,11 @@ from django.core.exceptions import PermissionDenied
 
 from communities.community.models import CommunityAdmins
 from ply import settings
-from ply.toolkit import vhosts,levels,themes,profiles
+from ply.toolkit import vhosts, levels, themes, profiles, version
 from ply.toolkit.roles import is_profile_admin
 
 
-def default_context(request,current_profile=False):
+def default_context(request, current_profile=False):
     """
     Generate the basic Context required for any Ply view from any given Request.
     Supply a request object; returns 3 objects: vhost,community,context Dict, OR False if no community.
@@ -14,7 +14,7 @@ def default_context(request,current_profile=False):
     @param current_profile: Current profile will be used to select the displayed profile. If none, default account profile will be specified.
     @return: Returns 4 objects: Context Dict, VHost object, Community object and Current Profile object.
     """
-    vhost,community = vhosts.get_vhost_and_community(request)
+    vhost, community = vhosts.get_vhost_and_community(request)
     if community is None:
         return False
     theme = themes.get_community_theme_or_def(community)
@@ -22,20 +22,31 @@ def default_context(request,current_profile=False):
     if not current_profile:
         current_profile = ap
     all_profiles = profiles.get_all_profiles(request)
-    context = {'community': community, 'vhost': vhost, 'THEME_PATH': theme.THEME_PATH,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,'ply_version':settings.PLY_VERSION,'profile':ap,'current_profile':current_profile,'profiles':all_profiles}
+    vers = version.get_version_str
 
-    return context,vhost,community,current_profile
+    context = {
+        "community": community,
+        "vhost": vhost,
+        "THEME_PATH": theme.THEME_PATH,
+        "av_path": settings.PLY_AVATAR_FILE_URL_BASE_URL,
+        "ply_version": vers,
+        "profile": ap,
+        "current_profile": current_profile,
+        "profiles": all_profiles,
+    }
+
+    return context, vhost, community, current_profile
 
 
-def admin_context(request,current_profile=False):
+def admin_context(request, current_profile=False):
     """
     As above; BUT will throw an exception if profile does not have admin rights for the community.
     @param request: Request object (ie, django request)
     @param current_profile: Current profile will be used to select the displayed profile. If none, default account profile will be specified.
     @return: Returns 4 objects: Context Dict, VHost object, Community object and Current Profile object.
     """
-    a,b,c,d = default_context(request,current_profile)
-    is_admin = is_profile_admin(c,d)
+    a, b, c, d = default_context(request, current_profile)
+    is_admin = is_profile_admin(c, d)
     if not is_admin:
         raise PermissionDenied("You're not an admin!")
-    return a,b,c,d
+    return a, b, c, d
