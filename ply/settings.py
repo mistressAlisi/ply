@@ -416,7 +416,7 @@ PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
 import sentry_sdk
 
 sentry_sdk.init(
-    dsn="https://0afd7530613dabd4db8e14135dfbc3bc@o334180.ingest.sentry.io/4506674252283904",
+    dsn="https://2e0ff3a52e1e41b6924cc31606248756@ingest.jouleworks.net/2",
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     traces_sample_rate=1.0,
