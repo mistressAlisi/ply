@@ -7,8 +7,8 @@ from ply.toolkit import vhosts,profiles
 from communities.community.models import Friend_ExpLvl_View
 from communities.profiles.models import Profile
 from ply.toolkit.contexts import default_context
-from ufls.registrar.forms import NewLevelForm, AddLootForm, CreateLootForm
-from ufls.registrar.models import RegistrantLevel
+#from ufls.registrar.forms import NewLevelForm, AddLootForm, CreateLootForm
+#from ufls.registrar.models import RegistrantLevel
 
 
 # Create your views here.
