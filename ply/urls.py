@@ -1,4 +1,4 @@
-"""pixel URL Configuration
+"""ply URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -45,10 +45,4 @@ urlpatterns = [
     path('SLHUD/api/', include('roleplaying.SLHUD.api_urls')),
     path('dice/api/',include('roleplaying.plydice.api_urls')),
     path('', include('communities.community.public_urls'))
-]
-
-# UFLS URLs:
-urlpatterns += [
-    # Registrar App paths:
-    path('app/registrar/', include('ufls.registrar.urls')),
 ]
