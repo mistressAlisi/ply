@@ -4,7 +4,7 @@ path=${npath:-$path}
 fpath="$path"
 echo "Creating and activating venv: $fpath"
 python3 -m venv "$fpath"
-source $fpath'/bin/activate'
+source "$fpath/bin/activate"
 echo "**** Starting Database Setup...****"
 python3 ./manage.py migrate
 
