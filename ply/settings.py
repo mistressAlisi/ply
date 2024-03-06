@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'roleplaying.SLHUD',
     'roleplaying.plydice',
     'ply',
+    'core.ui.themes.default'
 ]
 
 MIDDLEWARE = [
