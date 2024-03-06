@@ -1,9 +1,6 @@
 echo "**** Assuming the Virtual Environment was created in step1.sh! If not, ctrl-c now!...****"
-read -p "Enter the path that the virtual environment is in. Default is: [./plyenv]: " fpath
+read -p "Press enter if you have already created and activated the venv from step one. Otherwise, abort with ctrl-c now. " fpath
 
-echo "Creating and activating venv: $fpath"
-python3 -m venv "$fpath"
-source "$fpath/bin/activate"
 echo "**** Starting Database Setup...****"
 python3 ./manage.py migrate
 
