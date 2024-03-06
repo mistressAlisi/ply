@@ -27,7 +27,7 @@ class SideBarBuilder_dynamic():
   modules = {}
 
   def __init__(self, community,application_mode):
-    modules = CommunitySidebarMenuView.objects.filter(community=community,application_mode=application_mode,active=True)
+    modules = CommunitySidebarMenuView.objects.filter(community=community,application_mode=application_mode,active=True).distinct()
     for modname in modules:
       try:
         mod = include(f"{modname.module}.{modname.sidebar_class}")[0]
