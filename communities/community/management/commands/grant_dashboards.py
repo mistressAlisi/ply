@@ -48,9 +48,9 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.MIGRATE_HEADING(f"Selected User: {user}."))
         if dashboard_type == "_all_":
-            dashboards = CommunityDashboardType.objects.filter()
+            dashboards = CommunityDashboardType.objects.filter(privileged=True)
         else:
-            dashboards = CommunityDashboardType.objects.filter(type=dashboard_type)
+            dashboards = CommunityDashboardType.objects.filter(type=dashboard_type,privileged=True)
         profiles = Profile.objects.filter(creator=uob)
         for dbt in dashboards:
             self.stdout.write(

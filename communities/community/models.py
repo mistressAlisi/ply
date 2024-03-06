@@ -110,6 +110,7 @@ class CommunityDashboardTypeAdmin(admin.ModelAdmin):
 class CommunityProfileDashboardRoles(models.Model):
     class Meta:
         db_table = "communities_community_community_profile_dashboard_roles"
+        unique_together = ('community','profile','type')
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile,verbose_name = "User",on_delete=models.RESTRICT,null=True)
     type = models.ForeignKey(CommunityDashboardType,verbose_name = "Dashboard Type",on_delete=models.RESTRICT,null=True)
