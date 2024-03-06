@@ -40,9 +40,12 @@ echo "*** Load Dashboard Type Data ***"
 python3 ./manage.py load_dashboard_types DOCUMENTATION/dashboards/types.tsv
 
 
+echo "*** Granting Admin Rights... ***"
+python3 ./manage.py grant_community_admin __auto-during-setup__ __auto-during-setup__  _all_
+
+
 echo "*** Granting Permissions to all Dashboards.... ***"
 python3 ./manage.py grant_dashboards __auto-during-setup__ __auto-during-setup__ _all_
-
 
 
 echo "****** SETUP COMPLETE! Further parameters can be modified in 'config/settings.ini'! *****"
