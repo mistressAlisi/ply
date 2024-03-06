@@ -1,5 +1,5 @@
 THEME_INFO  = {
-    'app_name':'core.ui.themes.default',
+    'app_name':'core.ui.themes.default_theme',
     'id':'default_theme',
     'name':'Default Ply Theme',
     'author':"Alisi'khaalumit",
