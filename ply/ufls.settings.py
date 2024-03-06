@@ -82,6 +82,10 @@ INSTALLED_APPS = [
     'roleplaying.SLHUD',
     'roleplaying.plydice',
     'ply',
+    'ufls.themes.neon_nights',
+    'ufls.furry',
+    'ufls.event',
+    'ufls.registrar'
 ]
 
 MIDDLEWARE = [
@@ -319,16 +323,20 @@ PLY_USER_DASHBOARD_MODULES = [
     "communities.stream",
     "communities.notifications",
     "communities.preferences",
+    "ufls.registrar"
 
     
 ]
 
 PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "communities.community",
+    "ufls.event",
+    "ufls.registrar",
     "communities.stream",
     "media.gallery.core"
 ]
 PLY_STAFF_DASHBOARD_MODULES = [
+    "ufls.registrar"
 ]
 PLY_GALLERY_PLUGINS = [
     "media.gallery.photos"
