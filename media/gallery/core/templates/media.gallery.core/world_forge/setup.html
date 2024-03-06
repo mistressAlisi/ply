@@ -1,0 +1,52 @@
+{%extends "ply-bootstrap5-noheader.html" %}
+{%load django_bootstrap5 %}
+{% block bootstrap5_title %}
+Create Event
+{%endblock%}
+{% block bootstrap5_content %}
+<form id="event_form" method="POST" onsubmit="events.submit(); return false;">
+  {%csrf_token%}
+<div class="container-fluid row g-5">
+  <div class="card">
+
+    <div class="card-header">
+      <h2 class="text-primary"> <i class="fas fa-photo-video"></i><i class="fa-solid fa-gear"></i>&#160;Gallery Settings</h2>
+      <p class="text-muted">Setup and control the media gallery system for the Community.</p>
+    </div>
+    <div class="card-body">
+
+    </div>
+    <div class="card-footer text-right">
+      <input type="reset" class="btn btn-outline-primary" value="Reset Form">
+      <input type="submit" class="btn btn-outline-success" value="Create Event">
+    </div>
+  </div>
+</div>
+</form>
+
+
+<!-- Status Modal     -->
+<!-- Modal -->
+<div class="modal fade" id="progressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="progressModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="progressModalLabel"> <i class="fa-solid fa-microchip"></i> Forge: Processing...</h5>
+
+      </div>
+      <div class="modal-body">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        &#160; Please wait: Processing Changes!
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
