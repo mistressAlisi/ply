@@ -4,7 +4,7 @@ echo "Step 1: Install Python3.9x: Virtualenv, Pip and toolchain..."
 sudo apt-get install python3-venv python3-pip python3-dev libpq-dev pwgen
 echo "Step 2: Create Virtual Environment... Please specify path:"
 path="$HOME/venv"
-read -p "Enter the path to create the 'ply' folder in, or enter for default: [./plyenv]: " npath
+read -p "Enter the path to create the 'plyenv' folder in, or enter for default: [./]: " npath
 path=${npath:-$path}
 fpath="$path/plyenv"
 echo "Creating and activating venv: $fpath"
