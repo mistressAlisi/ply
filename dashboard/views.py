@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 def dashboard_selector(request):
     context,vhost,website,profile = contexts.default_context(request)
     dashboard_types = CommunityDashboardType.objects.filter(privileged=False)
-    privileged_dashboard_types = CommunityProfileDashboardRoles.objects.filter(community=context['community']).distinct()
+    privileged_dashboard_types = CommunityProfileDashboardRoles.objects.filter(community=context['community'],profile=profile)
     context["dashboards"] = dashboard_types
     context["priv_dashboards"] = privileged_dashboard_types
     return render(request,"dashboard/selector/index.html",context)
