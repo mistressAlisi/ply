@@ -1,7 +1,6 @@
 echo "**** Assuming the Virtual Environment was created in step1.sh! If not, ctrl-c now!...****"
-read -p "Enter the path that the virtual environment is in, or enter for default: [~/venv/ply]: " npath
-path=${npath:-$path}
-fpath="$path"
+read -p "Enter the path that the virtual environment is in. Default is: [~/venv/ply]: " fpath
+
 echo "Creating and activating venv: $fpath"
 python3 -m venv "$fpath"
 source "$fpath/bin/activate"
