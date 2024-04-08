@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'content_manager.categories',
     'communities.notifications',
     'dashboard',
+    'corsheaders',
     'core.dynapages',
     'communities.profiles',
     'roleplaying.comms',
@@ -102,6 +103,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     )
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
