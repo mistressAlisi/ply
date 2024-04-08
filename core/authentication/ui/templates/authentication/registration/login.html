@@ -103,7 +103,7 @@
 {%include "authentication/registration/sso/modal.html" %}
 </div>
 <script src="/static/core.authentication/js/login.js"></script>
-{% if check_if_development %}
+{% if request.GET.development == None %}
 <script type="text/javascript">
     window.location.href = "https://backend.furrydelphia.org/connect/?from=app-ply";
 </script>
