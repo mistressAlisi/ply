@@ -47,6 +47,7 @@ urlpatterns = [
     path('SLHUD/', include('roleplaying.SLHUD.hud_urls')),
     path('SLHUD/api/', include('roleplaying.SLHUD.api_urls')),
     path('dice/api/',include('roleplaying.plydice.api_urls')),
+    path('stripe/', include('djstripe.urls', namespace='djstripe')),
     path('', include('communities.community.public_urls'))
 ]
 
