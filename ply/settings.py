@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'storages',
+    'djstripe',
     'martor',
     'mathfilters',
     'phonenumber_field',
@@ -415,6 +416,13 @@ else:
     PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY', default=False)
     PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
+
+STRIPE_TEST_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
+STRIPE_LIVE_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
+STRIPE_LIVE_MODE = True  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = PAYMENT_STRIPE_WEBHOOK_SECRET # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
 
