@@ -6,6 +6,7 @@ from communities.community.models import CommunityAdmins
 from media.gallery.core.models import GalleryItem
 from core.dynapages import models as dynaModels
 from core.forge.forms import NewScriptForm, SaveScriptForm
+from media.gallery.core.forge_forms import CoreSettingsForm
 
 # Create your views here.
 
@@ -62,7 +63,6 @@ def edit_community_cover_preview(request):
     backgroundItems = GalleryItem.objects.filter(profile=profile, active=True)
     all_profiles = profiles.get_all_profiles(request)
     vers = version.get_version_str
-
     context = {
         "community": community,
         "vhost": vhost,
@@ -74,7 +74,7 @@ def edit_community_cover_preview(request):
         "enable_admin": True,
         "current_profile": profile,
         "profiles": all_profiles,
-        "ply_version": vers.get_version_str(),
+        "ply_version": vers(),
     }
     return render(request, "forge-preview_community.html", context)
 

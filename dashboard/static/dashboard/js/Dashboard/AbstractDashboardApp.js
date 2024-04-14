@@ -12,7 +12,7 @@ export class AbstractDashboardApp {
 
             } else {
                 dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+data.responseJSON.e);
-                console.error("Unable to add Event: ",data.responseJSON.e)
+                console.error("Unable to execute Operation: ",data.responseJSON.e)
                 return false;
             }
     }
