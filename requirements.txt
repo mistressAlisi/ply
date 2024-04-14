@@ -47,8 +47,8 @@ kombu==5.3.4
 lxml==5.1.0
 Markdown==3.5.1
 MarkupSafe==2.1.3
-martor==1.6.28
-matplotlib-inline==0.1.6
+#martor==1.6.28
+#matplotlib-inline==0.1.6
 Naked==0.1.32
 packaging==23.2
 parso==0.8.3
