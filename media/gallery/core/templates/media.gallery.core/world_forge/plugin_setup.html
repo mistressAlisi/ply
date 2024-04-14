@@ -5,16 +5,17 @@ Create Event
 {%endblock%}
 {% block bootstrap5_content %}
 <form id="gallery_form" method="POST" onsubmit="gallery.submit(); return false;">
+<input type="hidden" name="plugin" id="plugin" value="{{plugin.app}}"/>
   {%csrf_token%}
 <div class="container-fluid row g-5">
   <div class="card">
 
     <div class="card-header">
-      <h2 class="text-primary"><i class="fa-solid fa-gear"></i>&#160;Gallery Settings</h2>
-      <p class="text-muted">Setup and control the media gallery system for the Community.</p>
+      <h2 class="text-primary"><i class="fa-solid fa-gear"></i>&#160;Settings for Plugin: {{plugin.name}}</h2>
+      <p class="text-muted">Setup and control the media gallery system for the plugin below:</p>
     </div>
     <div class="card-body">
-    {% bootstrap_form gallery_form %}
+    {% bootstrap_form setup_form %}
     </div>
     <div class="card-footer text-right">
       <input type="reset" class="btn btn-outline-primary" value="Reset Form">
@@ -46,7 +47,7 @@ Create Event
     </div>
   </div>
 </div>
-<script type="module" src="/static/media.core.gallery/js/forge_dashboard.js"></script>
+<script type="module" src="/static/media.core.gallery/js/forge_pluginsdashboard.js"></script>
 
 
 {% endblock %}

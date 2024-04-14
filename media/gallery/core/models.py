@@ -8,6 +8,56 @@ from content_manager.categories.models import Category
 import uuid,json
 
 # Create your models here.
+
+class GalleryPlugins(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_plugins"
+    app = models.CharField(verbose_name="Application/plugin name",unique=True)
+    name = models.CharField(verbose_name="Plugin's Human-readable name",null=True)
+    descr = models.CharField(verbose_name="Plugin's Human-friendly description",blank=True,null=True)
+    author = models.CharField(verbose_name="Plugin's Author",null=True)
+    version = models.CharField(verbose_name="Plugin's Version",default='0.0.0')
+    url = models.CharField(verbose_name="Plugin's URL: Homepage",blank=True)
+    repo = models.CharField(verbose_name="Plugin's URL: Repository",null=True)
+    icon = models.CharField(verbose_name="Plugin's Icon for Sidebars",null=True)
+    installed = models.DateTimeField(auto_now_add=True,verbose_name="Plugin Installed Date")
+    def __str__(self):
+        return f"Gallery Plugin: {self.app}  - {self.name} (v. {self.version})"
+@admin.register(GalleryPlugins)
+class GalleryPluginsAdmin(admin.ModelAdmin):
+    pass
+class GalleryPluginVersionHistory(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_plugin_version_history"
+    app = models.ForeignKey(GalleryPlugins,on_delete=models.CASCADE)
+    old_version = models.CharField(verbose_name="Plugin's Old Version")
+    version = models.CharField(verbose_name="Plugin's Current Version")
+    updated = models.DateTimeField(auto_now_add=True,verbose_name="Plugin Installed Date")
+    def __str__(self):
+        return f"Gallery Plugin: {self.app} Version Update History: {self.old_version}->{self.version}"
+@admin.register(GalleryPluginVersionHistory)
+class GalleryPluginVersionHistoryAdmin(admin.ModelAdmin):
+    pass
+
+class GalleryCoreSettings(models.Model):
+    class Meta:
+        db_table =  "media_gallery_core_settings"
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.RESTRICT,null=True,blank=True,unique=True)
+    enable_gallery = models.BooleanField(verbose_name="Enable Gallery Module",default=False,help_text="Enable/Disable the Gallery module globally for the community. (This does not delete any files that already exist if disabled.)")
+    enable_stream_integration = models.BooleanField(verbose_name="Enable Gallery<->Stream Integration",default=True,help_text="Enabling Gallery/Stream integration will enable users to automatically publish new gallery content to streams.")
+    enable_rss_publishing = models.BooleanField(verbose_name="Enable Gallery RSS Publishing",default=True,help_text="Enabling Gallery RSS publishing allows users to create RSS stream(s) to broadcast new gallery content.")
+    enable_fed_publishing = models.BooleanField(verbose_name="Enable Gallery Federation Publishing",default=True,help_text="Enabling Gallery Federation will enable users to Federate their galleries.")
+    enable_group_galleries = models.BooleanField(verbose_name="Enable Galleries for User Groups",default=True,help_text="Allow Groups to create and own galleries?")
+    enable_metrics = models.BooleanField(verbose_name="Enable Gallery Metrics",default=True,help_text="Enable the Gallery Metrics module to collect insight on traffic and usage patterns (and share it with the authors.)")
+    gallery_max_filesize = models.IntegerField(verbose_name="Maximum File Size in MB",default=25,help_text="The absolute maximum file size allowed in the Gallery in megabytes. All modules are limited by this parameter.")
+    enabled_plugins = models.ManyToManyField(GalleryPlugins,verbose_name="Enabled Gallery Plugins:")
+    def __str__(self):
+        return f"Gallery Core Settings for Community: {self.community}"
+
+@admin.register(GalleryCoreSettings)
+class GalleryCoreSettingsAdmin(admin.ModelAdmin):
+    pass
+
 class GalleryType(models.Model):
     class Meta:
         db_table =  "media_gallery_core_type"
@@ -18,7 +68,7 @@ class GalleryType(models.Model):
     items = models.IntegerField(verbose_name='Item Count',null=True,blank=True,default=0)
     def __str__(self):
         return f"Gallery Type: {self.label}"
-    
+
 @admin.register(GalleryType)
 class GalleryTypeAdmin(admin.ModelAdmin):
     pass
@@ -33,7 +83,7 @@ class GalleryArtworkCat(models.Model):
     items = models.IntegerField(verbose_name='Item Count',null=True,blank=True,default=0)
     def __str__(self):
         return f"Gallery Artwork Category: {self.label}"
-    
+
 @admin.register(GalleryArtworkCat)
 class GalleryArtworkCatAdmin(admin.ModelAdmin):
     pass
@@ -50,7 +100,7 @@ class GalleryCatGroups(models.Model):
     categories = models.IntegerField(verbose_name='Category Count',null=True,blank=True,default=0)
     def __str__(self):
         return f"Gallery Category Groups: {self.label}"
-    
+
 @admin.register(GalleryCatGroups)
 class GalleryCatGroupsAdmin(admin.ModelAdmin):
     pass
@@ -63,9 +113,9 @@ class GalleryCatGroupObject(models.Model):
     active = models.BooleanField(verbose_name="Item Active Flag",default=True)
     archived = models.BooleanField(verbose_name="Item Archived Flag",default=False)
     hidden = models.BooleanField(verbose_name="Item Hidden Flag",default=False)
-    frozen = models.BooleanField(verbose_name="Item Frozen Flag",default=False)   
+    frozen = models.BooleanField(verbose_name="Item Frozen Flag",default=False)
     def __str__(self):
-        return f"[{self.group.label} ({self.group.group_id})]->{self.category.label} ({self.category.cat_id})"    
+        return f"[{self.group.label} ({self.group.group_id})]->{self.category.label} ({self.category.cat_id})"
 @admin.register(GalleryCatGroupObject)
 class GalleryCatGroupObjectAdmin(admin.ModelAdmin):
     pass
@@ -85,7 +135,7 @@ class GalleryItemTypes(models.Model):
 
 @admin.register(GalleryItemTypes)
 class GalleryItemTypesAdmin(admin.ModelAdmin):
-    pass   
+    pass
 
 
 class GalleryItem(models.Model):
@@ -127,7 +177,7 @@ class GalleryItem(models.Model):
     frozen = models.BooleanField(verbose_name="Item Frozen Flag",default=False)
     def __str__(self):
         return f"Gallery Item: {self.uuid}, \"{self.title}\", plugin: {self.plugin}"
-    
+
 @admin.register(GalleryItem)
 class GalleryItemAdmin(admin.ModelAdmin):
     pass
@@ -145,8 +195,8 @@ class GalleryItemFile(models.Model):
     meta = models.JSONField(verbose_name='File Metadata')
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
-    thumbnail = models.BooleanField(verbose_name="File is a thumbnail",default=False) 
-    original = models.BooleanField(verbose_name="File is an Original",default=False) 
+    thumbnail = models.BooleanField(verbose_name="File is a thumbnail",default=False)
+    original = models.BooleanField(verbose_name="File is an Original",default=False)
     file_size = models.FloatField(verbose_name='File Size',default=0)
     def __str__(self):
         if self.thumbnail is False and self.original is False:
@@ -155,7 +205,7 @@ class GalleryItemFile(models.Model):
             return f"Gallery Item Original File: {self.name}"
         else:
             return f"Gallery Item File: {self.name}"
-    
+
 @admin.register(GalleryItemFile)
 class GalleryItemFileAdmin(admin.ModelAdmin):
     pass
@@ -175,7 +225,7 @@ class GalleryCollection(models.Model):
     comments = models.IntegerField(verbose_name='Comment Count',default=0)
     def __str__(self):
         return f"Gallery Collection: {self.label}"
-    
+
 @admin.register(GalleryCollection)
 class GalleryCollectionAdmin(admin.ModelAdmin):
     pass
@@ -195,8 +245,8 @@ class GalleryCollectionItems(models.Model):
 @admin.register(GalleryCollectionItems)
 class GalleryCollectionItemsAdmin(admin.ModelAdmin):
     pass
-    
-    
+
+
 class GalleryItemCategory(models.Model):
     class Meta:
         db_table =  "media_gallery_core_item_category"
@@ -209,7 +259,7 @@ class GalleryItemCategory(models.Model):
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     def __str__(self):
         return f"Gallery Item: {self.item.title} in Category: {self.category.label}"
-    
+
 @admin.register(GalleryItemCategory)
 class GalleryItemCategoryAdmin(admin.ModelAdmin):
     pass
@@ -244,12 +294,12 @@ class GalleryItemComments(models.Model):
     flagged = models.BooleanField(verbose_name="FLAGGED",default=False)
     def __str__(self):
         return f"Comment for Item: {item.label} by profile: {profile.name} on : {created}"
-        
+
 @admin.register(GalleryItemComments)
 class GalleryItemCommentsAdmin(admin.ModelAdmin):
     pass
-     
-     
+
+
 class GalleryCollectionPermission(models.Model):
     class Meta:
         db_table =  "media_gallery_core_collection_permission"
@@ -274,13 +324,13 @@ class GalleryCollectionPermission(models.Model):
             return f"Permissions for Collection: {self.collection.label}, profile: {self.profile.name}, group: {self.group}, in community: {self.community.name}"
         else:
             return f"Permissions for Collection: {self.collection.label}, profile: {self.profile.name}, group: {self.group}"
-    
+
 @admin.register(GalleryCollectionPermission)
 class GalleryCollectionPermissionAdmin(admin.ModelAdmin):
     pass
-     
-     
-     
+
+
+
 
 class GalleryTempFile(models.Model):
     class Meta:
@@ -304,7 +354,7 @@ class GalleryTempFile(models.Model):
     def __str__(self):
         return f"Gallery Item Temporary File: {self.name}"
     def get_meta_json(self):
-        return str(json.dumps(self.meta))  
+        return str(json.dumps(self.meta))
 @admin.register(GalleryTempFile)
 class GalleryTempFileAdmin(admin.ModelAdmin):
     pass
@@ -323,11 +373,11 @@ class GalleryTempFileThumb(models.Model):
     def __str__(self):
         return f"Gallery Item Temporary File Thumbnail: {self.file.name} @ {self.path}"
     def get_meta_json(self):
-        return str(json.dumps(self.meta))  
+        return str(json.dumps(self.meta))
 @admin.register(GalleryTempFileThumb)
 class GalleryTempFileThumbAdmin(admin.ModelAdmin):
     pass
-     
+
 class GalleryTempFileCollections(models.Model):
     class Meta:
         db_table =  "media_gallery_core_temp_file_collections"
@@ -350,7 +400,7 @@ class GalleryTempFileKeywords(models.Model):
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Updated')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
-    
+
 
 class GalleryFavourite(models.Model):
     item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
@@ -517,3 +567,4 @@ class GalleryItemsByFavourites(models.Model):
     class Meta:
         managed = False
         db_table = 'media_gallery_core_items_by_favourite_view'
+

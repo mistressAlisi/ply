@@ -25,7 +25,9 @@ def dashboard_home(request):
     if (len(is_admin) < 1):
         return render(request,"error-access-denied.html",{})
     sideBar = SideBarBuilder_dynamic(community,"world_forge")
-    context.update({'sidebar':sideBar.modules.values(),'dashboard_name':'WorldForge'})
+    active_modules = sideBar.get_dynamic_sidebar(community,"world_forge")
+    print(active_modules.values())
+    context.update({'sidebar':active_modules.values(),'dashboard_name':'WorldForge'})
     return render(request,'dashboard/community_admin/dashboard/index.html',context)
 
 @login_required

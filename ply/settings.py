@@ -381,3 +381,20 @@ else:
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
 
 PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
