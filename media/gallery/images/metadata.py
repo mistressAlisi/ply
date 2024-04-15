@@ -4,7 +4,7 @@ import pathlib,json
 # PLY
 import ply
 from ply.toolkit import file_uploader,logger as plylog
-from media.gallery.photos import utilities
+from media.gallery.images import utilities
 from ply import settings
 from media.gallery.core import GalleryTempFileThumb
 

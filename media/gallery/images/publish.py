@@ -6,8 +6,8 @@ import hashlib,pathlib
 
 
 from ply.toolkit import file_uploader,logger as plylog
-from media.gallery.photos.toolkit import settings as gsettings
-from media.gallery.photos import utilities
+from media.gallery.images.toolkit import settings as gsettings
+from media.gallery.images import utilities
 from media.gallery.core import GalleryItemFile
 from core.metrics import UserDataEntry
 

@@ -18,7 +18,10 @@ sidebar = {
 
 def dynamic(local_sidebar,community,app_mode):
   if "_dyn" not in local_sidebar:
-    gallery_settings = GalleryCoreSettings.objects.get(community=community)
+    try:
+      gallery_settings = GalleryCoreSettings.objects.get(community=community)
+    except:
+      return local_sidebar
     plugins = gallery_settings.enabled_plugins.all()
     for plugin in plugins:
       local_sidebar["menu"].append({"url":f"media.gallery.core/setup/plugin/{plugin.app}","label":f"{plugin.name} Settings",'icon':'fa-solid fa-gear','onclick':''})

@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'core.authentication',
     'core.authentication.ui',
     'media.gallery.core',
-    'media.gallery.photos',
+    'media.gallery.images',
     'core.metrics',
     'roleplaying.stats',
     'roleplaying.combat',
@@ -320,6 +320,7 @@ PLY_USER_DASHBOARD_MODULES = [
     "communities.stream",
     "communities.notifications",
     "communities.preferences",
+    "media.gallery.core"
 
     
 ]
@@ -332,7 +333,7 @@ PLY_WORLDFORGE_DASHBOARD_MODULES = [
 PLY_STAFF_DASHBOARD_MODULES = [
 ]
 PLY_GALLERY_PLUGINS = [
-    "media.gallery.photos"
+    "media.gallery.images"
     ]
 PLY_AVATAR_FORMATS = ["jpg","jpeg","gif","png","webp","svg"]
 PLY_AVATAR_MAX_PX = [1024,1024]

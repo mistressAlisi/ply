@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                     ("core.authentication", "core.authentication"),
                     ("core.authentication.ui", "core.authentication.ui"),
                     ("media.gallery.core", "media.gallery.core"),
-                    ("media.gallery.photos", "media.gallery.photos"),
+                    ("media.gallery.images", "media.gallery.images"),
                     ("core.metrics", "core.metrics"),
                     ("roleplaying.stats", "roleplaying.stats"),
                     ("roleplaying.combat", "roleplaying.combat"),

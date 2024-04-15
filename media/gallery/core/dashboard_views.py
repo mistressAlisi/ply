@@ -6,6 +6,9 @@ from media.gallery.core.models import GalleryTempFile, GalleryItemsByFavourites
 from communities.profiles.models import Profile
 import ply
 from media.gallery.core import serialisers
+from ply.toolkit.contexts import default_context
+
+
 # Create your views here.
 
 # Render the User Dashboard Home page:
@@ -20,9 +23,10 @@ def gallery_list(request):
 
 @login_required
 def upload_content(request):
-    buttons = upload_plugins_builder()
+    context, vhost, community, profile = default_context(request)
+    buttons = upload_plugins_builder(community)
     context = {'buttons':buttons.modules.values()}
-    return render(request,"core-dashboard_upload.html",context)
+    return render(request,"media.gallery.core/dashboard/uploader/upload.html",context)
 
 @login_required
 def upload_lighttable(request):
