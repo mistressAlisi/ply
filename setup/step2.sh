@@ -35,9 +35,18 @@ echo "*** Creating Initial Levels and Classes ***"
 python3 ./manage.py init_experience
 python3 ./manage.py init_stats
 
+echo "*** Creating Gallery images image types ***"
+python3 ./manage.py load_image_filetypes DOCUMENTATION/media/galleries/images/filetypes.tsv
+
+echo "*** Loading Gallery Plugins ***"
+python3 ./manage.py init_gallery_plugins _all_
+
 
 echo "*** Load Dashboard Type Data ***"
 python3 ./manage.py load_dashboard_types DOCUMENTATION/dashboards/types.tsv
+
+echo "***** STOP HERE - RUN A DEVSERVER, LOGIN TO YOUR APPLICATION AND NAVIGATE TO /forge/select/profile to create a profile BEFORE continuing with setup!! ***"
+read -p "Press Enter when you've created a profile." enter
 
 
 echo "*** Granting Admin Rights... ***"

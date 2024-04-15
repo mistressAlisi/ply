@@ -14,9 +14,10 @@ from media.gallery.core import serialisers
 from media.gallery.core import forms
 from media.gallery.core.tasks import publish_to_gallery,upload_ingest,remove_item,update_submission_files
 from communities.profiles.models import Profile
-from communities.community import Community
-from core.metrics import GalleryItemHit
-from core.metrics import request_data_capture
+from communities.community.models import Community
+from core.metrics.models import GalleryItemHit
+from core.metrics.toolkit import request_data_capture
+from ply.toolkit.contexts import default_context
 from ply.toolkit.reqtools import vhost_community_or_404
 from ply.toolkit import streams as stream_toolkit,file_uploader,profiles as toolkit_profiles
 import json
@@ -34,7 +35,9 @@ log = plylog.getLogger('core.api_views',name='core.api_views')
 
 @login_required
 def get_form(request,plugin):
-    plugins = upload_plugins_builder()
+    context, vhost, community, profile = default_context(request)
+    plugins = upload_plugins_builder(community,plugin)
+    print(plugins.modules)
     template = plugins.modules[plugin].content_type_info[0]['upload_form']
     forms = include(plugin+'.forms')[0]
     context = {'plugin':plugins.modules[plugin],'upload_form':forms.upload_form,'filetypes':plugins.modules[plugin].content_accept_filetypes,'filesize':plugins.modules[plugin].content_max_file_size_kb}

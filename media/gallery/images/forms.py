@@ -2,13 +2,13 @@ from django import forms
 import json
 from django.forms import Textarea,TextInput, ClearableFileInput,Select,CheckboxInput,HiddenInput
 from ply.toolkit import ratings
-from media.gallery.core import settings
-from media.gallery.core import GalleryItemKeyword
+from media.gallery.core.toolkit import settings
+from media.gallery.core.models import GalleryItemKeyword
 from content_manager.categories.models import Category
 
 
 class upload_form(forms.Form):
-    image = forms.ImageField(widget=ClearableFileInput(attrs={"id":"upload-files-widget","multiple":"true"}))
+    image = forms.ImageField(widget=ClearableFileInput(attrs={"id":"upload-files-widget"}))
 
 # REMEMBER to pass a RESOLUTIONS object which contains valid resolution choices for the item being reviewed!!!
 class review_form(forms.Form):

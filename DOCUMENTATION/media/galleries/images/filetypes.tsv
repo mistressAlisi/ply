@@ -1,0 +1,11 @@
+jpg,jpeg|image/jpeg|JPEG Images
+png|image/png|Portable Network Graphics Images
+apng|img/apng|Animated Portable Network Graphics
+pdf|application/pdf|Portable Document Format Images
+svg|img/svg+xml|Scalable Vector Graphics
+tif,tiff|img/tiff|Tagged Image File Format
+webp|img/webp|WEBP Images
+gif|img/gif|Graphics Interchange Format (GIF)
+avif|img/avif|AVIF Images
+bmp|image/bmp|Windows Bitmap Graphics
+heif|image/heic|High Efficiency Image Format (HEIC) Image

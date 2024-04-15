@@ -9,7 +9,7 @@ Changes are previewed automagically as you make them. 'Publish' saves the change
 <br/><hr/>
 <div class="container-fluid">
 {%for file in files %}
-    {%include "gallery-dashboard_upload_reviewtbl_card.html" %}
+    {%include "media.gallery.core/dashboard/uploader/upload_reviewtbl_card.html" %}
    
 {% endfor %}
 </div>
@@ -31,6 +31,6 @@ Changes are previewed automagically as you make them. 'Publish' saves the change
   </div>
 </div>
 
-{%include "gallery-dashboard_upload_reviewtbl_controls.html" %}
+{%include "media.gallery.core/dashboard/uploader/reviewtbl_controls.html" %}
 <script src="/static/js/gallery_review.js"></script>
 {%endblock %}

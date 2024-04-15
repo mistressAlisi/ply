@@ -7,13 +7,13 @@ from celery import Celery
 from ply.toolkit import file_uploader
 from django.db import transaction
 from media.gallery.core.models import GalleryItem,GalleryItemFile,GalleryArtworkCat,GalleryItemCategory,GalleryItemKeyword,GalleryCollectionItems,GalleryCollection,GalleryCollectionPermission,GalleryTempFileThumb
-from core.metrics import UserDataEntry
+from core.metrics.models import UserDataEntry
 from django.utils.text import slugify
 import os
 import hashlib, logging
 from content_manager.keywords.models import Keyword
 from django.core.exceptions import ValidationError
-from communities.community import Community
+from communities.community.models import Community
 from content_manager.categories.models import Category
 import ply,boto3
 
