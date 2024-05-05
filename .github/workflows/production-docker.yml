@@ -26,4 +26,4 @@ jobs:
       - name: Build the production Backend Docker image
         run: |
           docker build . --file=./devops/docker/public/caprover.dockerfile --tag=ghcr.io/furrydelphia/ufls-ply:production
-          docker push ghcr.io/rhinoworks/ufls-ply:production
+          docker push ghcr.io/furrydelphia/ufls-ply:production
