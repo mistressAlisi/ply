@@ -23,6 +23,9 @@ ENV PATH /venv/bin:$PATH
 
 COPY . /app
 
+RUN set -ex \
+    && /venv/bin/python manage.py collectstatic --no-input
+
 # Prevent startup without a mountpoint for the database:
 # Finally, ports and entrypoint:
 EXPOSE 8000
