@@ -1,0 +1,20 @@
+ {% load django_bootstrap5 %}
+{% load community_admin_extras %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus"></i>Create/Edit Menu Entry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="menu_form" method="POST" target="#" onsubmit="community_dashboard.submitMenu(event); return false;"/>
+      <div class="modal-body">
+
+        {% bootstrap_form menu_form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Create"></input>
+        </form>
+      </div>
+    </div>
+  </div>

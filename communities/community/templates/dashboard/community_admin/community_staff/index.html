@@ -1,0 +1,87 @@
+{%extends "dashboard/dashboard_main_panel-card.html" %}
+{% load django_bootstrap5 %}
+{%block dashboard_name %}Community Staff Roster {%endblock %}
+
+{%block dashboard_content %}
+<p class="text">
+This is the roster of all the active Staff Members registered in {{community.name}}: You can use this interface to grant or revoke staff status.
+<br/><em>Please note:</em> Staff status is granted at a community and profile level.
+</p><hr/>
+<div class="container">
+<div class="row">
+<div class="col-9">
+    <h4>Active Staff:</h4>
+</div>
+<div class="col text-right">
+    <button class="btn btn-outline-primary" onclick="staff.add();"><i class="fa-solid fa-user-plus"></i>&#160;Add New Staff</button>
+</div>
+</div>
+</div>
+<br/>
+
+<table class="table table-striped table-hover align-middle text-center">
+  <thead>
+    <tr>
+      <th scope="col">UUID:</th>
+      <th scope="col">Profile:</th>
+      <th scope="col">Created:</th>
+      <th scope="col">Revoke/Delete:</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for member in staff %}
+    <tr>
+      <th scope="row">{{member.profile.uuid}}</th>
+      <td>{{member.profile.name}}</td>
+      <td>{{member.created}}</td>
+      <td><a href="#" class="btn btn-outline-danger" onclick="staff.del('{{member.uuid}}'); return false;"><i class="fa-solid fa-skull-crossbones"></i> Revoke Status</a></td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+{%endblock %}
+
+{%block post-card %}
+<div id="newStaff_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus"></i>Select Profile to Grant Staff Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="staff_form" method="POST" target="#" onsubmit="staff.create(); return false;"/>
+      <div class="modal-body">
+
+        {% bootstrap_form staff_form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-primary" type="submit" value="Confirm"></input>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="delStaff_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus"></i>Confirm Revocation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        Please confirm revocation of staff rights for given profile to proceed.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-outline-danger" onclick="staff._del();" value="Confirm"></input>
+
+      </div>
+    </div>
+  </div>
+</div>
+{%include "dashboard_plugins/plugin-selectize.html" %}
+<script src="/static/community/js/staff.js">
+{% endblock %}
