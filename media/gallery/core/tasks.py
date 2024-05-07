@@ -43,7 +43,7 @@ def publish_to_gallery(data,profile,temp_file,user,community):
         original_path = ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH+file_uploader.get_temp_path(temp_file.name,profile)
         try:
             temp_file_handle = open(temp_path,'rb')
-            fsize = file_uploader.save_original_file(temp_file_handle,profile)
+            fpath, fsize = file_uploader.save_original_file(temp_file_handle,profile)
             item_hash = slugify(data["title"])
             catitem = Category.objects.get(pk=data["cat"])
             item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],category=catitem)

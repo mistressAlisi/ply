@@ -1,3 +1,5 @@
+import io
+
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -161,13 +163,15 @@ def upload_community_picture(request):
         with Image.open(file) as im:
                 #try:
                 im.thumbnail(settings.PLY_AVATAR_MAX_PX)
-                path = file_uploader.save_avatar_file(im,community,f"av_{community.uuid}."+type[1])  
+                avatar_img = io.BytesIO()
+                im.save(avatar_img,settings.PLY_AVATAR_IMG_FORMAT)
+                path,size = file_uploader.save_avatar_file(avatar_img,community,f"av_{community.uuid}."+type[1])
                 #except Exception as e:
                 #    print(e)
                 #    return JsonResponse({"res":"err","err":"except","e":str(e)},safe=False)
                 community.avatar = path 
                 community.save()
-                return JsonResponse({"res":"ok","path":settings.PLY_AVATAR_FILE_URL_BASE_URL+"/"+path},safe=False)  
+                return JsonResponse({"res":"ok","path":settings.PLY_AVATAR_FILE_URL_BASE_URL+"/"+path,"size":size},safe=False)
             
     return JsonResponse({"res":"ok"},safe=False)   
 

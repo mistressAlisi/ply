@@ -62,4 +62,3 @@ class remove_form(forms.Form):
     item = forms.CharField(widget=HiddenInput(attrs={'id':'item'}))
     icol = forms.CharField(widget=HiddenInput(attrs={'id':'icol'}))
 
-

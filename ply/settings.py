@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'communities.group',
     'content_manager.keywords',
     'communities.community',
+    'communities.dashboards',
     'core.plyscript',
     'core.authentication',
     'core.authentication.ui',
@@ -78,11 +79,16 @@ INSTALLED_APPS = [
     'roleplaying.items',
     'core.forge',
     'content_manager.almanac',
+    'core.plyui',
     'roleplaying.exp',
     'roleplaying.SLHUD',
     'roleplaying.plydice',
+    'ufls.event',
+    'ufls.furry',
+    'ufls.registrar',
+    'ufls.staff',
     'ply',
-    'core.ui.themes.default_theme'
+    'core.plyui.themes.default_theme'
 ]
 
 MIDDLEWARE = [
@@ -324,10 +330,15 @@ PLY_USER_DASHBOARD_MODULES = [
 
     
 ]
-
+PLY_DASHBOARD_MODES = [
+    "world_forge",
+    "user",
+    "staff"
+]
 PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "communities.community",
     "communities.stream",
+    "communities.dashboards",
     "media.gallery.core"
 ]
 PLY_STAFF_DASHBOARD_MODULES = [
@@ -344,13 +355,13 @@ except:
     PLY_HOSTNAME = "localhost"
     
 PHONENUMBER_DEFAULT_REGION = "US"
+PLY_GALLERY_ENABLE_DEBUG_SERVER=config("PLY_GALLERY_ENABLE_DEBUG_SERVER",False)
 PLY_GALLERY_STORAGE_USE_S3 = config('PLY_GALLERY_STORAGE_USE_S3')
 PLY_TEMP_FILE_BASE_PATH =  config("PLY_TEMP_FILE_BASE_PATH")
 PLY_TEMP_FILE_URL_BASE_URL = config("PLY_TEMP_FILE_URL_BASE_URL")
 PLY_GALLERY_ORIGINAL_FILE_BASE_PATH = config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH")
 PLY_GALLERY_FILE_BASE_PATH = config("PLY_GALLERY_FILE_BASE_PATH")
-PLY_AVATAR_FILE_BASE_PATH = config("PLY_AVATAR_FILE_BASE_PATH")
-PLY_AVATAR_FILE_URL_BASE_URL=config("PLY_AVATAR_FILE_URL_BASE_URL")
+
 PLY_GALLERY_FILE_URL_BASE_URL=config("PLY_GALLERY_FILE_URL_BASE_URL")
 PLY_GALLERY_HASH_BUF_SIZE  = int(config("PLY_GALLERY_HASH_BUF_SIZE"))
 PLY_GALLERY_SHARE_URL_BASE_URL = config("PLY_GALLERY_SHARE_URL_BASE_URL")
@@ -381,7 +392,7 @@ else:
     PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
 
-PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default")
 
 
 
@@ -399,3 +410,44 @@ LOGGING = {
     },
 }
 
+
+# NEW NEW NEW! Storages API!
+PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
+# NOTE: This API is meant to replace the old Storage drivers for the Gallery.
+# PlyNG should not rely on old hand-written storage code.
+STORAGES = {
+    "staticfiles":{
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_STATIC_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
+        }
+    },
+    "gallery_originals": {
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
+        }
+    },
+    "gallery_publish": {
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
+        }
+    },   
+    "avatars":{
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_AVATAR_BASE_PATH"),
+            "base_url":config("PLY_AVATAR_BASE_URL"),
+        }
+    }
+}
+
+PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
+# **Should we deprecate? **
+# TODO: Should we remove these setting keys and use storages everywhere?
+PLY_AVATAR_FILE_BASE_PATH = config("PLY_AVATAR_FILE_BASE_PATH")
+PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")

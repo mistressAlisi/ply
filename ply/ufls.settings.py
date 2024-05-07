@@ -387,4 +387,4 @@ else:
     PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
 
-PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default")

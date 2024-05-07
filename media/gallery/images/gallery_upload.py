@@ -11,8 +11,8 @@ class gallery_upload_plugin:
                 "id": "media.gallery.images",
                 "icon": "fas fa-photo-video",
                 "desc": "The Images plugin provides galleries for visual artwork from all types of mediums.",
-                "upload_form": "gallery_photos_upload_form.html",
-                "review_form": "gallery_photos_review_form.html",
+                "upload_form": "media.gallery.images/upload_form.html",
+                "review_form": "media.gallery.images/review_form.html",
             },
         )
         global_settings = GalleryCoreSettings.objects.get(community=community)

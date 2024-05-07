@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 import uuid
 from django.utils import timezone
 from ply import system_uuids, settings, toolkit
-from ply.models import PlyApplication, PlyApplicationDashboardType
+from ply.models import PlyApplication
 import importlib
 
 
@@ -30,7 +30,7 @@ class Command(BaseCommand):
                     )
                 )
                 continue
-            self.style.MIGRATE_HEADING(f"Application: {app} is being registered..")
+            self.stdout.write(self.style.MIGRATE_HEADING(f"Application: {app} is being registered.."))
             major_ver_pass = (
                 plyapp_info.PLY_APP_INFO["required_versions"]["featureset_major"]
                 <= major
@@ -63,16 +63,16 @@ class Command(BaseCommand):
                     appobj.version_major = plyapp_info.PLY_APP_INFO["version"]["major"]
                     appobj.version_minor = plyapp_info.PLY_APP_INFO["version"]["minor"]
                     appobj.save()
-                    for dm in plyapp_info.PLY_APP_INFO["dashboard_modes"]:
-                        dto,created = PlyApplicationDashboardType.objects.get_or_create(application=appobj,mode=dm["mode"])
-                        dto.default=dm["default"]
-                        dto.active=dm["active"]
-                        dto.privileged=dm["privileged"]
-                        dto.descr=dm["descr"]
-                        dto.menu_class=dm["menu_class"]
-                        self.stdout.write(
-                            self.style.MIGRATE_HEADING(f'Application {app}: Dashboard Type {dt["type"]} has been registered!')
-                        )
+                    # for dm in plyapp_info.PLY_APP_INFO["dashboard_modes"]:
+                    #     dto,created = PlyApplicationDashboardType.objects.get_or_create(application=appobj,mode=dm["mode"])
+                    #     dto.default=dm["default"]
+                    #     dto.active=dm["active"]
+                    #     dto.privileged=dm["privileged"]
+                    #     dto.descr=dm["descr"]
+                    #     dto.menu_class=dm["menu_class"]
+                    #     self.stdout.write(
+                    #         self.style.MIGRATE_HEADING(f'Application {app}: Dashboard Type {dt["type"]} has been registered!')
+                    #     )
 
                     self.stdout.write(
                         self.style.SUCCESS(f"Application {app} has been registered!")

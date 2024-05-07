@@ -25,6 +25,7 @@ class Command(BaseCommand):
                 app=module.gallery_plugin["app"]
             )[0]
             module_info.name = module.gallery_plugin["name"]
+            module_info.settings_model = module.gallery_plugin["settings_model"]
             module_info.descr = module.gallery_plugin["descr"]
             module_info.author = module.gallery_plugin["author"]
             module_info.version = module.gallery_plugin["version"]

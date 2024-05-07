@@ -1,9 +1,0 @@
-{% load django_bootstrap5 %} 
-<div id="gallery_upload_photos_form">
-<h6 class="text-muted">Please select the photo(s) to upload. You'll be able to specify title, keyword and other details in the next step:</h6>
- {% bootstrap_form upload_form %} 
-
-</div>
-<script type="text/javascript">
-window.gallery_core.start_file_upload_wdgt({{filetypes|safeseq|join:","}},'{{csrf_token}}','gallery_photos',{{filesize}});
-</script>

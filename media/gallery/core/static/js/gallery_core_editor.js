@@ -151,7 +151,7 @@ window.gallery_core_editor = Object({
     /** (The callback to; and) Show the details dialogue: **/
     _det_h: function(d) {
         /** Smart Select for Keywords: */
-            sse = new smart_select('#gr_keywords',
+            sse = new smartSelect('#gr_keywords',
             {
                 f_option_load: function(query,callback) {
                     if (!query.length) return callback();

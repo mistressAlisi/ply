@@ -1,4 +1,18 @@
+import { WidgetFactory } from "/static/core.plyui/js/WidgetFactory/WidgetFactory.js";
 export class AbstractDashboardApp {
+    modal = false
+    widget_factory =  false
+    urls = []
+    elements = []
+    _parent_walker(parent,target_node) {
+       if (target_node == undefined) { target_node = "DIV"};
+       while (parent.nodeName != target_node) {
+            parent = parent.parentElement;
+        };
+        return $(parent);
+
+    }
+
     _submitHandle(data,stat,home=true) {
             //console.log(data)
             if (data.responseJSON.res == "ok") {
@@ -54,6 +68,7 @@ export class AbstractDashboardApp {
     }
 
      constructor() {
+        this.widget_factory = new WidgetFactory();
         this.urls = {
             "submit":"/some/url"
         }
