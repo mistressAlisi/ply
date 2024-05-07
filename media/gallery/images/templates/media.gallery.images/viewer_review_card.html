@@ -1,0 +1,74 @@
+<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-file="{{file.id}}" data-plugin="gallery_photos" id="card-{{file.id}}">
+  {%if file.thumbnail %}
+
+    <img src="{{base_url}}/{{file.thumbnail}}" class="card-img-top thumbnail" alt="{{file.name}}">
+  {% else %}
+    <img src="{{base_url}}/{{file.path}}" class="card-img-top mainimg" alt="{{file.name}}">
+  {% endif %}
+  <section id="publish_overlay" class="publish_overlay card-img-overlay text-center align-middle" >
+    <h5><i class="fas fa-check-circle"></i>Published!</h5>
+    (This card will be in your gallery soon!)
+  </section>
+  <section class="card-body gallery-photos-body">
+    <section class="photo-title-block">
+    <h5 class="card-title photo-title text-truncate" id="file-name"> {{file.name}}</h5>
+    {%if file.meta.metadata.exif.DateTime %}
+    <p class="text-muted exif-date">
+    <i class="far fa-calendar"></i>&#160;{{file.meta.metadata.exif.DateTime|cut:"\""}}
+    </p>
+    {% else %} 
+    <p class="text-muted exif-date">
+    <i class="far fa-calendar"></i> 
+    {{ file.created|date:"Y-m-d" }} 
+    &#160;&#160;&#160;
+    <i class="far fa-clock"></i> 
+    {{ file.created|time:"H:i:s" }}
+    </p>   
+    {% endif %}
+    </section>
+    <section class="photo-data-block">
+    <p class="card-text photo-descr text-truncate" id="file-descr">A beautiful new photo by {{profile.name}}.</p>
+    <p class="text-muted"><i class="fas fa-camera"></i>&#160;Photo
+    {%if file.meta.metadata.exif.FocalLength %}
+     <em class="exif-exposure">{{file.meta.metadata.exif.FocalLength|cut:"\""}}: </em>
+    {% endif %}
+    {%if file.meta.metadata.exif.ExposureTime %}
+     <em class="exif-exposure">{{file.meta.metadata.exif.ExposureTime|cut:"\""}}</em>
+    {% endif %}
+    {%if file.meta.metadata.exif.FNumber %}
+    @ <em class="exif-fstop">{{file.meta.metadata.exif.FNumber|cut:"\""}}</em>
+    {% endif %}
+    </p>
+    {%if file.meta.metadata.exif.Model %}
+    <p class="text-muted exif-camera">
+    <i class="fas fa-camera-retro"></i>&#160; {{file.meta.metadata.exif.Model|cut:"\""}}
+    </p>
+    {% endif %}
+    </section>
+    <form id="form-{{file.id}}" method="POST" action="#">
+    {% csrf_token %}
+    <input type="hidden" name="meta" id="meta"  value="{{file.get_meta_json}}"/>
+    <input type="hidden" name="title" id="title" value="{{file.name}}"/>
+    <input type="hidden" name="fileid" id="fileid" value="{{file.id}}"/>
+    <input type="hidden" name="plugin" id="plugin" value="gallery_photos"/>
+    <input type="hidden" name="descr" id="descr" value=""/>
+    <input type="hidden" name="res" id="res" value=""/>
+    <input type="hidden" name="display" id="display" value=""/>
+    <input type="hidden" name="det" id="det" value=""/>
+    <input type="hidden" name="style" id="style" value=""/>
+    <input type="hidden" name="rating" id="raiting" value=""/>
+    <input type="hidden" name="nsfw" id="nsfw" value=""/>
+    <input type="hidden" name="sizing" id="sizing" value=""/>
+    <input type="hidden" name="cat" id="cat" value=""/>
+    <input type="hidden" name="kw" id="kw" value=""/>
+    <input type="hidden" name="col" id="col" value=""/>
+    <input type="hidden" name="not" id="not" value=""/>
+    </form>
+  <button class="btn btn-danger badge rounded-pill editbtn" type="button" id="delete-{{i.id}}"  data-bs-toggle="tooltip" data-bs-placement="right" title="Destroy" onclick="gallery_core.remove_upload('{{file.id}}');">
+  <i class="fa-solid fa-ellipsis-vertical"></i>&#160;&#160;<i class="fa-solid fa-skull"></i>
+  </button>
+
+  </section>
+</div>
+
+
