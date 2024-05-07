@@ -13,6 +13,7 @@ class GalleryPlugins(models.Model):
     class Meta:
         db_table =  "media_gallery_core_plugins"
     app = models.CharField(verbose_name="Application/plugin name",unique=True)
+    settings_model = models.CharField(verbose_name="Application/plugin Settings Model")
     name = models.CharField(verbose_name="Plugin's Human-readable name",null=True)
     descr = models.CharField(verbose_name="Plugin's Human-friendly description",blank=True,null=True)
     author = models.CharField(verbose_name="Plugin's Author",null=True)
@@ -213,9 +214,11 @@ class GalleryItemFileAdmin(admin.ModelAdmin):
 class GalleryCollection(models.Model):
     class Meta:
         db_table =  "media_gallery_core_collection"
+        unique_together = ['collection_id','owner']
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     collection_id = models.TextField(max_length=200,verbose_name='Collection ID')
     label = models.TextField(max_length=200,verbose_name='Collection Label')
+    owner = models.ForeignKey(Profile,verbose_name="Collection Owner",on_delete=models.RESTRICT)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Collection Created')
     updated = models.DateTimeField(auto_now=True,editable=False,verbose_name='Collection Updated')
     items = models.IntegerField(verbose_name='Item Count',default=0)

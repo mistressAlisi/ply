@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                     ("roleplaying.SLHUD", "roleplaying.SLHUD"),
                     ("roleplaying.plydice", "roleplaying.plydice"),
                     ("ply", "ply"),
-                    ("core.ui.themes.default_theme", "core.ui.themes.default_theme"),
+                    ("core.plyui.themes.default_theme", "core.plyui.themes.default_theme"),
                 ],
                 max_length=200,
                 verbose_name="Module",

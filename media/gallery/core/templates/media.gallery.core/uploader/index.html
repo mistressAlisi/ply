@@ -1,0 +1,29 @@
+{% extends 'dashboard/dashboard_main_panel.html' %}
+{%block dashboard_name %}{%endblock%}
+{%block dashboard_content %}
+{%include "dashboard_plugins/plugin-selectize.html" %}
+<link  rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="/static/media.core.gallery/css/GalleryUserUploader/uploader.css" rel="stylesheet">
+<script src="/static/core.plyui/js/plugins/jq-ajax-progress/src/jq-ajax-progress.min.js"></script>
+<nav class="navbar navbar-dark bg-success">
+  <div class="container-fluid">
+   Media Lighttable
+     <div class="d-flex">
+
+        <button class="btn btn-outline-light text-light" type="button" data-bs-toggle="modal" data-bs-target="#uploadModal">Add Files</button>
+      </div>
+  </div>
+</nav>
+
+<div id="lighttable_items_container">
+
+</div>
+
+{% include "media.gallery.core/uploader/offcanvas/main_panel.html" %}
+{% include "media.gallery.core/uploader/modals/upload.html" %}
+{% include "media.gallery.core/collection_manager/manager.html" %}
+
+  <script type="text/javascript">
+    gallery_dashboard.load_lighttable();
+  </script>
+{% endblock %}

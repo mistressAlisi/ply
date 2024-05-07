@@ -12,30 +12,27 @@ PLY_APP_INFO = {
         "featureset_minor": 0x3e9,
     },
 
-    "dashboard_modes": [
-        {
-            "mode": "user",
+    "dashboard_modes": {
+        "user":{
             "privileged": False,
             "default": True,
             "active": True,
             "descr": "The default user dashboard!",
             "menu_class": "sidebar_menu",
         },
-        {
-            "mode": "forge",
+        "forge":{
             "privileged": True,
             "default": False,
             "active": True,
             "descr": "The WorldForge/World admin dashboard mode",
             "menu_class": "sidebar_forge",
         },
-        # {
-        #     "mode": "staff",
+        #"staff": {
         #     "privileged": True,
         #     "default": False,
         #     "active": False,
         #     "descr": "The Staff dashboard mode",
         #     "menu_class": "sidebar_staff",
         # },
-    ],
+    },
 }

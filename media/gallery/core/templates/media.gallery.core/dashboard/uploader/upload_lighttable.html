@@ -1,9 +1,9 @@
-{% extends 'dashboard_main_panel-95.html' %}
-
+{% extends 'dashboard/dashboard_main_panel-95.html' %}
+{% load dict_key %}
 {%block dashboard_name %}<i class="fas fa-th"></i></i>&#160;Submission Light Table{%endblock%}
 {%block dashboard_content %}
-{%include "bootstrap-plugin-select.html" %}
-{%include "bootstrap-plugin-selectize.html" %}
+{%include "dashboard_plugins/plugin-select.html" %}
+{%include "dashboard_plugins/plugin-selectize.html" %}
 <h6 class="text-muted">Submissions you've uploaded but haven't published yet are shown here: This Light Table is a preview of how items will appear in your collections - as you make changes to your submissions the light table will reflect them.</h6>
 <p>All items not published within 24 hours of upload are deleted (but you can always upload them again!) Keep in mind these are in preview quality until published.
 <br/>
@@ -12,7 +12,8 @@ Changes are previewed automagically as you make them. 'Publish' saves the change
 <br/><hr/>
 <div class="container-fluid">
 {%for file in files %}
-    {%include "media.gallery.core/dashboard/uploader/upload_reviewtbl_card.html" %}
+  <br/>
+  {% include "media.gallery.core/dashboard/uploader/upload_reviewtbl_card.html" %}
    
 {% endfor %}
 </div>
@@ -34,24 +35,10 @@ Changes are previewed automagically as you make them. 'Publish' saves the change
   </div>
 </div>
 
-<div class="modal" tabindex="-1" id="deleteModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Please Confirm</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you wish to remove this file and destroy (delete) it from the server?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="gallery_core._confirm_rem(event);">Remove</button>
-      </div>
-    </div>
-  </div>
-</div>
+{%include "media.gallery.core/dashboard/uploader/upload.html" %}
+{%include "media.gallery.core/dashboard/collection_manager/manager.html" %}
 {%include "media.gallery.core/dashboard/uploader/reviewtbl_controls.html" %}
+
 <script src="/static/js/gallery_review.js"></script>
 <link href="/static/css/gallery_user_editor.css" rel="stylesheet"/>
 {%endblock %}
