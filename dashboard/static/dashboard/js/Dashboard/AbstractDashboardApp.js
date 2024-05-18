@@ -25,7 +25,7 @@ export class AbstractDashboardApp {
                 return true;
 
             } else {
-                dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+data.responseJSON.e);
+                dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+data.responseJSON.e.__all__[0]);
                 console.error("Unable to execute Operation: ",data.responseJSON.e)
                 return false;
             }

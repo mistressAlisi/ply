@@ -22,7 +22,7 @@ sidebar =  {
   "url":"communities.dashboards/",
   "js":"/static/communities.dashboards/js/dashboards.js",
   "menu":[
-    {"url":"forge/edit/dashboard/editor","label":"Dashboard Studio",'icon':'fa-solid fa-paintbrush','onclick':''}
+    {"url":"communities.dashboards/studio","label":"Dashboard Studio",'icon':'fa-solid fa-paintbrush','onclick':''}
 
     ]
   }
