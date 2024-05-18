@@ -3,6 +3,7 @@ toolkit/profiles.py
 ====================================
 Toolkit utilities for interacting with Ply Profiles
 """
+import uuid
 
 from ply.toolkit.logger import getLogger
 from communities.profiles.models import Profile
@@ -87,6 +88,15 @@ def get_all_available_profiles(uid,community):
 def get_profile_for_user(user,puuid):
     try:
        profile = Profile.objects.get(pk=puuid,creator=user,archived=False,blocked=False,placeholder=False,system=False)
+       return profile
+    except profile.objects.NotFound:
+        return False
+
+
+def get_default_profile():
+    try:
+       puuid = uuid.UUID('0011aa22-bb33-0001-0001-000000000001')
+       profile = Profile.objects.get(pk=puuid,system=True)
        return profile
     except profile.objects.NotFound:
         return False

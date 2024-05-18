@@ -118,13 +118,14 @@ def create_community_sidebar_menu(request):
     if request.POST["not_edited"] == "False":
         form = CommunitySidebarMenuForm(request.POST, initial={"community": community})
         form.set_community(community)
-        form.instance.not_edited = True
+
     else:
         instance = CommunitySidebarMenu.objects.get(pk=request.POST["uuid"])
         form = CommunitySidebarMenuForm(request.POST, instance=instance)
     if not form.is_valid():
         return JsonResponse({"res": "err", "e": form.errors}, safe=False)
     else:
+        form.instance.not_edited = True
         form.save()
         return JsonResponse({"res": "ok", "pk": form.instance.pk}, safe=False)
 

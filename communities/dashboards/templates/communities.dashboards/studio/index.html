@@ -1,0 +1,13 @@
+{%extends "dashboard/dashboard_main_panel-95.html" %}
+{%block dashboard_name %}
+Dashboard Studio
+{%endblock%}
+
+{%block dashboard_content %}
+<div id="studio_container" class="container-fluid">
+    Select Dashboard to load...
+</div>
+
+
+{% include "communities.dashboards/studio/modals/select_dashboard.html" %}
+{%endblock%}

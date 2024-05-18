@@ -1,0 +1,37 @@
+<div class="modal fade" id="selectDashboardModal" tabindex="-1" aria-labelledby="selectDashboardModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="selectDashboardModalLabel">Create or Select Dashboard</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <h5>Select a dashboard:</h5>
+      <div class="form-floating">
+        <select class="form-select" id="dashboardSelect" aria-label="Floating label select example">
+         <option value="">select...</option>
+          {% for dashboard in dashboard_modes %}
+          <option value="{{dashboard.page.pk}}" data-option-id="{{dashboard.page.pk}}" data-option-widget-mode="{{dashboard.page.widget_mode}}">{{dashboard.label}}</option>
+         {% endfor %}
+      </select>
+      <label for="dashboardSelect">Default System Dashboards</label>
+      </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <div class="w-100" id="upprogressbar_area"></div>
+        <div id="upctl_btns">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="studio.load_dashboard(event);">Edit Dashboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+studio.showModal();
+</script>

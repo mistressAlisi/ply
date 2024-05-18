@@ -9,7 +9,7 @@ from django.apps import apps
 
 from communities.profiles.models import Profile
 from communities.group.models import Group
-from core.dynapages.models import Page
+from core.dynapages.models import Page, Widget, Templates
 from ply.toolkit.core import get_ply_appinfo
 
 
@@ -182,6 +182,13 @@ class CommunityProfileDashboardRoles(models.Model):
         CommunityDashboardType,
         verbose_name="Dashboard Type",
         on_delete=models.RESTRICT,
+        null=True,
+    )
+    dynapage_landing = models.ForeignKey(
+        Page,
+        verbose_name="Dashboard Landing Page Dynawidget Node",
+        on_delete=models.CASCADE,
+        help_text="This page will be loaded as a landing page of the dashboard mode for the given profile. (If default profile; it will be set as default for all subsequent profiles.)",
         null=True,
     )
     active = models.BooleanField(verbose_name="Active FLAG", default=True)
@@ -415,25 +422,42 @@ class CommunityRegistry(models.Model):
     class Meta:
         db_table = "communities_community_registry"
         unique_together = ["community", "key"]
+        indexes = [
+            models.Index(fields=["grouping_key"]),
+            models.Index(fields=["key"]),
+            models.Index(fields=["grouping_key", "key"]),
+            models.Index(fields=["community"]),
+            models.Index(fields=["grouping_key", "key", "community"]),
+            models.Index(fields=["community", "key"]),
+        ]
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     community = models.ForeignKey(
         Community, verbose_name="Community", on_delete=models.CASCADE
     )
-    key = models.TextField(max_length=200, verbose_name="Setting key")
+    key = models.TextField(max_length=400, verbose_name="Setting key")
     created = models.DateTimeField(
         auto_now_add=True, editable=False, verbose_name="Setting Created"
     )
+    grouping_key = models.TextField(
+        max_length=200, verbose_name="Setting Grouping key", null=True, blank=True
+    )
     updated = models.DateTimeField(verbose_name="Setting Updated", auto_now_add=True)
     name = models.TextField(verbose_name="Setting Name")
-    action_call_cover = models.TextField(verbose_name="Action Call for Cover page")
+    foreign_key_ref = models.TextField(
+        verbose_name="Foreign Key Reference (if used)", null=True, blank=True
+    )
     text_value = models.TextField(verbose_name="Text Value", null=True, blank=True)
     int_value = models.IntegerField(verbose_name="Int Value", null=True, blank=True)
     json_value = models.JSONField(verbose_name="Json Value", null=True, blank=True)
     bin_value = models.BinaryField(verbose_name="Binary Value", null=True, blank=True)
+    uuid_value = models.UUIDField(verbose_name="UUID Value", null=True, blank=True)
 
     def __str__(self):
-        return f"Community: {self.community.name} - Registry Setting {self.key}"
+        rstr = f"Community: {self.community.name} - Registry Setting {self.key}"
+        if self.grouping_key:
+            rstr += f" [Grouping Key: {self.grouping_key}]"
+        return rstr
 
 
 @admin.register(CommunityRegistry)
@@ -477,7 +501,11 @@ class CommunitySidebarMenu(models.Model):
         default=1,
     )
     active = models.BooleanField(verbose_name="Active", default=True)
-    not_edited = models.BooleanField(verbose_name="Not Edited",help_text="IGNORE: Internal control flag", default=False)
+    not_edited = models.BooleanField(
+        verbose_name="Not Edited",
+        help_text="IGNORE: Internal control flag",
+        default=False,
+    )
 
     def __str__(self):
         return f"Community: {self.community.name} - Sidebar Entry  {self.module}.{self.sidebar_class} for mode {self.application_mode}"
@@ -509,3 +537,26 @@ class CommunitySidebarMenuView(models.Model):
     )
     ordering = models.IntegerField(verbose_name="Ordering Key", default=1)
     active = models.BooleanField(verbose_name="Entry Active", default=True)
+
+
+class CommunityRegistryPageView(models.Model):
+    class Meta:
+        db_table = "communities_community_registry_page_view"
+        managed = False
+
+    key = models.TextField(max_length=300, verbose_name="Setting Key", unique=True)
+    grouping_key = models.TextField(max_length=300, verbose_name="Setting Community Grouping", unique=True)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    slug = models.TextField(max_length=300, verbose_name="Page slug", unique=True)
+    label = models.TextField(max_length=200, verbose_name="Page Label")
+    template = models.ForeignKey(
+        Templates, verbose_name="Dynapage Template", on_delete=models.CASCADE
+    )
+    creator = models.ForeignKey(
+        User, verbose_name="User", on_delete=models.CASCADE, null=True
+    )
+    system = models.BooleanField(verbose_name="System Page", default=False)
+    page = models.ForeignKey(Page,verbose_name="Page",on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Community: {self.community.name} - Setting Key   {self.key} - Page Node {self.page_id}"
+

@@ -49,6 +49,10 @@ echo "***** STOP HERE - RUN A DEVSERVER, LOGIN TO YOUR APPLICATION AND NAVIGATE 
 read -p "Press Enter when you've created a profile." enter
 
 
+echo "*** Creating default dashboard dynapages... ***"
+python3 ./manage.py create_dashboard_dynapages __auto-during-setup__ _all_
+
+
 echo "*** Granting Admin Rights... ***"
 python3 ./manage.py grant_community_admin __auto-during-setup__ __auto-during-setup__  _all_
 
