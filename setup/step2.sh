@@ -43,7 +43,7 @@ python3 ./manage.py init_gallery_plugins _all_
 
 
 echo "*** Load Dashboard Type Data ***"
-python3 ./manage.py load_dashboard_types DOCUMENTATION/dashboards/types.tsv
+python3 ./manage.py load_dashboard_types DOCUMvENTATION/dashboards/types.tsv
 
 echo "***** STOP HERE - RUN A DEVSERVER, LOGIN TO YOUR APPLICATION AND NAVIGATE TO /forge/select/profile to create a profile BEFORE continuing with setup!! ***"
 read -p "Press Enter when you've created a profile." enter
@@ -54,7 +54,7 @@ python3 ./manage.py create_dashboard_dynapages __auto-during-setup__ _all_
 
 
 echo "*** Granting Admin Rights... ***"
-python3 ./manage.py grant_community_admin __auto-during-setup__ __auto-during-setup__  _all_
+python3 ./manage.py grant_community_admin __auto-during-setup__ __auto-during-setup__ yuu
 
 
 echo "*** Granting Permissions to all Dashboards.... ***"

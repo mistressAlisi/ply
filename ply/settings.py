@@ -92,7 +92,7 @@ INSTALLED_APPS = [
     'ufls.event',
     'ufls.registrar',
     'whitenoise',
-    #'jsignature'
+    'jsignature',
     'core.plyui.themes.default_theme'
 ]
 
