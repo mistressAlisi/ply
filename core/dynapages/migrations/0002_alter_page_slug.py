@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="page",
             name="slug",
             field=models.TextField(
-                max_length=300, unique=True, verbose_name="Page slug"
+                max_length=300, verbose_name="Page slug"
             ),
         ),
     ]
