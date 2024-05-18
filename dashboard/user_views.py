@@ -29,13 +29,14 @@ def dashboard_home(request):
         return render(request, "error-no_vhost_configured.html", {})
     else:
         request.session["community"] = str(community.uuid)
-    sideBar = SideBarBuilder_dynamic(community=community, application_mode="user")
-    profile = profiles.get_active_profile(request)
     # This is a rare condition, but in early-stage databases, an admin user may be using the default system profile. If this condition arises; we re-direct the user to /select_profile where they can either select a proper profile, or
     # go through the forge process to create a new, non-system profile.
     if profile.system is True:
         return redirect("/forge/select/profile/")
     all_profiles = profiles.get_all_profiles(request)
+    sideBar = SideBarBuilder_dynamic(community=community, application_mode="user")
+    sidebar_modules = sideBar.get_dynamic_sidebar(community,"user")
+    profile = profiles.get_active_profile(request)
     try:
         groups = GroupMember.objects.get(profile=request.session["profile"])
         primaryGroup = GroupMember.objects.get(
@@ -68,7 +69,7 @@ def dashboard_home(request):
         show_dbswitch = False
     context.update(
         {
-            "sidebar": sideBar.modules.values(),
+            "sidebar": sidebar_modules.values(),
             "current_profile": profile,
             "profiles": all_profiles,
             "av_path": settings.PLY_AVATAR_FILE_URL_BASE_URL,

@@ -33,6 +33,8 @@ class Command(BaseCommand):
                             widget_obj.group = wdata["used_in"]["group"]
                             widget_obj.dashboard = wdata["used_in"]["dashboard"]
                             widget_obj.blog = wdata["used_in"]["blog"]
+                            if "staff" in wdata["used_in"]:
+                                widget_obj.staff = wdata["used_in"]["staff"]
                         if "icon" in wdata:
                             widget_obj.icon = wdata["icon"]
                         if "setup_required" in wdata:

@@ -1,0 +1,52 @@
+{% load mathfilters %}
+<div class="modal fade" id="collectionManagerModal" tabindex="-1" aria-labelledby="collectionManagerLabel" aria-hidden="true">
+  <form id="collections_form" method="POST" onsubmit="gallery_collections.submit(); return false;" target="#">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="collectionManagerLabel">Collections Manager</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table small table-striped table-responsive text-center">
+  <thead>
+    <tr>
+      <th scope="col">Collection</th>
+      <th scope="col">Items</th>
+      <th scope="col">Views</th>
+      <th scope="col">Shares</th>
+      <th scope="col">Comments</th>
+      <th scope="col">Modify</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for colrow in collections %}
+        <tr>
+          <td>{{colrow.label}}</td>
+          <td>{{colrow.items}}</td>
+          <td>{{colrow.views}}</td>
+          <td>{{colrow.shares}}</td>
+          <td>{{colrow.comments}}</td>
+          <td><button type="button" class="btn btn-sm btn-outline-primary" data-item-id="{{colrow.pk}}" onclick="gallery_collections.edit_item(event)" title="Edit or delete {{colrow.label}}"><i class="fa-regular fa-pen-to-square"></i></button></td>
+        </tr>
+    {% endfor %}
+    <tr>
+      <th scope="row" style="padding-top:12px;">Create New:</th>
+      <td colspan="3"><input type="text" class="form-control form-control form-control-sm" name="colname" id="colname" placeholder="New Collection name..."/></td>
+      <td colspan="2"><button type="submit" class="btn btn-outline-success btn-sm" >Create</button></td>
+    </tr>
+  </tbody>
+</table>
+
+
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" onclick="gallery_collections.close_manager(event);">Dismiss</button>
+
+
+
+    </div>
+  </div>
+</div>
+ </form>
+</div>
