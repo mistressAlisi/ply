@@ -84,3 +84,30 @@ FROM
 	communities_community_community_profile_dashboard_roles
 	ON
 		communities_community_community_dashboard_type.uuid = communities_community_community_profile_dashboard_roles.type_id;
+
+
+DROP VIEW IF EXISTS communities_community_registry_page_view;
+CREATE OR REPLACE VIEW communities_community_registry_page_view AS SELECT
+    communities_community_registry.uuid as id,
+	core_dynapages_page.page_id,
+	core_dynapages_page.slug,
+	core_dynapages_page.label,
+	core_dynapages_page."system",
+	core_dynapages_page.template_id,
+	communities_community_registry."key",
+	communities_community_registry."name",
+	communities_community_registry.text_value,
+	communities_community_registry.community_id,
+	communities_community_registry.grouping_key,
+	core_dynapages_page.creator_id
+FROM
+	core_dynapages_page
+	INNER JOIN
+	communities_community_registry
+	ON
+		core_dynapages_page.page_id = communities_community_registry.uuid_value
+WHERE
+    communities_community_registry.foreign_key_ref = 'core.dynapages.page';
+
+
+CREATE RULE communities_community_registry_page_view_delete_rule AS ON DELETE TO communities_community_registry_page_view DO INSTEAD NOTHING;

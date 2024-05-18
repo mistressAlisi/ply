@@ -25,6 +25,7 @@ def get_vhost_and_community(request, ipaddr=None):
             host = VHost.objects.get(hostname=request.META["HTTP_HOST"], ipaddr=ipaddr, archived=False, frozen=False, blocked=False)
         else:
             host = VHost.objects.get(hostname=request.META["HTTP_HOST"], archived=False, frozen=False, blocked=False)
+        print(request.META["HTTP_HOST"],host)
         return host,host.community
     except VHost.DoesNotExist as e:
         host = request.META["HTTP_HOST"]

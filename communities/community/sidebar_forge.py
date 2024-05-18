@@ -3,7 +3,7 @@ sidebar = {
     "label": "Community",
     "icon": "fa-solid fa-users-rectangle",
     "url": "communities.community/",
-    "js": "/static/js/forge_create-community.js",
+    "js": "/static/communities.community/js/worldforge_dashboard.js",
     "menu": [
         {
             "url": "forge/edit/community/cover",
@@ -15,6 +15,12 @@ sidebar = {
             "url": "forge/script/studio",
             "label": "PLYScript Studio",
             "icon": "fa-solid fa-star",
+            "onclick": "",
+        },
+        {
+            "url": "communities.community/menus/editor",
+            "label": "Sidebar Menu Editor",
+            "icon": "fa-solid fa-list-ul",
             "onclick": "",
         },
         {

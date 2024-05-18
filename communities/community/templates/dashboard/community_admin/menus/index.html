@@ -1,0 +1,71 @@
+{%extends "dashboard/dashboard_main_panel-card-95.html" %}
+{% load django_bootstrap5 %}
+{% load community_admin_extras %}
+{%block dashboard_name %}Community Menu Editor {%endblock %}
+
+{%block dashboard_content %}
+<p class="text">
+This tool allows you to configure the applications included in the sidebar menus for each of the dashboard modes.
+<br/><em>Please note:</em> If you remove the Community Forge menu, you'll need to use the admin or shell to get it back!
+</p><hr/>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="forge-tab" data-bs-toggle="tab" data-bs-target="#forge-tab-pane" type="button" role="tab" aria-controls="forge-tab-pane" aria-selected="true">WorldForge</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user-tab-pane" type="button" role="tab" aria-controls="user-tab-pane" aria-selected="false">User</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff-tab-pane" type="button" role="tab" aria-controls="staff-tab-pane" aria-selected="false">Staff</button>
+  </li>
+
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="forge-tab-pane" role="tabpanel" aria-labelledby="forge-tab" tabindex="0">
+  {% with "world_forge" as mode %}
+  {% include "dashboard/community_admin/menus/table.html" %}
+  {% endwith %}
+  </div>
+  <div class="tab-pane fade" id="user-tab-pane" role="tabpanel" aria-labelledby="user-tab" tabindex="0">
+  {% with "user" as mode %}
+  {% include "dashboard/community_admin/menus/table.html" %}
+  {% endwith %}
+  </div>
+  <div class="tab-pane fade" id="staff-tab-pane" role="tabpanel" aria-labelledby="staff-tab" tabindex="0">
+  {% with "staff" as mode %}
+  {% include "dashboard/community_admin/menus/table.html" %}
+  {% endwith %}
+  </div>
+</div>
+<button type="button" class="btn btn-outline-primary" onclick="community_dashboard.showMenuModal();">Add New Entry</button>
+
+
+{%endblock %}
+
+{%block post-card %}
+<div id="newMenu_modal" class="modal" tabindex="-1">
+{% include "dashboard/community_admin/menus/create_modal.html" %}
+</div>
+
+<div id="delMenu_modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus"></i>Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        Really Delete Selected Menu item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <input class="btn btn-outline-danger" onclick="community_dashboard._del_menu();" value="Confirm"></input>
+
+      </div>
+    </div>
+  </div>
+</div>
+{%include "dashboard_plugins/plugin-selectize.html" %}
+{% endblock %}
