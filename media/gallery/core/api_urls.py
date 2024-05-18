@@ -2,6 +2,7 @@ from django.urls import path
 from media.gallery.core import api_views
 
 urlpatterns = [
+    path('upload/file_ingest',api_views.file_ingest),
     path('upload/get_categories', api_views.get_categories),
     path('upload/get_collections/w+', api_views.get_collections_writeable),
     path('upload/get_form/<plugin>', api_views.get_form),
@@ -9,6 +10,7 @@ urlpatterns = [
     path('upload/post_upload/', api_views.post_upload),
     path('upload/review_panel/<file_id>', api_views.get_review_panel),
     path('upload/publish/<file_id>', api_views.publish_after_review),
+    path('get/lighttable/', api_views.lighttable_raw),
     path('get/all_collections/', api_views.gallery_collections_raw),
     path('get/items/<collection>', api_views.gallery_collection_items_raw),
     path('view_counter/item/', api_views.gallery_viewer_counter_item),
@@ -27,5 +29,6 @@ urlpatterns = [
     path('details/item/form/exec', api_views.gallery_update_details),
     path('fav/item/<uuid:item>', api_views.gallery_toggle_fav),
     path('get/fav/item/<uuid:item>', api_views.gallery_is_fav),
-    path('get/fav/items', api_views.gallery_profile_favs)
+    path('get/fav/items', api_views.gallery_profile_favs),
+    path('collections/create', api_views.gallery_create_collection),
 ]

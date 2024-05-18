@@ -1,0 +1,29 @@
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="uploadModalLabel">Upload Files to Lighttable</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="drop_zone" style="min-height: 350px;" ondrop="gallery_uploader.drop_handler(event);" ondragover="gallery_uploader._stop_event_handler(event);" ondragenter="gallery_uploader._stop_event_handler(event);">
+        <div id="upload_files_zone"></div>
+        <div id="drop_zone_splash" class="position-absolute top-50 start-50 translate-middle" style="margin-left: 20px;">
+            <div class="mx-auto p-2" style="width: 300px; opacity: 0.3;">
+            <i style="margin-left: 29%;" class="fa-solid fa-file-arrow-up fa-5x ps-2"></i>
+            <p class="text-body-secondary">Drag file(s) to this Drop Zone ...</p>
+            </div>
+        </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <div class="w-100" id="upprogressbar_area"></div>
+        <div id="upctl_btns">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success">Browse for file(s)</button>
+        <button type="submit" class="btn btn-primary" onclick="gallery_uploader.upload_handle(event);">Upload file(s)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

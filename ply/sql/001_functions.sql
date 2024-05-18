@@ -29,3 +29,4 @@ RETURNS TEXT AS $$
   )
   SELECT "value" FROM "trimmed";
 $$ LANGUAGE SQL STRICT IMMUTABLE;
+

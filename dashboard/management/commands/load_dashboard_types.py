@@ -21,6 +21,8 @@ class Command(BaseCommand):
                     dshb.descr = line[2]
                     dshb.privileged = line[3]
                     dshb.save()
+
+
         else:
             self.stdout.write(self.style.ERROR(f'NO SUCH File: \'{path}\'!'))
             return False

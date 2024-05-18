@@ -138,14 +138,7 @@ window.gallery_core = Object({
         console.log("Loading Plugin: "+name);
         $.get("/static/plugins/"+name+"/gallery_plugin.json",false,this._loadPlugin);
     },
-    _parent_walker: function(parent,target_node) {
-       if (target_node == undefined) { target_node = "DIV"};
-       while (parent.nodeName != target_node) {
-            parent = parent.parentElement;
-        };
-        return $(parent);
-        
-    },
+
     set_type_desc: function(e) {
         target = gallery_core._parent_walker($(e.target)[0],"BUTTON");
         $(gallery_core.settings.all_buttons).addClass(gallery_core.settings.button_active_class);

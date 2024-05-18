@@ -1,0 +1,146 @@
+{%extends "media.gallery.core/dashboard/offcanvas_controls_form.html" %}
+{% load django_bootstrap5 %}
+{%load mathfilters %}
+{% block "controls_title" %}Review and Publish: <span_id="submission_title">{{temp_file.name}}</span>{% endblock %}
+
+{% block "controls_body" %}
+{% if temp_file.meta.metadata.dpi <= low_dpi_thrs %}
+<div class="alert alert-info" role="alert">
+  <i class="fas fa-info-circle"></i>&#160;This file has a DPI of {{temp_file.meta.dpi}}.
+</div>
+{% endif %}
+    <div class="container-fluid">
+            <div class="row">
+            <h6>
+            File Information:
+            </h6>
+                <table class="table table-responsive table-striped table-hover">
+                    <tr>
+                        <th scope="row">Date:</th>
+                        <td>{{temp_file.created}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Size:</th>
+                        <td>{{temp_file.file_size|div:1024|div:1024|floatformat:2}}MB</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Resolution:</th>
+                        <td>
+                            {{temp_file.meta.metadata.width}}x{{temp_file.meta.metadata.height}}px@{{temp_file.meta.metadata.dpi}}dpi
+                            {% if temp_file.meta.metadata.bits %}
+                            ({{temp_file.meta.metadata.bits}}-bit)
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if temp_file.meta.metadata.icc %}
+                    <tr>
+                        <th scope="row">Profile:</th>
+                        <td>{{temp_file.meta.metadata.icc}}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+          <div class="row">
+            <h6>
+            Title and Description:
+            </h6>
+             {% bootstrap_field review_form.title required=True  %}
+            <h6>Description:<span class="badge rounded-pill bg-warning text-dark fade" role="alert" id="descr_alert">
+            description is required!
+            </span>
+            </h6>
+             {% bootstrap_field review_form.descr required=True show_label=skip %}
+          </div>
+          <div class="row">
+           <h6>File Settings:</h6>
+            <table class="table table-responsive table-borderless table-hover">
+                <tr>
+                    <td colspan="3">Resolution and Artwork rating:</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="badge rounded-pill bg-warning text-dark fade" role="alert" id="resolution_alert">
+                        required!
+                        </span>
+                        {% bootstrap_field review_form.resolution show_label=skip  required=True %}
+                    </td>
+                    <td>
+                    <span class="badge rounded-pill bg-warning text-dark fade" role="alert" id="rating_alert">
+                        required!
+                    </span>
+                    {% bootstrap_field review_form.raiting  required=True show_label=skip %}
+                    </td>
+                    <td>
+                    <span class="badge rounded-pill bg-warning text-dark fade" role="alert" id="nsfw_alert">
+                        required!
+                    </span>
+                    {% bootstrap_field review_form.nsfw  show_label=skip required=True %}</td>
+                </tr>
+                 <tr>
+                    <td colspan="3">Display Style, Sizing and detail display:</td>
+                </tr>
+                <tr>
+                    <td>{% bootstrap_field review_form.display_style show_label=skip required=True %}</td>
+                    <td>{% bootstrap_field review_form.display_sizing show_label=skip required=True %}</td>
+                    <td>{% bootstrap_field review_form.display_details show_label=skip required=True %}</td>
+                </tr>
+            </table>
+            </div>
+            <div class="row">
+                <h6>Category and Keywords:</h6>
+                <table class="table table-responsive table-hover table-borderless">
+                    <tr>
+                         <td>
+                        <span class="badge rounded-pill bg-primary fade" role="alert" id="cat_alert">
+                            required!
+                        </span>
+                        {% bootstrap_field review_form.publish_category  multiple="" show_label=skip required=True %}
+                        </td>
+                    </tr>
+                    <tr>
+                         <td>
+                        <span class="badge rounded-pill bg-primary fade" role="alert" id="kw_alert">
+                            recommended!
+                        </span>
+                        {% bootstrap_field review_form.publish_keywords  multiple="" show_label=skip required=True %}
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="col">
+            <h6>Collections:</h6>
+                <table class="table table-responsive table-borderless table-hover">
+                    <tr>
+                         <td>
+                              <span class="badge rounded-pill bg-warning text-dark fade" role="alert" id="collection_alert">
+                            at least one is required!
+                            </span>
+
+                    {% bootstrap_field review_form.publish_collections multiple="" required=True show_label=skip %}
+                         </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2">
+                             <input type="button" class="btn btn-outline-primary" onclick="gallery_collections.show_manager(event);" value="Collections Manager">
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div class="col">
+            <h6>Notifications - notify:</h6>
+             <table class="table table-responsive table-borderless table-hover">
+                <tr>
+                    <td colspan="3">{% bootstrap_field review_form.publish_notify field_class="" show_label=skip  required=True %}</td>
+                </tr>
+
+            </table>           
+            </div>
+            <div class="col">
+                {% bootstrap_button "Delete File" button_type="button" button_class="btn-outline-danger" %}
+                {% bootstrap_button "Publish Now!" button_type="submit" button_class="btn-outline-success" %}
+            </div>
+
+{% endblock %}
+
