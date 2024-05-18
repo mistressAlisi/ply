@@ -1,0 +1,49 @@
+.ltable_upload_card {
+    min-height: 25px;
+    background-color: var(--bs-gray-dark);
+    width: 100%;
+    margin: 3px;
+    display: block;
+
+}
+
+.ltable_upload_card .card-header {
+    background: transparent;
+    border-bottom: none;
+    display: inline-block;
+}
+.ltable_upload_card .card-text {
+    display: inline-block;
+}
+
+.ltable_upload_card .progress {
+    border: thin solid var(--bs-blue);
+}
+.lighttable-card {
+    max-width: 225px;
+    width: 225px;
+    height: 250px;
+    max-height: 250px;
+    display: inline-block;
+    margin: 10px;
+    vertical-align: top;
+}
+.lighttable-card .card-header {
+    font-size: 12px;
+}
+.lighttable-card .card-text {
+    font-size: 10px;
+    padding-top: 90px;
+    color: var(--bs-secondary-bg);
+}
+.lighttable-card .card-header-img {
+  max-width: 220px;
+  padding: 2px 0px 1px 3px;
+  max-height: 150px;
+}
+.lighttable-card #card-title {
+    font-size: 14px;
+}
+.lighttable-card #card-date {
+    font-size: 10px;
+}
