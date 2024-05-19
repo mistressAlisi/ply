@@ -199,8 +199,8 @@ if USE_S3:
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
-    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
     AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
     MEDIA_URL = config('PLY_MEDIA_URL')
@@ -228,7 +228,7 @@ else:
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
     MEDIA_ROOT = "/app/media_root/"
     MEDIA_URL = "/media/"
 
@@ -445,36 +445,6 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
-STORAGES = {
-    "staticfiles":{
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_STATIC_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
-        }
-    },
-    "gallery_originals": {
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
-        }
-    },
-    "gallery_publish": {
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
-        }
-    },
-    "avatars":{
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_AVATAR_BASE_PATH"),
-            "base_url":config("PLY_AVATAR_BASE_URL"),
-        }
-    }
-}
 
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
