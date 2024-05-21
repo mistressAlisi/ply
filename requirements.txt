@@ -23,7 +23,7 @@ crypto==1.4.1
 cssselect==1.2.0
 decorator==5.1.1
 Django==5.0.1
-dj-stripe==2.8.3
+dj-stripe==2.8.4
 django-bootstrap==0.2.4
 django-bootstrap5==23.4
 django-captcha==1.0.0
