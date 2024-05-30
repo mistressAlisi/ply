@@ -56,4 +56,8 @@ urlpatterns += [
     path('app/api/', include('ufls.registrar.api_urls')),
     path('app/registrar/', include('ufls.registrar.urls')),
     path('app/ufls/return/', include('ufls.backend_connection_urls')),
+    path('app/marketplace/', include('ufls.dealers.dealer_front_urls')),
+    path('app/marketplace/registration/', include('ufls.dealers.urls')),
+    path('app/marketplace/api/', include('ufls.dealers.urls')),
+    path('app/marketplace/admin/', include('ufls.dealers.admin_urls')),
 ]

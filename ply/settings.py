@@ -87,10 +87,13 @@ INSTALLED_APPS = [
     'roleplaying.SLHUD',
     'roleplaying.plydice',
     'ply',
+    'multiselectfield',
+    'import_export',
     'ufls.themes.neon_nights',
     'ufls.furry',
     'ufls.event',
     'ufls.registrar',
+    'ufls.dealers',
     'whitenoise',
     'jsignature',
     'core.plyui.themes.default_theme'
