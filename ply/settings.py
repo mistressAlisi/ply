@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     'ufls.event',
     'ufls.registrar',
     'ufls.dealers',
+    'ufls.scheduling',
     'whitenoise',
     'jsignature',
     'core.plyui.themes.default_theme'
