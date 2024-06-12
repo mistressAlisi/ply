@@ -61,5 +61,5 @@ urlpatterns += [
     path('app/marketplace/api/', include('ufls.dealers.urls')),
     path('app/marketplace/admin/', include('ufls.dealers.admin_urls')),
     path('app/schedule/', include('ufls.scheduling.events_front_urls')),
-    path('app/schedule/backend/', include('ufls.scheduling.events_front_urls')),
+    path('app/schedule/backend/', include('ufls.scheduling.urls')),
 ]
