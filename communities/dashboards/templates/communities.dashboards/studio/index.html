@@ -1,13 +1,27 @@
 {%extends "dashboard/dashboard_main_panel-95.html" %}
 {%block dashboard_name %}
-Dashboard Studio
+
 {%endblock%}
 
 {%block dashboard_content %}
+<link href="/static/communities.dashboards/css/dashboard/studio.css" rel="stylesheet">
 <div id="studio_container" class="container-fluid">
-    Select Dashboard to load...
+<!--   <nav class="navbar navbar-dark bg-success">-->
+<!--  <div class="container-fluid">-->
+<!--   Dashboard Editor: <span id="dashboard_name_spn"></span>-->
+<!--     <div class="d-flex">-->
+
+<!--        <button class="btn btn-outline-light text-light" type="button"><i class="fa-solid fa-bars"></i></button>-->
+<!--      </div>-->
+<!--  </div>-->
+<!--</nav>-->
+
+<div id="dashboard_studio_container">
+
+</div>
 </div>
 
 
+{% include "communities.dashboards/studio/offcanvas/widget_bar.html" %}
 {% include "communities.dashboards/studio/modals/select_dashboard.html" %}
 {%endblock%}

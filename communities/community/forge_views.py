@@ -102,7 +102,7 @@ def default_profile_editor(request):
         page=profilePage.dynapage
     )
     available_widgets = dynapages.Widget.objects.filter(active=True, profile=True)
-    print(available_widgets)
+    #print(available_widgets)00
 
     exp = ProfileExperience.objects.get(community=community, profile=profile)
     stats = ProfileStat.objects.filter(profile=profile)

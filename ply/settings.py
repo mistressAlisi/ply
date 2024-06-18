@@ -342,6 +342,7 @@ PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "media.gallery.core"
 ]
 PLY_STAFF_DASHBOARD_MODULES = [
+    "ufls.staff"
 ]
 PLY_GALLERY_PLUGINS = [
     "media.gallery.images"

@@ -1,6 +1,17 @@
 import { WidgetFactory } from "/static/core.plyui/js/WidgetFactory/WidgetFactory.js";
 export class AbstractDashboardApp {
+    _appName = "app"
+    settings = {
+        "offcanvas":false,
+        "modal":"#some_modal",
+        "form":"#some_form"
+    }
+    urls = {
+            "submit":"/some/url"
+    }
+
     modal = false
+    offcanvas = false
     widget_factory =  false
     urls = []
     elements = []
@@ -32,14 +43,17 @@ export class AbstractDashboardApp {
     }
 
     _getModal() {
-        this.modal =  new bootstrap.Modal($(this.elements["modal"])[0]);
+        this.modal =  new bootstrap.Modal(this.elements["modal"]);
     }
 
     _showModal() {
+        if (this.modal == false) {
+            this._getModal();
+        }
         this.modal.show();
     }
     _hideModal() {
-        this.modal.show();
+        this.modal.hide();
     }
 
     add() {
@@ -66,15 +80,36 @@ export class AbstractDashboardApp {
 
 
     }
+    _getOffcanvas() {
+            this.offcanvas = new bootstrap.Offcanvas(this.elements["offcanvas"]);
 
-     constructor() {
+    }
+    _showOffcanvas() {
+        if (this.offcanvas == false) {
+            this._getOffcanvas();
+        }
+        this.offcanvas.show();
+    }
+
+    _hideOffcanvas() {
+        this.offcanvas.hide();
+    }
+
+    _toggleOffcanvas() {
+        this.offcanvas.toggle();
+    }
+     constructor(name="app",settings={},urls={}) {
+        if (name != "app") {
+            this._appName = name;
+        }
+        $.extend(this.settings,settings);
+        $.extend(this.urls,urls);
+
         this.widget_factory = new WidgetFactory();
-        this.urls = {
-            "submit":"/some/url"
-        }
         this.elements = {
-            "form":"#some_form",
-            "modal":"#some_modal"
+            "form":this.settings["form"],
+            "modal":this.settings["modal"]
         }
+        console.info("Dashboard App ",this._appName," initialised!");
      }
 }

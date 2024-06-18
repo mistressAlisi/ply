@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
+from core.dynapages.models import Page, PageWidget
+
 # Create your views here.
 # PLY:
 from ply import settings
 from ply.toolkit import vhosts, profiles, contexts, dynapages as dp_tools
 from dashboard.navigation import SideBarBuilder_dynamic
-from communities.community.models import CommunityStaff
+from communities.community.models import CommunityStaff, CommunityRegistryPageView
 from communities.group.models import GroupMember
 from core.dynapages import models as dynapages
 from communities.profiles.models import ProfilePageNode
@@ -31,7 +33,15 @@ def dashboard_home(request):
         return render(request, "error-access-denied.html", {})
     sideBar = SideBarBuilder_dynamic(community=community, application_mode="staff")
     sidebar_modules = sideBar.get_dynamic_sidebar(community, "staff")
-    context.update({"sidebar": sidebar_modules.values(), "dashboard_name": "Event Staff"})
+    dashboard = CommunityRegistryPageView.objects.get(
+        community=community, grouping_key="community_appmode_dashboards",key="__dashboard-landingPage-staff"
+    )
+    dynapage = Page.objects.get(pk=dashboard.page_id)
+    widgets = PageWidget.objects.filter(page=dynapage)
+    context.update(
+        {"sidebar": sidebar_modules.values(), "dashboard_name": "Event Staff","widgets":widgets,"dynapage":dynapage}
+    )
+
     return render(request, "dashboard/community_admin/dashboard/index.html", context)
 
 
