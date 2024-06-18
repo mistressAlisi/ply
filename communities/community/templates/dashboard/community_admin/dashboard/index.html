@@ -32,7 +32,12 @@
 
 
 
-    {%include "dashboard/dashboard_main_panel.html" %}
+
+  {%with "dynapages/"|add:dynapage.template.filename as src %}
+    {%include src %}
+  {%endwith %}
+
+
 
 
  </div>

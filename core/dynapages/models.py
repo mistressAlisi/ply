@@ -39,7 +39,12 @@ class Templates(models.Model):
     system = models.BooleanField(verbose_name="System FLAG", default=False)
 
     def __str__(self):
-        return f"Dynapage Template [{self.template_id}] Label: '{self.label}' filename: '{self.filename}'"
+        if self.page_template:
+            return f"Dynapage Template (for Pages) [{self.template_id}] Label: '{self.label}' filename: '{self.filename}'"
+        elif self.widget_template:
+            return f"Dynapage Template (for Widgets) [{self.template_id}] Label: '{self.label}' filename: '{self.filename}'"
+        else:
+            return f"Dynapage Template [{self.template_id}] Label: '{self.label}' filename: '{self.filename}'"
 
 
 @admin.register(Templates)
@@ -94,7 +99,9 @@ class Widget(models.Model):
     dashboard = models.BooleanField(
         verbose_name="Includes Dashboard Mode", default=False
     )
-    staff = models.BooleanField(verbose_name="Includes Staff Dashboard Mode", default=False)
+    staff = models.BooleanField(
+        verbose_name="Includes Staff Dashboard Mode", default=False
+    )
     blog = models.BooleanField(verbose_name="Includes Blog Mode", default=False)
     app = models.TextField(
         max_length=200, verbose_name="App Name ID", default="", blank=True, null=True
@@ -128,9 +135,17 @@ class Page(models.Model):
     page_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.TextField(max_length=300, verbose_name="Page slug", unique=True)
     label = models.TextField(max_length=200, verbose_name="Page Label")
-    widget_mode = models.TextField(max_length=200, verbose_name="Page Widget Mode (optional)",blank=True,null=True)
+    widget_mode = models.TextField(
+        max_length=200,
+        verbose_name="Page Widget Mode (optional)",
+        blank=True,
+        null=True,
+    )
     template = models.ForeignKey(
-        Templates, verbose_name="Dynapage Template", on_delete=models.CASCADE
+        Templates,
+        verbose_name="Dynapage Template",
+        on_delete=models.CASCADE,
+        limit_choices_to={"page_template": True},
     )
     created = models.DateTimeField(
         auto_now_add=True, editable=False, verbose_name="Page Created"
@@ -139,9 +154,13 @@ class Page(models.Model):
         auto_now=True, editable=False, verbose_name="Page Updated"
     )
     creator = models.ForeignKey(
-        User, verbose_name="User", on_delete=models.CASCADE, null=True
+        User,
+        verbose_name="User",
+        on_delete=models.CASCADE,
+        null=True,
     )
     system = models.BooleanField(verbose_name="System Page", default=False)
+    profile_page = models.BooleanField(verbose_name="Profile Page", default=False)
 
     def __str__(self):
         if not self.system:

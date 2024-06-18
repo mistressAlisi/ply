@@ -53,3 +53,14 @@ def dashboard_initDynaPage(user,profile):
     profile_node.dynapage=page
     profile_node.save()
     return profile_node
+
+def get_or_create_dynapage_node(slug,label,system,mode,template):
+    page = Page.objects.get_or_create(slug=slug,widget_mode=mode)
+    if page[1] == True:
+        page[0].label = label
+        page[0].system = system
+        page[0].widget_mode = mode
+        page[0].template = template
+        page[0].save()
+    widgets = PageWidget.objects.filter(page=page[0])
+    return page, widgets
