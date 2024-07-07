@@ -339,7 +339,9 @@ PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "communities.community",
     "communities.stream",
     "communities.dashboards",
-    "media.gallery.core"
+    "media.gallery.core",
+    "ufls.event",
+    "ufls.staff"
 ]
 PLY_STAFF_DASHBOARD_MODULES = [
     "ufls.staff"
