@@ -21,6 +21,7 @@ from communities.community.forms import (
 from communities.group.models import GroupMember
 from core.dynapages import models as dynapages
 from communities.profiles.models import ProfilePageNode
+from ply.toolkit.contexts import admin_context
 from ply.toolkit.core import get_ply_appinfo
 from roleplaying.stats.models import ProfileStat
 from roleplaying.exp.models import ProfileExperience
@@ -126,17 +127,10 @@ def default_profile_editor(request):
 @login_required
 def sidebar_menu_editor(request):
     #  Ignore port:
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = admin_context(request)
     if community is None:
         return render(request, "error-no_vhost_configured.html", {})
-    else:
-        request.session["community"] = str(community.uuid)
-    profile = profiles.get_active_profile(request)
-    is_admin = CommunityAdmins.objects.filter(
-        community=community, profile=profile, active=True
-    )
-    if len(is_admin) < 1:
-        return render(request, "error-access-denied.html", {})
+
     current_menus = CommunitySidebarMenu.objects.filter(community=community)
     context["current_menus"] = current_menus
     context["menu_form"] = CommunitySidebarMenuForm(initial={"community":community})

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
+from communities.preferences.models import Preferences
 from core.dynapages.models import Page, PageWidget
 
 # Create your views here.
@@ -37,9 +38,10 @@ def dashboard_home(request):
         community=community, grouping_key="community_appmode_dashboards",key="__dashboard-landingPage-staff"
     )
     dynapage = Page.objects.get(pk=dashboard.page_id)
+    prefs = Preferences.objects.get_or_create(user=request.user)[0]
     widgets = PageWidget.objects.filter(page=dynapage)
     context.update(
-        {"sidebar": sidebar_modules.values(), "dashboard_name": "Event Staff","widgets":widgets,"dynapage":dynapage}
+        {"sidebar": sidebar_modules.values(), "dashboard_name": "Event Staff","widgets":widgets,"dynapage":dynapage,"preferences":prefs}
     )
 
     return render(request, "dashboard/community_admin/dashboard/index.html", context)

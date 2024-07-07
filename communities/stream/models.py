@@ -61,15 +61,15 @@ class Stream(models.Model):
             models.UniqueConstraint(fields=['tag','profile','community'], name='unique_stream_tag')
     ]
     def rgba1(self):
-        
+
         return f"rgba({int(self.bkg1[1:3],16)},{int(self.bkg1[3:5],16)},{int(self.bkg1[5:7],16)},{self.opacity1})"
-    
+
     def rgba2(self):
         return f"rgba({int(self.bkg2[1:3],16)},{int(self.bkg2[3:5],16)},{int(self.bkg2[5:7],16)},{self.opacity1})"
-    
+
     def __str__(self):
         return f"Stream for Profile: {self.profile} in community: {self.community} attached to group: {self.group} root stream: {self.root_stream} Type: {self.type}, name: {self.name}. tag: {self.tag}"
-    
+
 @admin.register(Stream)
 class StreamAdmin(admin.ModelAdmin):
     pass
@@ -88,7 +88,7 @@ class StreamSubscriber(models.Model):
     system = models.BooleanField(verbose_name="System FLAG",default=False)
     def __str__(self):
         return f"StreamSubscriber {self.subscriber.uuid} -follows stream -> {self.stream.uuid} in community: {self.community.uuid}"
-    
+
 @admin.register(StreamSubscriber)
 class StreamSubscriberAdmin(admin.ModelAdmin):
     pass
@@ -127,7 +127,7 @@ class StreamMessage(models.Model):
 
     def __str__(self):
         return f"Stream Message: {self.uuid} -in stream-> {self.stream.uuid} in community: {self.stream.community.uuid} TYPE: {self.type}"
-    
+
 @admin.register(StreamMessage)
 class StreamMessageAdmin(admin.ModelAdmin):
     pass
@@ -142,7 +142,7 @@ class StreamMessageKeywords(models.Model):
     keyword = models.ForeignKey(Keyword,verbose_name="Keyword",on_delete=models.CASCADE)
     def __str__(self):
         return f"Stream Message Keyword: {self.keyword.hash} -in message -> {self.message.uuid} in stream: {self.stream.uuid}"
-    
+
 @admin.register(StreamMessageKeywords)
 class StreamMessageKeywordsAdmin(admin.ModelAdmin):
     pass
@@ -167,10 +167,10 @@ class StreamThread(models.Model):
     hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
     def __str__(self):
         return f"Thread: #{self.hash} -in stream-> ({self.stream.uuid})"
-    
+
 @admin.register(StreamThread)
 class StreamThreadAdmin(admin.ModelAdmin):
-    pass   
+    pass
 class StreamXMPPSettings(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
@@ -221,7 +221,7 @@ class StreamProfileXMPPSettings(models.Model):
     pubsub_to_friends = models.BooleanField(default=True,verbose_name="Enable Publish/Subscribe module for XMPP Friends",help_text="When enabled, any content you create is published in streams your friends can follow using an XMPP client.")
     enable_webclient = models.BooleanField(default=True,verbose_name="Enable XMPP Webclient",help_text="Enable/disable the embedded XMPP client for all pages on the site. This does not control/disable other XMPP Clients")
 
-    
+
 
     class Meta:
         db_table = "communities_stream_stream_xmpp_profile_settings"
@@ -322,6 +322,63 @@ class MessagesPerStreamView(models.Model):
     class Meta:
         managed = False
         db_table = 'communities_stream_message_view'
+
+
+
+class MessagesPerNamedStreamView(models.Model):
+    stream_created = models.DateTimeField(verbose_name="Stream Created")
+    stream_type = models.TextField(verbose_name='Stream Type')
+    stream_name = models.TextField(verbose_name='Stream Name')
+    stream_icon = models.TextField(verbose_name='Stream Icon',blank=True,null=True)
+    stream_shares = models.IntegerField(verbose_name='Share Count',default=0)
+    stream_views = models.IntegerField(verbose_name='Views Count',default=0)
+    stream_nodes = models.IntegerField(verbose_name='Node Count',default=0)
+    stream_archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
+    stream_hidden = models.BooleanField(verbose_name="Hidden FLAG",default=False)
+    stream_system = models.BooleanField(verbose_name="System FLAG",default=False)
+    stream_group_id = models.UUIDField(verbose_name="Stream Group UUID")
+    profile_uuid = models.UUIDField(default = uuid.uuid4,editable = False)
+    profile_created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Profile Created')
+    profile_last_seen = models.DateTimeField(verbose_name='Profile Last Seen Online',auto_now_add=True)
+    profile_age = models.TextField(verbose_name='Current Age',default=1,blank=True)
+    profile_name = models.TextField(verbose_name='Name')
+    profile_status = models.TextField(verbose_name='status',default="CITIZEN",blank=True)
+    profile_species = models.TextField(verbose_name='Species',default='Sentient')
+    profile_introduction = models.TextField(verbose_name='Profile Intro')
+    profile_views = models.IntegerField(verbose_name='Post Count',default=0)
+    profile_pronouns = models.TextField(max_length=200,verbose_name='Pronouns')
+    profile_gender = models.TextField(max_length=200,verbose_name='Gender')
+    profile_avatar = models.TextField(verbose_name='Avatar URL',null=True,blank=True)
+    profile_posts = models.IntegerField(verbose_name='Post Count',default=0)
+    profile_views = models.IntegerField(verbose_name='Post Count',default=0)
+    profile_nodes = models.IntegerField(verbose_name='Node Count',default=0)
+    profile_blocked = models.BooleanField(verbose_name="Blocked FLAG",default=False)
+    profile_frozen = models.BooleanField(verbose_name="Frozen FLAG",default=False)
+    profile_system = models.BooleanField(verbose_name="System FLAG",default=False)
+    message_uuid = models.UUIDField(default = uuid.uuid4,editable = False)
+    message_created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Stream Created')
+    message_type = models.TextField(verbose_name='Message Type')
+    message_icon = models.TextField(verbose_name='Message Icon',blank=True,null=True)
+    reposts = models.IntegerField(verbose_name='Reposts Count',default=0)
+    replies = models.IntegerField(verbose_name='Replies Count',default=0)
+    shares = models.IntegerField(verbose_name='Share Count',default=0)
+    likes = models.IntegerField(verbose_name='Like Count',default=0)
+    threads = models.IntegerField(verbose_name='Thread Count',default=0)
+    views = models.IntegerField(verbose_name='Views Count',default=0)
+    contents_text = models.TextField(verbose_name='Stream Content: Text Type',blank=True,null=True,max_length=500)
+    contents_text_parsed = models.TextField(verbose_name='Stream Content: Text Type (Parsed)',blank=True,null=True)
+    contents_json = models.JSONField(verbose_name='Stream Content: JSON Type',blank=True,null=True)
+    contents_bin = models.BinaryField(verbose_name='Stream Content: Binary Type',blank=True,null=True)
+    references = models.ForeignKey('StreamMessage',verbose_name = "References",on_delete=models.CASCADE,null=True,blank=True)
+    community = models.ForeignKey(Community,verbose_name="Community",on_delete=models.CASCADE)
+    stream = models.ForeignKey(Stream,verbose_name="Stream",on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile,verbose_name = "Author",on_delete=models.RESTRICT)
+
+    def __str__(self):
+        return f"Message in Stream Named View:  {self.stream_name} in community {self.community.uuid} Type: {self.message_type}"
+    class Meta:
+        managed = False
+        db_table = 'communities_stream_named_message_view'
 
 
 
