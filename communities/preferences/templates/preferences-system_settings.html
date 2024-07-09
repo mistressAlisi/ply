@@ -1,5 +1,5 @@
 {% load django_bootstrap5 %}
-<form method="POST" action="#" id="system-pref-form" onsubmit="preferences.goSave(); return false;">
+<form method="POST" action="#" id="system-pref-form" onsubmit="preferences.submit(); return false;">
 {% csrf_token %}
 <div class="card">
   <div class="card-header">
@@ -32,6 +32,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-preferences.init();
-</script>
+<script type="module" src="/static/communities.preferences/js/preferences.js"/>

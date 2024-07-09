@@ -1,0 +1,15 @@
+<div class="offcanvas offcanvas-bottom"  data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="studio_offCanvas" aria-labelledby="studio_offCanvasLabel" class="studio_offcanvas">
+  <div class="offcanvas-header">
+    <h6 class="offcanvas-title" id="studio_offCanvasLabel">Widget Selector - <span style="font-size: 11px;" class="text-muted">Drag and drop widgets from this bar into the Dashboard area above. Changes are saved automatically.</span></h6>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body small">
+  <div class="card-group" id="widget_cards_bar">
+  {% for widget in available_widgets %}
+<!--      {{widget.type}}-->
+        {%include "dynapages_tools/widget_editor/widget_card.html" %}
+  {% endfor %}
+ </div>
+  </div>
+</div>
+

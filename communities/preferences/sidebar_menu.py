@@ -6,7 +6,7 @@ sidebar = {
   "js":"/static/js/preferences_core.js",
   "sidebar":"",
   "menu":[
-    {"url":"preferences/system","label":"System Preferences",'icon':'fa-solid fa-screwdriver-wrench','onclick':''}
+    {"url":"communities.preferences/system","label":"System Preferences",'icon':'fa-solid fa-screwdriver-wrench','onclick':''}
     ]
   }
 
