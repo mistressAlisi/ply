@@ -75,10 +75,17 @@ class review_form(forms.Form):
     )
 
     def setup_form(self, item):
-        self.fields["title"].initial = item.name
-        self.fields["descr"].initial = f"A beautiful new image by {item.profile.name}."
-        h = item.meta['metadata']["height"]
-        w = item.meta['metadata']["width"]
+        if "title" in item.userdata:
+            self.fields["title"].initial = item.userdata["title"]
+        else:
+            self.fields["title"].initial = item.name
+        # print(item.userdata)
+        if "descr" in item.userdata:
+            self.fields["descr"].initial = item.userdata["descr"]
+        else:
+            self.fields["descr"].initial = f"A beautiful new image by {item.profile.name}."
+        h = item.meta["metadata"]["height"]
+        w = item.meta["metadata"]["width"]
         scale = 1.0
         CHOICES = []
         while scale > 0.1:
@@ -90,6 +97,10 @@ class review_form(forms.Form):
             )
             scale -= 0.1
         self.fields["resolution"].choices = CHOICES
+        select_fields = ["resolution","raiting","display_style","display_sizing","publish_notify","display_details","nsfw"]
+        for f in select_fields:
+            if f in item.userdata:
+                self.fields[f].initial = item.userdata[f]
 
 
 class details_form(forms.Form):
