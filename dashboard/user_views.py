@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
+from communities.preferences.models import Preferences
 # Create your views here.
 # PLY:
 from ply import settings
@@ -21,7 +22,7 @@ log = logging.getLogger(__name__)
 # Render the User Dashboard Home page:
 @login_required
 def dashboard_home(request):
-    #  Ignore port:
+
     context, vhost, community, profile = contexts.default_context(request)
     # vhost,community,context = request.META["HTTP_HOST"].split(":")[0]
     # community = (vhosts.get_vhost_community(hostname=vhost))
@@ -59,6 +60,8 @@ def dashboard_home(request):
     widgets = dynapages.PageWidget.objects.order_by("order").filter(
         page=profilePage.dynapage
     )
+    prefs = Preferences.objects.get_or_create(user=request.user)[0]
+
     stats = ProfileStat.objects.filter(profile=profile, community=community)
     dashboards = CommunityProfileDashboardRoles.objects.filter(
         profile=profile, community=community
@@ -67,6 +70,7 @@ def dashboard_home(request):
         show_dbswitch = True
     else:
         show_dbswitch = False
+
     context.update(
         {
             "sidebar": sidebar_modules.values(),
@@ -81,6 +85,7 @@ def dashboard_home(request):
             "stats": stats,
             "profile_xp": exo,
             "show_dbswitch": show_dbswitch,
+            "preferences":prefs
         }
     )
     return render(
