@@ -36,6 +36,6 @@ def system_settings(request):
             "av_path": settings.PLY_AVATAR_FILE_URL_BASE_URL,
             "url_path": request.path,
             "preferencesForm": preferencesForm,
-            "ply_version": vers.get_version_str()
+            "ply_version": vers
         }
         return render(request, "preferences-system_settings.html", context)

@@ -14,6 +14,7 @@ export class Dashboard {
             sidebar_rightdiv: "#_dashboard_offcanvas_right",
             toastSuccessCls: 'bg-outline-success text-success',
             toastErrorCls: 'bg-outline-warning text-warning',
+            toastCls: 'bg-outline-white'
         }
         console.log("Dashboard Instance ready.");
     }
@@ -61,6 +62,14 @@ export class Dashboard {
 	}).show();
     }
 
+    normalToast(header,body) {
+        new bs5.Toast({
+		body: body,
+		header: header,
+		className: this.settings.toastCls,
+
+	}).show();
+    }
     handleNotify(data) {
         $(this.settings.notifyul).empty();
         $(this.settings.notifycountul).text(data.count);
