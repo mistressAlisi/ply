@@ -350,6 +350,7 @@ class GalleryTempFile(models.Model):
     data = models.TextField(verbose_name='File Text Data',blank=True,null=True)
     bindata = models.BinaryField(verbose_name='File Bindata',blank=True,null=True)
     jsondata = models.JSONField(verbose_name='File JSONData',blank=True,null=True)
+    userdata = models.JSONField(verbose_name='File User Review JSONData',default={})
     meta = models.JSONField(verbose_name='File Metadata')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     published = models.BooleanField(verbose_name="Published FLAG",default=False)
