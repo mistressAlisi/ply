@@ -22,6 +22,8 @@ from .auth_views import login
 urlpatterns = [
     path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("profiles/", include("communities.profiles.public_urls")),
+    path("gallery/",include("media.gallery.core.public_urls")),
+    path("g/",include("media.gallery.core.sharing_urls")),
     path("p/", include("communities.profiles.sharing_urls")),
     path("s/k/", include("content_manager.keywords.sharing_urls")),
     path("dynapages/api/", include("core.dynapages.api_urls")),
@@ -38,8 +40,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("ply.api_urls")),
     path("martor/", include("martor.urls")),
-    # path('core/', include('core.public_urls')),
-    # path('g/', include('core.sharing_urls')),
     path("stream/", include("communities.stream.public_urls")),
     path("stream/api/", include("communities.stream.api_urls")),
     path("stats/api/", include("roleplaying.stats.api_urls")),

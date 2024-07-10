@@ -4,8 +4,8 @@ from django.shortcuts import render
 import ply
 from ply.toolkit import vhosts, file_uploader
 from media.gallery.core.models import GalleryItemsByCollectionPermission
-from core.metrics import GalleryItemHit
-from core.metrics import request_data_capture
+from core.metrics.models import GalleryItemHit
+from core.metrics.toolkit import request_data_capture
 
 # Render the core Share card/page:
 def gallery_item(request,profile_id,collection_id,item_id):
