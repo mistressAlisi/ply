@@ -454,3 +454,6 @@ PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # TODO: Should we remove these setting keys and use storages everywhere?
 PLY_AVATAR_FILE_BASE_PATH = config("PLY_AVATAR_FILE_BASE_PATH")
 PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")
+
+# New Dynamic URL mapping
+PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)

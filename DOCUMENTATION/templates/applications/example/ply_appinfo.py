@@ -35,4 +35,12 @@ PLY_APP_INFO = {
         #     "menu_class": "sidebar_staff",
         # },
     },
+    "app_endpoints": {
+        "registrar": {
+            "url_base":"the/url/path/ after /app",
+            "module":"some_url_file_relative_to_module.py",
+            "enable": False
+
+        }
+    }
 }
