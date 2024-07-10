@@ -17,6 +17,7 @@ $(document).ready(function(){
   $(".nav-link").click(function(a,e){window.dashboard.handleMainLink(a);});
   $(".sm_link").click(function(a,e){window.dashboard.handleLink(a,true);});
   $("#dashboard-menu-toggle").click();
+  dashboard.load_from_url();
   
 });
 
