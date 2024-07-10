@@ -326,7 +326,7 @@ def lighttable_raw(request):
 # Where the session is also the owner of the item:
 @login_required
 def gallery_collections_raw(request):
-    colls = serialisers.serialise_profile_collection_items(request, True)
+    colls = serialisers.serialise_profile_collection_items(request)
     profile = Profile.objects.get(uuid=request.session["profile"])
     return JsonResponse(colls, safe=False)
 

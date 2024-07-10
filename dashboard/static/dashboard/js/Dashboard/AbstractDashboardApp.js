@@ -11,6 +11,8 @@ export class AbstractDashboardApp {
         "success_body":"Operation Complete!"
     }
     urls = {
+            "_api_prefix":"-",
+            "_prefix":"-",
             "submit":"/some/url",
             "load_edit":"/some/url/"
     }
@@ -29,8 +31,7 @@ export class AbstractDashboardApp {
     }
 
     _submitHandle(data,stat,home=true) {
-            //console.log(data)
-            if (data.responseJSON.res == "ok") {
+            if (data.res == "ok") {
                 dashboard.successToast('<h6><i class="fa-solid fa-check"></i>&#160;'+this.settings["success_hdr"],this.settings["success_body"]);
                 if ((home == true) && (this.settings["home_on_success"] == true)) {
                     dashboard.panel_home();
@@ -41,10 +42,10 @@ export class AbstractDashboardApp {
 
             } else {
                 var errStr="";
-                var objks = Object.keys(data.responseJSON.e);
+                var objks = Object.keys(data.e);
                 for (var okin in objks) {
                     var ok = objks[okin];
-                    errStr = errStr +" <em>"+ok+"</em>: "+data.responseJSON.e[ok]+"<br/>";
+                    errStr = errStr +" <em>"+ok+"</em>: "+data.e[ok]+"<br/>";
                 }
                 dashboard.errorToast('<h5 class="text-danger"><i class="fa-solid fa-xmark"></i>&#160;Error!','<strong>An Error Occurred:</strong><br/>'+errStr);
                 console.error("Unable to execute Operation: ",errStr)
@@ -65,6 +66,18 @@ export class AbstractDashboardApp {
         this.modal.hide();
     }
 
+    api_json_get(url,handle,data=false) {
+        if (this.urls["_api_prefix"] != "-") {
+            url = this.urls["_api_prefix"] + url;
+        }
+         $.ajax({
+            url:  url,
+            data:     data,
+            method: 'GET',
+            context: this,
+            dataType: 'json'
+            }).done(handle);
+    }
     add() {
         this._showModal();
     }
@@ -82,10 +95,9 @@ export class AbstractDashboardApp {
             $.ajax({
             url:  url,
             data:     form.serialize(),
-            complete: handle,
             method: 'POST',
             context: this
-            })
+            }).done(handle);
 
 
     }

@@ -25,10 +25,11 @@ from communities.group.models import GroupMember
 from core.dynapages import models as dynapages
 from communities.profiles.models import ProfilePageNode
 from ply.toolkit.core import get_ply_appinfo
+from ply.toolkit.logger import getLogger
 from roleplaying.stats.models import ProfileStat
 from roleplaying.exp.models import ProfileExperience
 
-
+logging = getLogger("communities.community", name="forge_api_views")
 # Render the User Dashboard Home page:
 @login_required
 def create_community_staff(request):
@@ -116,8 +117,9 @@ def create_community_sidebar_menu(request):
     if len(is_admin) < 1:
         return render(request, "error-access-denied.html", {})
     if request.POST["not_edited"] == "False":
-        form = CommunitySidebarMenuForm(request.POST, initial={"community": community})
-        form.set_community(community)
+        logging.info(f"Creating new Sidebar Menu from data: Mode: {request.POST['application_mode']} Module: {request.POST['module']}. Class: {request.POST['sidebar_class']} in Community {request.POST['community']}")
+        form = CommunitySidebarMenuForm(request.POST)
+        # form.set_community(community)
 
     else:
         instance = CommunitySidebarMenu.objects.get(pk=request.POST["uuid"])

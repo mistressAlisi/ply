@@ -1,0 +1,12 @@
+{
+    "id":"media.gallery.images",
+    "name":"media.gallery.images",
+    "label":"Images Gallery Plugin",
+    "author":"Alisi",
+    "type":"gallery-plugin",
+    "depends":["ply","media.gallery.core"],
+    "provides":["media.gallery.images"],
+    "module": ["ImagesPlugin.js"],
+    "js":[],
+    "css":["media.gallery.images.css"]
+}

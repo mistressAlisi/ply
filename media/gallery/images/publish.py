@@ -19,7 +19,7 @@ from media.gallery.images import utilities
 from media.gallery.core.models import GalleryItemFile
 from core.metrics.models import UserDataEntry
 
-log = plylog.getLogger("photos.publish", name="photos.publish")
+log = plylog.getLogger("media.gallery.images.publish", name="publish")
 
 
 def publish_submission(

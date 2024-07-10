@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from ply import settings
 import ply
 from .auth_views import login
+from .toolkit.core import get_ply_appinfo
 
 urlpatterns = [
     path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("profiles/", include("communities.profiles.public_urls")),
     path("gallery/",include("media.gallery.core.public_urls")),
+    path("gallery/api/",include("media.gallery.core.public_api_urls")),
     path("g/",include("media.gallery.core.sharing_urls")),
     path("p/", include("communities.profiles.sharing_urls")),
     path("s/k/", include("content_manager.keywords.sharing_urls")),
@@ -48,3 +50,16 @@ urlpatterns = [
     path("dice/api/", include("roleplaying.plydice.api_urls")),
     path("", include("communities.community.public_urls"))
 ]
+# The following is for Dynamic Application URL loading using ply_appinfo.app_endpoints:
+if settings.PLY_DYNAMIC_APP_URLS_ENABLED:
+    assigned = []
+    for app in settings.INSTALLED_APPS:
+        app_data = get_ply_appinfo(app)
+        if app_data:
+            if "app_endpoints" in app_data.PLY_APP_INFO:
+                endpoints = app_data.PLY_APP_INFO["app_endpoints"]
+                for ep in endpoints:
+                    if app_data.PLY_APP_INFO["app_endpoints"][ep]["enable"]:
+                        if app_data.PLY_APP_INFO["app_endpoints"][ep]["url_base"] not in assigned:
+                            urlpatterns += [path(f'app/{app_data.PLY_APP_INFO["app_endpoints"][ep]["url_base"]}/',include(app_data.PLY_APP_INFO["app_endpoints"][ep]["module"]))]
+                            assigned.append(app_data.PLY_APP_INFO["app_endpoints"][ep]["url_base"])

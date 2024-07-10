@@ -11,7 +11,7 @@ from media.gallery.images import utilities
 from ply import settings
 from media.gallery.core.models import GalleryTempFileThumb
 
-log = plylog.getLogger("photos.metadata", name="photos.metadata")
+log = plylog.getLogger("media.gallery.images.metadata", name="metadata")
 
 
 def thumbnail(profile, file, file_obj):
