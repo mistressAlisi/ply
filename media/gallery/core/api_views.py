@@ -239,6 +239,7 @@ def get_collections_writeable(request):
         profile=request.session["profile"], community=request.session["community"]
     ).filter(Q(owner=True) | Q(edit=True) | Q(create=True))
     for col in collections:
+        #TODO: Don't use a hack like this....
         col_json["cols"][str(col.collection.uuid)] = col.collection.label
     return JsonResponse(col_json, safe=False)
 
@@ -281,8 +282,9 @@ def publish_after_review(request, file_id):
             "File Uploader: Unable to proceed - Security Context is inconsistent with expected environment",
             safe=False,
         )
+
     publish_to_gallery.delay(
-        request.POST, profile.uuid, temp_file.id, request.user.id, community.uuid
+        request.POST, profile.uuid, temp_file.plugin, temp_file.id, request.user.id, community.uuid,temp_file.meta
     )
     return JsonResponse("ok", safe=False)
 

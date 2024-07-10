@@ -8,8 +8,8 @@ from dashboard.navigation import SideBarBuilder
 from communities.profiles.models import Profile
 from media.gallery.core import serialisers
 from media.gallery.core.models import GalleryCollection
-from core.metrics import GalleryCollectionPageHit,GalleryProfilePageHit,GalleryHomePageHit
-from core.metrics import request_data_capture
+from core.metrics.models import GalleryCollectionPageHit,GalleryProfilePageHit,GalleryHomePageHit
+from core.metrics.toolkit import request_data_capture
 # Render the Gallery Home page:
 def gallery_home(request):
     # Ignore port:

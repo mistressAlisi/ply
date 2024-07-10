@@ -69,7 +69,7 @@ def gallery_collections(request):
         "profile": profile,
         "av_path": ply.settings.PLY_AVATAR_FILE_URL_BASE_URL,
     }
-    return render(request, "core-dashboard_all_collections.html", context)
+    return render(request, "media.gallery.core/dashboard/all_collections.html", context)
     # return JsonResponse(colls,safe=False)
 
 

@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import User
 from ply.toolkit import logger as plylog,streams as streams_toolkit
 from media.gallery.core.models import GalleryTempFile
@@ -30,7 +32,15 @@ app.config_from_object('django.conf:settings')
 @app.task
 @transaction.atomic
 #(request.POST,profile.uuid,temp_file.id,request.user.id,comm.uuid)
-def publish_to_gallery(data,profile,temp_file,user,community):
+def publish_to_gallery(data,profile,file_plugin,temp_file,user,community,metadata={}):
+    # New in PlyNG: Clean up the f*cking input data more:
+    # This code can't be so fucking finicky.
+    data_keys = ["nsfw","raiting","title","descr","display_sizing"]
+    for dk in data_keys:
+        if dk not in data:
+            data[dk] = ""
+    if "meta" not in data:
+         data["meta"] = json.dumps(metadata)
     try:
         profile = Profile.objects.get(uuid=profile)
         community = Community.objects.get(uuid=community)
@@ -39,14 +49,14 @@ def publish_to_gallery(data,profile,temp_file,user,community):
         # Import the right plugin and let it do it's thing:
         publish_mod = importlib.import_module(f"{temp_file.plugin}.publish")
         # Step one: Move the original file to the original storage:
-        temp_path = ply.settings.PLY_TEMP_FILE_BASE_PATH+file_uploader.get_temp_path(temp_file.name,profile)
-        original_path = ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH+file_uploader.get_temp_path(temp_file.name,profile)
+        temp_path = ply.settings.PLY_TEMP_FILE_BASE_PATH+file_uploader.get_file_path(temp_file.name,profile)
+        original_path = ply.settings.PLY_GALLERY_ORIGINAL_FILE_BASE_PATH+file_uploader.get_file_path(temp_file.name,profile)
         try:
             temp_file_handle = open(temp_path,'rb')
             fpath, fsize = file_uploader.save_original_file(temp_file_handle,profile)
             item_hash = slugify(data["title"])
-            catitem = Category.objects.get(pk=data["cat"])
-            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=data["plugin"],nsfw=data["nsfw"],rating=data["rating"],title=data["title"],descr=data["descr"],sizing=data["sizing"],plugin_data=data["meta"],category=catitem)
+            catitem = Category.objects.get(pk=data["publish_category"])
+            item = GalleryItem.objects.create(uuid=uuid.uuid4(),item_hash=item_hash,profile=profile,plugin=file_plugin,nsfw=data["nsfw"],rating=data["raiting"],title=data["title"],descr=data["descr"],sizing=data["display_sizing"],plugin_data=metadata,category=catitem)
             # Step three: Register the original file (hash it first):
             sha1 = hashlib.sha1()
             while True:
@@ -62,28 +72,29 @@ def publish_to_gallery(data,profile,temp_file,user,community):
             # Step three: Use the imported plugin module to process the file for the galleries and create files:
             publish_mod.publish_submission(data,profile,temp_path,original_path,item,user,community,temp_file.id)
             # Step Four: Add to collections:
-            for c in data["cat"].split(","):
+            for c in data["publish_category"].split(","):
                 cat = GalleryArtworkCat.objects.get_or_create(label=c)[0]
                 gic = GalleryItemCategory.objects.get_or_create(item=item,category=cat)[0]
                 gic.save()
                 cat.save()
             # Step Five: Add to Keywords:
-            for k in data["kw"].split(","):
-                if (len(k)>1):
-                    if (k[0] == "#"):
-                        hs = f"#{slugify(k[1:])}"
-                        ekw = Keyword.objects.get_or_create(hash=k)
-                        if (ekw[1] is True):
-                            ekw[0].keyword = k[1:]
-                        kw = ekw[0]
-                    else:
-                        hs = "#"+slugify(k)
-                        kw = Keyword.objects.get_or_create(keyword=k,hash=hs)[0]
-                    gkw = GalleryItemKeyword.objects.get_or_create(item=item,keyword=kw)[0]
-                    gkw.save()
-                    kw.save()
+            if "publish_keywords" in data:
+                for k in data["publish_keywords"].split(","):
+                    if (len(k)>1):
+                        if (k[0] == "#"):
+                            hs = f"#{slugify(k[1:])}"
+                            ekw = Keyword.objects.get_or_create(hash=k)
+                            if (ekw[1] is True):
+                                ekw[0].keyword = k[1:]
+                            kw = ekw[0]
+                        else:
+                            hs = "#"+slugify(k)
+                            kw = Keyword.objects.get_or_create(keyword=k,hash=hs)[0]
+                        gkw = GalleryItemKeyword.objects.get_or_create(item=item,keyword=kw)[0]
+                        gkw.save()
+                        kw.save()
             # Step six: Add to Collections:
-            for c in data["col"].split(","):
+            for c in data["publish_collections"].split(","):
                 try:
                     col = GalleryCollection.objects.get_or_create(uuid=c)[0]
                 except ValidationError:
@@ -139,7 +150,7 @@ def upload_ingest(_profile,plugin,file_name,filepath,_file_obj,content_type="",s
         fpoint = open(ply.settings.PLY_TEMP_FILE_BASE_PATH+filepath)
         thumb = metadata_mod.thumbnail(profile,fpoint,file_obj)
         file_obj.thumbnail = thumb
-        file_obj.path = file_uploader.get_temp_path(f"{profile.profile_id}-{file_obj.name}",profile)
+        file_obj.path = file_uploader.get_file_path(f"{profile.profile_id}-{file_obj.name}",profile)
         file_obj.save()
         tempFileObj = GalleryTempFileThumb(file=file_obj,path=file_obj.path,file_size=size)
         tempFileObj.save()
