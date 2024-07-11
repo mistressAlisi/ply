@@ -11,17 +11,20 @@
     "icon":"fa-solid fa-address-card",
     "setup_required":false,
     "setup_form":"someclass.someform",
+    "system":false,
     "modes":{
         "banner":true,
         "mainbody":true,
         "sidecol":true,
-        "footer":true
+        "footer":true,
+        "dashboard": false
     },
     "used_in": {
         "profile":true,
         "group":true,
         "dashboard":true,
         "SLHUD":true,
-        "blog":true
+        "blog":true,
+        "staff":false
     }
 }
