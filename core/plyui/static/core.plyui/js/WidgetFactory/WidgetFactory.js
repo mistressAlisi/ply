@@ -48,6 +48,36 @@ export class WidgetFactory {
         return card;
     }
 
+    create_table(prefix,className) {
+        var table = $("<table>",{id:"table_"+prefix,class:className});
+        var thead = $("<thead>",{id:"table_"+prefix+"_header"});
+        var tbody = $("<tbody>",{id:"table_"+prefix+"_body"});
+        table.append(thead,tbody);
+        return table;
+    }
+
+    create_tr(prefix,id,className) {
+        var tr = $("<tr>",{id:"tr_"+prefix+"_"+id,class:className});
+        return tr;
+    }
+
+    create_td(prefix,id,html,colspan=1,className) {
+        var td = $("<td>",{id:"td_"+prefix+"_"+id,class:className,html:html});
+        if (colspan > 1) {
+            td.colspan = colspan;
+        }
+        return td;
+    }
+
+    create_th(prefix,id,html,scope="row",className) {
+        var th = $("<th>",{id:"th_"+prefix+"_"+id,class:className,"scope":scope,"html":html});
+        return th;
+    }
+
+    create_button(id,html,className="") {
+        var btn = $("<button>",{id:"btn_"+id,className:"btn "+className,html:html});
+        return btn;
+    }
     constructor() {
 
     }
