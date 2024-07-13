@@ -11,8 +11,8 @@ export class AbstractDashboardApp {
         "success_body":"Operation Complete!"
     }
     urls = {
-            "_api_prefix":"-",
-            "_prefix":"-",
+            "_api_prefix":"",
+            "_prefix":"",
             "submit":"/some/url",
             "load_edit":"/some/url/"
     }
@@ -30,6 +30,15 @@ export class AbstractDashboardApp {
 
     }
 
+    _parse_ajax_error(data) {
+        var errStr="";
+                var errors = JSON.parse(data.e);
+                for (var eks in errors) {
+                    errStr = errStr +" <em>"+eks+"</em>: "+errors[eks][0]["message"]+"<br/>";
+                    $(this.elements["form"]).find("#id_"+eks).addClass('is-invalid');
+                }
+        return errStr;
+    }
     _submitHandle(data,stat,home=true) {
             if (data.res == "ok") {
                 dashboard.successToast('<h6><i class="fa-solid fa-check"></i>&#160;'+this.settings["success_hdr"],this.settings["success_body"]);
@@ -41,12 +50,7 @@ export class AbstractDashboardApp {
                 return true;
 
             } else {
-                var errStr="";
-                var objks = Object.keys(data.e);
-                for (var okin in objks) {
-                    var ok = objks[okin];
-                    errStr = errStr +" <em>"+ok+"</em>: "+data.e[ok]+"<br/>";
-                }
+                var errStr= this._parse_ajax_error(data);
                 dashboard.errorToast('<h5 class="text-danger"><i class="fa-solid fa-xmark"></i>&#160;Error!','<strong>An Error Occurred:</strong><br/>'+errStr);
                 console.error("Unable to execute Operation: ",errStr)
                 return false;
@@ -65,9 +69,12 @@ export class AbstractDashboardApp {
         this._getModal();
         this.modal.hide();
     }
-
+    _clear_invalid() {
+        $(this.elements["form"]).find("input").removeClass('is-invalid');
+        $(this.elements["form"]).find("select").removeClass('is-invalid');
+    }
     api_json_get(url,handle,data=false) {
-        if (this.urls["_api_prefix"] != "-") {
+        if (this.urls["_api_prefix"] != "") {
             url = this.urls["_api_prefix"] + url;
         }
          $.ajax({
@@ -81,9 +88,14 @@ export class AbstractDashboardApp {
     add() {
         this._showModal();
     }
-    submit(url=false,form=false,handle=false) {
+    submit(url=false,form=false,handle=false,disable_prefix=false) {
             if (url == false) {
                 url = this.urls["submit"];
+            }
+            if (disable_prefix == false) {
+                 if (this.urls["_api_prefix"] != "") {
+                    url = this.urls["_api_prefix"] + url;
+                }
             }
             if (form == false) {
                 form = $(this.elements["form"]);
@@ -91,6 +103,7 @@ export class AbstractDashboardApp {
             if (handle == false) {
                 handle = this._submitHandle;
             }
+            this._clear_invalid();
             console.info("Submitting Dashboard App Data: URL '"+url+"'");
             $.ajax({
             url:  url,
@@ -113,19 +126,28 @@ export class AbstractDashboardApp {
             }
             this._showModal();
         } else {
-                dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+data.e.__all__[0]);
-                console.error("Unable to execute Operation: ",data.e)
+                var errStr= this._parse_ajax_error(data);
+                dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+errStr);
+                console.error("Unable to execute Operation: ",errStr)
                 return false;
             }
     }
-    edit(uuid) {
+    edit(uuid,disable_prefix=false) {
           console.info("Loading Data for Edit Mode for '"+uuid+"'");
-            $.ajax({
-            url:   this.urls["load_edit"]+uuid,
-            success: this._edit_handle,
-            method: 'GET',
-            context: this
-            })
+          var url = this.urls["load_edit"];
+          if (disable_prefix == false) {
+              console.warn("EP",this.urls["_api_prefix"],url);
+              if (this.urls["_api_prefix"] !== "") {
+                  url = this.urls["_api_prefix"] + url;
+              }
+            }
+          this._clear_invalid();
+          $.ajax({
+              url:   url+uuid,
+              method: 'GET',
+              context: this
+          }).done(this._edit_handle);
+
     }
     _getOffcanvas() {
             this.offcanvas = new bootstrap.Offcanvas(this.elements["offcanvas"]);
@@ -181,12 +203,15 @@ export class AbstractDashboardApp {
 
     offcanvas_details(uuid) {
           console.info("Loading Data for Offcanvas Details for '"+uuid+"'");
+            var url = this.urls["load_edit"];
+            if (this.urls["_api_prefix"] != "") {
+            url = this.urls["_api_prefix"] + url;
+            }
             $.ajax({
-            url:   this.urls["load_edit"]+uuid,
-            success: this._offcanvas_details,
+            url:   url+uuid,
             method: 'GET',
             context: this
-            })
+            }).done(this._offcanvas_details)
     }
 
      constructor(name="app",settings={},urls={}) {

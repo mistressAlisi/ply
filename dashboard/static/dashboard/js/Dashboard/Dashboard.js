@@ -212,7 +212,11 @@ export class Dashboard {
         }
         if (sublink == true) {
             $(document).trigger('moduleUnload');
-            $("#sidebarMenu").offcanvas('hide');
+            try {
+                $("#sidebarMenu").offcanvas('hide');
+            } catch (error) {
+                console.info("Trying to close #sidebarMenu's offcanvas: Not found.");
+            }
         }
         if (link.data('onclick')) {
             console.info("Link OnClick data",link.data('onclick'));

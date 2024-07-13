@@ -23,7 +23,7 @@ PLY_APP_INFO = {
         "forge":{
             "privileged": True,
             "default": False,
-            "active": True,
+            "active": False,
             "descr": "The WorldForge/World admin dashboard mode",
             "menu_class": "sidebar_forge",
         },
