@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_bootstrap5',
+    'djstripe',
     'jsignature',
     'django_registration',
     'storages',
@@ -419,6 +420,15 @@ PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
 STORAGES = {
+    # TODO: default should be its own config key.
+    "default":{
+        "BACKEND": config("PLY_DEFAULT_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_STATIC_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
+        }
+    },
+
     "staticfiles":{
         "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
         "OPTIONS": {
@@ -457,3 +467,4 @@ PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")
 
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")
