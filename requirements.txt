@@ -40,6 +40,7 @@ django-filter==23.5
 django-grappelli==3.0.8
 django-import-export==4.0.7
 django-jsignature==0.11
+django-mailer==2.3.2
 django-mathfilters==1.0.0
 django-multiselectfield==0.1.12
 django-phonenumber-field==7.3.0
@@ -61,6 +62,7 @@ jmespath==1.0.1
 jsonpickle==3.0.4
 jsonpointer==2.4
 kombu==5.3.4
+lockfile==0.12.2
 lxml==5.1.0
 Markdown==3.5.1
 MarkupSafe==2.1.3
