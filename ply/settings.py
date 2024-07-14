@@ -96,10 +96,13 @@ INSTALLED_APPS = [
     'ufls.dealers',
     'ufls.scheduling',
     'ufls.training',
+    'mailer',
     'whitenoise',
     'jsignature',
     'core.plyui.themes.default_theme'
 ]
+
+EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

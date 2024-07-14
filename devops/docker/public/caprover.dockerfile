@@ -20,6 +20,7 @@ RUN bash -c 'source /venv/bin/activate; /venv/bin/pip install -r /tmp/requiremen
 
 ENV VIRTUAL_ENV /venv
 ENV PATH /venv/bin:$PATH
+ENV APP_MODE "wsgi"
 
 COPY . /app
 
