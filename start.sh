@@ -5,7 +5,7 @@ if [ "$APP_MODE" == "custom-command" ]
     python manage.py $APP_COMMAND
   fi
   # do standard start
-  if [ "$APP_MODE" == "wsgi" ]
+if [ "$APP_MODE" == "wsgi" ]
   then
   gunicorn ply.wsgi:application -b 0.0.0.0:8000
 fi
