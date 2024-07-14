@@ -48,11 +48,11 @@ def upload_lighttable(request):
     files = GalleryTempFile.objects.filter(profile=profile)
     collections = GalleryCollection.objects.filter(owner=profile)
 
-    context += {
+    context.update({
         "files": files,
         "base_url": ply.settings.PLY_TEMP_FILE_URL_BASE_URL,
         "collections": collections,
-    }
+    })
 
     return render(
         request, "media.gallery.core/dashboard/uploader/upload_lighttable.html", context
