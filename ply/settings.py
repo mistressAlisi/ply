@@ -468,16 +468,3 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new ins
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
-
-import sentry_sdk
-
-sentry_sdk.init(
-    dsn="https://2e0ff3a52e1e41b6924cc31606248756@ingest.jouleworks.net/2",
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
-    profiles_sample_rate=1.0,
-)
