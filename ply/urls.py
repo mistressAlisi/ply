@@ -25,7 +25,7 @@ from .toolkit.core import get_ply_appinfo
 
 
 urlpatterns = [
-    path("grappelli/", include("grappelli.urls")),  # grappelli URLS
+    #path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("profiles/", include("communities.profiles.public_urls")),
     path("gallery/",include("media.gallery.core.public_urls")),
     path("gallery/api/",include("media.gallery.core.public_api_urls")),
@@ -45,6 +45,7 @@ urlpatterns = [
     path("accounts/api/", include("django_registration.backends.activation.urls")),
     path("admin/", admin.site.urls),
     path("api/", include("ply.api_urls")),
+    path('app/ufls/return/', include('ufls.backend_connection_urls')),
     path("martor/", include("martor.urls")),
     path("stream/", include("communities.stream.public_urls")),
     path("stream/api/", include("communities.stream.api_urls")),
