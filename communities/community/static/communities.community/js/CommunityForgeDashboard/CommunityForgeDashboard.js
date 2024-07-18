@@ -54,6 +54,8 @@ export class CommunityForgeDashboard extends AbstractDashboardApp {
             super(name);
 
             this.urls = {
+            "_api_prefix":"",
+            "_prefix":"",
             "submit_menu":"/dashboard/forge/api/communities.community/menu/create",
             "load_menu_item":"/dashboard/forge/api/communities.community/menu/edit/",
             "delete_menu_item":"/dashboard/forge/api/communities.community/menu/delete/",
