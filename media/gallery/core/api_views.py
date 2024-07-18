@@ -239,8 +239,31 @@ def get_collections_writeable(request):
         profile=request.session["profile"], community=request.session["community"]
     ).filter(Q(owner=True) | Q(edit=True) | Q(create=True))
     for col in collections:
+        #TODO: Don't use a hack like this....
         col_json["cols"][str(col.collection.uuid)] = col.collection.label
     return JsonResponse(col_json, safe=False)
+
+
+@login_required
+def update_review_details(request, file_id):
+    context, vhost, community, profile = default_context(request)
+    try:
+        temp_file = GalleryTempFile.objects.get(id=file_id)
+    except:
+        log.error(f"File Uploader: Unable to find temp file {file_id} in database.")
+        return JsonResponse("error: File not found in TempDB.", safe=False)
+    if str(temp_file.profile.uuid) != request.session["profile"]:
+        log.error(
+            f"**SECURITY ERROR: Profile {request.session['profile']} tried to access File #{file_id} from TempDB; which does not belong to that profile: Request rejected!"
+        )
+        return JsonResponse(
+            "File Uploader: Unable to proceed - Security Context is inconsistent with expected environment",
+            safe=False,
+        )
+    # update_data = json.dumps(request.POST)
+    temp_file.userdata = request.POST
+    temp_file.save()
+    return JsonResponse("ok", safe=False)
 
 
 @login_required
@@ -259,8 +282,9 @@ def publish_after_review(request, file_id):
             "File Uploader: Unable to proceed - Security Context is inconsistent with expected environment",
             safe=False,
         )
+
     publish_to_gallery.delay(
-        request.POST, profile.uuid, temp_file.id, request.user.id, community.uuid
+        request.POST, profile.uuid, temp_file.plugin, temp_file.id, request.user.id, community.uuid,temp_file.meta
     )
     return JsonResponse("ok", safe=False)
 
@@ -275,15 +299,25 @@ def lighttable_raw(request):
     file_data = {}
     for file in files:
         pk = f"{file.pk}"
+        if "title" in file.userdata:
+            file_name = file.userdata["title"]
+        elif "name" in file.userdata:
+            file_name = file.userdata["name"]
+        else:
+            file_name = file.name
+        if "descr" in file.userdata:
+            file_desc = file.userdata["descr"]
+        else:
+            file_desc = f"A new piece by {profile.name}"
         file_data[pk] = {
-            "file": file.name,
+            "file": file_name,
             "file_size": file.file_size,
             "type": file.type,
             "created": file.created.strftime(pref.longdate),
             "updated": file.updated.strftime(pref.longdate),
             "plugin": file.plugin,
             "thumbnail": f"{ply.settings.PLY_TEMP_FILE_URL_HOST}{ply.settings.PLY_TEMP_FILE_URL_BASE_URL}/{file.thumbnail}",
-            "descr": f"A new piece by {profile.name}",
+            "descr": file_desc,
         }
     return JsonResponse({"res": "ok", "files": file_data}, safe=False)
 
@@ -292,7 +326,7 @@ def lighttable_raw(request):
 # Where the session is also the owner of the item:
 @login_required
 def gallery_collections_raw(request):
-    colls = serialisers.serialise_profile_collection_items(request, True)
+    colls = serialisers.serialise_profile_collection_items(request)
     profile = Profile.objects.get(uuid=request.session["profile"])
     return JsonResponse(colls, safe=False)
 
@@ -783,7 +817,16 @@ def gallery_create_collection(request):
     if "colname" in request.POST:
         name = request.POST["colname"]
         col, perm = create_collection(profile, community, name)
-        data = {'col':col.uuid,'label':col.label,'created':'','items':col.items,'views':col.views,'likes':col.likes,'shares':col.shares,'comments':col.comments}
-        return JsonResponse({"res": "ok","data":data}, safe=False)
+        data = {
+            "col": col.uuid,
+            "label": col.label,
+            "created": "",
+            "items": col.items,
+            "views": col.views,
+            "likes": col.likes,
+            "shares": col.shares,
+            "comments": col.comments,
+        }
+        return JsonResponse({"res": "ok", "data": data}, safe=False)
     else:
-        return JsonResponse({"res":"error","err":"No collection name specified."})
+        return JsonResponse({"res": "error", "err": "No collection name specified."})

@@ -2,6 +2,8 @@ import datetime
 from fractions import Fraction
 from PIL import Image
 import PIL.ExifTags
+
+from media.gallery.images.models import GalleryImagesSettings
 from ply.toolkit import file_uploader
 import ply
 import os
@@ -204,3 +206,17 @@ def save_gallery_photo(file,profile,name=False):
     #         bw = destination.tell()
     #         destination.close()
     #         return bw
+
+def get_image_encoder_settings(community):
+    # Load settings:
+    image_settings = GalleryImagesSettings.objects.get(community=community)
+    # Output format selection:
+    output_formats = []
+    if image_settings.rescaler_target_format:
+        output_formats.append(image_settings.rescaler_target_format.ext)
+        if image_settings.rescaler_fallback_jpeg:
+            output_formats.append("jpeg")
+    else:
+        # Fallback! JPEG is always default!
+        output_formats.append("jpeg")
+    return output_formats

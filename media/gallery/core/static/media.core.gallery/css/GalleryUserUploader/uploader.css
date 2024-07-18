@@ -47,3 +47,8 @@
 .lighttable-card #card-date {
     font-size: 10px;
 }
+
+.lighttable-card #card-category {
+    font-size: 10px;
+    max-height: 10px;
+}

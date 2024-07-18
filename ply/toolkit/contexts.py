@@ -16,7 +16,8 @@ def default_context(request, current_profile=False):
     """
     vhost, community = vhosts.get_vhost_and_community(request)
     if community is None:
-        return False
+        raise NotImplementedError("No Virtual Host/Community found.")
+
     theme = themes.get_community_theme_or_def(community)
     ap = profiles.get_active_profile(request)
     if not current_profile:

@@ -145,8 +145,8 @@ class GalleryItem(models.Model):
     uuid = models.UUIDField(primary_key = True,default = uuid.uuid4,editable = False)
     item_hash = models.TextField(max_length=200,verbose_name='Item Hash')
     title = models.TextField(max_length=200,verbose_name='Item Title')
-    profile = models.ForeignKey(Profile,verbose_name='Item Owner',on_delete=models.RESTRICT)
-    category = models.ForeignKey(Category,verbose_name='Item Category',on_delete=models.RESTRICT)
+    profile = models.ForeignKey(Profile,verbose_name='Item Owner',on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,verbose_name='Item Category',on_delete=models.CASCADE)
     sizing = models.IntegerField(verbose_name='Sizing Hint',default=0)
     nsfw = models.CharField(verbose_name="Item NSFW Flag",default=False,max_length=10)
     en_comments = models.BooleanField(verbose_name="Item Comments Enabled Flag",default=True)
@@ -270,7 +270,7 @@ class GalleryItemCategoryAdmin(admin.ModelAdmin):
 class GalleryItemKeyword(models.Model):
     class Meta:
         db_table =  "media_gallery_core_item_keyword"
-    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.RESTRICT)
+    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
     keyword = models.ForeignKey(Keyword,verbose_name='keyword',on_delete=models.RESTRICT)
     order = models.IntegerField(verbose_name='Order Column',default=0)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
@@ -286,7 +286,7 @@ class GalleryItemKeywordAdmin(admin.ModelAdmin):
 class GalleryItemComments(models.Model):
     class Meta:
         db_table =  "media_gallery_core_item_comments"
-    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.RESTRICT)
+    item = models.ForeignKey(GalleryItem,verbose_name='Item',on_delete=models.CASCADE)
     comment = models.TextField(verbose_name='Comment')
     order = models.IntegerField(verbose_name='Order Column',default=0)
     created = models.DateTimeField(auto_now_add=True,editable=False,verbose_name='Created')
@@ -350,6 +350,7 @@ class GalleryTempFile(models.Model):
     data = models.TextField(verbose_name='File Text Data',blank=True,null=True)
     bindata = models.BinaryField(verbose_name='File Bindata',blank=True,null=True)
     jsondata = models.JSONField(verbose_name='File JSONData',blank=True,null=True)
+    userdata = models.JSONField(verbose_name='File User Review JSONData',default={})
     meta = models.JSONField(verbose_name='File Metadata')
     archived = models.BooleanField(verbose_name="Archived FLAG",default=False)
     published = models.BooleanField(verbose_name="Published FLAG",default=False)
