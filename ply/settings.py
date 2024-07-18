@@ -36,7 +36,7 @@ STATIC_ROOT = config("STATIC_ROOT")
 
 # Application definition
 INSTALLED_APPS = [
-    'grappelli',
+    #'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -96,9 +96,9 @@ INSTALLED_APPS = [
     'ufls.registrar',
     'ufls.dealers',
     'ufls.scheduling',
+    'ufls.staff',
     'mailer',
     'whitenoise',
-    'jsignature',
     'core.plyui.themes.default_theme'
 ]
 
@@ -206,9 +206,9 @@ if USE_S3:
     # aws settings
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
     AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
     MEDIA_URL = config('PLY_MEDIA_URL')
@@ -235,8 +235,8 @@ else:
         MEDIA_URL = "/media/"
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
     MEDIA_ROOT = "/app/media_root/"
     MEDIA_URL = "/media/"
 
@@ -514,3 +514,5 @@ PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

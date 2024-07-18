@@ -56,7 +56,10 @@ def get_all_profiles(request,system=False):
     :rtype: Profiles object
 
    """
-    profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=system,placeholder=False)
+    try:
+        profiles = Profile.objects.filter(creator=request.user,archived=False,blocked=False,system=system,placeholder=False)
+    except TypeError:
+        return []
     return profiles
     
 
