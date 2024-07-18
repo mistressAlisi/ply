@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_bootstrap5',
+    'jsignature',
     'django_registration',
     'rest_framework',
     'rest_framework.authtoken',
@@ -95,7 +96,6 @@ INSTALLED_APPS = [
     'ufls.registrar',
     'ufls.dealers',
     'ufls.scheduling',
-    'ufls.training',
     'mailer',
     'whitenoise',
     'jsignature',
@@ -377,9 +377,13 @@ PLY_WORLDFORGE_DASHBOARD_MODULES = [
     "communities.community",
     "ufls.event",
     "ufls.registrar",
-    "communities.stream"
+    "communities.stream",
+    "communities.dashboards",
+    "media.gallery.core",
+    "ufls.staff"
 ]
 PLY_STAFF_DASHBOARD_MODULES = [
+    "ufls.staff"
 ]
 PLY_GALLERY_PLUGINS = [
     "media.gallery.images"
@@ -453,6 +457,45 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
+STORAGES = {
+    # TODO: default should be its own config key.
+    "default":{
+        "BACKEND": config("PLY_DEFAULT_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_STATIC_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
+        }
+    },
+
+    "staticfiles":{
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_STATIC_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
+        }
+    },
+    "gallery_originals": {
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
+        }
+    },
+    "gallery_publish": {
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
+            "base_url":config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
+        }
+    },   
+    "avatars":{
+        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": {
+            "location":config("PLY_AVATAR_BASE_PATH"),
+            "base_url":config("PLY_AVATAR_BASE_URL"),
+        }
+    }
+}
 
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
@@ -465,6 +508,9 @@ STRIPE_LIVE_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
 STRIPE_LIVE_MODE = True  # Change to True in production
 DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
-DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+
+# New Dynamic URL mapping
+PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")

@@ -1,4 +1,14 @@
 export class Dashboard {
+    load_from_url() {
+        var load = decodeURIComponent(location.hash).substr(1);
+        var links = $(this.settings.sidebarElement).find("a"+this.settings.sidebarLinkClass);
+        links.each(function(x,y,z=load) {
+            if (z != "") {
+                if ($(y).data('trgt') == z) {
+                    $(y).trigger('click');
+            }}
+        });
+    }
     constructor() {
         this.cmp =  false;
         this._pLoaded =  [];
@@ -14,6 +24,10 @@ export class Dashboard {
             sidebar_rightdiv: "#_dashboard_offcanvas_right",
             toastSuccessCls: 'bg-outline-success text-success',
             toastErrorCls: 'bg-outline-warning text-warning',
+            toastCls: 'bg-outline-white',
+            sidebarElement: '#sidebarMenu',
+            sidebarLinkClass :'.sidebar-submenu-link'
+
         }
         console.log("Dashboard Instance ready.");
     }
@@ -61,6 +75,14 @@ export class Dashboard {
 	}).show();
     }
 
+    normalToast(header,body) {
+        new bs5.Toast({
+		body: body,
+		header: header,
+		className: this.settings.toastCls,
+
+	}).show();
+    }
     handleNotify(data) {
         $(this.settings.notifyul).empty();
         $(this.settings.notifycountul).text(data.count);
@@ -172,8 +194,13 @@ export class Dashboard {
         $(link_class + "link").removeClass("active");
         $(link_class + "slink").removeClass("active");
         //$(a.currentTarget.parentNode).addClass("active");
-        var link = $(a.currentTarget);
-        var modid = a.currentTarget.parentNode.id;
+        if ('currentTarget' in a) {
+            var link = $(a.currentTarget);
+            var modid = a.currentTarget.parentNode.id;
+        } else {
+            var link = $(a.target);
+            var modid = "";
+        }
         link.addClass('active');
         if (link.data('js')) {
             console.info("Link JS data", link.data('js'));
@@ -185,7 +212,11 @@ export class Dashboard {
         }
         if (sublink == true) {
             $(document).trigger('moduleUnload');
-            $("#sidebarMenu").offcanvas('hide');
+            try {
+                $("#sidebarMenu").offcanvas('hide');
+            } catch (error) {
+                console.info("Trying to close #sidebarMenu's offcanvas: Not found.");
+            }
         }
         if (link.data('onclick')) {
             console.info("Link OnClick data",link.data('onclick'));

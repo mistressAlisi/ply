@@ -46,7 +46,7 @@ class Category(models.Model):
             models.UniqueConstraint(fields=['hash', 'discipline'], name='unique_hashdis')
         ]
     def __str__(self):
-        return f"(%{self.discipline.hash}.{self.hash}): {self.discipline.name}/{self.name}"
+        return f"{self.discipline.name}:{self.name}"
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

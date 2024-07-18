@@ -1,0 +1,10 @@
+{%extends "dashboard/dashboard_main_panel-95.html" %}
+{%block dashboard_content %}
+<div class="container-fluid main-container" id="dashboard_mainPanel">
+
+  {%with "dynapages/"|add:dynapage.template.filename as src %}
+    {%include src %}
+  {%endwith %}
+
+ </div>
+{%endblock%}
