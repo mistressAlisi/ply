@@ -206,9 +206,9 @@ if USE_S3:
     # aws settings
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
-    #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
-    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
     AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
     MEDIA_URL = config('PLY_MEDIA_URL')
@@ -457,6 +457,7 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
+"""
 STORAGES = {
     # TODO: default should be its own config key.
     "default":{
@@ -496,7 +497,7 @@ STORAGES = {
         }
     }
 }
-
+"""
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
 # TODO: Should we remove these setting keys and use storages everywhere?
