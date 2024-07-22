@@ -48,10 +48,10 @@ export class WidgetFactory {
         return card;
     }
 
-    create_table(prefix,className) {
-        var table = $("<table>",{id:"table_"+prefix,class:className});
-        var thead = $("<thead>",{id:"table_"+prefix+"_header"});
-        var tbody = $("<tbody>",{id:"table_"+prefix+"_body"});
+    create_table(prefix,className,headClass,bodyClass) {
+        var table = $("<table>",{id:"table_"+prefix,class:"table align-middle "+className});
+        var thead = $("<thead>",{id:"table_"+prefix+"_header",class:headClass});
+        var tbody = $("<tbody>",{id:"table_"+prefix+"_body",class:bodyClass});
         table.append(thead,tbody);
         return table;
     }
