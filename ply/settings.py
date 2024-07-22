@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os,socket
 from pathlib import Path
 from decouple import Config,Csv,RepositoryEnv
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Enable loading configuration files from ./config: (which can be mounted as an overlay!)
@@ -88,6 +91,7 @@ INSTALLED_APPS = [
     'ufls.furry',
     'ufls.registrar',
     'ufls.staff',
+    'ufls.themes.neon_nights',
     'ply',
     'core.plyui.themes.default_theme'
 ]
@@ -129,12 +133,12 @@ WSGI_APPLICATION = 'ply.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE'),
-        'NAME': config('db_table'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PW'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT')
+        'ENGINE': config('DB_ENGINE','django.db.backends.postgresql'),
+        'NAME': config('DB_NAME','ply'),
+        'USER': config('DB_USER','ply'),
+        'PASSWORD': config('DB_PW','supersecret'),
+        'HOST': config('DB_HOST','localhost'),
+        'PORT': config('DB_PORT',5432)
     }
 }
 
@@ -468,3 +472,5 @@ PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")
+
+CSRF_TRUSTED_ORIGINS = ["https://10.100.102.200"]
