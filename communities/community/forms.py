@@ -17,6 +17,8 @@ class CommunityForm(ModelForm):
             "frozen",
             "system",
             "hash",
+            "theme"
+
         ]
 
 

@@ -1,3 +1,6 @@
 [submodule "ufls"]
 	path = ufls
 	url = git@github.com:furrydelphia/ufls-ng.git
+[submodule "core/plyui/static/core.plyui/js/plugins/qr-scanner"]
+	path = core/plyui/static/core.plyui/js/plugins/qr-scanner
+	url = git@github.com:nimiq/qr-scanner.git
