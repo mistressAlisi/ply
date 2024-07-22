@@ -33,7 +33,12 @@
 
 
     {% block bootstrap5_extra_head %}{% endblock %}
-
+    {% with THEME_PATH|add:"body/dashboard/css.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
+    {% with THEME_PATH|add:"body/dashboard/fonts.html" as import_template %}
+    {% include import_template %}
+    {% endwith %}
 </head>
 {% block bootstrap_doc_body %}<body  {%block bootstrap_body_theme %}data-bs-theme="dark"{% endblock %}>{% endblock %}
 {% block bootstrap5_before_content %}{% endblock %}

@@ -560,3 +560,4 @@ class CommunityRegistryPageView(models.Model):
     def __str__(self):
         return f"Community: {self.community.name} - Setting Key   {self.key} - Page Node {self.page_id}"
 
+
