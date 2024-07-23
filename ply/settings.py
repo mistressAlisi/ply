@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os,socket
 from pathlib import Path
 from decouple import Config,Csv,RepositoryEnv
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Enable loading configuration files from ./config: (which can be mounted as an overlay!)
@@ -36,7 +39,7 @@ STATIC_ROOT = config("STATIC_ROOT")
 
 # Application definition
 INSTALLED_APPS = [
-    #'grappelli',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -158,12 +161,12 @@ WSGI_APPLICATION = 'ply.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE'),
-        'NAME': config('db_table'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PW'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT')
+        'ENGINE': config('DB_ENGINE','django.db.backends.postgresql'),
+        'NAME': config('DB_NAME','ply'),
+        'USER': config('DB_USER','ply'),
+        'PASSWORD': config('DB_PW','supersecret'),
+        'HOST': config('DB_HOST','localhost'),
+        'PORT': config('DB_PORT',5432)
     }
 }
 
@@ -222,6 +225,10 @@ if USE_S3:
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
     AWS_LOCATION = config('AWS_LOCATION')
+    #STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    #MEDIA_ROOT = "media_root/"
+    #MEDIA_URL = "/media/"
+    #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     if (config("ALWAYS_LOAD_S3") == "TRUE"):
         # aws settings
