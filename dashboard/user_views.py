@@ -5,7 +5,7 @@ from communities.preferences.models import Preferences
 # Create your views here.
 # PLY:
 from ply import settings
-from ply.toolkit import vhosts, profiles, contexts, version, dynapages as dp_tools
+from ply.toolkit import vhosts, profiles, contexts, version, dynapages as dp_tools, themes
 from dashboard.navigation import SideBarBuilder, SideBarBuilder_dynamic
 from communities.group.models import GroupMember
 from core.dynapages import models as dynapages
@@ -70,7 +70,7 @@ def dashboard_home(request):
         show_dbswitch = True
     else:
         show_dbswitch = False
-
+    theme = themes.get_community_theme_or_def(community)
     context.update(
         {
             "sidebar": sidebar_modules.values(),
@@ -85,7 +85,9 @@ def dashboard_home(request):
             "stats": stats,
             "profile_xp": exo,
             "show_dbswitch": show_dbswitch,
-            "preferences":prefs
+            "preferences":prefs,
+            'THEME_PATH': theme.THEME_PATH
+
         }
     )
     return render(

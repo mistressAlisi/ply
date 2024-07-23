@@ -26,7 +26,7 @@ if settings.PLY_DYNAMIC_APP_URLS_ENABLED:
                     if app_data.PLY_APP_INFO["dashboard_modes"]["user"]["active"]:
                         if app_data.PLY_APP_INFO['app_module'] not in settings.PLY_USER_DASHBOARD_MODULES:
                             logging.info(f"User: Adding Module {app_data.PLY_APP_INFO['app_module']} to url paths...")
-                            #urlpatterns.append(path(f"api/{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.staff_api_urls")))
+                            urlpatterns.append(path(f"api/{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.dashboard_api_urls")))
                             urlpatterns.append(path(f"{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.dashboard_urls")))
                         else:
                             logging.info(f"User: Module {app_data.PLY_APP_INFO['app_module']} is defined in settings.PLY_USER_DASHBOARD_MODULES: Not Loading dynamically again.")
