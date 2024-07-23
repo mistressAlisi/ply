@@ -204,6 +204,8 @@ def update_community_profile(request):
         template = Templates.objects.get(template_id=dynaPage_Template)
         community.dynapage.template = template
         community.dynapage.save()
+    if ('theme' in request.POST):
+        community.theme = request.POST['theme']
     if (not form.is_valid()):
         return JsonResponse({"res":"err","e":str(form.errors.as_data())},safe=False)
     form.save()

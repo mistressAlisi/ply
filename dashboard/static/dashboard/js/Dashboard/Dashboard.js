@@ -1,6 +1,9 @@
 export class Dashboard {
     load_from_url() {
         var load = decodeURIComponent(location.hash).substr(1);
+        if (load == "__successMsg") {
+            this.successToast("Success!","Operation Complete!");
+        }
         var links = $(this.settings.sidebarElement).find("a"+this.settings.sidebarLinkClass);
         links.each(function(x,y,z=load) {
             if (z != "") {
@@ -22,8 +25,8 @@ export class Dashboard {
             systemMenuOpen: false,
             systemMenuWidth: '250px',
             sidebar_rightdiv: "#_dashboard_offcanvas_right",
-            toastSuccessCls: 'bg-outline-success text-success',
-            toastErrorCls: 'bg-outline-warning text-warning',
+            toastSuccessCls: 'bg-outline-success text-success bg-dark',
+            toastErrorCls: 'bg-outline-warning text-warning bg-dark',
             toastCls: 'bg-outline-white',
             sidebarElement: '#sidebarMenu',
             sidebarLinkClass :'.sidebar-submenu-link'
