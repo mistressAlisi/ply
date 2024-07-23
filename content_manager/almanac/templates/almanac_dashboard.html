@@ -21,7 +21,7 @@
 
 {%include "almanac_dashboard_sidebar.html" %}
 {% with page_title="- Almanac:" %}
-{%include "dashboard-main-navmenu.html" %}
+{%include "dashboard/dashboard-main-navmenu.html" %}
 {% endwith %}
 </header>
 <div class="container-fluid main-container" id="dashboard_mainPanel">
@@ -34,7 +34,7 @@
         {% with almanac_page.creator as profile %}
         <h6>Last Edited: <em>{{almanac_page.updated}}</em> by <a href="/communities/profiles/@{{almanac_page.creator.profile_id}}" target="_blank"><img src="{{av_path}}/{{almanac_page.creator.avatar}}" alt="{{almanac_page.creator.name|slice:" 0:2"}}" class="rounded-circle me-2" width="32" height="32"></img> {{almanac_page.creator.name}}</a> </h6>
         <div class="profile_name_div">
-        {%include "dashboard-profileid-interactions-widget.html" %}
+        {%include "dashboard/dashboard-profileid-interactions-widget.html" %}
         </div> 
         {% endwith %}
         <p class="introduction">{{almanac_page.introduction}}</p>
