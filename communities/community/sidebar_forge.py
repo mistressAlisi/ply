@@ -6,7 +6,7 @@ sidebar = {
     "js": "/static/communities.community/js/worldforge_dashboard.js",
     "menu": [
         {
-            "url": "edit/community/cover",
+            "url": "forge/edit/community/cover",
             "label": "Community Details",
             "icon": "fa-solid fa-user-group",
             "onclick": "",
