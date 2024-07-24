@@ -25,7 +25,7 @@ from .toolkit.core import get_ply_appinfo
 
 
 urlpatterns = [
-    #path("grappelli/", include("grappelli.urls")),  # grappelli URLS
+    path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("profiles/", include("communities.profiles.public_urls")),
     path("gallery/",include("media.gallery.core.public_urls")),
     path("gallery/api/",include("media.gallery.core.public_api_urls")),
@@ -56,6 +56,8 @@ urlpatterns = [
     path("stripe/", include('djstripe.urls', namespace='djstripe')),
     path("", include("communities.community.public_urls"))
 ]
+
+
 # The following is for Dynamic Application URL loading using ply_appinfo.app_endpoints:
 if settings.PLY_DYNAMIC_APP_URLS_ENABLED:
     assigned = []

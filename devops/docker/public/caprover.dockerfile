@@ -1,7 +1,6 @@
 FROM debian:latest
 
 # Base install:
-COPY /devops/docker_fs/. /
 RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN apt-get -y install python3 build-essential wget bash python-dev-is-python3

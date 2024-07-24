@@ -1,7 +1,7 @@
 <li class="mb-1 sidebar-menu-container-li">
     <button class="btn btn-toggle align-items-center rounded collapsed sidebar-main-button" data-bs-toggle="collapse" data-bs-target="#dp_profiles-collapse" aria-expanded="false" data-mname="dp_profiles" onclick="dc_handleMainLink(event);"  >
     {%include "dashboard/dashboard-generic-avatar.html" %}
-    <strong>{{current_profile.name}} (@{{current_profile.profile_id}})</strong>
+    <strong>{{current_profile.name}}<!-- (@{{current_profile.profile_id}})--></strong>
     </button>
         <div class="collapse" id="dp_profiles-collapse" style="">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small sidebar-toggle-ul sidebar-menu">
