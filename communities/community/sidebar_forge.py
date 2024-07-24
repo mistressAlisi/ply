@@ -6,13 +6,13 @@ sidebar = {
     "js": "/static/communities.community/js/worldforge_dashboard.js",
     "menu": [
         {
-            "url": "forge/edit/community/cover",
+            "url": "edit/community/cover",
             "label": "Community Details",
             "icon": "fa-solid fa-user-group",
             "onclick": "",
         },
         {
-            "url": "forge/script/studio",
+            "url": "sscript/studio",
             "label": "PLYScript Studio",
             "icon": "fa-solid fa-star",
             "onclick": "",
