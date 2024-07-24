@@ -34,7 +34,7 @@ logging = getLogger("communities.community", name="forge_api_views")
 @login_required
 def create_community_staff(request):
     #  Ignore port:
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
@@ -57,7 +57,7 @@ def create_community_staff(request):
 
 @login_required
 def delete_community_staff(request, staff):
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
@@ -77,7 +77,7 @@ def delete_community_staff(request, staff):
 @login_required
 def create_community_admin(request):
     #  Ignore port:
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
@@ -90,12 +90,17 @@ def create_community_admin(request):
         return JsonResponse({"res": "err", "e": form.errors}, safe=False)
     else:
         form.save()
+        dbt = CommunityDashboardType.objects.get(type="forge")
+        db = CommunityProfileDashboardRoles.objects.get_or_create(
+            profile=form.instance.profile, type=dbt, community=form.instance.community
+        )[0]
+        db.save()
         return JsonResponse({"res": "ok", "pk": form.instance.pk}, safe=False)
 
 
 @login_required
 def delete_community_admin(request, staff):
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
@@ -104,12 +109,17 @@ def delete_community_admin(request, staff):
         return render(request, "error-access-denied.html", {})
     staffobj = CommunityAdmins.objects.get(uuid=staff)
     staffobj.delete()
+    dbt = CommunityDashboardType.objects.get(type="staff")
+    dashobj = CommunityProfileDashboardRoles.objects.get(
+        profile=staffobj.profile, community=staffobj.community, type=dbt
+    )
+    dashobj.delete()
     return JsonResponse({"res": "ok"}, safe=False)
 
 
 @login_required
 def create_community_sidebar_menu(request):
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
@@ -134,7 +144,7 @@ def create_community_sidebar_menu(request):
 
 @login_required
 def get_community_sidebar_menu(request, menu):
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
@@ -148,7 +158,7 @@ def get_community_sidebar_menu(request, menu):
 
 @login_required
 def del_community_sidebar_menu(request, menu):
-    context, vhost, community, profile = contexts.default_context(request)
+    context, vhost, community, profile = contexts.admin_context(request)
     profile = profiles.get_active_profile(request)
     is_admin = CommunityAdmins.objects.filter(
         community=community, profile=profile, active=True
