@@ -12,7 +12,7 @@ sidebar = {
             "onclick": "",
         },
         {
-            "url": "sscript/studio",
+            "url": "forge/script/studio",
             "label": "PLYScript Studio",
             "icon": "fa-solid fa-star",
             "onclick": "",
