@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('community', '0024_alter_communitysidebarmenu_module'),
+        ("community", "0023_alter_vhost_ipaddr"),
     ]
 
     operations = [
