@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load django_bootstrap5 %}
 {% load i18n %}
+{% load check_if_development %}
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="en" class="h-100" data-bs-theme="dark">
 <head>
@@ -105,5 +106,11 @@
 {%include "authentication/registration/sso/modal.html" %}
 </div>
 <script src="/static/core.authentication/js/login.js"></script>
+{% if request.GET.development == None %}
+<script type="text/javascript">
+    window.location.href = "https://backend.furrydelphia.org/connect/?from=app-ply";
+</script>
+{%else%}
+{%endif%}
 </body>
 </html>
