@@ -36,8 +36,8 @@
             {%if current_profile %}
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {%include "dashboard/dashboard-generic-avatar.html" %}
-                <strong>{{current_profile.name}} (@{{current_profile.profile_id}})</strong>
-                </a>  
+                <strong>{{current_profile.name}}<!-- (@{{current_profile.profile_id}})--></strong>
+                </a>
                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="min-width: 250px; padding: 5px;">
                  <li><strong class="dropdown-item-text"><i class="fa-solid fa-bell"></i>&#160;Notifications:</strong></li>
                  <li class="dropdown-item-text">
@@ -60,12 +60,12 @@
                  <li><strong class="dropdown-item-text"><i class="fa-solid fa-user-gear"></i>&#160;My Account:</strong></li>
                  <li><a class="dropdown-item" href="/dashboard/user/"><i class="fa-solid fa-gauge"></i>&#160;My Dashboard</a></li>
                 <li><hr/></li>                 
-                  <li><strong class="dropdown-item-text"><i class="fa-solid fa-shuffle"></i>&#160;Switch Profile:</strong></li>
+                  <!-- <li><strong class="dropdown-item-text"><i class="fa-solid fa-shuffle"></i>&#160;Switch Profile:</strong></li>
                    {% for pr in profiles %}
                     <li class=" dropdown-item profile-sel-link-li"><a href="/dashboard/user/set_profile/{{pr.uuid}}" data-trgt="{{pr.uuid}}"   class="link-dark rounded sidebar-submenu-link profile-sel-link" >
                     <img src="{{av_path}}/{{pr.avatar}}" alt="{{current_profile.pr|slice:"0:2"}}" class="rounded-circle me-2" width="16" height="16">{{pr.name}} (@{{pr.profile_id}})</a></li>
                     {% endfor %}
-                    <li><hr/></li>
+                    <li><hr/></li> -->
                     <li><a class="dropdown-item" href="/accounts/logout/"><i class="fa-solid fa-door-open"></i>&#160;Logout</a></li>
                  </ul>
             {% else %}
