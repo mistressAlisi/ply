@@ -5,11 +5,13 @@ export class Preferences extends AbstractDashboardApp {
         constructor(name) {
             super(name);
             this.urls = {
-            "submit":"communities.preferences/api/save/settings"
+            "_api_prefix":"communities.preferences/api/",
+            "_prefix":"",
+            "submit":"save/settings"
 
             }
             $.extend(this.settings,{
-                "home_on_success": false,
+                "home_on_success": true,
                 "success_hdr": "Preferences Updated!",
                 "success_body": "Great Success; preferences updated!"
             })
