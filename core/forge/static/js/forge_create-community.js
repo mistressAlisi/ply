@@ -47,7 +47,7 @@
                         location.href = this.settings["dashboard_url"];
                     } else {
                         dashboard.successToast("<h6><i class=\"fa-solid fa-check\"></i>&#160;Community Updated!</h6>","Community Details updated.");
-                        dc_panel_home()
+                        dashboard.panel_home();
                     }
 
                     break;

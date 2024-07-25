@@ -1,4 +1,3 @@
-{%load registry_boolean_setting_enabled %}
 <li class="mb-1 sidebar-menu-container-li">
     <button class="btn btn-toggle align-items-center rounded collapsed sidebar-main-button" data-bs-toggle="collapse" data-bs-target="#dp_profiles-collapse" aria-expanded="false" data-mname="dp_profiles" onclick="dc_handleMainLink(event);"  >
     {%include "dashboard/dashboard-generic-avatar.html" %}
@@ -25,7 +24,6 @@
                  <img src="{{av_path}}/{{pr.avatar}}" alt="{{current_profile.pr|slice:"0:2"}}" class="rounded-circle me-2" width="16" height="16">{{pr.name}} (@{{pr.profile_id}})</a></li>
 
             {% endfor %}
-            -->
             <li><h6 class="text-muted">Profiles and Settings:</h6></li>
 
             <li><a href="#" class=" rounded sidebar-submenu-link" onclick="dc_settings.view('account');"><i class="fas fa-user-circle"></i>&#160;&#160;My Account</a></li>
