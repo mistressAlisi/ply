@@ -54,6 +54,7 @@ export class AbstractDashboardApp {
         return errStr;
     }
     _submitHandle(data,stat,home=true) {
+        dashboard.hideLoading();
         var msg = ""
         if ((data.res == "ok")||(data.res=="notice")) {
                 if (data.res == "ok") {
@@ -149,6 +150,7 @@ export class AbstractDashboardApp {
             }
             this._clear_invalid();
             console.info("Submitting Dashboard App Data: URL '"+url+"'");
+            dashboard.showLoading();
             $.ajax({
             url:  url,
             data:     form.serialize(),
@@ -171,6 +173,7 @@ export class AbstractDashboardApp {
            }
     }
     _edit_handle(data,edit_function=false) {
+        dashboard.hideLoading();
         if (data.res == "ok") {
             this._edit_form_loader(data);
             this._showModal();
@@ -184,8 +187,8 @@ export class AbstractDashboardApp {
     edit(uuid,disable_prefix=false,edit_handle=this._edit_handle) {
           console.info("Loading Data for Edit Mode for '"+uuid+"'");
           var url = this.urls["load_edit"];
+          dashboard.showLoading();
           if (disable_prefix == false) {
-              console.warn("EP",this.urls["_api_prefix"],url);
               if (this.urls["_api_prefix"] !== "") {
                   url = this.urls["_api_prefix"] + url;
               }
