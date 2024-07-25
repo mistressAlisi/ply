@@ -1,6 +1,13 @@
 [submodule "ufls"]
 	path = ufls
 	url = git@github.com:furrydelphia/ufls-ng.git
+	branch = main
 [submodule "core/plyui/static/core.plyui/js/plugins/qr-scanner"]
 	path = core/plyui/static/core.plyui/js/plugins/qr-scanner
 	url = git@github.com:nimiq/qr-scanner.git
+[submodule "core/plyui/static/core.plyui/js/plugins/jq-ajax-progress"]
+    path = core/plyui/static/core.plyui/js/plugins/jq-ajax-progress
+    url = git@github.com:englercj/jquery-ajax-progress.git
+[submodule "core/plyui/static/core.plyui/js/plugins/jquery-ajax-progress"]
+    path = core/plyui/static/core.plyui/js/plugins/jquery-ajax-progress
+    url = git@github.com:englercj/jquery-ajax-progress.git
