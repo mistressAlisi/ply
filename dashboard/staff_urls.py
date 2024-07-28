@@ -13,8 +13,14 @@ urlpatterns = [
 # Dynamic Module loading also means Dynamic Path generation.
 # CAVEAT, NOTE: ANY module that is defined in PLY_STAFF_DASHBOARD_MODULES must include a forge_urls class even if it's empty.
 for mname in ply.settings.PLY_STAFF_DASHBOARD_MODULES:
-    urlpatterns.append(path(f"api/{mname}/", include(f"{mname}.staff_api_urls")))
-    urlpatterns.append(path(f"{mname}/", include(f"{mname}.staff_urls")))
+    try:
+        urlpatterns.append(path(f"api/{mname}/", include(f"{mname}.staff_api_urls")))
+    except Exception as e:
+        logging.error(f"Unable to Add App to path: {mname}.staff_api_urls", e)
+    try:
+        urlpatterns.append(path(f"{mname}/", include(f"{mname}.staff_urls")))
+    except Exception as e:
+        logging.error(f"Unable to Add App to path: {mname}.staff_urls", e)
 
 # Now we also support *dynamic* url building using the ply_appinfo APIs:
 if settings.PLY_DYNAMIC_APP_URLS_ENABLED:
@@ -28,8 +34,14 @@ if settings.PLY_DYNAMIC_APP_URLS_ENABLED:
                     if app_data.PLY_APP_INFO["dashboard_modes"]["staff"]["active"]:
                         if app_data.PLY_APP_INFO['app_module'] not in settings.PLY_STAFF_DASHBOARD_MODULES:
                             logging.info(f"Staff: Adding Module {app_data.PLY_APP_INFO['app_module']} to url paths...")
-                            urlpatterns.append(path(f"api/{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.staff_api_urls")))
-                            urlpatterns.append(path(f"{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.staff_urls")))
+                            try:
+                                urlpatterns.append(path(f"api/{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.staff_api_urls")))
+                            except Exception as e:
+                                logging.error(f"Unable to Add App to path: {app_data.PLY_APP_INFO['app_module']}.staff_api_urls", e)
+                            try:
+                                urlpatterns.append(path(f"{app_data.PLY_APP_INFO['app_module']}/", include(f"{app_data.PLY_APP_INFO['app_module']}.staff_urls")))
+                            except Exception as e:
+                                logging.error(f"Unable to Add App to path: {app_data.PLY_APP_INFO['app_module']}.staff_urls", e)
                         else:
                             logging.info(f"Staff: Module {app_data.PLY_APP_INFO['app_module']} is defined in settings.PLY_STAFF_DASHBOARD_MODULES: Not Loading dynamically again.")
 
