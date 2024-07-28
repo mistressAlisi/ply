@@ -1,9 +1,12 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 import os, csv
+
+from django.db import IntegrityError
+
 from communities.community.models import (
     Community,
-    CommunitySidebarMenu
+    CommunitySidebarMenu, CommunityDashboardType
 )
 from communities.profiles.models import Profile
 from ply.models import PlyApplication
@@ -18,7 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         community = options["community"]
         if community == "_all_":
-            cob = Community.objects.all()[0]
+            cob = Community.objects.all()
         else:
             cob = Community.objects.filter(hash=community)
         if len(cob) < 1:
@@ -28,8 +31,13 @@ class Command(BaseCommand):
                 )
             )
             return False
-        for c in cob:
-            dtos = PlyApplication.objects.filter(active=True)
-            for d in dtos:
-                csmo = CommunitySidebarMenu.get_or_create(community=c,application_mode=d.mode,)
+        for dt in CommunityDashboardType.objects.all():
+            for c in cob:
+                dtos = PlyApplication.objects.all()
+                for d in dtos:
+                    try:
+                        self.stdout.write(f"Application: {d}, Mode: {dt.type}....")
+                        csmo = CommunitySidebarMenu.objects.get_or_create(community=c,application_mode=dt.type,module=d)
+                    except IntegrityError:
+                        pass
         self.stdout.write(self.style.SUCCESS("Success!"))
