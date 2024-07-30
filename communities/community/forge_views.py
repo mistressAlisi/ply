@@ -97,7 +97,12 @@ def default_profile_editor(request):
     except GroupMember.DoesNotExist:
         groups = []
         primaryGroup = False
-    profilePage = ProfilePageNode.objects.get(profile=profile, node_type="profile")
+    try:
+        profilePage = ProfilePageNode.objects.get(profile=profile, node_type="profile")
+    except ProfilePageNode.DoesNotExist:
+        profilePage = ProfilePageNode.objects.create(
+            profile=profile, node_type="profile"
+        )
     print(f"Profile Node: {profilePage.dynapage.pk}, {profilePage.node_type}")
     widgets = dynapages.PageWidget.objects.order_by("order").filter(
         page=profilePage.dynapage
