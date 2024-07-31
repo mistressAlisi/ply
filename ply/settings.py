@@ -102,7 +102,8 @@ INSTALLED_APPS = [
     'ufls.staff',
     'mailer',
     'whitenoise',
-    'core.plyui.themes.default_theme'
+    'core.plyui.themes.default_theme',
+    'django_celery_results'
 ]
 
 EMAIL_BACKEND = "mailer.backend.DbBackend"
@@ -418,7 +419,23 @@ PLY_MSG_BROKER_URL=config("PLY_MSG_BROKER_URL")
 GALLERY_PHOTOS_THUMBNAIL_SIZE = int(config("GALLERY_PHOTOS_THUMBNAIL_SIZE"))
 PLY_GALLERY_MIN_DPI = int(config("PLY_GALLERY_MIN_DPI"))
 PLY_GALLERY_MAX_ORIGINAL_SIZE = int(config("PLY_GALLERY_MAX_ORIGINAL_SIZE"))
+
 CELERY_BROKER_URL=config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+CELERY_TIMEZONE = "America/New_York"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_TASK_ROUTES = {
+ 'registration.tasks.*': {'queue': 'celery'},
+ 'bkinterface.*': {'queue': 'bkinterface'},
+ 'printmaster.*': {'queue': 'printmaster'},
+ 'brotherlabel.*': {'queue': 'brotherlabel'},
+ 'receiptmanager.*': {'queue': 'receiptmanager'},
+ 'badgerenderer.*': {'queue': 'badgerenderer'}
+}
+
 PLY_AVATAR_MAX_KB = int(config("PLY_AVATAR_MAX_KB"))
 PLY_AVATAR_STORAGE_USE_S3 = config('PLY_AVATAR_STORAGE_USE_S3')
 PLY_DYNAPAGES_PROFILE_TEMPLATE=config("PLY_DYNAPAGES_PROFILE_TEMPLATE")
