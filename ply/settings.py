@@ -541,3 +541,14 @@ PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if config('UFLS_ENABLE_GLITCHTIP', default=False):
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn="https://6c21fd9e780e46b69ceed79ef16ac860@glitchtip.furrydelphia.org/1",
+        integrations=[DjangoIntegration()],
+        auto_session_tracking=False,
+        traces_sample_rate=0
+    )
