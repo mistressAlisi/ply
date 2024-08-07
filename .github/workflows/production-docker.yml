@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - ply-ng
+      - 2024-stable
 
 jobs:
 
