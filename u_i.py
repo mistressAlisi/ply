@@ -1,6 +1,6 @@
 import requests
 
-
+print("Fetch 1")
 re = requests.get("https://app.furrydelphia.org/app/registrar/api/v1/registrants-glimpse/?conIsStaff=true&conCheckedIn=true", headers={"Authorization": "Token ad6a4a0471dfc5d9c1bff90abb10b2bc01d758a6"})
 
 ld = re.json()
@@ -13,6 +13,7 @@ for x in ld:
     })
 
 for n in new:
+    print("Request...")
     c = requests.post("https://hooks.jouleworks.net/api/w/jouleworks/jobs/run/f/f/furrydelphia/add_user_to_clock?token=1xTtIEW5fsdENEFkVZg7qOBMk69NqdE4",
                   json={
                       "email": n['email'],
