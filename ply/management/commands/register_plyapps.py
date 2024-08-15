@@ -1,9 +1,11 @@
 from django.core.management.base import BaseCommand, CommandError
 import uuid
 from django.utils import timezone
-from ply import system_uuids, settings, toolkit
+from ply import system_uuids, toolkit
 from ply.models import PlyApplication
+from django.conf import settings
 import importlib
+
 
 
 class Command(BaseCommand):
@@ -57,6 +59,7 @@ class Command(BaseCommand):
                     _write = False
                 else:
                    appobj.updated = timezone.now()
+
                 if _write:
                     appobj.app_name = plyapp_info.PLY_APP_INFO["app_name"]
                     appobj.version_release = plyapp_info.PLY_APP_INFO["version"]["release"]
