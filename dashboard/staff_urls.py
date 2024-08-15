@@ -1,7 +1,7 @@
 from django.urls import path, include
 from dashboard import staff_views
 import ply
-from ply import settings
+from django.conf import settings
 from ply.toolkit.core import get_ply_appinfo
 from ply.toolkit.logger import getLogger
 
@@ -12,7 +12,8 @@ urlpatterns = [
 ]
 # Dynamic Module loading also means Dynamic Path generation.
 # CAVEAT, NOTE: ANY module that is defined in PLY_STAFF_DASHBOARD_MODULES must include a forge_urls class even if it's empty.
-for mname in ply.settings.PLY_STAFF_DASHBOARD_MODULES:
+
+for mname in settings.PLY_STAFF_DASHBOARD_MODULES:
     try:
         urlpatterns.append(path(f"api/{mname}/", include(f"{mname}.staff_api_urls")))
     except Exception as e:

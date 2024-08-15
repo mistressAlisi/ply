@@ -1,7 +1,7 @@
 from django.urls import path,include
 from dashboard import forge_views
 import ply
-from ply import settings
+from django.conf import settings
 from ply.toolkit.core import get_ply_appinfo
 from ply.toolkit.logger import getLogger
 
