@@ -11,7 +11,7 @@ class Command(BaseCommand):
         # All profiles must be owned by the primary admin:
 
 
-        # Add a basic Header Widget to the dynapage template:
+
         self.stdout.write(self.style.SUCCESS('Creating Timezone Objects....'))
         for tzi in pytz.common_timezones:
             dto = datetime.datetime.now(pytz.timezone(tzi))

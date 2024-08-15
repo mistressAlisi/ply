@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from core.dynapages.models import Templates
 from bs4 import BeautifulSoup
@@ -54,13 +55,19 @@ class Command(BaseCommand):
                     f'Skipped resgistering Template "{template}" for Application "{app}" - Metadata block not found in file.'
                 )
             )
-
+    def _runner(self,template_dir,app):
+        templates = os.listdir(template_dir)
+        for template in templates:
+            tfile = open(template_dir + "/" + template)
+            self.register_template_file(tfile, template, app)
     def handle(self, *args, **options):
         # Find all templates:
-        for app in ply.settings.INSTALLED_APPS:
+        for app in settings.INSTALLED_APPS:
             template_dir = os.getcwd() + f"/{app.replace('.','/')}/templates/dynapages"
             if os.path.isdir(template_dir):
-                templates = os.listdir(template_dir)
-                for template in templates:
-                    tfile = open(template_dir + "/" + template)
-                    self.register_template_file(tfile, template, app)
+                self._runner(template_dir,app)
+            else:
+                template_dir = os.getcwd() + f"/ply/{app.replace('.', '/')}/templates/dynapages"
+                if os.path.isdir(template_dir):
+                    self._runner(template_dir, app)
+

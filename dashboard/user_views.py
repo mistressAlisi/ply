@@ -55,7 +55,10 @@ def dashboard_home(request):
         log.info(f"Initialising Dynapages for {profile.profile_id}'s dashboard.")
         profilePage = dp_tools.dashboard_initDynaPage(request.user, profile)
     log.info(f"Profile Node: {profilePage.dynapage.pk}, {profilePage.node_type}")
-    exo = ProfileExperience.objects.get(community=community, profile=profile)
+    try:
+        exo = ProfileExperience.objects.get(community=community, profile=profile)
+    except:
+        exo = {}
 
     widgets = dynapages.PageWidget.objects.order_by("order").filter(
         page=profilePage.dynapage
