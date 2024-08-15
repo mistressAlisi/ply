@@ -100,6 +100,7 @@ INSTALLED_APPS = [
     'ufls.dealers',
     'ufls.scheduling',
     'ufls.staff',
+    'devtools.app_dev',
     'mailer',
     'whitenoise',
     'core.plyui.themes.default_theme'
@@ -514,13 +515,15 @@ PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")
 STRIPE_TEST_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
 STRIPE_LIVE_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
 STRIPE_LIVE_MODE = True  # Change to True in production
-DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
-DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+# TODO : FOR UFLS?
+#DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET",default="") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+#DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 
 PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
 
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
+# TODO: FOR UFLS?
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

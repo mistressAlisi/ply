@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # The Navigation component dotes the Console with the ability to auto-generate sidebar and top menus based on the installed and registered Ceres Modules.
+from django.conf import settings
 from django.conf.urls import include
 import logging
 import ply
@@ -13,7 +14,7 @@ class SideBarBuilder:
 
     def __init__(
         self,
-        data=ply.settings.PLY_USER_DASHBOARD_MODULES,
+        data=settings.PLY_USER_DASHBOARD_MODULES,
         menu_module_name="sidebar_menu",
     ):
         if len(self.modules) == 0:
