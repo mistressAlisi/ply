@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import uuid
-from ply import system_uuids,settings
+from ply import system_uuids
+from django.conf import settings
 from django.contrib.auth.models import User
 import os
 import ply
