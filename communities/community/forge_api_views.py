@@ -126,15 +126,14 @@ def create_community_sidebar_menu(request):
     )
     if len(is_admin) < 1:
         return render(request, "error-access-denied.html", {})
-    if request.POST["not_edited"] == "False":
-        logging.info(f"Creating new Sidebar Menu from data: Mode: {request.POST['application_mode']} Module: {request.POST['module']}. Class: {request.POST['sidebar_class']} in Community {request.POST['community']}")
-        form = CommunitySidebarMenuForm(request.POST)
-        # form.set_community(community)
-
-    else:
+    try:
+        created = False
         instance = CommunitySidebarMenu.objects.get(pk=request.POST["uuid"])
-        form = CommunitySidebarMenuForm(request.POST, instance=instance)
+    except CommunitySidebarMenu.DoesNotExist:
+        instance,created = CommunitySidebarMenu.objects.get_or_create(pk=request.POST["uuid"])
+    form = CommunitySidebarMenuForm(request.POST, instance=instance)
     if not form.is_valid():
+        instance.delete()
         return JsonResponse({"res": "err", "e": form.errors}, safe=False)
     else:
         form.instance.not_edited = True
