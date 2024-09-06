@@ -8,7 +8,7 @@ if [ "$APP_MODE" = "custom-command" ]
   # do standard start
 if [ "$APP_MODE" = "wsgi" ]
   then
-  gunicorn ply.wsgi:application -b 0.0.0.0:8000
+  gunicorn ply.wsgi:application -b 0.0.0.0:8001
 fi
 if [ "$APP_MODE" = "celery" ]
   then

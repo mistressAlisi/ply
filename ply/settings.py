@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     'multiselectfield',
     'import_export',
     'ufls.themes.neon_nights',
+    'ufls.front',
     'ufls.furry',
     'ufls.event',
     'ufls.registrar',
