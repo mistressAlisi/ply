@@ -519,7 +519,7 @@ STRIPE_LIVE_MODE = True  # Change to True in production
 #DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET",default="") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 #DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 
-PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default_theme")
 
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
