@@ -377,23 +377,11 @@ PLY_USER_DASHBOARD_MODULES = [
     "media.gallery.core",
     "ufls.registrar"
 ]
-PLY_DASHBOARD_MODES = [
-    "world_forge",
-    "user",
-    "staff"
-]
-PLY_WORLDFORGE_DASHBOARD_MODULES = [
-    "communities.community",
-    "ufls.event",
-    "ufls.registrar",
-    "communities.stream",
-    "communities.dashboards",
-    "media.gallery.core",
-    "ufls.staff"
-]
-PLY_STAFF_DASHBOARD_MODULES = [
-    "ufls.staff"
-]
+
+PLY_DASHBOARD_MODES = config('MIDSUMMER_DASHBOARD_MODES', cast=Csv())
+PLY_WORLDFORGE_DASHBOARD_MODULES = config('MIDSUMMER_WORLDFORGE_DASHBOARD_MODULES',cast=Csv())
+PLY_STAFF_DASHBOARD_MODULES = config('MIDSUMMER_STAFF_DASHBOARD_MODULES',cast=Csv())
+
 PLY_GALLERY_PLUGINS = [
     "media.gallery.images"
     ]
