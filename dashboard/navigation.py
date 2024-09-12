@@ -43,7 +43,9 @@ class SideBarBuilder_dynamic:
         modules = CommunitySidebarMenuView.objects.filter(
             community=community, application_mode=application_mode, active=True
         ).distinct()
+        #print(modules)
         for modname in modules:
+            #print(modname.module)
             try:
                 mod = include(f"{modname.module}.{modname.sidebar_class}")[0]
                 self.modules[modname.module] = mod
@@ -62,6 +64,7 @@ class SideBarBuilder_dynamic:
     def get_dynamic_sidebar(self, community, application_mode):
         self._loadModules(community, application_mode)
         ret_mods = {}
+        #print(self.modules)
         for mod in self.modules:
             if mod not in ret_mods:
                 if hasattr(self.modules[mod], "dynamic"):
@@ -71,5 +74,8 @@ class SideBarBuilder_dynamic:
                         )
 
                 else:
-                    ret_mods[mod] = self.modules[mod].sidebar
+                    try:
+                        ret_mods[mod] = self.modules[mod].sidebar
+                    except Exception as e:
+                        log.error(f"get_dynamic_sidebar: Unable to include self.modules[{mod}].sidebar: {e}")
         return ret_mods

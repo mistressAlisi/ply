@@ -176,9 +176,9 @@ def _process_exif_dict(exif_dict):
 def save_gallery_photo(file,profile,name=False):
     return save_gallery_file(file,profile,name)
     # if not name:
-    #     path = file_uploader.get_temp_path(file.name,profile)
+    #     path = file_uploader.get_file_path(file.name,profile)
     # else:
-    #     path = file_uploader.get_temp_path(name,profile)
+    #     path = file_uploader.get_file_path(name,profile)
     # if (ply.settings.PLY_AVATAR_STORAGE_USE_S3 == 'TRUE'):
     #     import boto3,io
     #     client = boto3.client('s3',aws_access_key_id=ply.settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=ply.settings.AWS_SECRET_ACCESS_KEY,endpoint_url=ply.settings.AWS_S3_ENDPOINT_URL)

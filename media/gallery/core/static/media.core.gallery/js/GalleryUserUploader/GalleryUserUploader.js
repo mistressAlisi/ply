@@ -31,7 +31,7 @@ export class GalleryUserUploader extends AbstractDashboardApp {
                //calculate the percentage loaded
 
                //log percentage loaded
-                   var pct = (e.loaded / e.total) * 100;
+                   var pct = Math.round((e.loaded / e.total) * 100);
                    this.widget_factory.set_progressbar(this.upload_pbar,pct);
 
 
@@ -44,7 +44,8 @@ export class GalleryUserUploader extends AbstractDashboardApp {
             gallery_dashboard.load_lighttable();
             this.reset();
            } else {
-               dashboard.errorToast("File Upload Error!",e.responseJSON.data)
+               var errStr= this._parse_ajax_error(e.responseJSON);
+               dashboard.errorToast("File Upload Error!",errStr);
            }
 
         }
@@ -148,6 +149,8 @@ export class GalleryUserUploader extends AbstractDashboardApp {
 
             }
             this.urls = {
+            "_api_prefix":"",
+            "_prefix":"",
             "file_upload":"media.gallery.core/api/upload/file_ingest",
             "submit":"media.gallery.core/api/settings/set/plugin",
             "form_upload_url":"media.gallery.core/api/upload/get_form/"

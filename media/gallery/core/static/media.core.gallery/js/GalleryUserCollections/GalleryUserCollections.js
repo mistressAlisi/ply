@@ -16,7 +16,9 @@ export class GalleryUserCollections extends AbstractDashboardApp {
         constructor(name) {
             super(name);
             this.urls = {
-                "submit":"media.gallery.core/api/collections/create"
+                "_api_prefix":"media.gallery.core/api/collections/",
+                "_prefix":"media.gallery.core/collections/",
+                "submit":"create"
             }
 
 

@@ -4,7 +4,7 @@ from django.conf.urls import include
 from django.contrib.auth.decorators import login_required
 
 from communities.preferences.models import Preferences
-from ply.toolkit import vhosts, logger as plylog
+from ply.toolkit import vhosts, logger as plylog, responses
 from media.gallery.core.uploader import upload_plugins_builder
 from django.http import JsonResponse
 from django.db import transaction
@@ -132,6 +132,7 @@ def file_ingest(request):
                     log.warn(
                         f"Warning! File {file.name} exceeds max size of {plugin['max_size']} MB! Ignoring."
                     )
+                    return responses.generic_error_response("TOO_LARGE",f"File exceeds maximum input size of {plugin['max_size']}MB!!")
 
     return JsonResponse("ok", safe=False)
 
@@ -139,7 +140,7 @@ def file_ingest(request):
 @login_required
 @transaction.atomic
 def post_upload(request):
-    profile = Profile.objects.get(uuid=request.session["profile"])
+    context, vhost, community, profile = default_context(request)
     plugin = request.POST["plugin"]
     for file_name in request.FILES:
         try:
@@ -163,6 +164,7 @@ def post_upload(request):
             relpath = file_uploader.save_temp_file(file, profile)
             # Background processing after quick import:
             upload_ingest.delay(
+                community.uuid,
                 profile.uuid,
                 plugin,
                 file_name,
@@ -432,7 +434,7 @@ def gallery_remove_temp(request, item):
         return JsonResponse({"res": "err", "err": "Access denied."}, safe=False)
     thumbs = GalleryTempFileThumb.objects.filter(file=item)
     for thumb in thumbs:
-        path = file_uploader.get_temp_path(thumb.path, item.profile)
+        path = file_uploader.get_file_path(thumb.path, item.profile)
         destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH + thumb.path
         try:
             os.unlink(destpath)
@@ -441,7 +443,7 @@ def gallery_remove_temp(request, item):
                 f"Deleting Temp item thumbnail {destpath} - the file was not found in the Filesystem. Deleting SQL node anyway."
             )
         thumb.delete()
-    path = file_uploader.get_temp_path(item.path, item.profile)
+    path = file_uploader.get_file_path(item.path, item.profile)
     destpath = ply.settings.PLY_TEMP_FILE_BASE_PATH + item.path
     try:
         os.unlink(destpath)

@@ -1,6 +1,4 @@
-sidebar = {}
-
-sidebar_core_not_implemented_yet = {
+sidebar = {
   "mname":"core",
   "label":"Galleries and Collections",
   "icon":"far fa-images",

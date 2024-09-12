@@ -23,7 +23,7 @@
                 <span class="input-group-text"><i class="fa-solid fa-book-skull"></i></span>
                 {% if class_skip is False  %}
                 <select class="form-control" id="classtype" name="classtype">
-                <option value="-1">select class...</option>
+                <option value="">select class...</option>
                 {% for class in classtypes %}
                 <option value="{{class.uuid}}">Class: '{{class.name}}': - {{class.descr}}</option>
                 {% endfor %}
