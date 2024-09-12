@@ -10,6 +10,7 @@ class PlyApplication(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     app_name = models.TextField(verbose_name="Application Name", blank=True)
     app_module = models.TextField(verbose_name="Application Module", unique=True)
+    active = models.BooleanField(default=True)
     version_release = models.TextField(
         verbose_name="Application Module Release Version", default="0"
     )

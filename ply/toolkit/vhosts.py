@@ -30,5 +30,6 @@ def get_vhost_and_community(request, ipaddr=None):
     except VHost.DoesNotExist as e:
         host = request.META["HTTP_HOST"]
         logging.error(f"VHost '{host}' (IP: {ipaddr}): not found.");
-        return None
+        raise Exception(f"There is no Vhost configured for this endpoint/address: {host}")
+
 
