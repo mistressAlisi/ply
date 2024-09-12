@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -117,23 +118,17 @@ def delete_community_admin(request, staff):
     return JsonResponse({"res": "ok"}, safe=False)
 
 
+
+
 @login_required
 def create_community_sidebar_menu(request):
     context, vhost, community, profile = contexts.admin_context(request)
-    profile = profiles.get_active_profile(request)
-    is_admin = CommunityAdmins.objects.filter(
-        community=community, profile=profile, active=True
-    )
-    if len(is_admin) < 1:
-        return render(request, "error-access-denied.html", {})
-    if request.POST["not_edited"] == "False":
+    try:
+        instance = CommunitySidebarMenu.objects.get(pk=uuid.UUID(request.POST["uuid"]))
+        form = CommunitySidebarMenuForm(request.POST, instance=instance)
+    except ObjectDoesNotExist:
         logging.info(f"Creating new Sidebar Menu from data: Mode: {request.POST['application_mode']} Module: {request.POST['module']}. Class: {request.POST['sidebar_class']} in Community {request.POST['community']}")
         form = CommunitySidebarMenuForm(request.POST)
-        # form.set_community(community)
-
-    else:
-        instance = CommunitySidebarMenu.objects.get(pk=request.POST["uuid"])
-        form = CommunitySidebarMenuForm(request.POST, instance=instance)
     if not form.is_valid():
         return JsonResponse({"res": "err", "e": form.errors}, safe=False)
     else:

@@ -60,7 +60,7 @@ python3 ./manage.py create_dashboard_dynapages __auto-during-setup__ _all_
 
 
 echo "*** Granting Admin Rights... ***"
-python3 ./manage.py grant_community_admin __auto-during-setup__ __auto-during-setup__ yuu
+python3 ./manage.py grant_community_admin __auto-during-setup__ __auto-during-setup__ _all_
 
 
 echo "*** Granting Permissions to all Dashboards.... ***"

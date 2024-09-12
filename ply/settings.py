@@ -464,7 +464,7 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
-"""
+
 STORAGES = {
     # TODO: default should be its own config key.
     "default":{
@@ -504,7 +504,7 @@ STORAGES = {
         }
     }
 }
-"""
+
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
 # TODO: Should we remove these setting keys and use storages everywhere?

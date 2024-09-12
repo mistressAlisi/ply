@@ -5,7 +5,9 @@ export class GalleryForgePluginsDashboard extends AbstractDashboardApp {
         constructor(name) {
             super(name);
             this.urls = {
-            "submit":"/dashboard/forge/api/media.gallery.core/settings/set/plugin"
+            "_api_prefix":"/dashboard/forge/api/media.gallery.core/settings/",
+            "_prefix":"/dashboard/forge/media.gallery.core/settings/",
+            "submit":"set/plugin"
 
             }
             this.elements = {
