@@ -1,7 +1,6 @@
 FROM debian:latest
 
 # Base install:
-COPY /devops/docker_fs/. /
 RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN apt-get -y install python3 build-essential wget bash python-dev-is-python3
@@ -20,6 +19,7 @@ RUN bash -c 'source /venv/bin/activate; /venv/bin/pip install -r /tmp/requiremen
 
 ENV VIRTUAL_ENV /venv
 ENV PATH /venv/bin:$PATH
+ENV APP_MODE "wsgi"
 
 COPY . /app
 

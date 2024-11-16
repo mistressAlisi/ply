@@ -13,15 +13,15 @@ logging = getLogger('toolkit.themes',name='toolkit.themes')
 def get_theme_info(theme_name):
     """
     Get the info module for a given theme and return it. This basically just wraps around importlib.
-    @param theme_name: Theme module name to import. This is the path we'll pass to importlib. The theme module must at least implement theme.py.
+    @param theme_name: Theme module name to import. This is the path we'll pass to importlib. The theme module must at least implement ply_theme.py.
     @return: the chosen theme's Info module.
     """
     try:
-        theme_class = importlib.import_module(f'{theme_name}.theme')
+        theme_class = importlib.import_module(f'{theme_name}.ply_theme')
         return theme_class
     except Exception as e:
         logging.error(f"UNABLE TO LOAD THEME {theme_name} ERROR: {e}")
-        raise Exception(f"Unable to load {theme_name} module, does {theme_name}.theme exist?")
+        raise Exception(f"Unable to load {theme_name} module, does {theme_name}.ply_theme exist?")
 
 
 def get_community_theme_or_def(community):
@@ -35,4 +35,20 @@ def get_community_theme_or_def(community):
         return get_theme_info(community.theme)
     else:
         return get_theme_info(settings.PLY_DEFAULT_THEME)
+
+
+
+
+def get_installed_themes():
+    themes = []
+    for app in settings.INSTALLED_APPS:
+        try:
+            app_theme = importlib.import_module(f"{app}.ply_theme")
+            themes.append({
+                'id':app,
+                'name':f'{app_theme.THEME_INFO["name"]} by {app_theme.THEME_INFO["author"]}'})
+        except ImportError:
+            pass
+
+    return themes
 

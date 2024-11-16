@@ -33,7 +33,7 @@ def community_home(request):
         if (community.backgroundItem is not False):
             try:
                 bkg_item = GalleryItemsByCollectionPermission.objects.filter(item=community.backgroundItem,gif_thumbnail=False)
-                path = ply.toolkit.file_uploader.get_temp_path(bkg_item[0].file.name,bkg_item[0].profile)
+                path = ply.toolkit.file_uploader.get_file_path(bkg_item[0].file.name,bkg_item[0].profile)
                 bkg_path = f"{ply.settings.PLY_GALLERY_FILE_URL_BASE_URL}/{path}"
             except GalleryItemsByCollectionPermission.DoesNotExist:
                 bkg_path= ""

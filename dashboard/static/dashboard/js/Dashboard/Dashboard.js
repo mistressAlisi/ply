@@ -1,4 +1,17 @@
 export class Dashboard {
+    load_from_url() {
+        var load = decodeURIComponent(location.hash).substr(1);
+        if (load == "__successMsg") {
+            this.successToast("Success!","Operation Complete!");
+        }
+        var links = $(this.settings.sidebarElement).find("a"+this.settings.sidebarLinkClass);
+        links.each(function(x,y,z=load) {
+            if (z != "") {
+                if ($(y).data('trgt') == z) {
+                    $(y).trigger('click');
+            }}
+        });
+    }
     constructor() {
         this.cmp =  false;
         this._pLoaded =  [];
@@ -12,10 +25,16 @@ export class Dashboard {
             systemMenuOpen: false,
             systemMenuWidth: '250px',
             sidebar_rightdiv: "#_dashboard_offcanvas_right",
-            toastSuccessCls: 'bg-outline-success text-success',
-            toastErrorCls: 'bg-outline-warning text-warning',
-            toastCls: 'bg-outline-white'
+            toastSuccessCls: 'bg-outline-success text-success bg-dark success-toast',
+            toastErrorCls: 'bg-outline-warning text-warning bg-dark error-toast',
+            toastCls: 'bg-outline-white bg-dark',
+            sidebarElement: '#sidebarMenu',
+            sidebarLinkClass :'.sidebar-submenu-link',
+            loadingToast: "#loadingToast"
+
         }
+        this.loadingToast =  new bootstrap.Toast($(this.settings.loadingToast));
+
         console.log("Dashboard Instance ready.");
     }
 
@@ -38,11 +57,7 @@ export class Dashboard {
             $("#dashboard-menu-toggle_mainPanel").html(data);
         });
     }
-    gotoDeviceManager() {
-        $.get("/accounts/devices",function(data){
-            $("#dashboard-menu-toggle_mainPanel").html(data);
-        });
-    }
+
 
      // Toast API:
     successToast(header,body) {
@@ -69,6 +84,14 @@ export class Dashboard {
 		className: this.settings.toastCls,
 
 	}).show();
+    }
+
+    // Loading Toast:
+    showLoading() {
+        this.loadingToast.show();
+    }
+    hideLoading() {
+        this.loadingToast.hide();
     }
     handleNotify(data) {
         $(this.settings.notifyul).empty();
@@ -181,8 +204,13 @@ export class Dashboard {
         $(link_class + "link").removeClass("active");
         $(link_class + "slink").removeClass("active");
         //$(a.currentTarget.parentNode).addClass("active");
-        var link = $(a.currentTarget);
-        var modid = a.currentTarget.parentNode.id;
+        if ('currentTarget' in a) {
+            var link = $(a.currentTarget);
+            var modid = a.currentTarget.parentNode.id;
+        } else {
+            var link = $(a.target);
+            var modid = "";
+        }
         link.addClass('active');
         if (link.data('js')) {
             console.info("Link JS data", link.data('js'));
@@ -194,7 +222,11 @@ export class Dashboard {
         }
         if (sublink == true) {
             $(document).trigger('moduleUnload');
-            $("#sidebarMenu").offcanvas('hide');
+            try {
+                $("#sidebarMenu").offcanvas('hide');
+            } catch (error) {
+                console.info("Trying to close #sidebarMenu's offcanvas: Not found.");
+            }
         }
         if (link.data('onclick')) {
             console.info("Link OnClick data",link.data('onclick'));
@@ -203,7 +235,8 @@ export class Dashboard {
         if (link.data('trgt')) {
             console.info("Link Target data",link.data('trgt'));
             this.cmp  = link.data('trgt');
-            $("#dashboard_mainPanel").load(link.data('trgt'));
+            this.showLoading();
+            $("#dashboard_mainPanel").load(link.data('trgt'),false,$.proxy(this.hideLoading,this));
         }
     }
 
@@ -212,9 +245,11 @@ export class Dashboard {
     }
 
     dc_reloadPanel() {
-        $("#dashboard_mainPanel").load(this.cmp);
+        this.showLoading();
+        $("#dashboard_mainPanel").load(this.cmp,false,$.proxy(this.hideLoading,this));
     }
     panel_home() {
-        $("#dashboard_mainPanel").load("dashboard_panel_home");
+        this.showLoading();
+        $("#dashboard_mainPanel").load("dashboard_panel_home",false,$.proxy(this.hideLoading,this));
     }
 }

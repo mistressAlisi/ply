@@ -451,6 +451,7 @@ class CommunityRegistry(models.Model):
     int_value = models.IntegerField(verbose_name="Int Value", null=True, blank=True)
     json_value = models.JSONField(verbose_name="Json Value", null=True, blank=True)
     bin_value = models.BinaryField(verbose_name="Binary Value", null=True, blank=True)
+    bool_value = models.BooleanField(verbose_name="Boolean Value", null=True, blank=True,default=False)
     uuid_value = models.UUIDField(verbose_name="UUID Value", null=True, blank=True)
 
     def __str__(self):
@@ -559,4 +560,5 @@ class CommunityRegistryPageView(models.Model):
     page = models.ForeignKey(Page,verbose_name="Page",on_delete=models.CASCADE)
     def __str__(self):
         return f"Community: {self.community.name} - Setting Key   {self.key} - Page Node {self.page_id}"
+
 

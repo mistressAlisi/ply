@@ -1,7 +1,7 @@
 # The PLY Appinfo class defines ply-specific details for the given application.
 PLY_APP_INFO = {
     "app_name": "Communities Dashboard Studio",
-    "app_module": "communities.dashboard",
+    "app_module": "communities.dashboards",
     "version": {
         "release":2024,
         "major":0x7e8,

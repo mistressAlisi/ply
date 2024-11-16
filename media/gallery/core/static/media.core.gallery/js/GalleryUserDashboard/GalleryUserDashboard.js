@@ -4,12 +4,29 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
 
     keywords_selectize = false
     collections_selectize = false
-
+    current_card = false
     _renderCategories(res) {
         for (var colid in res.cols) {
             var col_label = res.cols[colid];
             this.collections_selectize.addOption(colid,col_label);
         }
+    }
+
+    _update_card_form(event) {
+
+        var new_title = $(this.elements["form"]).find("#review-title")[0].value;
+        var new_descr = $(this.elements["form"]).find("#review-descr")[0].value;
+        var new_cat =   $(this.elements["form"]).find("#review-publish_category option:selected").text();
+        this.current_card.find("#card-title").text(new_title);
+        this.current_card.find("#card-body").text(new_descr);
+        this.current_card.find("#card-category").text(new_cat);
+        var file = this.current_card.data('fileid');
+        var data = $(this.elements["form"]).serialize();
+        $.ajax({
+            url:  this.urls.update+file,
+            data:  data,
+            method:'POST',
+        });
     }
     _initCardElements() {
         this.keywords_selectize = new SmartSelect(this.elements.keywords_selector,
@@ -47,12 +64,14 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
         this.collections_selectize = new SmartSelect(this.elements.collection_selector,
             { });
         $.get(this.urls.collections_get_url,this._renderCategories.bind(this));
+        $(this.elements["form"]).on("change",this._update_card_form.bind(this));
     }
     _cardClickHandle(event) {
       event.preventDefault();
       event.stopPropagation();
       var card = this._parent_walker(event.target);
       var fileid = card.data('fileid');
+      this.current_card = card;
       $(this.elements.offcanvas_editor).offcanvas('show');
       $(this.elements.offcanvas_editor).load(this.urls.lighttable_review_panel+fileid,this._initCardElements.bind(this));
       card.removeClass('animate__fadeIn');
@@ -65,6 +84,7 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
         filedata["card"].append(this.widget_factory.create_img("thumb_"+id,filedata["file"].thumbnail,"Thumbnail for "+filedata["file"].file,'card-img-top card-header-img'));
         filedata["card"].append(this.widget_factory.create_block("h5","card-title",filedata['file'].file.split(".")[0]));
         filedata["card"].append(this.widget_factory.create_block("h6","card-date","<i class=\"fa-solid fa-calendar-xmark\"></i> "+filedata['file'].created));
+        filedata["card"].append(this.widget_factory.create_block("p","card-category",""));
         filedata["card"].append(this.widget_factory.create_block("p","card-body",filedata['file'].descr));
         this.widget_factory.fadeInEl(filedata["card"]);
     }
@@ -98,11 +118,31 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
              }
          }
      }
+      _publish_selected_item_handle(data) {
+        $(this.elements["offcanvas_editor"]).offcanvas('hide');
+      }
+
+      confirm_publish_selected(e) {
+        var bsm = new bootstrap.Modal($(this.elements["confirm_publish"]));
+        bsm.show();
+      }
 
       publish_selected_item(e) {
         e.stopPropagation();
         e.preventDefault();
-        console.info("Saving Data...");
+        $(this.settings.confirm_pub_modal).modal('hide');
+        console.info("Saving Data...",e);
+        var data = $(this.elements["form"]).serialize();
+        if (data != false) {
+            var file = this.current_card.data('fileid');
+            $.ajax({
+            url:  this.urls.publish+file,
+            data:     data,
+            complete: this._publish_selected_item_handle,
+            method: 'POST',
+            context: this
+            });
+        }
 
       }
       load_lighttable() {
@@ -117,6 +157,8 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
             this.keywords_selectize = false;
             this.urls = {
             "submit":"media.gallery.core/api/settings/set/plugin",
+            "update":"media.gallery.core/api/upload/update/",
+            "publish":"media.gallery.core/api/upload/publish/",
             "lighttable_contents":"media.gallery.core/api/get/lighttable/",
             "lighttable_review_panel":"media.gallery.core/api/upload/review_panel/",
             "keywords_get_url":"/keywords/api/get/",
@@ -126,11 +168,13 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
 
 
             this.elements = {
-                "form":"#upload_submission_form",
+                "form":"#gallery_review_form",
+                "review_file_el":"#review_file_id",
                 "lighttable_cnt":"#lighttable_items_container",
                 "offcanvas_editor":"#uploaderOffCanvas",
                 "keywords_selector":"#review-publish_keywords",
-                "collection_selector":"#review-publish_collections"
+                "collection_selector":"#review-publish_collections",
+                "confirm_publish":"#confirmModal"
 
             }
 
