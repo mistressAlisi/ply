@@ -1,6 +1,6 @@
 #!/bin/sh
 python manage.py collectstatic --no-input
-export CURRENT_EVENT_PK="d1245410-08b0-457c-9439-d6b1f1345ba8"
+export CURRENT_EVENT_PK="c16853ea-5fd4-4f97-adc2-1db50ef06abc"
 if [ "$APP_MODE" = "custom-command" ]
   then
     python manage.py "$APP_COMMAND"
