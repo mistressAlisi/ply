@@ -38,74 +38,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 STATIC_ROOT = config("STATIC_ROOT")
 
 # Application definition
-INSTALLED_APPS = [
-    'grappelli',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
-    'django_bootstrap5',
-    'jsignature',
-    'django_registration',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'storages',
-    'djstripe',
-    'martor',
-    'mathfilters',
-    'phonenumber_field',
-    'colorful',
-    'communities.preferences',
-    'content_manager.emoji',
-    'content_manager.categories',
-    'communities.notifications',
-    'dashboard',
-    'corsheaders',
-    'core.dynapages',
-    'communities.profiles',
-    'roleplaying.comms',
-    'communities.stream',
-    'communities.group',
-    'content_manager.keywords',
-    'communities.community',
-    'communities.dashboards',
-    'core.plyscript',
-    'core.authentication',
-    'core.authentication.ui',
-    'media.gallery.core',
-    'media.gallery.images',
-    'core.metrics',
-    'roleplaying.stats',
-    'roleplaying.combat',
-    'roleplaying.skills',
-    'roleplaying.equipment',
-    'roleplaying.spells',
-    'roleplaying.items',
-    'core.forge',
-    'content_manager.almanac',
-    'core.plyui',
-    'roleplaying.exp',
-    'roleplaying.SLHUD',
-    'roleplaying.plydice',
-    'ply',
-    'multiselectfield',
-    'import_export',
-    'ufls.themes.neon_nights',
-    'ufls.front',
-    'ufls.furry',
-    'ufls.event',
-    'ufls.registrar',
-    'ufls.dealers',
-    'ufls.scheduling',
-    'ufls.staff',
-    'mailer',
-    'whitenoise',
-    'core.plyui.themes.default_theme',
-    'django_celery_results'
-]
+INSTALLED_APPS = config("MIDSUMMER_CORE_APPS", cast=Csv()) + config("MIDSUMMER_APPS", cast=Csv())
 
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 
@@ -366,17 +299,7 @@ REGISTRATION_OPEN = True
 REGISTRATION_SALT = 'ae3Phoge'
 
 # PLY:
-PLY_USER_DASHBOARD_MODULES = [
-    "communities.profiles",
-    "communities.community",
-    "roleplaying.stats",
-    "roleplaying.skills",
-    "communities.stream",
-    "communities.notifications",
-    "communities.preferences",
-    "media.gallery.core",
-    "ufls.registrar"
-]
+PLY_USER_DASHBOARD_MODULES = config('MIDSUMMER_USER_DASHBOARD_MODULES', cast=Csv())
 
 PLY_DASHBOARD_MODES = config('MIDSUMMER_DASHBOARD_MODES', cast=Csv())
 PLY_WORLDFORGE_DASHBOARD_MODULES = config('MIDSUMMER_WORLDFORGE_DASHBOARD_MODULES',cast=Csv())

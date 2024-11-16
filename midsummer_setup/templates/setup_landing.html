@@ -1,0 +1,24 @@
+{% extends "setup_base.html" %}
+{% load static %}
+{% block body %}
+<div class="container">
+                <div class="jumbotron">
+                    <div class="text-center">
+                    <img src="{% static 'setup/midsummer.png' %}" style="height: 250px; width: auto;">
+                    </div>
+                    <div style="border: 10px solid #3F3F3F; border-radius: 15px; padding: 20px;">
+                    <h1 style="font-weight: lighter;">Midsummer Setup</h1>
+                    <p>Welcome to Midsummer. This wizard will help you setup your instance of the Midsummer Community Manager. This setup takes approximately 10 minutes. Before you get started, make sure you have:</p>
+                    <ul>
+                        <li>A PostgreSQL Server version 16 or newer*</li>
+                        <li>A RabbitMQ Server version 3.13 or newer*</li>
+                        <li>An Amazon S3 or S3 Compatible Service*</li>
+                        <li>A Stripe account (If using the Registrar App)</li>
+                        <li>A Mail Server (STARTTLS or SMTPS Supported)</li>
+                    </ul>
+                    <p><em>* These services are included if using the Docker Compose File (PostgreSQL 16, RabbitMQ 3.13.7, MinIO RELEASE.2024-09-09T16-59-28Z)</em></p>
+                    <p><a href="/app/setup/wizard/" class="btn btn-success">Start Setup</a></p>
+                        </div>
+                </div>
+            </div>
+{% endblock %}

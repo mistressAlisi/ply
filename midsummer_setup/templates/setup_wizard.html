@@ -1,0 +1,15 @@
+{% extends "setup_base.html" %}
+{% load static %}
+{% block body %}
+<div class="container">
+                <div class="jumbotron">
+                    <div class="text-center">
+                    <img src="{% static 'setup/midsummer.png' %}" style="height: 250px; width: auto;">
+                    </div>
+                    <div style="border: 10px solid #3F3F3F; border-radius: 15px; padding: 20px;">
+                          <app-root></app-root>
+                        <script src="/static/setup/polyfills.js" type="module"></script><script src="/static/setup/main.js" type="module"></script>
+                    </div>
+                </div>
+            </div>
+{% endblock %}
