@@ -29,3 +29,18 @@ def is_profile_staff(community,profile):
     if (len(is_staff) < 1):
         return False
     return True
+
+
+def get_profile_staff(community,profile):
+    """
+    Get a given profile's communityStaff object
+    @param community:  Community Object
+    @param profile:  Staff Object
+    @return: CommuniyStaff Object.
+    """
+    try:
+        is_staff = CommunityStaff.objects.get(community=community, profile=profile, active=True)
+        return is_staff
+    except:
+        return False
+

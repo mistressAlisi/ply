@@ -10,7 +10,7 @@ export class CommunityForgeDashboard extends AbstractDashboardApp {
 
         _submitMenuHandle(data,stat,home=true) {
             //console.log(data)
-            if (data.responseJSON.res == "ok") {
+            if (data.res == "ok") {
                 dashboard.successToast('<h6><i class="fa-solid fa-check"></i>&#160;Success!','Operation complete!');
                     this.hideMenuModal();
                     dashboard.dc_reloadPanel();
@@ -18,8 +18,8 @@ export class CommunityForgeDashboard extends AbstractDashboardApp {
                 return true;
 
             } else {
-                dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+data.responseJSON.e.__all__[0]);
-                console.error("Unable to execute Operation: ",data.responseJSON.e.__all__)
+                dashboard.errorToast('<h6><i class="fa-solid fa-xmark"></i>&#160;Error!','An Error Occured! '+data.e.__all__);
+                console.error("Unable to execute Operation: ",data.e.__all__)
                 return false;
             }
     }
@@ -54,6 +54,8 @@ export class CommunityForgeDashboard extends AbstractDashboardApp {
             super(name);
 
             this.urls = {
+            "_api_prefix":"",
+            "_prefix":"",
             "submit_menu":"/dashboard/forge/api/communities.community/menu/create",
             "load_menu_item":"/dashboard/forge/api/communities.community/menu/edit/",
             "delete_menu_item":"/dashboard/forge/api/communities.community/menu/delete/",

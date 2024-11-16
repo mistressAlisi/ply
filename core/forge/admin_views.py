@@ -7,6 +7,8 @@ from media.gallery.core.models import GalleryItem
 from core.dynapages import models as dynaModels
 from core.forge.forms import NewScriptForm, SaveScriptForm
 from media.gallery.core.forge_forms import CoreSettingsForm
+from ply.toolkit.themes import get_installed_themes
+
 
 # Create your views here.
 
@@ -27,6 +29,8 @@ def edit_community_cover(request):
         page_template=True, archived=False, blocked=False
     )
     backgroundItems = GalleryItem.objects.filter(profile=profile, active=True)
+    themes = get_installed_themes()
+    print(themes)
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     if community is None:
         return render(request, "error-no_vhost_configured.html", {})
@@ -41,6 +45,7 @@ def edit_community_cover(request):
             "editing_mode": True,
             "templates": templates,
             "backgroundItems": backgroundItems,
+            "themes":themes
         }
         return render(request, "forge-create_community.html", context)
 
@@ -116,7 +121,7 @@ def script_studio(request):
             "enable_admin": True,
             "current_profile": profile,
             "profiles": all_profiles,
-            "ply_version": vers.get_version_str(),
+            "ply_version": vers(),
             "new_script_form": nsf,
             "save_script_form": ssf,
         }

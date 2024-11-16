@@ -16,6 +16,7 @@ def _item_serialiser(_items):
             'item':i.gci_uuid,
             "name":i.gif_name,
             "hash":i.gif_hash,
+            "type":i.gif_type,
             "created":i.gif_created,
             "updated":i.gif_updated,
             "meta":i.gif_meta,

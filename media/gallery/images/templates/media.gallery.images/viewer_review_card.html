@@ -1,4 +1,4 @@
-<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-file="{{file.id}}" data-plugin="gallery_photos" id="card-{{file.id}}">
+<div class="card floating-dashboard-card-item align-middle gallery-card" style="min-width: 18rem; max-width: 22rem;" data-file="{{file.id}}" data-plugin="media.gallery.images" id="card-{{file.id}}">
   {%if file.thumbnail %}
 
     <img src="{{base_url}}/{{file.thumbnail}}" class="card-img-top thumbnail" alt="{{file.name}}">
@@ -50,7 +50,7 @@
     <input type="hidden" name="meta" id="meta"  value="{{file.get_meta_json}}"/>
     <input type="hidden" name="title" id="title" value="{{file.name}}"/>
     <input type="hidden" name="fileid" id="fileid" value="{{file.id}}"/>
-    <input type="hidden" name="plugin" id="plugin" value="gallery_photos"/>
+    <input type="hidden" name="plugin" id="plugin" value="media.gallery.images"/>
     <input type="hidden" name="descr" id="descr" value=""/>
     <input type="hidden" name="res" id="res" value=""/>
     <input type="hidden" name="display" id="display" value=""/>

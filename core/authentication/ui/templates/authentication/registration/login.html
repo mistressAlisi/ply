@@ -41,13 +41,16 @@
 </head>
 
 <body class="" data-bs-theme="dark">
-{% include "neon_nights/effects/particles/cover_particles.html" %}
+{% with THEME_PATH|add:"components/authentication/form_header.html" as import_template %}
+{% include import_template %}
+{% endwith %}
+
 <div class="container" style="z-index: 3;">
   <main>
     <div class="py-5 text-center" style="z-index: 3; position: relative;" >
         <h2 class="logo-text">{{community.name}}</h2>
         <p class="tagline-text">{{community.tagline}}</p>
-        <p class="lead">Already have an account- have an account? Login now! - if you don't, please proceed to <a href="/accounts/register/"> registration</a> to create one</p>
+        <p class="lead">Already have an account? Login now! - if you don't, please proceed to <a href="/accounts/register/"> registration</a> to create one</p>
 
     </div>
     <div class="container-fluid" style="margin-left: auto; margin-right: auto;">
