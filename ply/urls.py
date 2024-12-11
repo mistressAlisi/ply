@@ -47,6 +47,10 @@ if config('MIDSUMMER_APPS') == "midsummer_setup":
         path("", redirectToSetup)
     ]
 else:
+
+    def redirectToMy(request):
+        return redirect("/app/me/")
+
     urlpatterns = [
         path("grappelli/", include("grappelli.urls")),  # grappelli URLS
         path("profiles/", include("communities.profiles.public_urls")),
@@ -77,6 +81,7 @@ else:
         path("SLHUD/api/", include("roleplaying.SLHUD.api_urls")),
         path("dice/api/", include("roleplaying.plydice.api_urls")),
         path("stripe/", include('djstripe.urls', namespace='djstripe')),
+        path("app/", redirectToMy),
         path("", include("communities.community.public_urls"))
     ]
 
