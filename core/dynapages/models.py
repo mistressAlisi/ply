@@ -133,7 +133,7 @@ class Page(models.Model):
         db_table = "core_dynapages_page"
 
     page_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    slug = models.TextField(max_length=300, verbose_name="Page slug", unique=True)
+    slug = models.TextField(max_length=300, verbose_name="Page slug")
     label = models.TextField(max_length=200, verbose_name="Page Label")
     widget_mode = models.TextField(
         max_length=200,
