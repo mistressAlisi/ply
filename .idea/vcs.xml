@@ -2,11 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/content_manager/emoji/gitsrc/JS-Emoji-Keyboard" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/core/plyui/static/core.plyui/js/plugins/jq-ajax-progress" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/core/plyui/static/core.plyui/js/plugins/jquery-ajax-progress" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/core/plyui/static/core.plyui/js/plugins/qr-scanner" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ufls" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../ufls" vcs="Git" />
   </component>
 </project>

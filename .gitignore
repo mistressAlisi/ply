@@ -130,4 +130,5 @@ dmypy.json
 .env
 
 config/
+staticfiles/
 .gitmodules

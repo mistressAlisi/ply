@@ -121,7 +121,7 @@ def script_studio(request):
             "enable_admin": True,
             "current_profile": profile,
             "profiles": all_profiles,
-            "ply_version": vers.get_version_str(),
+            "ply_version": vers(),
             "new_script_form": nsf,
             "save_script_form": ssf,
         }

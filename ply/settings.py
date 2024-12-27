@@ -31,6 +31,8 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('PLY_DEBUG') == 'TRUE'
 
+IN_DEVELOPER_MODE = config('MIDSUMMER_IN_DEVELOPER_MODE') == 'TRUE'
+
 #TODO: MAKE IT SO ALLOWED HOSTS ARE OPTIONAL!
 #ALLOWED_HOSTS = [config("ALLOWED_HOST_1"),config("ALLOWED_HOST_2"),config("ALLOWED_HOST_3")] 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
@@ -38,67 +40,30 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 STATIC_ROOT = config("STATIC_ROOT")
 
 # Application definition
-INSTALLED_APPS = [
-    'grappelli',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
-    'django_bootstrap5',
-    'djstripe',
-    'jsignature',
-    'django_registration',
-    'storages',
-    'martor',
-    'mathfilters',
-    'phonenumber_field',
-    'colorful',
-    'communities.preferences',
-    'content_manager.emoji',
-    'content_manager.categories',
-    'communities.notifications',
-    'dashboard',
-    'core.dynapages',
-    'communities.profiles',
-    'roleplaying.comms',
-    'communities.stream',
-    'communities.group',
-    'content_manager.keywords',
-    'communities.community',
-    'communities.dashboards',
-    'core.plyscript',
-    'core.authentication',
-    'core.authentication.ui',
-    'media.gallery.core',
-    'media.gallery.images',
-    'core.metrics',
-    'roleplaying.stats',
-    'roleplaying.combat',
-    'roleplaying.skills',
-    'roleplaying.equipment',
-    'roleplaying.spells',
-    'roleplaying.items',
-    'core.forge',
-    'content_manager.almanac',
-    'core.plyui',
-    'roleplaying.exp',
-    'roleplaying.SLHUD',
-    'roleplaying.plydice',
-    'ufls.event',
-    'ufls.furry',
-    'ufls.registrar',
-    'ufls.staff',
-    'ufls.themes.neon_nights',
-    'ply',
-    'core.plyui.themes.default_theme'
-]
+INSTALLED_APPS = config("MIDSUMMER_CORE_APPS", cast=Csv()) + config("MIDSUMMER_APPS", cast=Csv())
+
+EMAIL_BACKEND = "mailer.backend.DbBackend"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -179,18 +144,28 @@ USE_S3 = config('USE_S3') == 'TRUE'
 
 if USE_S3:
     # aws settings
+    STATIC_URL = '/static/'
+    STATIC_ROOT = config('STATIC_ROOT')
+    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
+    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
+    MEDIA_URL = config('PLY_MEDIA_URL')
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_S3_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_S3_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
     AWS_LOCATION = config('AWS_LOCATION')
-    STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
-    MEDIA_ROOT = "media_root/"
-    MEDIA_URL = "/media/"
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    #STATIC_URL = '%s/%s' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    #MEDIA_ROOT = "media_root/"
+    #MEDIA_URL = "/media/"
+    #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     if (config("ALWAYS_LOAD_S3") == "TRUE"):
         # aws settings
@@ -204,8 +179,9 @@ else:
         MEDIA_URL = "/media/"
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    MEDIA_ROOT = "/var/www/html/media/"
+    #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    MEDIA_ROOT = "/app/media_root/"
     MEDIA_URL = "/media/"
 
 # Default primary key field type
@@ -308,6 +284,8 @@ ALLOWED_URL_SCHEMES = [
 ]
 CSRF_COOKIE_HTTPONLY = False
 
+CSRF_TRUSTED_ORIGINS = ['https://*.furrydelphia.org']
+
 # EMAIL CONFIG:
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
@@ -323,34 +301,12 @@ REGISTRATION_OPEN = True
 REGISTRATION_SALT = 'ae3Phoge'
 
 # PLY:
-PLY_USER_DASHBOARD_MODULES = [
-    "communities.profiles",
-    "communities.community",
-    "roleplaying.stats",
-    "roleplaying.skills",
-    "communities.stream",
-    "communities.notifications",
-    "communities.preferences",
-    "media.gallery.core"
+PLY_USER_DASHBOARD_MODULES = config('MIDSUMMER_USER_DASHBOARD_MODULES', cast=Csv())
 
-    
-]
-PLY_DASHBOARD_MODES = [
-    "world_forge",
-    "user",
-    "staff"
-]
-PLY_WORLDFORGE_DASHBOARD_MODULES = [
-    "communities.community",
-    "communities.stream",
-    "communities.dashboards",
-    "media.gallery.core",
-    "ufls.event",
-    "ufls.staff"
-]
-PLY_STAFF_DASHBOARD_MODULES = [
-    "ufls.staff"
-]
+PLY_DASHBOARD_MODES = config('MIDSUMMER_DASHBOARD_MODES', cast=Csv())
+PLY_WORLDFORGE_DASHBOARD_MODULES = config('MIDSUMMER_WORLDFORGE_DASHBOARD_MODULES',cast=Csv())
+PLY_STAFF_DASHBOARD_MODULES = config('MIDSUMMER_STAFF_DASHBOARD_MODULES',cast=Csv())
+
 PLY_GALLERY_PLUGINS = [
     "media.gallery.images"
     ]
@@ -377,7 +333,23 @@ PLY_MSG_BROKER_URL=config("PLY_MSG_BROKER_URL")
 GALLERY_PHOTOS_THUMBNAIL_SIZE = int(config("GALLERY_PHOTOS_THUMBNAIL_SIZE"))
 PLY_GALLERY_MIN_DPI = int(config("PLY_GALLERY_MIN_DPI"))
 PLY_GALLERY_MAX_ORIGINAL_SIZE = int(config("PLY_GALLERY_MAX_ORIGINAL_SIZE"))
+
 CELERY_BROKER_URL=config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+CELERY_TIMEZONE = "America/New_York"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_TASK_ROUTES = {
+ 'registration.tasks.*': {'queue': 'celery'},
+ 'bkinterface.*': {'queue': 'bkinterface'},
+ 'printmaster.*': {'queue': 'printmaster'},
+ 'brotherlabel.*': {'queue': 'brotherlabel'},
+ 'receiptmanager.*': {'queue': 'receiptmanager'},
+ 'badgerenderer.*': {'queue': 'badgerenderer'}
+}
+
 PLY_AVATAR_MAX_KB = int(config("PLY_AVATAR_MAX_KB"))
 PLY_AVATAR_STORAGE_USE_S3 = config('PLY_AVATAR_STORAGE_USE_S3')
 PLY_DYNAPAGES_PROFILE_TEMPLATE=config("PLY_DYNAPAGES_PROFILE_TEMPLATE")
@@ -423,6 +395,7 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
+"""
 STORAGES = {
     # TODO: default should be its own config key.
     "default":{
@@ -462,15 +435,34 @@ STORAGES = {
         }
     }
 }
-
+"""
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
 # TODO: Should we remove these setting keys and use storages everywhere?
 PLY_AVATAR_FILE_BASE_PATH = config("PLY_AVATAR_FILE_BASE_PATH")
 PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")
 
+STRIPE_TEST_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
+STRIPE_LIVE_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
+STRIPE_LIVE_MODE = True  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = config("DJSTRIPE_FOREIGN_KEY_TO_FIELD","id")
 
-CSRF_TRUSTED_ORIGINS = ["https://10.100.102.200"]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if config('UFLS_ENABLE_GLITCHTIP', default=False):
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn="https://6c21fd9e780e46b69ceed79ef16ac860@glitchtip.furrydelphia.org/1",
+        integrations=[DjangoIntegration()],
+        auto_session_tracking=False,
+        traces_sample_rate=0
+    )
