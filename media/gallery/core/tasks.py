@@ -127,6 +127,8 @@ def publish_to_gallery(data,profile,file_plugin,temp_file,user,community,metadat
             #Step Eight: Cleanup
             #os.remove(temp_path)
             #temp_file.delete()
+            temp_file.published = True
+            temp_file.save()
             return True
     except Exception as e:
             print(e)
@@ -136,8 +138,9 @@ def publish_to_gallery(data,profile,file_plugin,temp_file,user,community,metadat
             
 @app.task
 @transaction.atomic
-def upload_ingest(_profile,plugin,file_name,filepath,_file_obj,content_type="",size=1):
+def upload_ingest(_community,_profile,plugin,file_name,filepath,_file_obj,content_type="",size=1):
     try:
+        community = Community.objects.get(uuid=_community)
         profile = Profile.objects.get(uuid=_profile)
         file_obj = GalleryTempFile.objects.get(id=_file_obj)
         #plugin = request.POST['plugin']
@@ -147,8 +150,8 @@ def upload_ingest(_profile,plugin,file_name,filepath,_file_obj,content_type="",s
         # it should happen inside initial_import_gen below:
         metadata_mod = importlib.import_module(f"{plugin}.metadata")
         # And get our metadata and image:
-        fpoint = open(ply.settings.PLY_TEMP_FILE_BASE_PATH+filepath)
-        thumb = metadata_mod.thumbnail(profile,fpoint,file_obj)
+        fpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+filepath
+        thumb = metadata_mod.thumbnail(community,profile,fpath,file_obj)
         file_obj.thumbnail = thumb
         file_obj.path = file_uploader.get_file_path(f"{profile.profile_id}-{file_obj.name}",profile)
         file_obj.save()

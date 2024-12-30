@@ -36,15 +36,16 @@ def gallery_list(request):
 def upload_content(request):
     context, vhost, community, profile = default_context(request)
     buttons = upload_plugins_builder(community)
+    #files = GalleryTempFile.objects.filter(profile=profile)
     collections = GalleryCollection.objects.filter(owner=profile)
-    context = {"buttons": buttons.modules.values(),'collections':collections}
+    context.update({"buttons": buttons.modules.values(),'collections':collections})
     return render(request, "media.gallery.core/uploader/index.html", context)
 
 
 @login_required
 def upload_lighttable(request):
     context, vhost, community, profile = default_context(request)
-    print(profile)
+
     files = GalleryTempFile.objects.filter(profile=profile)
     collections = GalleryCollection.objects.filter(owner=profile)
 

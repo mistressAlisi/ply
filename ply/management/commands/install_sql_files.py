@@ -2,7 +2,8 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import connection
 from bs4 import BeautifulSoup
 import uuid
-from ply import system_uuids,settings
+from ply import system_uuids
+from django.conf import settings
 from django.contrib.auth.models import User
 import os
 import ply
@@ -15,26 +16,35 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('app', type=str)
 
+    def _dir_runner(self,sql_dir):
+        self.stdout.write(self.style.MIGRATE_HEADING(f'...Installing files in: "{sql_dir}"...'))
+        sqlfiles = os.listdir(sql_dir)
+        with connection.cursor() as cursor:
+            for sql in sqlfiles:
+                self.stdout.write(self.style.MIGRATE_LABEL(f'Installing file "{sql}"...'))
+                sqlfile = open(sql_dir + "/" + sql).read()
+                cursor.execute(sqlfile)
+            cursor.close()
+
     def run_dir(self,app):
         sql_dir  = os.getcwd() + f"/{app.replace('.','/')}/sql/"
         if (os.path.isdir(sql_dir)):
-            self.stdout.write(self.style.MIGRATE_HEADING(f'...Installing files in: "{sql_dir}"...'))
-            sqlfiles =  os.listdir(sql_dir)
-            with connection.cursor() as cursor:
-                for sql in sqlfiles:
-                    self.stdout.write(self.style.MIGRATE_LABEL(f'Installing file "{sql}"...'))
-                    sqlfile = open(sql_dir+"/"+sql).read()
-                    cursor.execute(sqlfile)
-            cursor.close()
+            self._dir_runner(sql_dir)
+        else:
+            sql_dir = os.getcwd() + f"/ply/{app.replace('.', '/')}/sql/"
+            if (os.path.isdir(sql_dir)):
+                self._dir_runner(sql_dir)
+
+
 
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Installing SQL Files...'))
         if (options['app'] == '_all_'):
-            for iapp in ply.settings.INSTALLED_APPS:
+            for iapp in settings.INSTALLED_APPS:
                 self.run_dir(iapp)
         else:
-            if (options['app'] in ply.settings.INSTALLED_APPS):
+            if (options['app'] in settings.INSTALLED_APPS):
                 self.run_dir(options['app'])
             else:
                 self.stdout.write(self.style.ERROR(f'NO SUCH APP: \'{options["app"]}\'!'))

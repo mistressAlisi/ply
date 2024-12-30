@@ -41,16 +41,20 @@ export class AbstractDashboardApp {
     }
 
     _parse_ajax_error(data) {
-        var errStr="";
-                var errors = data.e;
-                for (var eks in errors) {
-                    if (typeof(errors[eks][0]) != "string") {
-                        errStr = errStr + " <em>" + eks + "</em>: " + errors[eks][0]["message"] + "<br/>";
-                    } else {
-                        errStr = errStr + " <em>" + eks + "</em>: " + errors[eks][0] + "<br/>";
-                    }
-                    $(this.elements["form"]).find("#id_"+eks).addClass('is-invalid');
+        var errStr = "";
+        var errors = data.e;
+        if (data.res == "gen_err") {
+            errStr = " <em>" + errors.class + "</em>: " + errors.text + "<br/>";
+        } else {
+            for (var eks in errors) {
+                if (typeof (errors[eks][0]) != "string") {
+                    errStr = errStr + " <em>" + eks + "</em>: " + errors[eks][0]["message"] + "<br/>";
+                } else {
+                    errStr = errStr + " <em>" + eks + "</em>: " + errors[eks][0] + "<br/>";
                 }
+                $(this.elements["form"]).find("#id_" + eks).addClass('is-invalid');
+            }
+        }
         return errStr;
     }
     _submitHandle(data,stat,home=true) {

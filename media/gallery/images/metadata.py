@@ -6,6 +6,7 @@ import pathlib, json
 
 # PLY
 import ply
+from media.gallery.images.utilities import get_image_encoder_settings
 from ply.toolkit import file_uploader, logger as plylog
 from media.gallery.images import utilities
 from ply import settings
@@ -14,22 +15,24 @@ from media.gallery.core.models import GalleryTempFileThumb
 log = plylog.getLogger("media.gallery.images.metadata", name="metadata")
 
 
-def thumbnail(profile, file, file_obj):
+def thumbnail(community,profile, path, file_obj):
     # print(file.name)
-    # fullpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+file_uploader.get_temp_path(file.name,profile)
-    fullpath = pathlib.Path(file.name)
+    # fullpath = ply.settings.PLY_TEMP_FILE_BASE_PATH+file_uploader.get_file_path(file.name,profile)
+    fullpath = pathlib.Path(path)
     # print(fullpath)
-    name = f"{fullpath.stem}_thumb{fullpath.suffix}"
+    formats = get_image_encoder_settings(community)
+    name = f"{fullpath.stem}_thumb"
 
     # print(name)
     # print("*****")
     # print("*****")
     # print("*****")
-    tpath = file_uploader.get_temp_path(name, profile)
+    tpath = file_uploader.get_file_path(name, profile)
     fulltpath = ply.settings.PLY_TEMP_FILE_BASE_PATH + tpath
 
     try:
-        with Image.open(file.name) as im:
+        with Image.open(path) as _im:
+            im = _im.copy()
             try:
                 im.thumbnail(
                     [
@@ -37,25 +40,25 @@ def thumbnail(profile, file, file_obj):
                         settings.GALLERY_PHOTOS_THUMBNAIL_SIZE,
                     ]
                 )
-                im.save(fulltpath)
-                im.close()
-                fs = os.path.getsize(fulltpath)
-                # file.thumbnail = tpath
-                # file.save()
-                tempFileObj = GalleryTempFileThumb(
-                    file=file_obj, path=tpath, file_size=fs
-                )
-
-                tempFileObj.save()
+                for format in formats:
+                    ofile = im.copy()
+                    ofile.save(f"{fulltpath}.{format}",format)
+                    ofile.save(fulltpath)
+                    fs = os.path.getsize(fulltpath)
+                    ofile.close()
+                    tempFileObj = GalleryTempFileThumb(
+                        file=file_obj, path=f"{tpath}.{format}", file_size=fs
+                    )
+                    tempFileObj.save()
             except Exception as e:
                 log.exception(e)
                 log.error(
-                    f"With Image Open: Unable to generate Thumbnail for {file}: Exception: {e}"
+                    f"With Image Open: Unable to generate Thumbnail for {path}: Exception: {e}"
                 )
                 return None
     except Exception as e:
         log.exception(e)
-        log.error(f"Unable to generate Thumbnail for {file}: Exception: {e}")
+        log.error(f"Unable to generate Thumbnail for {path}: Exception: {e}")
         return None
     return tpath
 

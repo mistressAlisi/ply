@@ -74,12 +74,13 @@ def update_character_profile(request):
     profile.save()
     # Update the class data if it's present:
     if 'classtype' in request.POST:
-        _classtype = request.POST['classtype']
-        classtype = ClassType.objects.get(uuid=_classtype)
-        stlevel = Level.objects.get(level=0)
-        peo = ProfileExperience.objects.get_or_create(community=community,profile=profile,classtype=classtype,level=stlevel)[0]
-        peo.classtype = classtype
-        peo.save()
+        if request.POST['classtype'] != '':
+            _classtype = request.POST['classtype']
+            classtype = ClassType.objects.get(uuid=_classtype)
+            stlevel = Level.objects.get(level=0)
+            peo = ProfileExperience.objects.get_or_create(community=community,profile=profile,classtype=classtype,level=stlevel)[0]
+            peo.classtype = classtype
+            peo.save()
     return JsonResponse({"res":"ok"},safe=False)
 
 

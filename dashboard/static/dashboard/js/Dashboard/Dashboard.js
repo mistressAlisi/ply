@@ -61,6 +61,7 @@ export class Dashboard {
 
      // Toast API:
     successToast(header,body) {
+        this.hideLoading();
         new bs5.Toast({
 		body: body,
 		header: header,
@@ -69,6 +70,7 @@ export class Dashboard {
 	}).show();
     }
     errorToast(header,body) {
+        this.hideLoading();
         new bs5.Toast({
 		body: body,
 		header: header,
@@ -78,6 +80,7 @@ export class Dashboard {
     }
 
     normalToast(header,body) {
+        this.hideLoading();
         new bs5.Toast({
 		body: body,
 		header: header,
