@@ -146,9 +146,9 @@ if USE_S3:
     # aws settings
     STATIC_URL = '/static/'
     STATIC_ROOT = config('STATIC_ROOT')
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-    STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+    #STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+    #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN')
     AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
     MEDIA_URL = config('PLY_MEDIA_URL')
