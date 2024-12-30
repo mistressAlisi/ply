@@ -1,3 +1,5 @@
+from logging import NullHandler
+
 from django.db import models
 from django.contrib import admin
 import uuid
@@ -453,6 +455,16 @@ class CommunityRegistry(models.Model):
     bin_value = models.BinaryField(verbose_name="Binary Value", null=True, blank=True)
     bool_value = models.BooleanField(verbose_name="Boolean Value", null=True, blank=True,default=False)
     uuid_value = models.UUIDField(verbose_name="UUID Value", null=True, blank=True)
+
+    def clear_all(self,confirm=False):
+        if confirm:
+            self.text_value = None
+            self.int_value = None
+            self.json_value = None
+            self.bin_value = None
+            self.bool_value = False
+            self.uuid_value = None
+            self.save()
 
     def __str__(self):
         rstr = f"Community: {self.community.name} - Registry Setting {self.key}"

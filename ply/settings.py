@@ -372,7 +372,7 @@ else:
     PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
 
-PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default")
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default_theme")
 
 
 
@@ -395,7 +395,7 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
-"""
+
 STORAGES = {
     # TODO: default should be its own config key.
     "default":{
@@ -435,7 +435,7 @@ STORAGES = {
         }
     }
 }
-"""
+
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
 # TODO: Should we remove these setting keys and use storages everywhere?
@@ -445,10 +445,11 @@ PLY_AVATAR_FILE_URL_BASE_URL= config("PLY_AVATAR_FILE_URL_BASE_URL")
 STRIPE_TEST_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
 STRIPE_LIVE_SECRET_KEY = PAYMENT_STRIPE_SECRET_KEY
 STRIPE_LIVE_MODE = True  # Change to True in production
-DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+# TODO : FOR UFLS?
+DJSTRIPE_WEBHOOK_SECRET = config("PLY_DJSTRIPE_WEBHOOK_SECRET",default="") # Get it from the section in the Stripe dashboard where you added the webhook endpoint
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 
-PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.ui.themes.default")
+PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default_theme")
 
 # New Dynamic URL mapping
 PLY_DYNAMIC_APP_URLS_ENABLED = config("PLY_DYNAMIC_APP_URLS_ENABLED",True)

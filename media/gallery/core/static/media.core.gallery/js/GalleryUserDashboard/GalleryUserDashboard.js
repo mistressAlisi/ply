@@ -156,6 +156,8 @@ export class GalleryUserDashboard extends AbstractDashboardApp {
             this.collections_selectize = false;
             this.keywords_selectize = false;
             this.urls = {
+            "_api_prefix":"",
+            "_prefix":"",
             "submit":"media.gallery.core/api/settings/set/plugin",
             "update":"media.gallery.core/api/upload/update/",
             "publish":"media.gallery.core/api/upload/publish/",

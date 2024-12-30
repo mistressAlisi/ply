@@ -34,12 +34,14 @@ def select_profile(request):
 # Render the Create Profile Forge Page:
 @login_required
 def create_profile(request):
-    #  Ignore port:
+
+    print(request.session['profile'])
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     theme = themes.get_community_theme_or_def(community)
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_placeholder_profile(request)
+    #print(profile)
     classes = ClassType.objects.filter(selectable=True,frozen=False,archived=False,blocked=False)
     if community is None:
         return render(request,"error-no_vhost_configured.html",{})
@@ -90,7 +92,10 @@ def edit_profile_preview(request):
     community = (vhosts.get_vhost_community(hostname=vhost))
     # The FORGE will create a new profile using this view. The first step is to get a placeholder profile so we can start assigning items and data to it:
     profile = toolkit.profiles.get_active_profile(request)
-    exo = ProfileExperience.objects.get(community=community,profile=profile)
+    try:
+        exo = ProfileExperience.objects.get(community=community,profile=profile)
+    except:
+        exo = {}
     context = {'community':community,'vhost':vhost,'profile':profile,"av_path":settings.PLY_AVATAR_FILE_URL_BASE_URL,"exp":exo}
     return render(request,"forge-preview_profile.html",context)
 

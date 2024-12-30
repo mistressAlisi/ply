@@ -19,8 +19,8 @@
       </td>
       <td>{{app.ordering}}</td>
       <td>{{app.active}}</td>
-      <td><a href="#edit_menu_{{app.pk}}" onclick="community_dashboard.edit_menu('{{app.pk}}');"><i class="fa-solid fa-pen-to-square"></i>&#160;Edit</a></td>
-      <td><a href="#edit_menu_{{app.pk}}" class="link-danger" onclick="community_dashboard.delete_menu('{{app.pk}}');"><i class="fa-solid fa-trash"></i>&#160;Del</a></td>
+      <td><a href="#communities.community%2Fmenus%2Feditor" onclick="community_dashboard.edit_menu('{{app.pk}}');"><i class="fa-solid fa-pen-to-square"></i>&#160;Edit</a></td>
+      <td><a href="#communities.community%2Fmenus%2Feditor" class="link-danger" onclick="community_dashboard.delete_menu('{{app.pk}}');"><i class="fa-solid fa-trash"></i>&#160;Del</a></td>
     </tr>
    {% endif %}
    {% endfor %}

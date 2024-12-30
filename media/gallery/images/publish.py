@@ -51,13 +51,16 @@ def publish_submission(
                     thumb.save(thumb_file, format)
                     sha1.update(thumb_file.read())
                     name, tss = file_uploader.save_gallery_file(thumb_file, profile, isp)
+                    lmdata = mdata
+                    lmdata.width = thumb.width
+                    lmdata.height = thumb.height
                     GalleryItemFile.objects.create(
                         name=tsp,
                         item=item,
                         type=format,
                         hash=sha1.hexdigest(),
                         file_size=tss,
-                        meta=mdata,
+                        meta=lmdata,
                         thumbnail=True,
                     )
                     UserDataEntry.objects.create(
@@ -81,13 +84,16 @@ def publish_submission(
             im.save(thumb_file, format)
             sha1.update(thumb_file.read())
             name, iss = file_uploader.save_original_file(thumb_file, profile, isp)
+            lmdata = mdata
+            lmdata.width = im.width
+            lmdata.height = im.height
             GalleryItemFile.objects.create(
                 name=isp,
                 item=item,
                 type=format,
                 hash=sha1.hexdigest(),
                 file_size=iss,
-                meta=mdata,
+                meta=lmdata,
             )
             UserDataEntry.objects.create(
                 user=user,
@@ -111,7 +117,7 @@ def update_submission(item,community):
     sizing = float(id["sizing"])
     original = GalleryItemFile.objects.get(original=True, item=item)
     output_formats = get_image_encoder_settings(community)
-    ori_path = file_uploader.get_temp_path(original.name, item.profile)
+    ori_path = file_uploader.get_file_path(original.name, item.profile)
     ifile = file_uploader.get_original_file(ori_path)
     with Image.open(ifile) as im:
         sha1 = hashlib.sha1()
