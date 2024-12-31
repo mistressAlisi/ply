@@ -142,6 +142,10 @@ USE_TZ = True
 
 USE_S3 = config('USE_S3') == 'TRUE'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 if USE_S3:
     # aws settings
     STATIC_URL = '/static/'
