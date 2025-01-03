@@ -244,7 +244,7 @@ class CommunityStaff(models.Model):
     active = models.BooleanField(verbose_name="Active FLAG", default=True)
 
     def __str__(self):
-        return f"Community Staff: {self.community.name}. Profile: {self.profile.name}."
+        return f"CS: {self.community.name}. {self.profile.name} {self.profile.creator.email}"
 
 
 @admin.register(CommunityStaff)
