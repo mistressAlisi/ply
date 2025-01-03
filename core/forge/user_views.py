@@ -35,7 +35,7 @@ def select_profile(request):
 @login_required
 def create_profile(request):
 
-    print(request.session['profile'])
+    #print(request.session['profile'])
     vhost = request.META["HTTP_HOST"].split(":")[0];
     community = (vhosts.get_vhost_community(hostname=vhost))
     theme = themes.get_community_theme_or_def(community)

@@ -142,6 +142,10 @@ USE_TZ = True
 
 USE_S3 = config('USE_S3') == 'TRUE'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 if USE_S3:
     # aws settings
     STATIC_URL = '/static/'
@@ -395,46 +399,6 @@ LOGGING = {
 PLY_TEMP_FILE_URL_HOST = config("PLY_TEMP_FILE_URL_HOST")
 # NOTE: This API is meant to replace the old Storage drivers for the Gallery.
 # PlyNG should not rely on old hand-written storage code.
-
-STORAGES = {
-    # TODO: default should be its own config key.
-    "default":{
-        "BACKEND": config("PLY_DEFAULT_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_STATIC_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
-        }
-    },
-
-    "staticfiles":{
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_STATIC_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_STATIC_FILE_BASE_PATH"),
-        }
-    },
-    "gallery_originals": {
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_ORIGINAL_FILE_BASE_PATH"),
-        }
-    },
-    "gallery_publish": {
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_GALLERY_FILE_BASE_PATH")+config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
-            "base_url":config("PLY_GALLERY_PUBLISH_FILE_BASE_PATH"),
-        }
-    },   
-    "avatars":{
-        "BACKEND": config("PLY_GALLERY_STORAGES_BACKEND","django.core.files.storage.FileSystemStorage"),
-        "OPTIONS": {
-            "location":config("PLY_AVATAR_BASE_PATH"),
-            "base_url":config("PLY_AVATAR_BASE_URL"),
-        }
-    }
-}
 
 PLY_AVATAR_IMG_FORMAT = config("PLY_AVATAR_IMG_FORMAT","png")
 # **Should we deprecate? **
