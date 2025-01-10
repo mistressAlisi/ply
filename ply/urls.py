@@ -51,6 +51,10 @@ else:
     def redirectToMy(request):
         return redirect("/app/me/")
 
+    # lol oops
+    def redirectToReg(request):
+        return redirect("https://furrydelphia.org/register/")
+
     urlpatterns = [
         path("grappelli/", include("grappelli.urls")),  # grappelli URLS
         path("profiles/", include("communities.profiles.public_urls")),
@@ -82,6 +86,7 @@ else:
         path("dice/api/", include("roleplaying.plydice.api_urls")),
         path("stripe/", include('djstripe.urls', namespace='djstripe')),
         path("app/", redirectToMy),
+        path("register/", redirectToReg),
         path("", include("communities.community.public_urls"))
     ]
 
