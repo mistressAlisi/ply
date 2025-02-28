@@ -84,11 +84,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
+                'ufls.context_processors.foauth',
             ],
         },
     },
 ]
+
+FOAUTH_ENABLED = config('MIDSUMMER_FOAUTH_ENABLED', cast=bool, default=False)
+FOAUTH_URL = config('MIDSUMMER_FOAUTH_URL', default="")
+FOAUTH_ID = config('MIDSUMMER_FOAUTH_ID', default="")
 
 WSGI_APPLICATION = 'ply.wsgi.application'
 
