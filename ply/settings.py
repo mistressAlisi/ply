@@ -84,11 +84,19 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
+                'ufls.context_processors.foauth',
+                'ufls.context_processors.current_event',
             ],
         },
     },
 ]
+
+CURRENT_EVENT_ID = config("UFLS_CURRENT_EVENT_PK", default="")
+
+FOAUTH_ENABLED = config('MIDSUMMER_FOAUTH_ENABLED', cast=bool, default=False)
+FOAUTH_URL = config('MIDSUMMER_FOAUTH_URL', default="")
+FOAUTH_ID = config('MIDSUMMER_FOAUTH_ID', default="")
+MIDSUMMER_FOAUTH_CLASSTYPE = config('MIDSUMMER_FOAUTH_CLASSTYPE', default="")
 
 WSGI_APPLICATION = 'ply.wsgi.application'
 
@@ -366,15 +374,17 @@ GRAPPELLI_ADMIN_TITLE="PLY Admin @ "+PLY_HOSTNAME
 PAYMENT_HOST = config('UFLS_PAYMENT_HOST', default="http://localhost:8000/")
 PAYMENT_USES_SSL = config("UFLS_PAYMENTS_USES_SSL", default=False)
 PAYMENT_STRIPE_WEBHOOK_SECRET = config("UFLS_STRIPE_WEBHOOK_SECRET",default="")
-PAYMENT_STRIPE_TEST = config('UFLS_STRIPE_TEST', cast=bool, default=True)
+PAYMENT_STRIPE_TEST = config('UFLS_STRIPE_TEST', cast=bool, default=False)
 if (PAYMENT_STRIPE_TEST == True):
     PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY_TEST', default=False)
     PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY_TEST', default=False)
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM_TEST', default=False)
+    PAYMENT_STRIPE_DONATION_ITEM_CHARITY = config('UFLS_PAYMENT_DONATION_ITEM_CHARITY_TEST', default=False)
 else:
     PAYMENT_STRIPE_PUBLIC_KEY = config('UFLS_PAYMENT_PUBKEY', default=False)
     PAYMENT_STRIPE_SECRET_KEY = config('UFLS_PAYMENT_SECKEY', default=False)
     PAYMENT_STRIPE_DONATION_ITEM = config('UFLS_PAYMENT_DONATION_ITEM', default=False)
+    PAYMENT_STRIPE_DONATION_ITEM_CHARITY = config('UFLS_PAYMENT_DONATION_ITEM_CHARITY', default=False)
 
 PLY_DEFAULT_THEME = config('PLY_DEFAULT_THEME',default="core.plyui.themes.default_theme")
 

@@ -92,7 +92,7 @@ else:
 
 
 # The following is for Dynamic Application URL loading using ply_appinfo.app_endpoints:
-if settings.PLY_DYNAMIC_APP_URLS_ENABLED:
+if settings.PLY_DYNAMIC_APP_URLS_ENABLED and os.environ.get('MIDSUMMER_RUNNING_MANAGE') != 'true':
     assigned = []
     for app in settings.INSTALLED_APPS:
         app_data = get_ply_appinfo(app)

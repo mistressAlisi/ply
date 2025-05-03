@@ -23,8 +23,8 @@ ENV APP_MODE "wsgi"
 
 COPY . /app
 
-# Prevent startup without a mountpoint for the database:
-# Finally, ports and entrypoint:
+RUN rm -rf /app/.venv
+
 EXPOSE 8000
 WORKDIR /app
 CMD ["sh", "start.sh"]

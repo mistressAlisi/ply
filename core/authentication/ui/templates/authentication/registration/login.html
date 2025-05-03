@@ -106,9 +106,9 @@
 {%include "authentication/registration/sso/modal.html" %}
 </div>
 <script src="/static/core.authentication/js/login.js"></script>
-{% if request.GET.development == None %}
+{% if request.GET.development == None and FOAUTH_ENABLED %}
 <script type="text/javascript">
-    window.location.href = "https://backend.furrydelphia.org/connect/?from=app-ply";
+    window.location.href = "https://{{FOAUTH_URL}}/connect/?from={{FOAUTH_ID}}";
 </script>
 {%else%}
 {%endif%}
